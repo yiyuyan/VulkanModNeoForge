@@ -10,6 +10,7 @@ import org.lwjgl.util.shaderc.ShadercIncludeResult;
 import org.lwjgl.util.shaderc.ShadercIncludeResultReleaseI;
 import org.lwjgl.vulkan.VK12;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -119,10 +120,13 @@ public class SPIRVUtils {
     public static SPIRV compileShader(String filename, String source, ShaderKind shaderKind) {
         long startTime = System.nanoTime();
 
+        filename = new File(filename).getName().split("\\.")[0];
+
+        System.out.println(filename);
         System.out.println(compiler);
-        System.out.println(shaderKind.kind);
+        System.out.println(shaderKind);
         System.out.println(options);
-        long result = self_shaderc_compile_into_spv(compiler, source, shaderKind.kind, filename, "main", options);
+        long result = shaderc_compile_into_spv(compiler, source, shaderKind.kind, filename, "main", options);
 
         if(result == NULL) {
             throw new RuntimeException("Failed to compile shader " + filename + " into SPIR-V");

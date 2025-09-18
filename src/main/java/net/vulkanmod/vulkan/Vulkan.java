@@ -357,25 +357,8 @@ public class Vulkan {
         }
     }
 
-    public static MemoryStack checkMemoryAndSet(){
-        /*Field field = memoryStack.getClass().getDeclaredField("frameIndex");
-            field.setAccessible(true);
-            if(((int)field.get(memoryStack))==-1) field.set(memoryStack,0);*/
-        return stackPush();
-    }
-
-    public static void checkMemory(MemoryStack memoryStack){
-        /*try {
-            Field field = memoryStack.getClass().getDeclaredField("frameIndex");
-            field.setAccessible(true);
-            if(((int)field.get(memoryStack))==-1) field.set(memoryStack,0);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }*/
-    }
-
     private static void createVma() {
-        try (MemoryStack stack = checkMemoryAndSet()) {
+        try (MemoryStack stack = stackPush()) {
 
             VmaVulkanFunctions vulkanFunctions = VmaVulkanFunctions.calloc(stack);
             vulkanFunctions.set(instance, DeviceManager.vkDevice);
@@ -393,8 +376,6 @@ public class Vulkan {
                     "Failed to create Allocator");
 
             allocator = pAllocator.get(0);
-
-            checkMemory(stack);
         }
     }
 

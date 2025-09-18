@@ -58,7 +58,7 @@ public abstract class DeviceManager {
     }
 
     static List<Device> getAvailableDevices(VkInstance instance) {
-        try (MemoryStack stack = Vulkan.checkMemoryAndSet()) {
+        try (MemoryStack stack = stackPush()) {
             List<Device> devices = new ObjectArrayList<>();
 
             IntBuffer deviceCount = stack.ints(0);
@@ -80,8 +80,6 @@ public abstract class DeviceManager {
                 Device device = new Device(currentDevice);
                 devices.add(device);
             }
-
-            Vulkan.checkMemory(stack);
 
             return devices;
         }
