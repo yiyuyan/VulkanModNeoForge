@@ -1,0 +1,33 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+#issueTrackerURL = ""
+license = "Insert License Here"
+
+[[mods]]
+modId = "vulkanmod"
+version = "${version}"
+displayName = "NeoVulkanMod"
+authors = "Collateral,KSmc_brigade"
+description = '''
+VulkanMod in NeoForge 1.21
+'''
+#logoFile = ""
+
+[[dependencies.vulkanmod]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.vulkanmod]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[mixins]]
+config = "vulkanmod.mixins.json"
+[[accessTransformers]]
+file="META-INF/accesstransformer.cfg"

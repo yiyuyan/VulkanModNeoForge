@@ -1,0 +1,98 @@
+{
+  "required": true,
+  "package": "net.vulkanmod.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "plugin": "net.vulkanmod.mixin.MixinPlugin",
+  "minVersion": "0.8",
+   "client": [
+    "window.WindowMixin",
+    "window.WindowAccessor",
+
+    "chunk.ClientPacketListenerM",
+    "chunk.ClientChunkCacheM",
+    "chunk.DirectionMixin",
+    "chunk.FrustumMixin",
+    "chunk.LevelRendererMixin",
+    "chunk.RenderBuffersM",
+    "chunk.SectionRenderDispatcherM",
+    "chunk.ViewAreaM",
+    "chunk.VisibilitySetMixin",
+
+    "compatibility.EffectInstanceM",
+    "compatibility.ProgramM",
+    "compatibility.UniformM",
+    "compatibility.gl.GL11M",
+    "compatibility.gl.GL15M",
+    "compatibility.gl.GL30M",
+
+    "debug.crash_report.SystemReportM",
+    "debug.DebugScreenOverlayM",
+    "debug.GlDebugInfoM",
+    "debug.KeyboardHandlerM",
+
+    "matrix.Matrix4fM",
+
+    "profiling.GuiMixin",
+    "profiling.KeyboardHandlerM",
+    "profiling.LevelRendererMixin",
+
+    "render.BufferUploaderM",
+    "render.GameRendererMixin",
+    "render.GlProgramManagerMixin",
+    "render.GlStateManagerM",
+    "render.LevelRendererMixin",
+    "render.MinecraftMixin",
+    "render.RenderSystemMixin",
+    "render.RenderTypeM",
+    "render.ShaderInstanceM",
+    "render.entity.EntityRendererM",
+    "render.entity.LevelRendererM",
+    "render.entity.model.ModelPartCubeM",
+    "render.entity.model.ModelPartM",
+    "render.particle.SingleQuadParticleM",
+    "render.target.MainTargetMixin",
+    "render.target.RenderTargetMixin",
+    "render.vertex.BufferBuilderM",
+    "render.vertex.FaceBakeryM",
+    "render.vertex.IndexTypeMixin",
+    "render.vertex.VertexBufferM",
+    "render.vertex.VertexConsumerM",
+    "render.vertex.VertexFormatMixin",
+
+    "screen.ScreenM",
+    "screen.OptionsScreenM",
+
+    "texture.mip.MipmapGeneratorM",
+    "texture.image.MNativeImage",
+    "texture.image.NativeImageAccessor",
+    "texture.MAbstractTexture",
+    "texture.MSpriteContents",
+    "texture.MTextureManager",
+    "texture.MTextureUtil",
+
+    "util.ScreenshotRecorderM",
+
+    "vertex.EntityOutlineGeneratorM",
+    "vertex.SpriteCoordinateExpanderM",
+    "vertex.VertexMultiConsumersM$DoubleM",
+    "vertex.VertexMultiConsumersM$MultipleM",
+    "vertex.VertexMultiConsumersM$SheetDecalM",
+
+    "wayland.InputConstantsM",
+    "wayland.MinecraftMixin",
+
+    "texture.mip.MipmapGeneratorM",
+
+    "compatibility.PostChainM",
+    "compatibility.PostPassM",
+
+    "render.block.BakedQuadM",
+
+    "voxel.VoxelShapeMixin"
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
