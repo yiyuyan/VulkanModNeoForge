@@ -7,7 +7,7 @@ license = "LGPL-3.0"
 modId = "vulkanmod"
 version = "${version}"
 displayName = "NeoVulkanMod"
-authors = "Collateral,KSmc_brigade"
+authors = "Collateral,commonplace(KSmc_brigade)"
 description = '''
 VulkanMod in NeoForge 1.21
 '''

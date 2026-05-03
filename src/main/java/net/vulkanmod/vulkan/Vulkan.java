@@ -1,6 +1,12 @@
 package net.vulkanmod.vulkan;
 
+import cn.ksmcbrigade.mr.utils.mixin.MixinUtils;
 import net.vulkanmod.Initializer;
+import net.vulkanmod.mixin.compatibility.gl.GL11M;
+import net.vulkanmod.mixin.compatibility.gl.GL14M;
+import net.vulkanmod.mixin.compatibility.gl.GL15M;
+import net.vulkanmod.mixin.compatibility.gl.GL30M;
+import net.vulkanmod.mixin.matrix.Matrix4fM;
 import net.vulkanmod.vulkan.device.Device;
 import net.vulkanmod.vulkan.device.DeviceManager;
 import net.vulkanmod.vulkan.framebuffer.SwapChain;
@@ -147,6 +153,14 @@ public class Vulkan {
     public static void initVulkan(long window) {
         createInstance();
         setupDebugMessenger();
+
+        Initializer.LOGGER.info("Reapply Mixins...");
+        MixinUtils.reapply(GL11M.class);
+        MixinUtils.reapply(GL14M.class);
+        MixinUtils.reapply(GL15M.class);
+        MixinUtils.reapply(GL30M.class);
+        MixinUtils.reapply(Matrix4fM.class);
+
         createSurface(window);
 
         DeviceManager.init(instance);

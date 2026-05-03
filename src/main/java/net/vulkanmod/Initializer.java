@@ -1,10 +1,17 @@
 package net.vulkanmod;
 
+import cn.ksmcbrigade.mr.utils.mixin.MixinUtils;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.i18n.MavenVersionTranslator;
 import net.vulkanmod.config.Config;
 import net.vulkanmod.config.Platform;
 import net.vulkanmod.config.video.VideoModeManager;
+import net.vulkanmod.mixin.compatibility.gl.GL11M;
+import net.vulkanmod.mixin.compatibility.gl.GL14M;
+import net.vulkanmod.mixin.compatibility.gl.GL15M;
+import net.vulkanmod.mixin.compatibility.gl.GL30M;
+import net.vulkanmod.mixin.matrix.Matrix4fM;
+import net.vulkanmod.mixin.util.ScreenshotRecorderM;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

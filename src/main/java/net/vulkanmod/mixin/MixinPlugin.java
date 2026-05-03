@@ -10,8 +10,7 @@ import java.util.Set;
 public class MixinPlugin implements IMixinConfigPlugin {
 
     @Override
-    public void onLoad(String mixinPackage) {
-    }
+    public void onLoad(String mixinPackage) {}
 
     @Override
     public String getRefMapperConfig() {
@@ -35,6 +34,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public void preApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
+
     }
 
     @Override

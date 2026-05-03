@@ -4,23 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules/cn.ksmcbrigade.vulkan.vulkanmod.main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/cn.ksmcbrigade.vulkan.vulkanmod.test.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/run/vulkan-libs.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan_core/VKCUnsafeUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan_core/services/VulkanModDiscover.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan_core/services/VulkanTransformationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/services/cpw.mods.modlauncher.api.ITransformationService" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/services/net.neoforged.neoforgespi.locating.IModFileCandidateLocator" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/vulkan-libs.zip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/vulkanmod.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/vulkanmod.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/SPIRVUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/SPIRVUtils.java" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Update VulkanModCore and fix SPIRVUtils">
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/Initializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/Initializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/MixinPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/MixinPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Vulkan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Vulkan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/neoforge.mods.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/neoforge.mods.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +39,12 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="vulkanmod" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="vulkanmod" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
@@ -135,7 +131,7 @@
       <command value="gradle clean runClient" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.VulkanModNeoForge [runClient]">
+  <component name="RunManager" selected="Gradle.VulkanModNeoForge [build]">
     <configuration name="VulkanModNeoForge [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -227,8 +223,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.VulkanModNeoForge [runClient]" />
         <item itemvalue="Gradle.VulkanModNeoForge [build]" />
+        <item itemvalue="Gradle.VulkanModNeoForge [runClient]" />
         <item itemvalue="Gradle.VulkanModNeoForge [clean]" />
         <item itemvalue="Gradle.VulkanModNeoForge [clean runClient]" />
       </list>
@@ -259,8 +255,27 @@
       <option name="project" value="LOCAL" />
       <updated>1758196703622</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Update VulkanModCore and fix SPIRVUtils">
+      <option name="closed" value="true" />
+      <created>1777803423809</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1777803423809</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <ignored-roots>
@@ -269,6 +284,7 @@
     <MESSAGE value="init" />
     <MESSAGE value="第一个neoforge可运行版本" />
     <MESSAGE value="first version what can run in the neoforge product env" />
-    <option name="LAST_COMMIT_MESSAGE" value="first version what can run in the neoforge product env" />
+    <MESSAGE value="Update VulkanModCore and fix SPIRVUtils" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update VulkanModCore and fix SPIRVUtils" />
   </component>
 </project>
