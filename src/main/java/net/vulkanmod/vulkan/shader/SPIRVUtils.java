@@ -96,7 +96,8 @@ public class SPIRVUtils {
         for (String string : source.split("\n")) {
             if(string.startsWith("#include")){
                 try {
-                    String included = string.replace("#include","").replace(" ","").replace("\"","");
+                    String included = string.replace("#include","").replace(" ","")
+                            .replace("\"","").replace("\r","").replace("\n","");
                     builder.append(IOUtils.toString(Objects.requireNonNull(SPIRVUtils.class.getResourceAsStream("/assets/vulkanmod/shaders/include/" + included))));
                 } catch (IOException e) {
                     Initializer.LOGGER.error("Can't process the shader source.",source);

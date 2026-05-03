@@ -4,7 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/modules/cn.ksmcbrigade.vulkan.vulkanmod.main.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/cn.ksmcbrigade.vulkan.vulkanmod.test.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run/vulkan-libs.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan_core/VKCUnsafeUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan_core/services/VulkanModDiscover.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan_core/services/VulkanTransformationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/services/cpw.mods.modlauncher.api.ITransformationService" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/services/net.neoforged.neoforgespi.locating.IModFileCandidateLocator" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/vulkan-libs.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/vulkanmod.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/vulkanmod.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/SPIRVUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/SPIRVUtils.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,12 +54,6 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="vulkanmod" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="vulkanmod" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="loom" type="c8890929:TasksNode$1" />
               </path>
             </expand>
@@ -68,12 +79,15 @@
     &quot;assignee&quot;: &quot;yiyuyan&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/yiyuyan/VulkanModNeoForge&quot;,
-    &quot;accountId&quot;: &quot;df62f4a8-c073-4675-8ad7-c279435653a5&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/yiyuyan/VulkanModNeoForge/",
+    "accountId": "9413f41c-0589-4b3f-a5f0-7b7afa758258"
   }
-}</component>
+}]]></component>
+  <component name="PerforceDirect.Settings">
+    <option name="CHARSET" value="无" />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -93,9 +107,10 @@
     "Gradle.VulkanModNeoForge [clean runClient].executor": "Run",
     "Gradle.VulkanModNeoForge [runClient].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "<unknown>",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "1.21neo__new",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "F:/MODS/111/VulkanModNeoForge",
+    "last_opened_file_path": "D:/CommonMods/VulkanModNeoForge/run",
     "project.structure.last.edited": "库",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.2",
@@ -105,6 +120,9 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\CommonMods\VulkanModNeoForge\run" />
+      <recent name="D:\CommonMods\VulkanModNeoForge\src\main\resources\META-INF" />
+      <recent name="D:\CommonMods\VulkanModNeoForge\src\main\resources" />
       <recent name="F:\MODS\VulkanModNeoForge\run\mods" />
       <recent name="F:\MODS\VulkanModNeoForge\src\main\resources" />
     </key>
@@ -117,7 +135,7 @@
       <command value="gradle clean runClient" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.VulkanModNeoForge [clean]">
+  <component name="RunManager" selected="Gradle.VulkanModNeoForge [runClient]">
     <configuration name="VulkanModNeoForge [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -209,9 +227,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.VulkanModNeoForge [clean]" />
-        <item itemvalue="Gradle.VulkanModNeoForge [build]" />
         <item itemvalue="Gradle.VulkanModNeoForge [runClient]" />
+        <item itemvalue="Gradle.VulkanModNeoForge [build]" />
+        <item itemvalue="Gradle.VulkanModNeoForge [clean]" />
         <item itemvalue="Gradle.VulkanModNeoForge [clean runClient]" />
       </list>
     </recent_temporary>
