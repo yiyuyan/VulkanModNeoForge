@@ -1,0 +1,34 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+#issueTrackerURL = ""
+license = "LGPL-3.0"
+
+[[mods]]
+modId = "vulkanmod"
+version = "${version}"
+displayName = "NeoVulkanMod"
+authors = "Collateral,commonplace(KSmc_brigade)"
+description = '''
+VulkanMod in NeoForge 1.21.10
+We got the VulkanModNeoForge before GTA 6.
+'''
+#logoFile = ""
+
+[[dependencies.vulkanmod]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.vulkanmod]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[mixins]]
+config = "vulkanmod.mixins.json"
+[[accessTransformers]]
+file="META-INF/accesstransformer.cfg"

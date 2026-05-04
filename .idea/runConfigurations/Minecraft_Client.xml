@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" factoryName="Application" name="Minecraft Client" type="Application">
+    <option name="MAIN_CLASS_NAME" value="net.fabricmc.devlaunchinjector.Main"/>
+    <module name="vulkanmod.main"/>
+    <option name="PROGRAM_PARAMETERS" value=""/>
+    <option name="VM_PARAMETERS" value="-Dfabric.dli.config=D:\VKN\vulkanmod-1.21.10-neoforge-only-template\.gradle\loom-cache\launch.cfg -Dfabric.dli.env=client --add-opens java.base/java.lang.invoke=ALL-UNNAMED --add-exports jdk.naming.dns/com.sun.jndi.dns=java.naming -Dfabric.dli.main=net.neoforged.fml.startup.Client"/>
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/run/"/>
+    <method v="2">
+      <option enabled="true" name="Make"/>
+    </method>
+    <envs>
+      <env name="MOD_CLASSES" value="main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\resources\main;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\classes\java\main;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\out\production\classes;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\out\production\resources"/>
+    </envs>
+    <shortenClasspath name="ARGS_FILE"/>
+  <classpathModifications/></configuration>
+</component>
