@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "cn.ksmcbrigade.vulkan.mixin",
+  "package": "net.vulkanmod.mixin",
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
