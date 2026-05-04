@@ -116,10 +116,7 @@ public class WorldRenderer {
     }
 
     public static WorldRenderer init(RenderBuffers renderBuffers) {
-        if (INSTANCE != null)
-            return INSTANCE;
-        else
-            return INSTANCE = new WorldRenderer(renderBuffers);
+        return Objects.requireNonNullElseGet(INSTANCE, () -> INSTANCE = new WorldRenderer(renderBuffers));
     }
 
     public static WorldRenderer getInstance() {
@@ -231,7 +228,7 @@ public class WorldRenderer {
 
     public void allChanged() {
         if (this.level != null) {
-//            this.graphicsChanged();
+//           this.graphicsChanged();
             this.level.clearTintCaches();
 
             this.renderRegionCache.clear();
