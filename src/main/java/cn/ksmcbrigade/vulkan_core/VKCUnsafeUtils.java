@@ -1,7 +1,5 @@
 package cn.ksmcbrigade.vulkan_core;
 
-import cn.ksmcbrigade.vulkan_core.services.VulkanModDiscover;
-import com.mojang.blaze3d.opengl.GlStateManager;
 import com.sun.tools.attach.VirtualMachine;
 import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.fml.loading.moddiscovery.ModFile;

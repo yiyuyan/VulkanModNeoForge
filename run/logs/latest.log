@@ -1,32 +1,33 @@
-[19:02:41] [main/INFO] (Entrypoint) JVM Uptime at startup: 195ms
-[19:02:41] [main/INFO] (FMLLoader) Starting FancyModLoader version 10.0.29 (CLIENT in DEV)
-[19:02:41] [main/INFO] (FMLLoader) Game directory: D:\VKN\vulkanmod-1.21.10-neoforge-only-template\run
-[19:02:41] [main/INFO] (EarlyServiceDiscovery) Found 2 early service jars (out of 134) in 38ms
-[19:02:41] [main/INFO] (FMLLoader) Loading FML Early Services:
-[19:02:41] [main/INFO] (FMLLoader)  - D:/.gradle/caches/fabric-loom/forge/transformed-dependencies-v1/net/neoforged/fancymodloader/691fb50f520a1442ae5c3385ef06b1e55e9d782a2453de9df39a9d13ecffff10/loader/10.0.29/loader-10.0.29.jar
-[19:02:41] [main/INFO] (FMLLoader)  - D:/.gradle/caches/modules-2/files-2.1/net.neoforged.fancymodloader/earlydisplay/10.0.29/6268812ffd0c16cc1eea921b2335d58585384574/earlydisplay-10.0.29.jar
-[19:02:41] [main/INFO] (ImmediateWindowHandler) ImmediateWindowProvider not loading because splash screen is disabled
-[19:02:41] [ForkJoinPool.commonPool-worker-2/INFO] (VulkanModDiscover) VulkanTransformationService is Loading...
-[19:02:41] [ForkJoinPool.commonPool-worker-2/INFO] (VulkanModDiscover) VulkanTransformationService is Loaded.
-[19:02:41] [ForkJoinPool.commonPool-worker-2/INFO] (GameLocator) Detected a joined NeoForge and Minecraft configuration. Applying filtering...
-[19:02:41] [ForkJoinPool.commonPool-worker-2/INFO] (ModDiscoverer) Found mod file "client-extra.jar" [locator: game locator]
-[19:02:41] [ForkJoinPool.commonPool-worker-2/INFO] (ModDiscoverer) Found mod file "neoforge-21.10.50-beta-minecraft-merged-cf2b3c8782-1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta.jar" [locator: game locator]
-[19:02:41] [ForkJoinPool.commonPool-worker-2/INFO] (InDevFolderLocator) Got mod coordinates main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\resources\main;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\classes\java\main;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\out\production\classes;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\out\production\resources from env
-[19:02:41] [ForkJoinPool.commonPool-worker-2/INFO] (ModDiscoverer) Found gamelibrary file "mixinextras-neoforge-0.5.0.jar" [locator: indevjar, reader: mod manifest]
-[19:02:41] [ForkJoinPool.commonPool-worker-2/INFO] (InDevVulkanModDiscover) Got mod coordinates main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\resources\main;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\classes\java\main;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\out\production\classes;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\out\production\resources from env
-[19:02:41] [ForkJoinPool.commonPool-worker-2/INFO] (ModDiscoverer) Found mod file "main" [locator: cn.ksmcbrigade.vulkan_core.services.InDevVulkanModDiscover@6e5eeaf4, reader: mod manifest]
-[19:02:41] [ForkJoinPool.commonPool-worker-2/INFO] (VulkanModDiscover) VulkanMod Library Discover loading...
-[19:02:41] [ForkJoinPool.commonPool-worker-2/INFO] (VulkanModDiscover) OS: Windows 11
-[19:02:42] [ForkJoinPool.commonPool-worker-2/INFO] (ModDiscoverer) Found mod file "lwjgl-shaderc-3.3.3-natives-windows.jar" [locator: cn.ksmcbrigade.vulkan_core.services.VulkanModDiscover@2adf6a25, reader: mod manifest]
-[19:02:42] [ForkJoinPool.commonPool-worker-2/INFO] (ModDiscoverer) Found mod file "lwjgl-shaderc-3.3.3.jar" [locator: cn.ksmcbrigade.vulkan_core.services.VulkanModDiscover@2adf6a25, reader: mod manifest]
-[19:02:42] [ForkJoinPool.commonPool-worker-2/INFO] (ModDiscoverer) Found mod file "lwjgl-vma-3.3.3-natives-windows.jar" [locator: cn.ksmcbrigade.vulkan_core.services.VulkanModDiscover@2adf6a25, reader: mod manifest]
-[19:02:42] [ForkJoinPool.commonPool-worker-2/INFO] (ModDiscoverer) Found mod file "lwjgl-vma-3.3.3.jar" [locator: cn.ksmcbrigade.vulkan_core.services.VulkanModDiscover@2adf6a25, reader: mod manifest]
-[19:02:42] [ForkJoinPool.commonPool-worker-2/INFO] (ModDiscoverer) Found mod file "lwjgl-vulkan-3.3.3.jar" [locator: cn.ksmcbrigade.vulkan_core.services.VulkanModDiscover@2adf6a25, reader: mod manifest]
-[19:02:42] [ForkJoinPool.commonPool-worker-2/INFO] (VulkanModDiscover) VulkanMod Library Discover loaded.
-[19:02:42] [ForkJoinPool.commonPool-worker-2/WARN] (JarSelector) Attempted to select a dependency jar for JarJar which was passed in as source: library:mixinextras.neoforge. Using jar(D:\.gradle\caches\modules-2\files-2.1\io.github.llamalad7\mixinextras-neoforge\0.5.0\d734b83ce6542bb70ea31755c1595b88992dbe65\mixinextras-neoforge-0.5.0.jar)
-[19:02:42] [ForkJoinPool.commonPool-worker-2/INFO] (JarInJarDependencyLocator) Found 1 dependencies adding them to mods collection
-[19:02:42] [ForkJoinPool.commonPool-worker-2/INFO] (ModDiscoverer) Found library file "net.neoforged.neoforge-coremods-21.10.50-beta.jar" [parent: neoforge-21.10.50-beta-minecraft-merged-cf2b3c8782-1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta.jar, locator: jarinjar, reader: mod manifest]
-[19:02:42] [ForkJoinPool.commonPool-worker-2/INFO] (ModDiscoverer) 
+[19:58:31] [main/INFO] (Entrypoint) JVM Uptime at startup: 264ms
+[19:58:31] [main/INFO] (FMLLoader) Starting FancyModLoader version 10.0.29 (CLIENT in DEV)
+[19:58:31] [main/INFO] (FMLLoader) Game directory: D:\VKN\vulkanmod-1.21.10-neoforge-only-template\run
+[19:58:31] [main/INFO] (EarlyServiceDiscovery) Found 2 early service jars (out of 135) in 51ms
+[19:58:31] [main/INFO] (FMLLoader) Loading FML Early Services:
+[19:58:31] [main/INFO] (FMLLoader)  - D:/.gradle/caches/fabric-loom/forge/transformed-dependencies-v1/net/neoforged/fancymodloader/691fb50f520a1442ae5c3385ef06b1e55e9d782a2453de9df39a9d13ecffff10/loader/10.0.29/loader-10.0.29.jar
+[19:58:31] [main/INFO] (FMLLoader)  - D:/.gradle/caches/modules-2/files-2.1/net.neoforged.fancymodloader/earlydisplay/10.0.29/6268812ffd0c16cc1eea921b2335d58585384574/earlydisplay-10.0.29.jar
+[19:58:31] [main/INFO] (ImmediateWindowHandler) ImmediateWindowProvider not loading because splash screen is disabled
+[19:58:31] [ForkJoinPool.commonPool-worker-6/INFO] (VulkanModDiscover) VulkanTransformationService is Loading...
+[19:58:31] [ForkJoinPool.commonPool-worker-6/INFO] (VulkanModDiscover) VulkanTransformationService is Loaded.
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (GameLocator) Detected a joined NeoForge and Minecraft configuration. Applying filtering...
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (ModDiscoverer) Found mod file "client-extra.jar" [locator: game locator]
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (ModDiscoverer) Found mod file "neoforge-21.10.50-beta-minecraft-merged-cf2b3c8782-1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta.jar" [locator: game locator]
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (InDevFolderLocator) Got mod coordinates main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\resources\main;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\classes\java\main;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\out\production\classes;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\out\production\resources from env
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (ModDiscoverer) Found mod file "mr-d73ba8eb-1.0.1.jar" [locator: indevjar, reader: mod manifest]
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (ModDiscoverer) Found gamelibrary file "mixinextras-neoforge-0.5.0.jar" [locator: indevjar, reader: mod manifest]
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (InDevVulkanModDiscover) Got mod coordinates main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\resources\main;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\classes\java\main;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\out\production\classes;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\out\production\resources from env
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (ModDiscoverer) Found mod file "main" [locator: cn.ksmcbrigade.vulkan_core.services.InDevVulkanModDiscover@23fe382c, reader: mod manifest]
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (VulkanModDiscover) VulkanMod Library Discover loading...
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (VulkanModDiscover) OS: Windows 11
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (ModDiscoverer) Found mod file "lwjgl-shaderc-3.3.3-natives-windows.jar" [locator: cn.ksmcbrigade.vulkan_core.services.VulkanModDiscover@72dc4153, reader: mod manifest]
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (ModDiscoverer) Found mod file "lwjgl-shaderc-3.3.3.jar" [locator: cn.ksmcbrigade.vulkan_core.services.VulkanModDiscover@72dc4153, reader: mod manifest]
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (ModDiscoverer) Found mod file "lwjgl-vma-3.3.3-natives-windows.jar" [locator: cn.ksmcbrigade.vulkan_core.services.VulkanModDiscover@72dc4153, reader: mod manifest]
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (ModDiscoverer) Found mod file "lwjgl-vma-3.3.3.jar" [locator: cn.ksmcbrigade.vulkan_core.services.VulkanModDiscover@72dc4153, reader: mod manifest]
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (ModDiscoverer) Found mod file "lwjgl-vulkan-3.3.3.jar" [locator: cn.ksmcbrigade.vulkan_core.services.VulkanModDiscover@72dc4153, reader: mod manifest]
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (VulkanModDiscover) VulkanMod Library Discover loaded.
+[19:58:32] [ForkJoinPool.commonPool-worker-6/WARN] (JarSelector) Attempted to select a dependency jar for JarJar which was passed in as source: library:mixinextras.neoforge. Using jar(D:\.gradle\caches\modules-2\files-2.1\io.github.llamalad7\mixinextras-neoforge\0.5.0\d734b83ce6542bb70ea31755c1595b88992dbe65\mixinextras-neoforge-0.5.0.jar)
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (JarInJarDependencyLocator) Found 1 dependencies adding them to mods collection
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (ModDiscoverer) Found library file "net.neoforged.neoforge-coremods-21.10.50-beta.jar" [parent: neoforge-21.10.50-beta-minecraft-merged-cf2b3c8782-1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta.jar, locator: jarinjar, reader: mod manifest]
+[19:58:32] [ForkJoinPool.commonPool-worker-6/INFO] (ModDiscoverer) 
      Mod List:
 		Name Version (Mod Id)
 
@@ -34,22 +35,24 @@
 		LwjglVulkanShaderc 1.0 (vulkan_shaderc)
 		LwjglVulkanShadercWindows 1.0 (vulkan_shaderc_windows)
 		Minecraft 1.21.10 (minecraft)
+		MixinRuntime 1.0.1 (mr)
 		NeoForge 21.10.50-beta (neoforge)
 		NeoVulkanMod 0.6.5-dev (vulkanmod)
 		VMA 1.0 (vma)
 		VMAWindows 1.0 (vma_windows)
-[19:02:42] [main/INFO] (mixin) SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/D:/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.16.5+mixin.0.8.7/80fc3a9f592673cea87f4cd702f87991c6c9fe4d/sponge-mixin-0.16.5+mixin.0.8.7.jar Service=FML Env=CLIENT
-[19:02:42] [main/INFO] (FMLLoader) Loading FML Plugins:
-[19:02:42] [main/INFO] (FMLLoader)  - D:/VKN/vulkanmod-1.21.10-neoforge-only-template/.gradle/loom-cache/minecraftMaven/net/minecraft/neoforge-21.10.50-beta-minecraft-merged-cf2b3c8782/1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta/neoforge-21.10.50-beta-minecraft-merged-cf2b3c8782-1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta.jar > net.neoforged.neoforge-coremods-21.10.50-beta.jar
-[19:02:42] [main/WARN] (LanguageProviderLoader) Mod jar(vulkan-libs\lwjgl-shaderc-3.3.3.jar) is using the deprecated 'lowcodefml' language loader. This warning can be fixed by simply removing the modLoader and loaderVersion settings from neoforge.mods.toml.
-[19:02:42] [main/WARN] (LanguageProviderLoader) Mod jar(vulkan-libs\lwjgl-vma-3.3.3-natives-windows.jar) is using the deprecated 'lowcodefml' language loader. This warning can be fixed by simply removing the modLoader and loaderVersion settings from neoforge.mods.toml.
-[19:02:42] [main/WARN] (LanguageProviderLoader) Mod jar(vulkan-libs\lwjgl-vulkan-3.3.3.jar) is using the deprecated 'lowcodefml' language loader. This warning can be fixed by simply removing the modLoader and loaderVersion settings from neoforge.mods.toml.
-[19:02:42] [main/WARN] (LanguageProviderLoader) Mod jar(vulkan-libs\lwjgl-shaderc-3.3.3-natives-windows.jar) is using the deprecated 'lowcodefml' language loader. This warning can be fixed by simply removing the modLoader and loaderVersion settings from neoforge.mods.toml.
-[19:02:42] [main/WARN] (LanguageProviderLoader) Mod jar(vulkan-libs\lwjgl-vma-3.3.3.jar) is using the deprecated 'lowcodefml' language loader. This warning can be fixed by simply removing the modLoader and loaderVersion settings from neoforge.mods.toml.
-[19:02:42] [main/INFO] (unprotect) Initializing Unprotect using FancyModLoader backend, target: Minecraft and loader classes (minecraft+forge)
-[19:02:43] [main/INFO] (FMLLoader) Building game content classloader:
+[19:58:33] [main/INFO] (mixin) SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/D:/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.16.5+mixin.0.8.7/80fc3a9f592673cea87f4cd702f87991c6c9fe4d/sponge-mixin-0.16.5+mixin.0.8.7.jar Service=FML Env=CLIENT
+[19:58:33] [main/INFO] (FMLLoader) Loading FML Plugins:
+[19:58:33] [main/INFO] (FMLLoader)  - .cache/jij/51629231fe2baaddd60d570ef06ada2b2f1fe8a34133e63afdd748b9ef93f9f1/net.neoforged.neoforge-coremods-21.10.50-beta.jar
+[19:58:33] [main/WARN] (LanguageProviderLoader) Mod jar(vulkan-libs\lwjgl-shaderc-3.3.3.jar) is using the deprecated 'lowcodefml' language loader. This warning can be fixed by simply removing the modLoader and loaderVersion settings from neoforge.mods.toml.
+[19:58:33] [main/WARN] (LanguageProviderLoader) Mod jar(vulkan-libs\lwjgl-vma-3.3.3-natives-windows.jar) is using the deprecated 'lowcodefml' language loader. This warning can be fixed by simply removing the modLoader and loaderVersion settings from neoforge.mods.toml.
+[19:58:33] [main/WARN] (LanguageProviderLoader) Mod jar(vulkan-libs\lwjgl-vulkan-3.3.3.jar) is using the deprecated 'lowcodefml' language loader. This warning can be fixed by simply removing the modLoader and loaderVersion settings from neoforge.mods.toml.
+[19:58:33] [main/WARN] (LanguageProviderLoader) Mod jar(vulkan-libs\lwjgl-shaderc-3.3.3-natives-windows.jar) is using the deprecated 'lowcodefml' language loader. This warning can be fixed by simply removing the modLoader and loaderVersion settings from neoforge.mods.toml.
+[19:58:33] [main/WARN] (LanguageProviderLoader) Mod jar(vulkan-libs\lwjgl-vma-3.3.3.jar) is using the deprecated 'lowcodefml' language loader. This warning can be fixed by simply removing the modLoader and loaderVersion settings from neoforge.mods.toml.
+[19:58:33] [main/INFO] (unprotect) Initializing Unprotect using FancyModLoader backend, target: Minecraft and loader classes (minecraft+forge)
+[19:58:33] [main/INFO] (FMLLoader) Building game content classloader:
  - minecraft (composite(jar(D:\.gradle\caches\fabric-loom\1.21.10\neoforge\21.10.50-beta\client-extra.jar), filtered(jar(D:\VKN\vulkanmod-1.21.10-neoforge-only-template\.gradle\loom-cache\minecraftMaven\net\minecraft\neoforge-21.10.50-beta-minecraft-merged-cf2b3c8782\1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta\neoforge-21.10.50-beta-minecraft-merged-cf2b3c8782-1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta.jar))))
  - mixinextras.neoforge (jar(D:\.gradle\caches\modules-2\files-2.1\io.github.llamalad7\mixinextras-neoforge\0.5.0\d734b83ce6542bb70ea31755c1595b88992dbe65\mixinextras-neoforge-0.5.0.jar))
+ - mr (jar(D:\VKN\vulkanmod-1.21.10-neoforge-only-template\.gradle\loom-cache\remapped_mods\remapped\cn\ksmcbrigade\mr\mr-d73ba8eb\1.0.1\mr-d73ba8eb-1.0.1.jar))
  - neoforge (composite(filtered(jar(D:\VKN\vulkanmod-1.21.10-neoforge-only-template\.gradle\loom-cache\minecraftMaven\net\minecraft\neoforge-21.10.50-beta-minecraft-merged-cf2b3c8782\1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta\neoforge-21.10.50-beta-minecraft-merged-cf2b3c8782-1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta.jar))))
  - net.neoforged.fml.generated (empty(VirtualJar\net.neoforged.fml.generated))
  - vma (jar(vulkan-libs\lwjgl-vma-3.3.3.jar))
@@ -58,44 +61,54 @@
  - vulkan_shaderc (jar(vulkan-libs\lwjgl-shaderc-3.3.3.jar))
  - vulkan_shaderc_windows (jar(vulkan-libs\lwjgl-shaderc-3.3.3-natives-windows.jar))
  - vulkanmod (composite(folder(D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\resources\main), folder(D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\classes\java\main)))
-[19:02:43] [main/INFO] (FMLLoader) Built game content classloader in 68ms
-[19:02:43] [main/INFO] (unprotect) Found 9922 Minecraft classes
-[19:02:45] [Datafixer Bootstrap/INFO] (Minecraft) 281 Datafixer optimizations took 755 milliseconds
-[19:02:46] [pool-13-thread-1/INFO] (MixinExtras|Service) Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.0).
-[19:02:54] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
-[19:02:54] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
-[19:02:54] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
-[19:02:54] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
-[19:02:54] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
-[19:02:54] [main/WARN] (Minecraft) Ambiguity between arguments [waypoint, modify, waypoint, color, reset] and [waypoint, modify, waypoint, color, color] with inputs: [reset]
-[19:02:54] [modloading-worker-0/INFO] (NeoForgeMod) NeoForge mod loading, version 21.10.50-beta, for MC 1.21.10
-[19:02:55] [Render thread/INFO] (Minecraft) Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
-[19:02:55] [Render thread/INFO] (Minecraft) Setting user: Dev
-[19:02:55] [Render thread/INFO] (Minecraft) Backend library: LWJGL version 3.3.3+5
-[19:02:57] [Render thread/INFO] (Minecraft) Using optional rendering extensions: GL_ARB_buffer_storage, GL_KHR_debug, GL_ARB_vertex_attrib_binding, GL_ARB_direct_state_access
-[19:02:58] [Render thread/INFO] (Minecraft) Reloading ResourceManager: vanilla, mod_resources, mod/vulkan_shaderc, mod/vulkanmod, mod/vma_windows, mod/vulkan_lwjgl, mod/vulkan_shaderc_windows, mod/vma, mod/neoforge
-[19:02:59] [resourceLoad/WARN] (JarContentsPackResources) Invalid path in datapack: vulkanmod:shaders/basic/terrain/terrain_Z.fsh, ignoring
-[19:02:59] [resourceLoad/WARN] (JarContentsPackResources) Invalid path in datapack: vulkanmod:shaders/basic/terrain_earlyZ/terrain_earlyZ.fsh, ignoring
-[19:02:59] [resourceLoad/WARN] (JarContentsPackResources) Invalid path in datapack: vulkanmod:shaders/basic/terrain_earlyZ/terrain_earlyZ.json, ignoring
-[19:02:59] [resourceLoad/INFO] (Minecraft) Found unifont_pua-16.0.03.hex, loading
-[19:02:59] [resourceLoad/INFO] (Minecraft) Found unifont_all_no_pua-16.0.03.hex, loading
-[19:02:59] [resourceLoad/INFO] (Minecraft) Found unifont_jp_patch-16.0.03.hex, loading
-[19:03:04] [Render thread/INFO] (Minecraft) OpenAL initialized on device OpenAL Soft on ¶ú»ú (LE206)
-[19:03:04] [Render thread/INFO] (Minecraft) Sound engine started
-[19:03:04] [Render thread/INFO] (Minecraft) Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
-[19:03:04] [Render thread/INFO] (Minecraft) Created: 128x64x0 minecraft:textures/atlas/decorated_pot.png-atlas
-[19:03:04] [Render thread/INFO] (Minecraft) Created: 2048x1024x0 minecraft:textures/atlas/armor_trims.png-atlas
-[19:03:04] [Render thread/INFO] (Minecraft) Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
-[19:03:04] [Render thread/INFO] (Minecraft) Created: 512x512x0 minecraft:textures/atlas/shield_patterns.png-atlas
-[19:03:04] [Render thread/INFO] (Minecraft) Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
-[19:03:06] [Render thread/INFO] (Minecraft) Created: 512x256x0 minecraft:textures/atlas/chest.png-atlas
-[19:03:07] [Render thread/INFO] (Minecraft) Created: 512x512x0 minecraft:textures/atlas/banner_patterns.png-atlas
-[19:03:07] [Render thread/INFO] (Minecraft) Created: 512x256x0 minecraft:textures/atlas/beds.png-atlas
-[19:03:07] [Render thread/INFO] (Minecraft) Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
-[19:03:07] [Render thread/INFO] (Minecraft) Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
-[19:03:07] [Render thread/INFO] (Minecraft) Created: 256x256x0 minecraft:textures/atlas/signs.png-atlas
-[19:03:07] [Render thread/INFO] (Minecraft) Created: 512x256x0 minecraft:textures/atlas/shulker_boxes.png-atlas
-[19:03:07] [Render thread/INFO] (AnimationLoader) Loaded 0 entity animations
-[19:03:08] [Render thread/ERROR] (ClassTransformStatistics) Class processor unprotect:processor transformed 85.13% of loaded class which is suspiciously high; it may be attempting mass-ASM. Please report this to the mod author.
-[19:03:14] [Render thread/ERROR] (ClassTransformStatistics) Class processor unprotect:processor transformed 85.11% of loaded class which is suspiciously high; it may be attempting mass-ASM. Please report this to the mod author.
-[19:03:14] [Render thread/INFO] (Minecraft) Stopping!
+[19:58:33] [main/INFO] (FMLLoader) Built game content classloader in 68ms
+[19:58:34] [main/INFO] (unprotect) Found 9922 Minecraft classes
+[19:58:34] [main/INFO] (MixinRuntimeMod) MixinRuntimePlugin Loading...
+[19:58:34] [main/INFO] (MixinRuntimeMod) Opening modules...
+[19:58:34] [main/INFO] (agent) Redefining class net/neoforged/fml/classloading/ModuleClassLoader
+[19:58:34] [main/INFO] (agent) Redefining class org/spongepowered/asm/service/modlauncher/ModLauncherClassTracker
+[19:58:34] [main/INFO] (agent) Redefining class net/neoforged/fml/loading/mixin/FMLClassTracker
+[19:58:34] [main/INFO] (agent) Redefining class org/spongepowered/asm/mixin/transformer/MixinProcessor
+[19:58:34] [main/INFO] (MixinRuntimeMod) MixinRuntimePlugin Loaded.
+[19:58:34] [main/ERROR] (mixin) Invalid REFMAP JSON in : org.spongepowered.include.com.google.gson.JsonSyntaxException java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1
+[19:58:34] [main/WARN] (mixin) Reference map '' for mr.mixins.json could not be read. If this is a development environment you can ignore this message
+[19:58:38] [Datafixer Bootstrap/INFO] (Minecraft) 281 Datafixer optimizations took 780 milliseconds
+[19:58:39] [pool-14-thread-1/INFO] (MixinExtras|Service) Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.0).
+[19:58:47] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[19:58:47] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[19:58:47] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[19:58:47] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[19:58:47] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[19:58:47] [main/WARN] (Minecraft) Ambiguity between arguments [waypoint, modify, waypoint, color, reset] and [waypoint, modify, waypoint, color, color] with inputs: [reset]
+[19:58:47] [modloading-worker-0/INFO] (MixinRuntimeMod) MixinRuntimeMod Loaded.
+[19:58:47] [modloading-worker-0/INFO] (NeoForgeMod) NeoForge mod loading, version 21.10.50-beta, for MC 1.21.10
+[19:58:48] [Render thread/INFO] (Minecraft) Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[19:58:48] [Render thread/INFO] (Minecraft) Setting user: Dev
+[19:58:48] [Render thread/INFO] (Minecraft) Backend library: LWJGL version 3.3.3+5
+[19:58:49] [Render thread/INFO] (Minecraft) Using optional rendering extensions: GL_ARB_buffer_storage, GL_KHR_debug, GL_ARB_vertex_attrib_binding, GL_ARB_direct_state_access
+[19:58:51] [Render thread/INFO] (Minecraft) Reloading ResourceManager: vanilla, mod_resources, mod/vulkan_shaderc, mod/vulkanmod, mod/vma_windows, mod/vulkan_lwjgl, mod/mr, mod/vulkan_shaderc_windows, mod/vma, mod/neoforge
+[19:58:52] [resourceLoad/WARN] (JarContentsPackResources) Invalid path in datapack: vulkanmod:shaders/basic/terrain/terrain_Z.fsh, ignoring
+[19:58:52] [resourceLoad/WARN] (JarContentsPackResources) Invalid path in datapack: vulkanmod:shaders/basic/terrain_earlyZ/terrain_earlyZ.fsh, ignoring
+[19:58:52] [resourceLoad/WARN] (JarContentsPackResources) Invalid path in datapack: vulkanmod:shaders/basic/terrain_earlyZ/terrain_earlyZ.json, ignoring
+[19:58:52] [resourceLoad/INFO] (Minecraft) Found unifont_all_no_pua-16.0.03.hex, loading
+[19:58:52] [resourceLoad/INFO] (Minecraft) Found unifont_pua-16.0.03.hex, loading
+[19:58:52] [resourceLoad/INFO] (Minecraft) Found unifont_jp_patch-16.0.03.hex, loading
+[19:58:58] [Render thread/INFO] (Minecraft) OpenAL initialized on device OpenAL Soft on ¶ú»ú (LE206)
+[19:58:58] [Render thread/INFO] (Minecraft) Sound engine started
+[19:58:58] [Render thread/INFO] (Minecraft) Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[19:58:58] [Render thread/INFO] (Minecraft) Created: 128x64x0 minecraft:textures/atlas/decorated_pot.png-atlas
+[19:58:58] [Render thread/INFO] (Minecraft) Created: 2048x1024x0 minecraft:textures/atlas/armor_trims.png-atlas
+[19:58:58] [Render thread/INFO] (Minecraft) Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[19:58:58] [Render thread/INFO] (Minecraft) Created: 512x512x0 minecraft:textures/atlas/shield_patterns.png-atlas
+[19:58:58] [Render thread/INFO] (Minecraft) Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
+[19:59:01] [Render thread/INFO] (Minecraft) Created: 512x256x0 minecraft:textures/atlas/chest.png-atlas
+[19:59:01] [Render thread/INFO] (Minecraft) Created: 512x512x0 minecraft:textures/atlas/banner_patterns.png-atlas
+[19:59:01] [Render thread/INFO] (Minecraft) Created: 512x256x0 minecraft:textures/atlas/beds.png-atlas
+[19:59:01] [Render thread/INFO] (Minecraft) Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
+[19:59:01] [Render thread/INFO] (Minecraft) Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[19:59:01] [Render thread/INFO] (Minecraft) Created: 256x256x0 minecraft:textures/atlas/signs.png-atlas
+[19:59:01] [Render thread/INFO] (Minecraft) Created: 512x256x0 minecraft:textures/atlas/shulker_boxes.png-atlas
+[19:59:02] [Render thread/INFO] (AnimationLoader) Loaded 0 entity animations
+[19:59:02] [Render thread/ERROR] (ClassTransformStatistics) Class processor unprotect:processor transformed 84.90% of loaded class which is suspiciously high; it may be attempting mass-ASM. Please report this to the mod author.
+[19:59:42] [Render thread/ERROR] (ClassTransformStatistics) Class processor unprotect:processor transformed 84.88% of loaded class which is suspiciously high; it may be attempting mass-ASM. Please report this to the mod author.
+[19:59:43] [Render thread/INFO] (Minecraft) Stopping!
