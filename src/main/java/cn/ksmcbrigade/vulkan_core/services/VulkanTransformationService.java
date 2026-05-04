@@ -1,12 +1,13 @@
 package cn.ksmcbrigade.vulkan_core.services;
 
-import cn.ksmcbrigade.vulkan_core.VKCUnsafeUtils;
+import com.mojang.logging.LogUtils;
 import cpw.mods.modlauncher.api.*;
 import net.neoforged.fml.loading.FMLConfig;
-import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.LogMarkers;
 import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -29,6 +30,8 @@ public class VulkanTransformationService implements ITransformationService {
     @Override
     public void onLoad(IEnvironment env, Set<String> otherServices) {
         System.out.println("VulkanTransformationService is Loading...");
+
+        final boolean earlyDisplay = FMLConfig.getBoolConfigValue(FMLConfig.ConfigValue.EARLY_WINDOW_CONTROL);
 
         try {
             FMLConfig.updateConfig(FMLConfig.ConfigValue.EARLY_WINDOW_CONTROL,false);
@@ -78,8 +81,23 @@ public class VulkanTransformationService implements ITransformationService {
                 }
                 FileUtils.writeStringToFile(file,builder.toString());
             }
+
+            if(earlyDisplay){
+                JOptionPane.showMessageDialog(
+                        null,
+                        "The earlyWindowControl has been turned off.\nPlease restart the game.",
+                            "VulkanModNeoForge",
+                        JOptionPane.WARNING_MESSAGE
+                        );
+                LogUtils.getLogger().info(LogMarkers.CORE,"The earlyWindowControl has been turned.Please restart the game.");
+                LogUtils.getLogger().warn(LogMarkers.CORE,"Exiting...");
+                System.exit(0);
+            }
+
+            System.out.println("VulkanTransformationService is Loaded.");
         } catch (IOException e) {
             System.out.println("[VulkanCore] Can't close the early window control.");
+            e.printStackTrace();
         }
     }
 
