@@ -4,6 +4,15 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
+    "render.frapi.BatchingRenderCommandQueueM",
+    "render.frapi.BlockModelRendererM",
+    "render.frapi.BlockRenderDispatcherAccessor",
+    "render.frapi.BlockRenderManagerM",
+    "render.frapi.ItemFeatureRendererM",
+    "render.frapi.ItemRendererAccessor",
+    "render.frapi.ItemRenderStateLayerRenderStateM",
+    "render.frapi.ItemRenderStateM",
+    "render.frapi.OrderedRenderCommandQueueImplM"
   ],
   "mixins": [
   ],
