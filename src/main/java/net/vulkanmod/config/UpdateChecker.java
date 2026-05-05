@@ -1,24 +1,10 @@
 package net.vulkanmod.config;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import net.fabricmc.loader.api.Version;
-import net.fabricmc.loader.api.VersionParsingException;
-import net.fabricmc.loader.impl.util.version.VersionParser;
-import net.minecraft.SharedConstants;
-import net.vulkanmod.Initializer;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.concurrent.CompletableFuture;
-
 public abstract class UpdateChecker {
     private static boolean updateAvailable = false;
 
     public static void checkForUpdates() {
-        CompletableFuture.supplyAsync(() -> {
+        /*CompletableFuture.supplyAsync(() -> {
             try {
                 String req = "https://api.modrinth.com/v2/project/vulkanmod/version?include_changelog=false";
                 String mcVersion = SharedConstants.getCurrentVersion().name();
@@ -56,7 +42,7 @@ public abstract class UpdateChecker {
             }
 
             return null;
-        });
+        });*/
     }
 
     public static boolean isUpdateAvailable() {

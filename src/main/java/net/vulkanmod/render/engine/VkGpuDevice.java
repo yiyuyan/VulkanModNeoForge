@@ -12,8 +12,7 @@ import com.mojang.blaze3d.textures.GpuTexture;
 import com.mojang.blaze3d.textures.GpuTextureView;
 import com.mojang.blaze3d.textures.TextureFormat;
 import com.mojang.logging.LogUtils;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+
 import net.minecraft.client.renderer.ShaderDefines;
 import net.minecraft.resources.ResourceLocation;
 import net.vulkanmod.Initializer;
@@ -380,7 +379,7 @@ public class VkGpuDevice implements GpuDevice {
         extPipeline.setPipeline(pipeline);
     }
 
-    @Environment(EnvType.CLIENT)
+    
     record ShaderCompilationKey(ResourceLocation id, ShaderType type, ShaderDefines defines) {
 
         public String toString() {

@@ -4,11 +4,10 @@ import com.mojang.blaze3d.opengl.*;
 import com.mojang.logging.LogUtils;
 import java.util.Set;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+
 import org.slf4j.Logger;
 
-@Environment(EnvType.CLIENT)
+
 public class VkDebugLabel {
     private static final Logger LOGGER = LogUtils.getLogger();
 

@@ -8,8 +8,6 @@ import net.vulkanmod.config.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-//import net.fabricmc.fabric.api.renderer.v1.Renderer;
-
 import java.nio.file.Path;
 
 public class Initializer {

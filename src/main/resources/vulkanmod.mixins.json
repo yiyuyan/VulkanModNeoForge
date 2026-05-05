@@ -12,7 +12,14 @@
     "render.frapi.ItemRendererAccessor",
     "render.frapi.ItemRenderStateLayerRenderStateM",
     "render.frapi.ItemRenderStateM",
-    "render.frapi.OrderedRenderCommandQueueImplM"
+    "render.frapi.OrderedRenderCommandQueueImplM",
+    "render.frapi.fabric.BlockModelPartMixin",
+    "render.frapi.fabric.BlockStateModelMixin",
+    "render.frapi.fabric.GeometryBakedModelMixin",
+    "render.frapi.fabric.MultipartBlockStateModelMixin",
+    "render.frapi.fabric.SimpleBlockStateModelMixin",
+    "render.frapi.fabric.WeightedBlockStateModelMixin",
+    "render.frapi.fabric.accessors.MultipartBlockStateModelMultipartBakedModelAccessor"
   ],
   "mixins": [
   ],
