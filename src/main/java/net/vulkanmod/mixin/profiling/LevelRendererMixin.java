@@ -20,29 +20,27 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LevelRenderer.class)
 public class LevelRendererMixin {
 
-    @Inject(method = "method_62205", at = @At("HEAD"))
-    private void pushProfiler(int i, CloudStatus cloudStatus, float f, Vec3 vec3, float g, CallbackInfo ci) {
+    @Inject(method = "lambda$addCloudsPass$3", at = @At("HEAD"))
+    private void pushProfiler(Vec3 arg, CloudStatus arg2, int i, float f, Matrix4f modelViewMatrix, float g, CallbackInfo ci) {
         Profiler profiler = Profiler.getMainProfiler();
         profiler.push("Clouds");
     }
 
-    @Inject(method = "method_62205", at = @At("RETURN"))
-    private void popProfiler(int i, CloudStatus cloudStatus, float f, Vec3 vec3, float g, CallbackInfo ci) {
+    @Inject(method = "lambda$addCloudsPass$3", at = @At("RETURN"))
+    private void popProfiler(Vec3 arg, CloudStatus arg2, int i, float f, Matrix4f modelViewMatrix, float g, CallbackInfo ci) {
         Profiler profiler = Profiler.getMainProfiler();
         profiler.pop();
     }
 
     // TODO: fix
-    @Inject(method = "method_62213", at = @At(value = "HEAD"))
-    private void pushProfiler3(GpuBufferSlice gpuBufferSlice, ResourceHandle resourceHandle,
-                               ResourceHandle resourceHandle2, CallbackInfo ci) {
+    @Inject(method = "lambda$addParticlesPass$2", at = @At(value = "HEAD"))
+    private void pushProfiler3(GpuBufferSlice gpuBufferSlice, ResourceHandle resourcehandle1, ResourceHandle resourcehandle, Matrix4f modelViewMatrix, CallbackInfo ci) {
         Profiler profiler = Profiler.getMainProfiler();
         profiler.push("Particles");
     }
 
-    @Inject(method = "method_62213", at = @At(value = "RETURN"))
-    private void popProfiler3(GpuBufferSlice gpuBufferSlice, ResourceHandle resourceHandle,
-                              ResourceHandle resourceHandle2, CallbackInfo ci) {
+    @Inject(method = "lambda$addParticlesPass$2", at = @At(value = "RETURN"))
+    private void popProfiler3(GpuBufferSlice gpuBufferSlice, ResourceHandle resourcehandle1, ResourceHandle resourcehandle, Matrix4f modelViewMatrix, CallbackInfo ci) {
         Profiler profiler = Profiler.getMainProfiler();
         profiler.pop();
     }

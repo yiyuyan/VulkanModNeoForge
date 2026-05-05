@@ -4,6 +4,10 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
+    "chunk.LevelRendererMixin",
+    "profiling.ClientMetricsSamplersProviderMixin",
+    "profiling.LevelRendererMixin",
+    "render.FogRendererMixin",
     "render.frapi.BatchingRenderCommandQueueM",
     "render.frapi.BlockModelRendererM",
     "render.frapi.BlockRenderDispatcherAccessor",

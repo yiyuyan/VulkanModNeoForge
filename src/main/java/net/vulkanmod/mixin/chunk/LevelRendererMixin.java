@@ -179,7 +179,7 @@ public abstract class LevelRendererMixin {
         return this.worldRenderer.getVisibleSectionsCount();
     }
 
-    @Redirect(method = "addWeatherPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;getDepthFar()F"))
+    @Redirect(method = "addWeatherPass(Lcom/mojang/blaze3d/framegraph/FrameGraphBuilder;Lnet/minecraft/world/phys/Vec3;Lcom/mojang/blaze3d/buffers/GpuBufferSlice;Lorg/joml/Matrix4f;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;getDepthFar()F"))
     private float getRenderDistanceZFar(GameRenderer instance) {
         return instance.getRenderDistance() * 4F;
     }
