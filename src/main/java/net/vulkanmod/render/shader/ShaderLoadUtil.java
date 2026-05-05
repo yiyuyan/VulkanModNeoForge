@@ -22,7 +22,7 @@ import java.util.Set;
 
 public abstract class ShaderLoadUtil {
 
-    public static final String RESOURCES_PATH = SPIRVUtils.class.getResource("/assets/vulkanmod").toExternalForm();
+    public static final String RESOURCES_PATH = SPIRVUtils.class.getResource("/assets/vulkanmodY").toExternalForm();
     public static final String SHADERS_PATH = "%s/shaders/".formatted(RESOURCES_PATH);
 
     public static final Set<String> REMAPPED_SHADERS = Sets.newHashSet("core/screenquad.vsh",

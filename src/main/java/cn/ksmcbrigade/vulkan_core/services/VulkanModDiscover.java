@@ -111,6 +111,8 @@ public class VulkanModDiscover implements IModFileCandidateLocator {
     @Override
     public void findCandidates(ILaunchContext context, IDiscoveryPipeline pipeline) {
 
+        if(!FMLLoader.getCurrent().isProduction()) return;
+
         String os = System.getProperty("os.name");
 
         LOGGER.info(LogMarkers.SCAN,"VulkanMod Library Discover loading...");
