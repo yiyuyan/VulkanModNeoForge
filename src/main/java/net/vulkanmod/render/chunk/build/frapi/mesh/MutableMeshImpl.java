@@ -18,7 +18,19 @@ package net.vulkanmod.render.chunk.build.frapi.mesh;
 
 import java.util.function.Consumer;
 
-public class MutableMeshImpl extends MeshImpl {
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.Mesh;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.MutableMesh;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.MutableQuadView;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadEmitter;
+
+/**
+ * Our implementation of {@link MutableMesh}, mainly used for optimized mesh creation.
+ * Not much to it - mainly it just needs to grow the int[] array as quads are appended
+ * and maintain/provide a properly-configured {@link MutableQuadView} instance.
+ * All the encoding and other work is handled in the quad base classes.
+ * The one interesting bit is in {@link #emitter}.
+ */
+public class MutableMeshImpl extends MeshImpl implements MutableMesh {
     private final MutableQuadViewImpl emitter = new MutableQuadViewImpl() {
         @Override
         protected void emitDirectly() {
@@ -51,28 +63,28 @@ public class MutableMeshImpl extends MeshImpl {
         }
     }
 
-    //@Override
-    public MutableQuadViewImpl emitter() {
+    @Override
+    public QuadEmitter emitter() {
         emitter.clear();
         return emitter;
     }
 
-    //@Override
-    public <MutableQuadView> void forEachMutable(Consumer<? super MutableQuadView> action) {
+    @Override
+    public void forEachMutable(Consumer<? super MutableQuadView> action) {
         // emitDirectly will not be called by forEach, so just reuse the main emitter.
         forEach(action, emitter);
         emitter.data = data;
         emitter.baseIndex = limit;
     }
 
-    //@Override
-    public MeshImpl immutableCopy() {
+    @Override
+    public Mesh immutableCopy() {
         final int[] packed = new int[limit];
         System.arraycopy(data, 0, packed, 0, limit);
         return new MeshImpl(packed);
     }
 
-    //@Override
+    @Override
     public void clear() {
         limit = 0;
         emitter.baseIndex = limit;

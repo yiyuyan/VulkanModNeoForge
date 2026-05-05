@@ -28,6 +28,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.vulkanmod.render.chunk.build.frapi.helper.ColorHelper;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.FabricBlockStateModel;
 import net.vulkanmod.render.chunk.build.frapi.mesh.MutableQuadViewImpl;
 import org.jetbrains.annotations.Nullable;
 
@@ -105,7 +106,7 @@ public class SimpleBlockRenderContext extends AbstractRenderContext {
 
         random.setSeed(42L);
 
-        model.emitQuads(getEmitter(), blockView, pos, state, random, cullFace -> false);
+        ((FabricBlockStateModel)model).emitQuads(getEmitter(), blockView, pos, state, random, cullFace -> false);
 
         matrices = null;
         this.vertexConsumers = null;

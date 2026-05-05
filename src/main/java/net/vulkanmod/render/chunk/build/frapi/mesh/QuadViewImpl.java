@@ -32,6 +32,7 @@ import static net.vulkanmod.render.chunk.build.frapi.mesh.EncodingFormat.VERTEX_
 import static net.vulkanmod.render.chunk.build.frapi.mesh.EncodingFormat.VERTEX_Y;
 import static net.vulkanmod.render.chunk.build.frapi.mesh.EncodingFormat.VERTEX_Z;
 
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.ShadeMode;
 import net.minecraft.util.TriState;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
@@ -42,6 +43,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadView;
 import net.vulkanmod.render.chunk.build.frapi.helper.ColorHelper;
 import net.vulkanmod.render.chunk.build.frapi.helper.GeometryHelper;
 import net.vulkanmod.render.chunk.build.frapi.helper.NormalHelper;
@@ -51,68 +53,7 @@ import net.minecraft.core.Direction;
  * Base class for all quads / quad makers. Handles the ugly bits
  * of maintaining and encoding the quad state.
  */
-public class QuadViewImpl implements ModelQuadView {
-
-	/**
-	 * When enabled, causes texture to appear with no rotation. This is the default and does not have to be specified
-	 * explicitly. Can be overridden by other rotation flags.
-	 * Pass in bakeFlags parameter to {@link #materialBake(Material.Baked, int)}.
-	 */
-	int BAKE_ROTATE_NONE = 0;
-
-	/**
-	 * When enabled, causes texture to appear rotated 90 degrees clockwise.
-	 * Pass in bakeFlags parameter to {@link #materialBake(Material.Baked, int)}.
-	 */
-	int BAKE_ROTATE_90 = 1;
-
-	/**
-	 * When enabled, causes texture to appear rotated 180 degrees.
-	 * Pass in bakeFlags parameter to {@link #materialBake(Material.Baked, int)}.
-	 */
-	int BAKE_ROTATE_180 = 2;
-
-	/**
-	 * When enabled, causes texture to appear rotated 270 degrees clockwise.
-	 * Pass in bakeFlags parameter to {@link #materialBake(Material.Baked, int)}.
-	 */
-	int BAKE_ROTATE_270 = 3;
-
-	/**
-	 * When enabled, texture coordinates are assigned based on vertex positions and the
-	 * {@linkplain #nominalFace() nominal face}.
-	 * Any existing UV coordinates will be replaced and the {@link #BAKE_NORMALIZED} flag will be ignored.
-	 * Pass in bakeFlags parameter to {@link #materialBake(Material.Baked, int)}.
-	 *
-	 * <p>UV lock derives texture coordinates based on {@linkplain #nominalFace() nominal face} by projecting the quad
-	 * onto it, even when the quad is not co-planar with it. This flag is ignored if the normal face is {@code null}.
-	 */
-	int BAKE_LOCK_UV = 4;
-
-	/**
-	 * When enabled, U texture coordinates for the given sprite are
-	 * flipped as part of baking. Can be useful for some randomization
-	 * and texture mapping scenarios. Results are different from what
-	 * can be obtained via rotation and both can be applied. Any
-	 * rotation is applied before this flag.
-	 * Pass in bakeFlags parameter to {@link #materialBake(Material.Baked, int)}.
-	 */
-	int BAKE_FLIP_U = 8;
-
-	/**
-	 * Same as {@link #BAKE_FLIP_U} but for V coordinate.
-	 */
-	int BAKE_FLIP_V = 16;
-
-	/**
-	 * UV coordinates by default are assumed to be 0-16 scale for consistency
-	 * with conventional Minecraft model format. This is scaled to 0-1 during
-	 * baking before interpolation. Model loaders that already have 0-1 coordinates
-	 * can avoid wasteful multiplication/division by passing 0-1 coordinates directly.
-	 * Pass in bakeFlags parameter to {@link #materialBake(Material.Baked, int)}.
-	 */
-	int BAKE_NORMALIZED = 32;
-
+public class QuadViewImpl implements QuadView, ModelQuadView {
 	@Nullable
 	protected Direction nominalFace;
 	/** True when face normal, light face, or geometry flags may not match geometry. */
@@ -161,27 +102,27 @@ public class QuadViewImpl implements ModelQuadView {
 		return EncodingFormat.geometryFlags(data[baseIndex + HEADER_BITS]);
 	}
 
-	//@Override
+	@Override
 	public float x(int vertexIndex) {
 		return Float.intBitsToFloat(data[baseIndex + vertexIndex * VERTEX_STRIDE + VERTEX_X]);
 	}
 
-	//@Override
+	@Override
 	public float y(int vertexIndex) {
 		return Float.intBitsToFloat(data[baseIndex + vertexIndex * VERTEX_STRIDE + VERTEX_Y]);
 	}
 
-	//@Override
+	@Override
 	public float z(int vertexIndex) {
 		return Float.intBitsToFloat(data[baseIndex + vertexIndex * VERTEX_STRIDE + VERTEX_Z]);
 	}
 
-	//@Override
+	@Override
 	public float posByIndex(int vertexIndex, int coordinateIndex) {
 		return Float.intBitsToFloat(data[baseIndex + vertexIndex * VERTEX_STRIDE + VERTEX_X + coordinateIndex]);
 	}
 
-	//@Override
+	@Override
 	public Vector3f copyPos(int vertexIndex, @Nullable Vector3f target) {
 		if (target == null) {
 			target = new Vector3f();
@@ -192,22 +133,22 @@ public class QuadViewImpl implements ModelQuadView {
 		return target;
 	}
 
-	//@Override
+	@Override
 	public int color(int vertexIndex) {
 		return data[baseIndex + vertexIndex * VERTEX_STRIDE + VERTEX_COLOR];
 	}
 
-	//@Override
+	@Override
 	public float u(int vertexIndex) {
 		return Float.intBitsToFloat(data[baseIndex + vertexIndex * VERTEX_STRIDE + VERTEX_U]);
 	}
 
-	//@Override
+	@Override
 	public float v(int vertexIndex) {
 		return Float.intBitsToFloat(data[baseIndex + vertexIndex * VERTEX_STRIDE + VERTEX_V]);
 	}
 
-	//@Override
+	@Override
 	public Vector2f copyUv(int vertexIndex, @Nullable Vector2f target) {
 		if (target == null) {
 			target = new Vector2f();
@@ -218,7 +159,7 @@ public class QuadViewImpl implements ModelQuadView {
 		return target;
 	}
 
-	//@Override
+	@Override
 	public int lightmap(int vertexIndex) {
 		return data[baseIndex + vertexIndex * VERTEX_STRIDE + VERTEX_LIGHTMAP];
 	}
@@ -227,7 +168,7 @@ public class QuadViewImpl implements ModelQuadView {
 		return EncodingFormat.normalFlags(data[baseIndex + HEADER_BITS]);
 	}
 
-	//@Override
+	@Override
 	public final boolean hasNormal(int vertexIndex) {
 		return (normalFlags() & (1 << vertexIndex)) != 0;
 	}
@@ -246,22 +187,22 @@ public class QuadViewImpl implements ModelQuadView {
 		return baseIndex + vertexIndex * VERTEX_STRIDE + VERTEX_NORMAL;
 	}
 
-	//@Override
+	@Override
 	public final float normalX(int vertexIndex) {
 		return hasNormal(vertexIndex) ? NormalHelper.unpackNormalX(data[normalIndex(vertexIndex)]) : Float.NaN;
 	}
 
-	//@Override
+	@Override
 	public final float normalY(int vertexIndex) {
 		return hasNormal(vertexIndex) ? NormalHelper.unpackNormalY(data[normalIndex(vertexIndex)]) : Float.NaN;
 	}
 
-	//@Override
+	@Override
 	public final float normalZ(int vertexIndex) {
 		return hasNormal(vertexIndex) ? NormalHelper.unpackNormalZ(data[normalIndex(vertexIndex)]) : Float.NaN;
 	}
 
-	//@Override
+	@Override
 	@Nullable
 	public final Vector3f copyNormal(int vertexIndex, @Nullable Vector3f target) {
 		if (hasNormal(vertexIndex)) {
@@ -284,7 +225,7 @@ public class QuadViewImpl implements ModelQuadView {
 		return EncodingFormat.lightFace(data[baseIndex + HEADER_BITS]);
 	}
 
-	//@Override
+	@Override
 	@Nullable
 	public final Direction nominalFace() {
 		return nominalFace;
@@ -295,61 +236,61 @@ public class QuadViewImpl implements ModelQuadView {
 		return data[baseIndex + HEADER_FACE_NORMAL];
 	}
 
-	//@Override
+	@Override
 	public final Vector3f faceNormal() {
 		computeGeometry();
 		return faceNormal;
 	}
 
-	//@Override
+	@Override
 	@Nullable
 	public final Direction cullFace() {
 		return EncodingFormat.cullFace(data[baseIndex + HEADER_BITS]);
 	}
 
-	//@Override
+	@Override
 	@Nullable
 	public ChunkSectionLayer renderLayer() {
 		return EncodingFormat.renderLayer(data[baseIndex + HEADER_BITS]);
 	}
 
-	//@Override
+	@Override
 	public boolean emissive() {
 		return EncodingFormat.emissive(data[baseIndex + HEADER_BITS]);
 	}
 
-	//@Override
+	@Override
 	public boolean diffuseShade() {
 		return EncodingFormat.diffuseShade(data[baseIndex + HEADER_BITS]);
 	}
 
-	//@Override
+	@Override
 	public TriState ambientOcclusion() {
 		return EncodingFormat.ambientOcclusion(data[baseIndex + HEADER_BITS]);
 	}
 
-	//@Override
+	@Override
 	@Nullable
 	public ItemStackRenderState.FoilType glint() {
 		return EncodingFormat.glint(data[baseIndex + HEADER_BITS]);
 	}
 
-	//Override
+	@Override
 	public ShadeMode shadeMode() {
 		return EncodingFormat.shadeMode(data[baseIndex + HEADER_BITS]);
 	}
 
-	//@Override
+	@Override
 	public final int tintIndex() {
 		return data[baseIndex + HEADER_TINT_INDEX];
 	}
 
-	//@Override
+	@Override
 	public final int tag() {
 		return data[baseIndex + HEADER_TAG];
 	}
 
-	//@Override
+	@Override
 	public final void toVanilla(int[] target, int targetIndex) {
 		System.arraycopy(data, baseIndex + HEADER_STRIDE, target, targetIndex, QUAD_STRIDE);
 
@@ -414,24 +355,5 @@ public class QuadViewImpl implements ModelQuadView {
 	@Override
 	public QuadFacing getQuadFacing() {
 		return this.facing;
-	}
-
-	/**
-	 * A hint to the renderer about how the quad is intended to be shaded, for example through ambient occlusion and
-	 * diffuse shading. The renderer is free to ignore this hint.
-	 */
-	public enum ShadeMode {
-		/**
-		 * Conveys the intent that shading should be generally consistent, lack edge cases, and produce visually pleasing
-		 * results, even for quads that are not used by vanilla or are not possible to create through resource packs in
-		 * vanilla.
-		 */
-		ENHANCED,
-
-		/**
-		 * Conveys the intent that shading should mimic vanilla results, potentially to preserve certain visuals produced
-		 * by resource packs that modify models.
-		 */
-		VANILLA;
 	}
 }

@@ -21,7 +21,6 @@ import net.vulkanmod.render.model.quad.ModelQuadView;
 import net.vulkanmod.render.vertex.format.I32_SNorm;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
@@ -96,14 +95,6 @@ public abstract class NormalHelper {
 		target.set(unpackNormalX(packedNormal), unpackNormalY(packedNormal), unpackNormalZ(packedNormal));
 	}
 
-	/**
-	 * Computes the face normal of the given quad and saves it in the provided non-null vector.
-	 * If {@link QuadView#nominalFace()} is set will optimize by confirming quad is parallel to that
-	 * face and, if so, use the standard normal for that face direction.
-	 *
-	 * <p>Will work with triangles also. Assumes counter-clockwise winding order, which is the norm.
-	 * Expects convex quads with all points co-planar.
-	 */
 	public static void computeFaceNormal(@NotNull Vector3f saveTo, QuadViewImpl q) {
 		final Direction nominalFace = q.nominalFace();
 

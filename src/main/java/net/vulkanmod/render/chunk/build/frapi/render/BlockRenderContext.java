@@ -12,8 +12,9 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.vulkanmod.Initializer;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.FabricBlockStateModel;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.ShadeMode;
 import net.vulkanmod.render.chunk.build.frapi.mesh.MutableQuadViewImpl;
-import net.vulkanmod.render.chunk.build.frapi.mesh.QuadViewImpl;
 import net.vulkanmod.render.chunk.build.light.LightMode;
 import net.vulkanmod.render.chunk.build.light.LightPipeline;
 import net.vulkanmod.render.chunk.build.light.data.ArrayLightDataCache;
@@ -65,7 +66,7 @@ public class BlockRenderContext extends AbstractBlockRenderContext {
 		this.prepareForWorld(blockView, cull);
 		this.prepareForBlock(state, pos, state.getLightEmission() == 0);
 
-		model.emitQuads(getEmitter(), blockView, pos, state, random, this::isFaceCulled);
+		((FabricBlockStateModel)model).emitQuads(getEmitter(), blockView, pos, state, random, this::isFaceCulled);
 
 		this.vertexConsumers = null;
 	}
@@ -79,7 +80,7 @@ public class BlockRenderContext extends AbstractBlockRenderContext {
 		final TriState aoMode = quad.ambientOcclusion();
 		final boolean ao = this.useAO && (aoMode == TriState.TRUE || (aoMode == TriState.DEFAULT && this.defaultAO));
 		final boolean emissive = quad.emissive();
-		final boolean vanillaShade = quad.shadeMode() == QuadViewImpl.ShadeMode.VANILLA;
+		final boolean vanillaShade = quad.shadeMode() == ShadeMode.VANILLA;
         final ChunkSectionLayer quadRenderLayer = quad.renderLayer();
         final ChunkSectionLayer renderLayer = quadRenderLayer == null ? defaultRenderLayer : quadRenderLayer;
 		final VertexConsumer vertexConsumer = getVertexConsumer(renderLayer);

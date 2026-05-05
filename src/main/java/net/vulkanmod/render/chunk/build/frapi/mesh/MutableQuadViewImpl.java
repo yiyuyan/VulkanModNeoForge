@@ -17,17 +17,17 @@
 package net.vulkanmod.render.chunk.build.frapi.mesh;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.fabricmc.fabric.api.renderer.v1.mesh.ShadeMode;
 import net.minecraft.util.TriState;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.ShadeMode;
 import net.vulkanmod.render.model.quad.ModelQuadView;
 import org.jetbrains.annotations.Nullable;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadTransform;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadEmitter;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadTransform;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadView;
 import net.vulkanmod.render.chunk.build.frapi.helper.ColorHelper;
 import net.vulkanmod.render.chunk.build.frapi.helper.NormalHelper;
 import net.vulkanmod.render.chunk.build.frapi.helper.TextureHelper;
@@ -297,7 +297,7 @@ public abstract class MutableQuadViewImpl extends QuadViewImpl implements QuadEm
 		return this;
 	}
 
-	@Override
+	//@Override
 	public void pushTransform(QuadTransform transform) {
 		if (transform == null) {
 			throw new NullPointerException("QuadTransform cannot be null!");
@@ -313,7 +313,7 @@ public abstract class MutableQuadViewImpl extends QuadViewImpl implements QuadEm
 		}
 	}
 
-	@Override
+	//@Override
 	public void popTransform() {
 		transformStack.pop();
 

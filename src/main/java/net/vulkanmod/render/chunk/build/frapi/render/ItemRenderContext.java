@@ -16,12 +16,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.vulkanmod.render.chunk.build.frapi.helper.ColorHelper;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadEmitter;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.helper.RenderLayerHelper;
 import net.vulkanmod.render.chunk.build.frapi.mesh.MeshImpl;
 import net.vulkanmod.render.chunk.build.frapi.mesh.MutableQuadViewImpl;
-import net.vulkanmod.render.chunk.build.frapi.mesh.QuadViewImpl;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -65,7 +65,7 @@ public class ItemRenderContext extends AbstractRenderContext {
 	}
 
     private void bufferQuads(List<BakedQuad> vanillaQuads, MeshImpl mesh) {
-        QuadViewImpl emitter = getEmitter();
+        QuadEmitter emitter = getEmitter();
 
         final int vanillaQuadCount = vanillaQuads.size();
 

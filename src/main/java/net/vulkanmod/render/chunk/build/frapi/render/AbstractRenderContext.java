@@ -18,9 +18,9 @@ package net.vulkanmod.render.chunk.build.frapi.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadEmitter;
 import net.vulkanmod.render.chunk.build.frapi.mesh.EncodingFormat;
 import net.vulkanmod.render.chunk.build.frapi.mesh.MutableQuadViewImpl;
-import net.vulkanmod.render.chunk.build.frapi.mesh.QuadViewImpl;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -45,7 +45,7 @@ public abstract class AbstractRenderContext {
 	protected PoseStack.Pose matrices;
 	protected int overlay;
 
-	protected QuadViewImpl getEmitter() {
+	protected QuadEmitter getEmitter() {
 		editorQuad.clear();
 		return editorQuad;
 	}

@@ -19,11 +19,14 @@ package net.vulkanmod.render.chunk.build.frapi.mesh;
 import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.ShadeMode;
 import net.minecraft.util.TriState;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadView;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.helper.ModelHelper;
 import net.vulkanmod.render.chunk.build.frapi.helper.GeometryHelper;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -84,7 +87,7 @@ public final class EncodingFormat {
 	private static final int TRI_STATE_COUNT = TRI_STATES.length;
 	private static final @Nullable ItemStackRenderState.FoilType[] NULLABLE_GLINTS = ArrayUtils.add(ItemStackRenderState.FoilType.values(), null);
 	private static final int NULLABLE_GLINT_COUNT = NULLABLE_GLINTS.length;
-	private static final QuadViewImpl.ShadeMode[] SHADE_MODES = ShadeMode.values();
+	private static final ShadeMode[] SHADE_MODES = ShadeMode.values();
 	private static final int SHADE_MODE_COUNT = SHADE_MODES.length;
 
 	private static final int NULL_RENDER_LAYER_INDEX = NULLABLE_BLOCK_RENDER_LAYER_COUNT - 1;
@@ -214,7 +217,7 @@ public final class EncodingFormat {
 		return SHADE_MODES[(bits & SHADE_MODE_MASK) >>> SHADE_MODE_BIT_OFFSET];
 	}
 
-	static int shadeMode(int bits, QuadViewImpl.ShadeMode mode) {
+	static int shadeMode(int bits, ShadeMode mode) {
 		return (bits & ~SHADE_MODE_MASK) | (mode.ordinal() << SHADE_MODE_BIT_OFFSET);
 	}
 }

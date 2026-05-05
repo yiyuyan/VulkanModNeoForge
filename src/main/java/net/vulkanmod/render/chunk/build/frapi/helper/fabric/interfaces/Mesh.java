@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-package net.vulkanmod.render.chunk.build.frapi.accessor;
+package net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces;
 
-import net.fabricmc.fabric.impl.client.indigo.renderer.render.TerrainRenderContext;
 
-/**
- * Used to stash block renderer reference in local scope during
- * chunk rebuild, thus avoiding repeated thread-local lookups.
- */
-public interface AccessChunkRendererRegion {
-	TerrainRenderContext fabric_getRenderer();
-
-	void fabric_setRenderer(TerrainRenderContext renderer);
+public interface Mesh extends MeshView {
 }
