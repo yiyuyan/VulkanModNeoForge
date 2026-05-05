@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.vulkanmod.render.chunk.build.frapi.accessor.AccessLayerRenderState;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.MutableQuadView;
 import net.vulkanmod.render.chunk.build.frapi.mesh.MutableMeshImpl;
 import net.vulkanmod.render.chunk.build.frapi.render.QuadToPosPipe;
 import org.joml.Matrix4f;
@@ -31,6 +32,7 @@ public abstract class ItemRenderStateM {
         if (mutableMesh.size() > 0) {
             QuadToPosPipe pipe = pipeRef.get();
             pipe.matrix = matrix;
+
             // Use the mutable version here as it does not use a ThreadLocal or cursor stack
             mutableMesh.forEachMutable(pipe);
         }

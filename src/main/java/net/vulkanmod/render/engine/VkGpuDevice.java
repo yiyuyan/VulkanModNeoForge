@@ -15,6 +15,8 @@ import com.mojang.logging.LogUtils;
 
 import net.minecraft.client.renderer.ShaderDefines;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.client.blaze3d.GpuDeviceFeatures;
+import net.neoforged.neoforge.client.blaze3d.GpuDeviceProperties;
 import net.vulkanmod.Initializer;
 import net.vulkanmod.gl.VkGlTexture;
 import net.vulkanmod.interfaces.shader.ExtendedRenderPipeline;
@@ -379,7 +381,28 @@ public class VkGpuDevice implements GpuDevice {
         extPipeline.setPipeline(pipeline);
     }
 
-    
+    @Override
+    public GpuDeviceProperties deviceProperties() {
+        return new GpuDeviceProperties(){
+
+            @Override
+            public String backendName() {
+                return getBackendName();
+            }
+
+            @Override
+            public String apiName() {
+                return "Vulkan";
+            }
+        };
+    }
+
+    @Override
+    public GpuDeviceFeatures enabledFeatures() {
+        return () -> false;
+    }
+
+
     record ShaderCompilationKey(ResourceLocation id, ShaderType type, ShaderDefines defines) {
 
         public String toString() {

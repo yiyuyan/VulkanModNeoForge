@@ -146,6 +146,8 @@ public class VkGpuTexture extends GlTexture {
             case RED8 -> VK10.VK_FORMAT_R8_UNORM;
             case RED8I -> VK10.VK_FORMAT_R8_SINT;
             case DEPTH32 -> VK10.VK_FORMAT_D32_SFLOAT;
+            case DEPTH24_STENCIL8 -> VK10.VK_FORMAT_D24_UNORM_S8_UINT;
+            case DEPTH32_STENCIL8 -> VK10.VK_FORMAT_D32_SFLOAT_S8_UINT;
         };
     }
 

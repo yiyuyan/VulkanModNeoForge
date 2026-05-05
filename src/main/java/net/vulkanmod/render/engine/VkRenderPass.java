@@ -113,6 +113,11 @@ public class VkRenderPass implements RenderPass {
     }
 
     @Override
+    public void setViewport(int i, int j, int k, int l) {
+
+    }
+
+    @Override
     public void enableScissor(int i, int j, int k, int l) {
         this.scissorState.enable(i, j, k, l);
     }

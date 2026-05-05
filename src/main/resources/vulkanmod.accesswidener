@@ -9,7 +9,7 @@ accessible	field	net/minecraft/server/packs/repository/PackRepository	sources	Lj
 accessible	method	net/minecraft/server/packs/metadata/pack/PackMetadataSection	codecForPackType	(Lnet/minecraft/server/packs/PackType;)Lcom/mojang/serialization/Codec;
 
 #res-loader-v1
-accessible class net/minecraft/server/MinecraftServer$ResourceManagerHolder
+#accessible class net/minecraft/server/MinecraftServer$ResourceManagerHolder
 
 #lifecycle
 accessible	class	net/minecraft/server/MinecraftServer$ReloadableResources

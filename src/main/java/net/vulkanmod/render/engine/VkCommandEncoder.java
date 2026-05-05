@@ -33,6 +33,7 @@ import net.vulkanmod.vulkan.shader.descriptor.ImageDescriptor;
 import net.vulkanmod.vulkan.shader.descriptor.UBO;
 import net.vulkanmod.vulkan.texture.ImageUtil;
 import net.vulkanmod.vulkan.texture.VTextureSelector;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.MemoryStack;
@@ -267,6 +268,11 @@ public class VkCommandEncoder implements CommandEncoder {
                 ((VkGpuTexture) depthAttachment).setDepthClearValue((float) clearDepth);
             }
         }
+    }
+
+    @Override
+    public void clearStencilTexture(@NotNull GpuTexture gpuTexture, int i) {
+
     }
 
     @Override

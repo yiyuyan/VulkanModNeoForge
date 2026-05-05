@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.vulkanmod.mixin.render.frapi.BlockRenderDispatcherAccessor;
 import net.vulkanmod.render.chunk.build.frapi.accessor.AccessLayerRenderState;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadEmitter;
 import net.vulkanmod.render.chunk.build.frapi.mesh.MutableMeshImpl;
 import net.vulkanmod.render.chunk.build.frapi.mesh.QuadViewImpl;
 import net.vulkanmod.render.chunk.build.frapi.render.BlockRenderContext;
@@ -67,7 +68,7 @@ public class VulkanModRenderer {
 	}
 
 	//@Override
-	public QuadViewImpl getLayerRenderStateEmitter(ItemStackRenderState.LayerRenderState layer) {
+	public QuadEmitter getLayerRenderStateEmitter(ItemStackRenderState.LayerRenderState layer) {
 		return ((AccessLayerRenderState) layer).getMutableMesh().emitter();
 	}
 
