@@ -1,25 +1,22 @@
 package net.vulkanmod.render.chunk.build.renderer;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.textures.FluidSpriteCache;
 import net.vulkanmod.render.chunk.build.light.LightPipeline;
 import net.vulkanmod.render.chunk.build.light.data.QuadLightData;
 import net.vulkanmod.render.chunk.build.thread.BuilderResources;
@@ -34,7 +31,7 @@ import net.vulkanmod.render.vertex.format.I32_SNorm;
 import net.vulkanmod.vulkan.util.ColorUtil;
 import org.joml.Vector3f;
 
-public class FluidRenderer implements FluidRendering.DefaultRenderer {
+public class FluidRenderer {
     private static final float MAX_FLUID_HEIGHT = 0.8888889F;
 
     private final BlockPos.MutableBlockPos mBlockPos = new BlockPos.MutableBlockPos();
@@ -58,19 +55,18 @@ public class FluidRenderer implements FluidRendering.DefaultRenderer {
     }
 
     public void renderLiquid(BlockState blockState, FluidState fluidState, BlockPos blockPos) {
-        FluidRenderHandler handler = FluidRenderHandlerRegistry.INSTANCE.get(fluidState.getType());
+        //FluidRenderHandler handler = FluidRenderHandlerRegistry.INSTANCE.get(fluidState.getType());
+        IClientFluidTypeExtensions handler = IClientFluidTypeExtensions.of(fluidState.getType());
+
 
         TerrainRenderType renderType = TerrainRenderType.get(ItemBlockRenderTypes.getRenderLayer(fluidState));
         renderType = TerrainRenderType.getRemapped(renderType);
         TerrainBufferBuilder bufferBuilder = this.resources.builderPack.builder(renderType).getBufferBuilder(QuadFacing.UNDEFINED.ordinal());
 
         // Fallback to water/lava in case there's no handler
-        if (handler == null) {
-            boolean isLava = fluidState.is(FluidTags.LAVA);
-            handler = FluidRenderHandlerRegistry.INSTANCE.get(isLava ? Fluids.LAVA : Fluids.WATER);
-        }
 
-        FluidRendering.render(handler, this.resources.getRegion(),blockPos, bufferBuilder, blockState, fluidState, this);
+        IClientFluidTypeExtensions.of(fluidState).renderFluid(fluidState,this.resources.getRegion(),blockPos,bufferBuilder,blockState);
+        //FluidRendering.render(handler, this.resources.getRegion(),blockPos, bufferBuilder, blockState, fluidState, this);
     }
 
     private boolean isFaceOccludedByState(BlockGetter blockGetter, float h, Direction direction, BlockPos blockPos, BlockState blockState) {
@@ -110,15 +106,15 @@ public class FluidRenderer implements FluidRendering.DefaultRenderer {
         return blockAndTintGetter.getBlockState(mBlockPos);
     }
 
-    public void render(FluidRenderHandler handler, BlockAndTintGetter world, BlockPos pos, VertexConsumer vertexConsumer, BlockState blockState, FluidState fluidState) {
+    public void render(IClientFluidTypeExtensions handler, BlockAndTintGetter world, BlockPos pos, VertexConsumer vertexConsumer, BlockState blockState, FluidState fluidState) {
         render(handler, blockState, fluidState, pos, (TerrainBufferBuilder) vertexConsumer);
     }
 
-    public void render(FluidRenderHandler handler, BlockState blockState, FluidState fluidState, BlockPos blockPos, TerrainBufferBuilder bufferBuilder) {
+    public void render(IClientFluidTypeExtensions handler, BlockState blockState, FluidState fluidState, BlockPos blockPos, TerrainBufferBuilder bufferBuilder) {
         BlockAndTintGetter region = this.resources.getRegion();
 
-        int color = handler.getFluidColor(region, blockPos, fluidState);
-        TextureAtlasSprite[] sprites = handler.getFluidSprites(region, blockPos, fluidState);
+        int color = handler.getTintColor(fluidState,region,blockPos);
+        TextureAtlasSprite[] sprites = FluidSpriteCache.getFluidSprites(region, blockPos, fluidState);
 
         float r = ColorUtil.ARGB.unpackR(color);
         float g = ColorUtil.ARGB.unpackG(color);
@@ -351,7 +347,8 @@ public class FluidRenderer implements FluidRendering.DefaultRenderer {
             boolean isOverlay = false;
 
             if (sprites.length > 2) {
-                if (FluidRenderHandlerRegistry.INSTANCE.isBlockTransparent(adjState.getBlock())) {
+
+                if (adjState.getBlock().shouldDisplayFluidOverlay(adjState,region,blockPos,fluidState)) {
                     sprite = sprites[2];
                     isOverlay = true;
                 }
