@@ -5,12 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="update">
+      <change afterPath="$PROJECT_DIR$/.idea/modules/VulkanModNeoForge.vulkanmod.main.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/VulkanModNeoForge.vulkanmod.test.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/MixinPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/MixinPlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/LevelRendererMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/LevelRendererMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan_core/services/VulkanModDiscover.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan_core/services/VulkanModDiscover.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan_core/services/VulkanTransformationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan_core/services/VulkanTransformationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Vulkan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Vulkan.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,12 +80,12 @@
     &quot;assignee&quot;: &quot;yiyuyan&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/yiyuyan/VulkanModNeoForge/&quot;,
-    &quot;accountId&quot;: &quot;9413f41c-0589-4b3f-a5f0-7b7afa758258&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/yiyuyan/VulkanModNeoForge",
+    "accountId": "9413f41c-0589-4b3f-a5f0-7b7afa758258"
   }
-}</component>
+}]]></component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -94,23 +99,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.VulkanModNeoForge [build].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.VulkanModNeoForge [clean runClient].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.VulkanModNeoForge [runClient].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;1.21neo__new&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/CommonMods/VulkanModNeoForge/run&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;库&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.VulkanModNeoForge [build].executor": "Run",
+    "Gradle.VulkanModNeoForge [clean runClient].executor": "Run",
+    "Gradle.VulkanModNeoForge [runClient].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "1.21neo__new",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/VKN/VulkanModNeoForge",
+    "project.structure.last.edited": "库",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\CommonMods\VulkanModNeoForge\run" />

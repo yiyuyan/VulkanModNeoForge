@@ -63,7 +63,7 @@ dependencies {
 	implementation("org.lwjgl:lwjgl-vulkan:$lwjglVersion:$macosNatives")
 	implementation("org.lwjgl:lwjgl-vulkan:$lwjglVersion:$macosArmNatives")
 
-    include(modImplementation("cn.ksmcbrigade.mr:mr:1.0.1-mc1.21"))
+    include(modImplementation("cn.ksmcbrigade.mr:mr:1.0.2-mc1.21"))
 }
 
 processResources {

@@ -1,7 +1,9 @@
 package cn.ksmcbrigade.vulkan_core.services;
 
 import cn.ksmcbrigade.vulkan_core.VKCUnsafeUtils;
+import com.mojang.logging.LogUtils;
 import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.LogMarkers;
 import net.neoforged.neoforgespi.ILaunchContext;
 import net.neoforged.neoforgespi.locating.IDiscoveryPipeline;
 import net.neoforged.neoforgespi.locating.IModFileCandidateLocator;
@@ -29,8 +31,8 @@ public class VulkanModDiscover implements IModFileCandidateLocator {
 
         String os = System.getProperty("os.name");
 
-        System.out.println("VulkanMod Library Discover loading...");
-        System.out.println("OS: "+os);
+        LogUtils.getLogger().info(LogMarkers.SCAN,"VulkanMod Library Discover loading...");
+        LogUtils.getLogger().info(LogMarkers.SCAN,"OS: "+os);
 
         os = os.toLowerCase();
         if(os.contains("windows")) os = "windows";
@@ -89,6 +91,6 @@ public class VulkanModDiscover implements IModFileCandidateLocator {
         VKCUnsafeUtils.coexistenceCoreAndMod();
         VKCUnsafeUtils.setFieldValue(context,"locatedPaths",located);
 
-        //System.out.println(Arrays.toString(VKCUnsafeUtils.getFieldValue(context, "locatedPaths", Set.class).toArray()));
+        //LogUtils.getLogger().info(LogMarkers.SCAN,Arrays.toString(VKCUnsafeUtils.getFieldValue(context, "locatedPaths", Set.class).toArray()));
     }
 }

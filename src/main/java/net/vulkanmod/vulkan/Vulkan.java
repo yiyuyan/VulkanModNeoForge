@@ -154,12 +154,17 @@ public class Vulkan {
         createInstance();
         setupDebugMessenger();
 
+
+        /*  With the help of MixinRuntime,we don't need to reapply mixins by hand
+
         Initializer.LOGGER.info("Reapply Mixins...");
         MixinUtils.reapply(GL11M.class);
         MixinUtils.reapply(GL14M.class);
         MixinUtils.reapply(GL15M.class);
         MixinUtils.reapply(GL30M.class);
         MixinUtils.reapply(Matrix4fM.class);
+
+        */
 
         createSurface(window);
 

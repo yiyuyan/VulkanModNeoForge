@@ -29,7 +29,7 @@ public class VulkanTransformationService implements ITransformationService {
 
     @Override
     public void onLoad(IEnvironment env, Set<String> otherServices) {
-        System.out.println("VulkanTransformationService is Loading...");
+        LogUtils.getLogger().info(LogMarkers.CORE,"VulkanTransformationService is Loading...");
 
         final boolean earlyDisplay = FMLConfig.getBoolConfigValue(FMLConfig.ConfigValue.EARLY_WINDOW_CONTROL);
 
@@ -94,9 +94,9 @@ public class VulkanTransformationService implements ITransformationService {
                 System.exit(0);
             }
 
-            System.out.println("VulkanTransformationService is Loaded.");
+            LogUtils.getLogger().info(LogMarkers.CORE,"VulkanTransformationService is Loaded.");
         } catch (IOException e) {
-            System.out.println("[VulkanCore] Can't close the early window control.");
+            LogUtils.getLogger().info(LogMarkers.CORE,"[VulkanCore] Can't close the early window control.");
             e.printStackTrace();
         }
     }

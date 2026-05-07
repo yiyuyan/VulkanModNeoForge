@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/VulkanModNeoForge.vulkanmod.main.iml" filepath="$PROJECT_DIR$/.idea/modules/VulkanModNeoForge.vulkanmod.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/VulkanModNeoForge.vulkanmod.test.iml" filepath="$PROJECT_DIR$/.idea/modules/VulkanModNeoForge.vulkanmod.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/cn.ksmcbrigade.vulkan.vulkanmod.main.iml" filepath="$PROJECT_DIR$/.idea/modules/cn.ksmcbrigade.vulkan.vulkanmod.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/cn.ksmcbrigade.vulkan.vulkanmod.test.iml" filepath="$PROJECT_DIR$/.idea/modules/cn.ksmcbrigade.vulkan.vulkanmod.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/vulkanmod.main.iml" filepath="$PROJECT_DIR$/.idea/modules/vulkanmod.main.iml" />
