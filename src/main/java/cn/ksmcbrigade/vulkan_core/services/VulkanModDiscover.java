@@ -81,13 +81,12 @@ public class VulkanModDiscover implements IModFileCandidateLocator {
                 if(!FMLLoader.isProduction() && locatedPaths.toFile().isDirectory() && locatedPaths.toString().contains("VulkanModNeoForge")){
                     //ignore
                 }
-                else{
+                else if(!locatedPaths.toFile().getParentFile().getName().equals("mods")){
                     located.add(locatedPaths);
                 }
-
             }
         }
-        located.remove(VKCUnsafeUtils.getJarPath(VulkanModDiscover.class));
+        located.remove(Path.of(VKCUnsafeUtils.getJarPath(VulkanModDiscover.class)));
         VKCUnsafeUtils.coexistenceCoreAndMod();
         VKCUnsafeUtils.setFieldValue(context,"locatedPaths",located);
 
