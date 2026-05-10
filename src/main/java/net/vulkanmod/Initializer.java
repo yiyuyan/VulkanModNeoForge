@@ -29,12 +29,16 @@ public class Initializer {
 
 		Platform.init();
 
+		/*  With the help of MixinRuntime,we don't need to reapply mixins by hand
+
 		LOGGER.info("Reapply mixins...");
 		MixinUtils.reapply(GL11M.class);
 		MixinUtils.reapply(GL14M.class);
 		MixinUtils.reapply(GL15M.class);
 		MixinUtils.reapply(GL30M.class);
 		MixinUtils.reapply(Matrix4fM.class);
+
+		*/
 
 		var configPath = FMLPaths.CONFIGDIR.get()
 				.resolve("vulkanmod_settings.json");

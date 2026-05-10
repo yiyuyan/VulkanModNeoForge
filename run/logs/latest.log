@@ -1,89 +1,123 @@
-[14:21:41] [main/INFO] (Entrypoint) JVM Uptime at startup: 121ms
-[14:21:41] [main/INFO] (FMLLoader) Starting FancyModLoader version 10.0.29 (CLIENT in DEV)
-[14:21:41] [main/INFO] (FMLLoader) Game directory: C:\Users\Administrator\Desktop\VulkanModNeoForge\run
-[14:21:41] [main/INFO] (EarlyServiceDiscovery) Found 2 early service jars (out of 135) in 22ms
-[14:21:41] [main/INFO] (FMLLoader) Loading FML Early Services:
-[14:21:41] [main/INFO] (FMLLoader)  - C:/Users/Administrator/.gradle/caches/fabric-loom/forge/transformed-dependencies-v1/net/neoforged/fancymodloader/691fb50f520a1442ae5c3385ef06b1e55e9d782a2453de9df39a9d13ecffff10/loader/10.0.29/loader-10.0.29.jar
-[14:21:41] [main/INFO] (FMLLoader)  - C:/Users/Administrator/.gradle/caches/modules-2/files-2.1/net.neoforged.fancymodloader/earlydisplay/10.0.29/6268812ffd0c16cc1eea921b2335d58585384574/earlydisplay-10.0.29.jar
-[14:21:41] [main/INFO] (ImmediateWindowHandler) ImmediateWindowProvider not loading because splash screen is disabled
-[14:21:41] [ForkJoinPool.commonPool-worker-9/INFO] (VulkanModDiscover) VulkanTransformationService is Loading...
-[14:21:41] [ForkJoinPool.commonPool-worker-9/INFO] (VulkanModDiscover) VulkanTransformationService is Loaded.
-[14:21:41] [ForkJoinPool.commonPool-worker-9/INFO] (GameLocator) Detected a joined NeoForge and Minecraft configuration. Applying filtering...
-[14:21:41] [ForkJoinPool.commonPool-worker-9/INFO] (ModDiscoverer) Found mod file "client-extra.jar" [locator: game locator]
-[14:21:41] [ForkJoinPool.commonPool-worker-9/INFO] (ModDiscoverer) Found mod file "neoforge-21.10.50-beta-minecraft-merged-96749c323c-1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta.jar" [locator: game locator]
-[14:21:41] [ForkJoinPool.commonPool-worker-9/INFO] (InDevFolderLocator) Got mod coordinates main%%C:\Users\Administrator\Desktop\VulkanModNeoForge\build\resources\main;main%%C:\Users\Administrator\Desktop\VulkanModNeoForge\build\classes\java\main;main%%C:\Users\Administrator\Desktop\VulkanModNeoForge\out\production\classes;main%%C:\Users\Administrator\Desktop\VulkanModNeoForge\out\production\resources from env
-[14:21:41] [ForkJoinPool.commonPool-worker-9/INFO] (ModDiscoverer) Found mod file "mr-d73ba8eb-1.0.1.jar" [locator: indevjar, reader: mod manifest]
-[14:21:41] [ForkJoinPool.commonPool-worker-9/INFO] (ModDiscoverer) Found gamelibrary file "mixinextras-neoforge-0.5.0.jar" [locator: indevjar, reader: mod manifest]
-[14:21:41] [ForkJoinPool.commonPool-worker-9/INFO] (InDevVulkanModDiscover) Got mod coordinates main%%C:\Users\Administrator\Desktop\VulkanModNeoForge\build\resources\main;main%%C:\Users\Administrator\Desktop\VulkanModNeoForge\build\classes\java\main;main%%C:\Users\Administrator\Desktop\VulkanModNeoForge\out\production\classes;main%%C:\Users\Administrator\Desktop\VulkanModNeoForge\out\production\resources from env
-[14:21:41] [ForkJoinPool.commonPool-worker-9/INFO] (ModDiscoverer) Found mod file "main" [locator: cn.ksmcbrigade.vulkan_core.services.InDevVulkanModDiscover@12c7893c, reader: mod manifest]
-[14:21:41] [ForkJoinPool.commonPool-worker-9/WARN] (JarSelector) Attempted to select a dependency jar for JarJar which was passed in as source: library:mixinextras.neoforge. Using jar(C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\io.github.llamalad7\mixinextras-neoforge\0.5.0\d734b83ce6542bb70ea31755c1595b88992dbe65\mixinextras-neoforge-0.5.0.jar)
-[14:21:41] [ForkJoinPool.commonPool-worker-9/INFO] (JarInJarDependencyLocator) Found 1 dependencies adding them to mods collection
-[14:21:41] [ForkJoinPool.commonPool-worker-9/INFO] (ModDiscoverer) Found library file "net.neoforged.neoforge-coremods-21.10.50-beta.jar" [parent: neoforge-21.10.50-beta-minecraft-merged-96749c323c-1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta.jar, locator: jarinjar, reader: mod manifest]
-[14:21:41] [ForkJoinPool.commonPool-worker-9/INFO] (ModDiscoverer) 
+[10:15:59] [main/INFO] (Entrypoint) JVM Uptime at startup: 186ms
+[10:15:59] [main/INFO] (FMLLoader) Starting FancyModLoader version 10.0.29 (CLIENT in DEV)
+[10:15:59] [main/INFO] (FMLLoader) Game directory: D:\VKN\vulkanmod-1.21.10-neoforge-only-template\run
+[10:15:59] [main/INFO] (EarlyServiceDiscovery) Found 2 early service jars (out of 135) in 43ms
+[10:15:59] [main/INFO] (FMLLoader) Loading FML Early Services:
+[10:15:59] [main/INFO] (FMLLoader)  - D:/.gradle/caches/fabric-loom/forge/transformed-dependencies-v1/net/neoforged/fancymodloader/691fb50f520a1442ae5c3385ef06b1e55e9d782a2453de9df39a9d13ecffff10/loader/10.0.29/loader-10.0.29.jar
+[10:15:59] [main/INFO] (FMLLoader)  - D:/.gradle/caches/modules-2/files-2.1/net.neoforged.fancymodloader/earlydisplay/10.0.29/6268812ffd0c16cc1eea921b2335d58585384574/earlydisplay-10.0.29.jar
+[10:15:59] [main/INFO] (ImmediateWindowHandler) ImmediateWindowProvider not loading because splash screen is disabled
+[10:15:59] [ForkJoinPool.commonPool-worker-12/INFO] (VulkanModDiscover) VulkanTransformationService is Loading...
+[10:15:59] [ForkJoinPool.commonPool-worker-12/INFO] (VulkanModDiscover) VulkanTransformationService is Loaded.
+[10:16:00] [ForkJoinPool.commonPool-worker-12/INFO] (GameLocator) Detected a joined NeoForge and Minecraft configuration. Applying filtering...
+[10:16:00] [ForkJoinPool.commonPool-worker-12/INFO] (ModDiscoverer) Found mod file "client-extra.jar" [locator: game locator]
+[10:16:00] [ForkJoinPool.commonPool-worker-12/INFO] (ModDiscoverer) Found mod file "neoforge-21.10.50-beta-minecraft-merged-5ec45b1465-1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta.jar" [locator: game locator]
+[10:16:00] [ForkJoinPool.commonPool-worker-12/INFO] (InDevFolderLocator) Got mod coordinates main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\resources\main;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\classes\java\main;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\out\production\classes;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\out\production\resources from env
+[10:16:00] [ForkJoinPool.commonPool-worker-12/INFO] (ModDiscoverer) Found mod file "mr-d73ba8eb-1.0.2.jar" [locator: indevjar, reader: mod manifest]
+[10:16:00] [ForkJoinPool.commonPool-worker-12/INFO] (ModDiscoverer) Found gamelibrary file "mixinextras-neoforge-0.5.0.jar" [locator: indevjar, reader: mod manifest]
+[10:16:00] [ForkJoinPool.commonPool-worker-12/INFO] (InDevVulkanModDiscover) Got mod coordinates main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\resources\main;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\classes\java\main;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\out\production\classes;main%%D:\VKN\vulkanmod-1.21.10-neoforge-only-template\out\production\resources from env
+[10:16:00] [ForkJoinPool.commonPool-worker-12/INFO] (ModDiscoverer) Found mod file "main" [locator: cn.ksmcbrigade.vulkan_core.services.InDevVulkanModDiscover@7156e344, reader: mod manifest]
+[10:16:00] [ForkJoinPool.commonPool-worker-12/WARN] (JarSelector) Attempted to select a dependency jar for JarJar which was passed in as source: library:mixinextras.neoforge. Using jar(D:\.gradle\caches\modules-2\files-2.1\io.github.llamalad7\mixinextras-neoforge\0.5.0\d734b83ce6542bb70ea31755c1595b88992dbe65\mixinextras-neoforge-0.5.0.jar)
+[10:16:00] [ForkJoinPool.commonPool-worker-12/INFO] (JarInJarDependencyLocator) Found 1 dependencies adding them to mods collection
+[10:16:00] [ForkJoinPool.commonPool-worker-12/INFO] (ModDiscoverer) Found library file "net.neoforged.neoforge-coremods-21.10.50-beta.jar" [parent: neoforge-21.10.50-beta-minecraft-merged-5ec45b1465-1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta.jar, locator: jarinjar, reader: mod manifest]
+[10:16:00] [ForkJoinPool.commonPool-worker-12/INFO] (ModDiscoverer) 
      Mod List:
 		Name Version (Mod Id)
 
 		Minecraft 1.21.10 (minecraft)
-		MixinRuntime 1.0.1 (mr)
+		MixinRuntime 1.0.2 (mr)
 		NeoForge 21.10.50-beta (neoforge)
 		NeoVulkanMod 0.6.5-dev (vulkanmod)
-[14:21:41] [main/INFO] (mixin) SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/C:/Users/Administrator/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.16.5+mixin.0.8.7/80fc3a9f592673cea87f4cd702f87991c6c9fe4d/sponge-mixin-0.16.5+mixin.0.8.7.jar Service=FML Env=CLIENT
-[14:21:41] [main/INFO] (FMLLoader) Loading FML Plugins:
-[14:21:41] [main/INFO] (FMLLoader)  - .cache/jij/51629231fe2baaddd60d570ef06ada2b2f1fe8a34133e63afdd748b9ef93f9f1/net.neoforged.neoforge-coremods-21.10.50-beta.jar
-[14:21:41] [main/INFO] (unprotect) Initializing Unprotect using FancyModLoader backend, target: Minecraft and loader classes (minecraft+forge)
-[14:21:41] [main/INFO] (FMLLoader) Building game content classloader:
- - minecraft (composite(jar(C:\Users\Administrator\.gradle\caches\fabric-loom\1.21.10\neoforge\21.10.50-beta\client-extra.jar), filtered(jar(C:\Users\Administrator\Desktop\VulkanModNeoForge\.gradle\loom-cache\minecraftMaven\net\minecraft\neoforge-21.10.50-beta-minecraft-merged-96749c323c\1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta\neoforge-21.10.50-beta-minecraft-merged-96749c323c-1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta.jar))))
- - mixinextras.neoforge (jar(C:\Users\Administrator\.gradle\caches\modules-2\files-2.1\io.github.llamalad7\mixinextras-neoforge\0.5.0\d734b83ce6542bb70ea31755c1595b88992dbe65\mixinextras-neoforge-0.5.0.jar))
- - mr (jar(C:\Users\Administrator\Desktop\VulkanModNeoForge\.gradle\loom-cache\remapped_mods\remapped\cn\ksmcbrigade\mr\mr-d73ba8eb\1.0.1\mr-d73ba8eb-1.0.1.jar))
- - neoforge (composite(filtered(jar(C:\Users\Administrator\Desktop\VulkanModNeoForge\.gradle\loom-cache\minecraftMaven\net\minecraft\neoforge-21.10.50-beta-minecraft-merged-96749c323c\1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta\neoforge-21.10.50-beta-minecraft-merged-96749c323c-1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta.jar))))
+[10:16:00] [main/INFO] (mixin) SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/D:/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.16.5+mixin.0.8.7/80fc3a9f592673cea87f4cd702f87991c6c9fe4d/sponge-mixin-0.16.5+mixin.0.8.7.jar Service=FML Env=CLIENT
+[10:16:00] [main/INFO] (FMLLoader) Loading FML Plugins:
+[10:16:00] [main/INFO] (FMLLoader)  - .cache/jij/51629231fe2baaddd60d570ef06ada2b2f1fe8a34133e63afdd748b9ef93f9f1/net.neoforged.neoforge-coremods-21.10.50-beta.jar
+[10:16:01] [main/INFO] (unprotect) Initializing Unprotect using FancyModLoader backend, target: Minecraft and loader classes (minecraft+forge)
+[10:16:01] [main/INFO] (FMLLoader) Building game content classloader:
+ - minecraft (composite(jar(D:\.gradle\caches\fabric-loom\1.21.10\neoforge\21.10.50-beta\client-extra.jar), filtered(jar(D:\VKN\vulkanmod-1.21.10-neoforge-only-template\.gradle\loom-cache\minecraftMaven\net\minecraft\neoforge-21.10.50-beta-minecraft-merged-5ec45b1465\1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta\neoforge-21.10.50-beta-minecraft-merged-5ec45b1465-1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta.jar))))
+ - mixinextras.neoforge (jar(D:\.gradle\caches\modules-2\files-2.1\io.github.llamalad7\mixinextras-neoforge\0.5.0\d734b83ce6542bb70ea31755c1595b88992dbe65\mixinextras-neoforge-0.5.0.jar))
+ - mr (jar(D:\VKN\vulkanmod-1.21.10-neoforge-only-template\.gradle\loom-cache\remapped_mods\remapped\cn\ksmcbrigade\mr\mr-d73ba8eb\1.0.2\mr-d73ba8eb-1.0.2.jar))
+ - neoforge (composite(filtered(jar(D:\VKN\vulkanmod-1.21.10-neoforge-only-template\.gradle\loom-cache\minecraftMaven\net\minecraft\neoforge-21.10.50-beta-minecraft-merged-5ec45b1465\1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta\neoforge-21.10.50-beta-minecraft-merged-5ec45b1465-1.21.10-loom.mappings.1_21_10.layered+hash.40359-v2-neoforge-21.10.50-beta.jar))))
  - net.neoforged.fml.generated (empty(VirtualJar\net.neoforged.fml.generated))
- - vulkanmod (composite(folder(C:\Users\Administrator\Desktop\VulkanModNeoForge\build\resources\main), folder(C:\Users\Administrator\Desktop\VulkanModNeoForge\build\classes\java\main)))
-[14:21:41] [main/INFO] (FMLLoader) Built game content classloader in 23ms
-[14:21:41] [main/INFO] (unprotect) Found 9922 Minecraft classes
-[14:21:41] [main/INFO] (MixinRuntimeMod) MixinRuntimePlugin Loading...
-[14:21:41] [main/INFO] (MixinRuntimeMod) Opening modules...
-[14:21:41] [main/INFO] (agent) Redefining class net/neoforged/fml/classloading/ModuleClassLoader
-[14:21:41] [main/INFO] (agent) Redefining class org/spongepowered/asm/service/modlauncher/ModLauncherClassTracker
-[14:21:41] [main/INFO] (agent) Redefining class net/neoforged/fml/loading/mixin/FMLClassTracker
-[14:21:41] [main/INFO] (agent) Redefining class org/spongepowered/asm/mixin/transformer/MixinProcessor
-[14:21:42] [main/INFO] (MixinRuntimeMod) MixinRuntimePlugin Loaded.
-[14:21:42] [main/ERROR] (mixin) Invalid REFMAP JSON in : org.spongepowered.include.com.google.gson.JsonSyntaxException java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1
-[14:21:42] [main/WARN] (mixin) Reference map '' for mr.mixins.json could not be read. If this is a development environment you can ignore this message
-[14:21:42] [main/INFO] (MixinExtras|Service) Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.0).
-[14:21:43] [Datafixer Bootstrap/INFO] (Minecraft) 281 Datafixer optimizations took 430 milliseconds
-[14:21:47] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
-[14:21:47] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
-[14:21:47] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
-[14:21:47] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
-[14:21:47] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
-[14:21:47] [main/WARN] (Minecraft) Ambiguity between arguments [waypoint, modify, waypoint, color, reset] and [waypoint, modify, waypoint, color, color] with inputs: [reset]
-[14:21:47] [modloading-worker-0/INFO] (MixinRuntimeMod) MixinRuntimeMod Loaded.
-[14:21:47] [modloading-worker-0/INFO] (VulkanMod) == VulkanMod ==
-[14:21:47] [modloading-worker-0/INFO] (NeoForgeMod) NeoForge mod loading, version 21.10.50-beta, for MC 1.21.10
-[14:21:47] [modloading-worker-0/INFO] (VulkanMod) Selecting Platform: WIN32
-[14:21:47] [modloading-worker-0/INFO] (VulkanMod) GLFW: 3.4.0 Win32 WGL Null EGL OSMesa VisualC DLL
-[14:21:47] [modloading-worker-0/INFO] (VulkanMod) Reapply mixins...
-[14:21:47] [modloading-worker-0/INFO] (agent) Redefining class net/vulkanmod/mixin/compatibility/gl/GL11M
-[14:21:47] [modloading-worker-0/INFO] (agent) Redefining class org/lwjgl/opengl/GL11
-[14:21:47] [modloading-worker-0/WARN] (mixin) Method overwrite conflict for glDepthFunc in mr.mixins.json:test.GL11Mixin from mod mr, previously written by net.vulkanmod.mixin.compatibility.gl.GL11M. Skipping method.
-[14:21:48] [modloading-worker-0/WARN] (mixin) Method overwrite conflict for glDepthFunc in mr.mixins.json:test.GL11Mixin from mod mr, previously written by net.vulkanmod.mixin.compatibility.gl.GL11M. Skipping method.
-[14:21:48] [modloading-worker-0/INFO] (agent) Redefining class org/lwjgl/opengl/GL11
-[14:21:48] [modloading-worker-0/WARN] (mixin) Method overwrite conflict for glDepthFunc in mr.mixins.json:test.GL11Mixin from mod mr, previously written by net.vulkanmod.mixin.compatibility.gl.GL11M. Skipping method.
-[14:21:48] [modloading-worker-0/INFO] (agent) Redefining class net/vulkanmod/mixin/compatibility/gl/GL14M
-[14:21:48] [modloading-worker-0/INFO] (agent) Redefining class org/lwjgl/opengl/GL14
-[14:21:48] [modloading-worker-0/INFO] (agent) Redefining class org/lwjgl/opengl/GL14
-[14:21:48] [modloading-worker-0/INFO] (agent) Redefining class net/vulkanmod/mixin/compatibility/gl/GL15M
-[14:21:48] [modloading-worker-0/INFO] (agent) Redefining class org/lwjgl/opengl/GL15
-[14:21:48] [modloading-worker-0/INFO] (agent) Redefining class org/lwjgl/opengl/GL15
-[14:21:48] [modloading-worker-0/INFO] (agent) Redefining class net/vulkanmod/mixin/compatibility/gl/GL30M
-[14:21:48] [modloading-worker-0/INFO] (agent) Redefining class org/lwjgl/opengl/GL30
-[14:21:48] [modloading-worker-0/INFO] (agent) Redefining class org/lwjgl/opengl/GL30
-[14:21:48] [modloading-worker-0/INFO] (agent) Redefining class net/vulkanmod/mixin/matrix/Matrix4fM
-[14:21:48] [modloading-worker-0/INFO] (agent) Redefining class org/joml/Matrix4f
-[14:21:48] [modloading-worker-0/INFO] (agent) Redefining class org/joml/Matrix4f
-[14:21:48] [Render thread/INFO] (Minecraft) Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
-[14:21:48] [Render thread/INFO] (Minecraft) Setting user: Dev
-[14:21:49] [Render thread/INFO] (Minecraft) Backend library: LWJGL version 3.3.3+5
-[14:21:49] [Render thread/WARN] (Minecraft) Detected unexpected shutdown during last game startup: resetting fullscreen mode
-[14:21:49] [Render thread/FATAL] (NeoForgeMod) Preparing crash report with UUID f721bd4d-53f1-49e5-936f-31af839bff1c
-[14:21:49] [Render thread/FATAL] (NeoForgeMod) Preparing crash report with UUID b2dcb6a2-4dd7-48fc-8e50-28da8dccefe4
+ - vulkanmod (composite(folder(D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\resources\main), folder(D:\VKN\vulkanmod-1.21.10-neoforge-only-template\build\classes\java\main)))
+[10:16:01] [main/INFO] (FMLLoader) Built game content classloader in 56ms
+[10:16:01] [main/INFO] (unprotect) Found 9922 Minecraft classes
+[10:16:01] [main/INFO] (MixinRuntimeMod) MixinRuntimePlugin Loading...
+[10:16:01] [main/INFO] (MixinRuntimeMod) Opening modules...
+[10:16:01] [main/INFO] (agent) Redefining class net/neoforged/fml/classloading/ModuleClassLoader
+[10:16:02] [main/INFO] (agent) Redefining class org/spongepowered/asm/service/modlauncher/ModLauncherClassTracker
+[10:16:02] [main/INFO] (agent) Redefining class net/neoforged/fml/loading/mixin/FMLClassTracker
+[10:16:02] [main/INFO] (agent) Redefining class org/spongepowered/asm/mixin/transformer/MixinProcessor
+[10:16:02] [main/INFO] (MixinRuntimeMod) MixinRuntimePlugin Loaded.
+[10:16:02] [main/ERROR] (mixin) Invalid REFMAP JSON in : org.spongepowered.include.com.google.gson.JsonSyntaxException java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING at line 1 column 1
+[10:16:02] [main/WARN] (mixin) Reference map '' for mr.mixins.json could not be read. If this is a development environment you can ignore this message
+[10:16:03] [main/INFO] (MixinExtras|Service) Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.0).
+[10:16:05] [Datafixer Bootstrap/INFO] (Minecraft) 281 Datafixer optimizations took 774 milliseconds
+[10:16:14] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[10:16:14] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[10:16:14] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[10:16:14] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[10:16:14] [main/WARN] (Minecraft) Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[10:16:14] [main/WARN] (Minecraft) Ambiguity between arguments [waypoint, modify, waypoint, color, reset] and [waypoint, modify, waypoint, color, color] with inputs: [reset]
+[10:16:14] [modloading-worker-0/INFO] (MixinRuntimeMod) MixinRuntimeMod Loaded.
+[10:16:14] [modloading-worker-0/INFO] (VulkanMod) == VulkanMod ==
+[10:16:14] [modloading-worker-0/INFO] (NeoForgeMod) NeoForge mod loading, version 21.10.50-beta, for MC 1.21.10
+[10:16:14] [modloading-worker-0/INFO] (VulkanMod) Selecting Platform: WIN32
+[10:16:14] [modloading-worker-0/INFO] (VulkanMod) GLFW: 3.4.0 Win32 WGL Null EGL OSMesa VisualC DLL
+[10:16:15] [Render thread/INFO] (Minecraft) Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[10:16:15] [Render thread/INFO] (Minecraft) Setting user: Dev
+[10:16:15] [Render thread/INFO] (Minecraft) Backend library: LWJGL version 3.3.3+5
+[10:16:15] [Render thread/WARN] (Minecraft) Detected unexpected shutdown during last game startup: resetting fullscreen mode
+[10:16:16] [Render thread/INFO] (Minecraft) Using optional rendering extensions: 
+[10:16:17] [Render thread/INFO] (Minecraft) Reloading ResourceManager: vanilla, mod_resources, mod/vulkanmod, mod/mr, mod/neoforge
+[10:16:18] [resourceLoad/WARN] (JarContentsPackResources) Invalid path in datapack: vulkanmod:shaders/basic/terrain/terrain_Z.fsh, ignoring
+[10:16:18] [resourceLoad/WARN] (JarContentsPackResources) Invalid path in datapack: vulkanmod:shaders/basic/terrain_earlyZ/terrain_earlyZ.fsh, ignoring
+[10:16:18] [resourceLoad/WARN] (JarContentsPackResources) Invalid path in datapack: vulkanmod:shaders/basic/terrain_earlyZ/terrain_earlyZ.json, ignoring
+[10:16:18] [resourceLoad/INFO] (Minecraft) Found unifont_pua-16.0.03.hex, loading
+[10:16:18] [resourceLoad/INFO] (Minecraft) Found unifont_all_no_pua-16.0.03.hex, loading
+[10:16:18] [resourceLoad/INFO] (Minecraft) Found unifont_jp_patch-16.0.03.hex, loading
+[10:16:20] [Render thread/INFO] (Minecraft) Caught error loading resourcepacks, removing all selected resourcepacks
+java.util.concurrent.CompletionException: java.lang.RuntimeException: Failed to compile shader pipeline/item_entity_translucent_cull.vsh into SPIR-V:
+	pipeline/item_entity_translucent_cull.vsh:63: error: 'location' : SPIR-V requires location for user input/output
+pipeline/item_entity_translucent_cull.vsh:64: error: 'location' : SPIR-V requires location for user input/output
+pipeline/item_entity_translucent_cull.vsh:65: error: 'location' : SPIR-V requires location for user input/output
+pipeline/item_entity_translucent_cull.vsh:66: error: 'location' : SPIR-V requires location for user input/output
+pipeline/item_entity_translucent_cull.vsh:67: error: 'location' : SPIR-V requires location for user input/output
+pipeline/item_entity_translucent_cull.vsh:75: error: '' :  syntax error, unexpected IDENTIFIER
+
+	at java.base/java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:315) ~[?:?]
+	at java.base/java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:320) ~[?:?]
+	at java.base/java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:722) ~[?:?]
+	at java.base/java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:482) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.10/net.minecraft.server.packs.resources.SimpleReloadInstance.method_67574(SimpleReloadInstance.java:72) ~[client-extra.jar:?]
+	at TRANSFORMER/minecraft@1.21.10/net.minecraft.util.thread.BlockableEventLoop.doRunTask(BlockableEventLoop.java:156) ~[client-extra.jar:?]
+	at TRANSFORMER/minecraft@1.21.10/net.minecraft.util.thread.ReentrantBlockableEventLoop.doRunTask(ReentrantBlockableEventLoop.java:24) ~[client-extra.jar:?]
+	at TRANSFORMER/minecraft@1.21.10/net.minecraft.util.thread.BlockableEventLoop.pollTask(BlockableEventLoop.java:130) ~[client-extra.jar:?]
+	at TRANSFORMER/minecraft@1.21.10/net.minecraft.util.thread.BlockableEventLoop.runAllTasks(BlockableEventLoop.java:115) ~[client-extra.jar:?]
+	at TRANSFORMER/minecraft@1.21.10/net.minecraft.client.Minecraft.runTick(Minecraft.java:1292) [client-extra.jar:?]
+	at TRANSFORMER/minecraft@1.21.10/net.minecraft.client.Minecraft.run(Minecraft.java:928) [client-extra.jar:?]
+	at TRANSFORMER/minecraft@1.21.10/net.minecraft.client.main.Main.main(Main.java:229) [client-extra.jar:?]
+	at net.neoforged.fml.startup.Client.main(Client.java:19) [loader-10.0.29.jar:10.0]
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86) [dev-launch-injector-0.2.1+build.8.jar:?]
+Caused by: java.lang.RuntimeException: Failed to compile shader pipeline/item_entity_translucent_cull.vsh into SPIR-V:
+	pipeline/item_entity_translucent_cull.vsh:63: error: 'location' : SPIR-V requires location for user input/output
+pipeline/item_entity_translucent_cull.vsh:64: error: 'location' : SPIR-V requires location for user input/output
+pipeline/item_entity_translucent_cull.vsh:65: error: 'location' : SPIR-V requires location for user input/output
+pipeline/item_entity_translucent_cull.vsh:66: error: 'location' : SPIR-V requires location for user input/output
+pipeline/item_entity_translucent_cull.vsh:67: error: 'location' : SPIR-V requires location for user input/output
+pipeline/item_entity_translucent_cull.vsh:75: error: '' :  syntax error, unexpected IDENTIFIER
+
+	at TRANSFORMER/vulkanmod@0.6.5-dev/net.vulkanmod.vulkan.shader.SPIRVUtils.compileShader(SPIRVUtils.java:117) ~[main/:?]
+	at TRANSFORMER/vulkanmod@0.6.5-dev/net.vulkanmod.vulkan.shader.Pipeline$Builder.compileShaders(Pipeline.java:311) ~[main/:?]
+	at TRANSFORMER/vulkanmod@0.6.5-dev/net.vulkanmod.render.engine.VkGpuDevice.compilePipeline(VkGpuDevice.java:369) ~[main/:?]
+	at TRANSFORMER/vulkanmod@0.6.5-dev/net.vulkanmod.render.engine.VkGpuDevice.precompilePipeline(VkGpuDevice.java:294) ~[main/:?]
+	at TRANSFORMER/minecraft@1.21.10/net.minecraft.client.renderer.ShaderManager.apply(ShaderManager.java:162) ~[client-extra.jar:?]
+	at TRANSFORMER/minecraft@1.21.10/net.minecraft.client.renderer.ShaderManager.apply(ShaderManager.java:45) ~[client-extra.jar:?]
+	at TRANSFORMER/minecraft@1.21.10/net.minecraft.server.packs.resources.SimplePreparableReloadListener.method_18790(SimplePreparableReloadListener.java:16) ~[client-extra.jar:?]
+	at java.base/java.util.concurrent.CompletableFuture$UniAccept.tryFire(CompletableFuture.java:718) ~[?:?]
+	... 11 more
+[10:16:20] [Render thread/INFO] (Minecraft) Reloading ResourceManager: vanilla, mod_resources, mod/vulkanmod, mod/mr, mod/neoforge
+[10:16:20] [resourceLoad/WARN] (JarContentsPackResources) Invalid path in datapack: vulkanmod:shaders/basic/terrain/terrain_Z.fsh, ignoring
+[10:16:20] [resourceLoad/WARN] (JarContentsPackResources) Invalid path in datapack: vulkanmod:shaders/basic/terrain_earlyZ/terrain_earlyZ.fsh, ignoring
+[10:16:20] [resourceLoad/WARN] (JarContentsPackResources) Invalid path in datapack: vulkanmod:shaders/basic/terrain_earlyZ/terrain_earlyZ.json, ignoring
+[10:16:20] [resourceLoad/INFO] (Minecraft) Found unifont_all_no_pua-16.0.03.hex, loading
+[10:16:20] [resourceLoad/INFO] (Minecraft) Found unifont_pua-16.0.03.hex, loading
+[10:16:20] [resourceLoad/INFO] (Minecraft) Found unifont_jp_patch-16.0.03.hex, loading

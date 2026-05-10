@@ -15,6 +15,7 @@ import com.mojang.blaze3d.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.render.GuiRenderer;
 import net.minecraft.util.ARGB;
 import net.vulkanmod.gl.VkGlFramebuffer;
 import net.vulkanmod.gl.VkGlTexture;
@@ -715,7 +716,8 @@ public class VkCommandEncoder implements CommandEncoder {
             if (GlRenderPass.VALIDATION) {
                 if (indexType != null) {
                     if (renderPass.indexBuffer == null) {
-                        throw new IllegalStateException("Missing index buffer");
+                        return;
+                        //throw new IllegalStateException("Missing index buffer");
                     }
 
                     if (renderPass.indexBuffer.isClosed()) {

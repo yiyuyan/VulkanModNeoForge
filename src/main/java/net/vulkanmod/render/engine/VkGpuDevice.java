@@ -278,6 +278,7 @@ public class VkGpuDevice implements GpuDevice {
                 String src = ShaderLoadUtil.getShaderSource(resourceLocation, shaderType);
 
                 if (src == null) {
+                    System.out.println(resourceLocation+" : "+shaderType);
                     throw new RuntimeException("shader: (%s) not found.");
                 }
 

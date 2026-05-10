@@ -11,6 +11,7 @@ import net.vulkanmod.vulkan.shader.SPIRVUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
@@ -22,7 +23,17 @@ import java.util.Set;
 
 public abstract class ShaderLoadUtil {
 
-    public static final String RESOURCES_PATH = SPIRVUtils.class.getResource("/assets/vulkanmodY").toExternalForm();
+
+    public static final String RESOURCES_PATH;
+
+    static {
+        try {
+            RESOURCES_PATH = new File(SPIRVUtils.class.getResource("/assets/vulkanmod/Vlogo.png").toURI()).getParentFile().toURL().toExternalForm();
+        } catch (MalformedURLException | URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static final String SHADERS_PATH = "%s/shaders/".formatted(RESOURCES_PATH);
 
     public static final Set<String> REMAPPED_SHADERS = Sets.newHashSet("core/screenquad.vsh",
@@ -149,6 +160,8 @@ public abstract class ShaderLoadUtil {
         String[] splitPath = splitPath(path);
         String shaderName = "%s%s".formatted(splitPath[1], shaderExtension);
         String shaderFile = "%s/shaders/%s/%s".formatted(RESOURCES_PATH, path, shaderName);
+
+        System.out.println(shaderFile);
 
         InputStream stream;
         try {

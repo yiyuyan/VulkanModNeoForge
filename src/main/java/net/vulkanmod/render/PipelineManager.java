@@ -10,7 +10,6 @@ import net.vulkanmod.render.vertex.CustomVertexFormat;
 import net.vulkanmod.render.vertex.TerrainRenderType;
 import net.vulkanmod.vulkan.shader.GraphicsPipeline;
 import net.vulkanmod.vulkan.shader.Pipeline;
-import net.vulkanmod.vulkan.shader.SPIRVUtils;
 
 import java.util.function.Function;
 
@@ -44,14 +43,6 @@ public abstract class PipelineManager {
 
     private static GraphicsPipeline createPipeline(String configName, VertexFormat vertexFormat) {
         Pipeline.Builder pipelineBuilder = new Pipeline.Builder(vertexFormat, configName);
-
-        try {
-            System.out.println("d: "+SPIRVUtils.class.getClassLoader().getResources("/assets/vulkanmod"));
-            System.out.println(SPIRVUtils.class.getClassLoader().getResource("/assets/vulkanmod"));
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
 
         final String path = ShaderLoadUtil.resolveShaderPath("basic");
         JsonObject config = ShaderLoadUtil.getJsonConfig(path, configName);

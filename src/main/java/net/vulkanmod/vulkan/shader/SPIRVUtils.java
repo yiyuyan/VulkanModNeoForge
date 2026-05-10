@@ -1,6 +1,8 @@
 package net.vulkanmod.vulkan.shader;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.vulkanmod.Initializer;
+import org.apache.commons.io.IOUtils;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.NativeResource;
 import org.lwjgl.util.shaderc.ShadercIncludeResolveI;
@@ -16,6 +18,7 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 import static org.lwjgl.system.MemoryUtil.NULL;
 import static org.lwjgl.system.MemoryUtil.memASCII;
@@ -72,10 +75,33 @@ public class SPIRVUtils {
             includePaths.add(url.toExternalForm());
     }
 
+    private static String processSource(String source){
+        StringBuilder builder = new StringBuilder();
+        for (String string : source.split("\n")) {
+            if(string.startsWith("#include")){
+                try {
+                    String included = string.replace("#include","").replace(" ","")
+                            .replace("\"","").replace("\r","").replace("\n","");
+                    builder.append(IOUtils.toString(Objects.requireNonNull(SPIRVUtils.class.getResourceAsStream("/assets/vulkanmod/shaders/include/" + included))));
+                } catch (IOException e) {
+                    Initializer.LOGGER.error("Can't process the shader source: {}",source);
+                    builder.append(string);
+                }
+            }
+            else{
+                builder.append(string);
+            }
+            builder.append("\n");
+        }
+        return builder.toString();
+    }
+
     public static SPIRV compileShader(String filename, String source, ShaderKind shaderKind) {
         if (source == null) {
             throw new NullPointerException("source for %s.%s is null".formatted(filename, shaderKind));
         }
+
+        source = processSource(source);
 
         long result = shaderc_compile_into_spv(compiler, source, shaderKind.kind, filename, "main", options);
 
@@ -85,6 +111,9 @@ public class SPIRVUtils {
 
         if (shaderc_result_get_compilation_status(result) != shaderc_compilation_status_success) {
             String errorMessage = shaderc_result_get_error_message(result);
+            if(filename.contains("item_entity_translucent_cull")){
+                System.out.println(source);
+            }
             throw new RuntimeException("Failed to compile shader %s into SPIR-V:\n\t%s".formatted(filename, errorMessage));
         }
 

@@ -16,6 +16,7 @@ import java.util.function.Supplier;
 
 
 import net.minecraft.SharedConstants;
+import net.vulkanmod.Initializer;
 import net.vulkanmod.interfaces.shader.ExtendedRenderPipeline;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -162,6 +163,8 @@ public class VkRenderPass implements RenderPass {
     public void setIndexBuffer(@Nullable GpuBuffer gpuBuffer, VertexFormat.IndexType indexType) {
         this.indexBuffer = gpuBuffer;
         this.indexType = indexType;
+
+        Initializer.LOGGER.warn("td: ",new Throwable("catch me!!!"));
     }
 
     @Override
