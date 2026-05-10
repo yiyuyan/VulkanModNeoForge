@@ -716,20 +716,20 @@ public class VkCommandEncoder implements CommandEncoder {
             if (GlRenderPass.VALIDATION) {
                 if (indexType != null) {
                     if (renderPass.indexBuffer == null) {
-                        return;
-                        //throw new IllegalStateException("Missing index buffer");
+                       // throw new IllegalStateException("Missing index buffer");
+                        indexType = null;
                     }
 
-                    if (renderPass.indexBuffer.isClosed()) {
+                    if (renderPass.indexBuffer!=null && renderPass.indexBuffer.isClosed()) {
                         throw new IllegalStateException("Index buffer has been closed!");
                     }
                 }
 
                 if (renderPass.vertexBuffers[0] == null) {
-                    throw new IllegalStateException("Missing vertex buffer at slot 0");
+                    //throw new IllegalStateException("Missing vertex buffer at slot 0");
                 }
 
-                if (renderPass.vertexBuffers[0].isClosed()) {
+                if (renderPass.vertexBuffers[0]!=null && renderPass.vertexBuffers[0].isClosed()) {
                     throw new IllegalStateException("Vertex buffer at slot 0 has been closed!");
                 }
             }

@@ -1,5 +1,4 @@
 #version 450
-#include "fog.glsl"
 
 layout(binding = 2) uniform sampler2D Sampler0;
 
@@ -15,6 +14,10 @@ layout(location = 1) in vec2 texCoord0;
 layout(location = 2) in float vertexDistance;
 
 layout(location = 0) out vec4 fragColor;
+
+vec4 linear_fog(vec4 inColor, float vertexDistance, float fogStart, float fogEnd, vec4 fogColor) {
+    return (vertexDistance <= fogStart) ? inColor : mix(inColor, fogColor, smoothstep(fogStart, fogEnd, vertexDistance) * fogColor.a);
+}
 
 void main() {
     vec4 color = texture(Sampler0, texCoord0) * vertexColor * ColorModulator;

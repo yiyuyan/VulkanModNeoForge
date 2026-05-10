@@ -54,11 +54,14 @@ public class EGlProgram {
 
         for (String samplerName : samplers) {
             var imageDescriptor = pipeline.getImageDescriptor(samplerName);
+            if (imageDescriptor == null) {
+                LOGGER.warn("Sampler '{}' not found in pipeline descriptors, skipping", samplerName);
+                continue;
+            }
             int binding = imageDescriptor.getBinding();
             int imageIdx = imageDescriptor.imageIdx;
             this.uniformsByName.put(samplerName, new Uniform.Sampler(binding, imageIdx));
         }
-
     }
 
     @Nullable

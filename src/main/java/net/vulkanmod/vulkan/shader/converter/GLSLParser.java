@@ -85,73 +85,62 @@ public class GLSLParser {
                                 }
                                 catch (Exception e){
                                     int savedIdx = this.currentTokenIdx - 1;
-                                    // 跳过 layout 之后的空格和注释，获取下一个 token
-                                    int peekIdx = currentTokenIdx;
-                                    Token nextToken;
-                                    do {
-                                        nextToken = tokens.get(peekIdx++);
-                                    } while (nextToken.type == Token.TokenType.SPACING || nextToken.type == Token.TokenType.COMMENT);
 
-                                    if (nextToken.type != Token.TokenType.LEFT_PARENTHESIS) {
-                                        // 不是布局限定符，原样输出
+                                    int peekIdx = currentTokenIdx;
+                                    Token peekToken;
+                                    do {
+                                        peekToken = tokens.get(peekIdx++);
+                                    } while (peekToken.type == Token.TokenType.SPACING || peekToken.type == Token.TokenType.COMMENT);
+
+                                    if (peekToken.type != Token.TokenType.LEFT_PARENTHESIS) {
                                         appendToken(tokens.get(savedIdx));
                                         advanceToken();
                                         continue;
                                     }
 
-                                    // 跳过括号内容
                                     this.currentTokenIdx = peekIdx;
-                                    advanceToken(true); // 现在 currentToken 是 '('
+                                    advanceToken(true);
                                     int depth = 1;
                                     while (depth > 0) {
                                         advanceToken(true);
                                         if (currentToken.type == Token.TokenType.LEFT_PARENTHESIS) depth++;
                                         else if (currentToken.type == Token.TokenType.RIGHT_PARENTHESIS) depth--;
                                     }
-                                    // 当前是 ')'
-                                    peekIdx = currentTokenIdx;
-                                    do {
-                                        nextToken = tokens.get(peekIdx++);
-                                    } while (nextToken.type == Token.TokenType.SPACING || nextToken.type == Token.TokenType.COMMENT);
 
-                                    switch (nextToken.value) {
+                                    int afterParenIdx = currentTokenIdx;
+                                    Token afterParen;
+                                    do {
+                                        afterParen = tokens.get(afterParenIdx++);
+                                    } while (afterParen.type == Token.TokenType.SPACING || afterParen.type == Token.TokenType.COMMENT);
+
+                                    switch (afterParen.value) {
+                                        case "in", "out" -> {
+                                            this.currentTokenIdx = afterParenIdx - 1;
+                                            this.currentToken = afterParen;
+                                            parseAttribute();
+                                        }
                                         case "uniform" -> {
-                                            // 再偷看 uniform 后面一个 token，以区分 Uniform Block 和普通 uniform
-                                            int uniformPeekIdx = peekIdx;
+                                            int afterUniformIdx = afterParenIdx;
                                             Token afterUniform;
                                             do {
-                                                afterUniform = tokens.get(uniformPeekIdx++);
+                                                afterUniform = tokens.get(afterUniformIdx++);
                                             } while (afterUniform.type == Token.TokenType.SPACING || afterUniform.type == Token.TokenType.COMMENT);
 
-                                            // 如果 uniform 后是 sampler 类型，则调用 parseUniform（sampler 解析）
-                                            if (List.of("sampler2D", "samplerCube", "isamplerBuffer").contains(afterUniform.value)) {
-                                                currentTokenIdx = savedIdx;
-                                                currentToken = tokens.get(currentTokenIdx);
-                                                parseUniform(); // 内部会推进到末尾
+                                            if (Set.of("sampler2D", "samplerCube", "isamplerBuffer").contains(afterUniform.value)) {
+                                                this.currentTokenIdx = savedIdx;
+                                                this.currentToken = tokens.get(savedIdx);
+                                                parseUniform();
                                             } else {
-                                                // 否则按 Uniform Block 处理
-                                                currentTokenIdx = savedIdx;
-                                                currentToken = tokens.get(currentTokenIdx);
+                                                this.currentTokenIdx = savedIdx;
+                                                this.currentToken = tokens.get(savedIdx);
                                                 parseUniformBlock();
                                             }
                                         }
-                                        case "in", "out" -> {
-                                            // 属性声明：需要生成带 location 的 layout
-                                            // 简单起见，我们可以直接重新构造一个节点，但前提是能拿到 location
-                                            // 这里假设 vertexFormat 已在 parser 中设置
-                                            // 解析出属性名和类型
-                                            // 先还原到 layout 之前，然后手动推进提取信息，或直接调用 parseAttribute 并确保它输出 location
-                                            // 修改 parseAttribute，使其生成的 Node 包含 layout(location=...)
-                                            currentTokenIdx = peekIdx - 1; // 让 nextToken 成为 in/out
-                                            currentToken = nextToken;
-                                            parseAttribute(); // 确保 parseAttribute 内部生成的 Node 带有 location
-                                        }
                                         default -> {
-                                            // 其他 layout，原样追加全部内容
-                                            currentTokenIdx = savedIdx;
-                                            currentToken = tokens.get(currentTokenIdx);
-                                            while (currentTokenIdx < peekIdx) {
-                                                appendToken(currentToken);
+                                            this.currentTokenIdx = savedIdx;
+                                            this.currentToken = tokens.get(savedIdx);
+                                            while (this.currentTokenIdx < afterParenIdx - 1) {
+                                                appendToken(this.currentToken);
                                                 advanceToken(false);
                                             }
                                         }
@@ -322,7 +311,6 @@ public class GLSLParser {
 
         advanceToken(true);
 
-        System.out.println(this.currentToken.value);
         if (!Objects.equals(this.currentToken.value, "uniform")) {
             throw new IllegalStateException("value != uniform");
         }

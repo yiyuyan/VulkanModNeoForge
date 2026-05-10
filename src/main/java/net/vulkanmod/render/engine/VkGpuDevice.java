@@ -375,9 +375,14 @@ public class VkGpuDevice implements GpuDevice {
             throw new RuntimeException("Exception while compiling pipeline %s".formatted(renderPipeline));
         }
 
-        EGlProgram eGlProgram = new EGlProgram(1, configName);
-        eGlProgram.setupUniforms(pipeline, renderPipeline.getUniforms(), renderPipeline.getSamplers());
-        extPipeline.setProgram(eGlProgram);
+        try {
+            EGlProgram eGlProgram = new EGlProgram(1, configName);
+            eGlProgram.setupUniforms(pipeline, renderPipeline.getUniforms(), renderPipeline.getSamplers());
+            extPipeline.setProgram(eGlProgram);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
 
         extPipeline.setPipeline(pipeline);
     }

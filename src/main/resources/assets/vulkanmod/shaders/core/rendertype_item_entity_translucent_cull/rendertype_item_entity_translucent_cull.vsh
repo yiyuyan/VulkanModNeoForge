@@ -1,8 +1,5 @@
 #version 450
 
-#include "light.glsl"
-#include "fog.glsl"
-
 layout(location = 0) in vec3 Position;
 layout(location = 1) in vec4 Color;
 layout(location = 2) in vec2 UV0;
@@ -20,6 +17,29 @@ layout(binding = 3) uniform sampler2D Sampler2;
 layout(location = 0) out vec4 vertexColor;
 layout(location = 1) out vec2 texCoord0;
 layout(location = 2) out float vertexDistance;
+
+const float MINECRAFT_LIGHT_POWER = (0.6);
+const float MINECRAFT_AMBIENT_LIGHT = (0.4);
+
+float fog_distance(vec3 pos, int shape) {
+    if (shape == 0) {
+        return length(pos);
+    } else {
+        float distXZ = length(pos.xz);
+        float distY = abs(pos.y);
+        return max(distXZ, distY);
+    }
+}
+
+vec4 minecraft_mix_light(vec3 lightDir0, vec3 lightDir1, vec3 normal, vec4 color) {
+    lightDir0 = normalize(lightDir0);
+    lightDir1 = normalize(lightDir1);
+    float light0 = max(0.0, dot(lightDir0, normal));
+    float light1 = max(0.0, dot(lightDir1, normal));
+    float lightAccum = min(1.0, fma((light0 + light1), MINECRAFT_LIGHT_POWER, MINECRAFT_AMBIENT_LIGHT));
+    return vec4(color.rgb * lightAccum, color.a);
+}
+
 
 void main() {
     gl_Position = MVP * vec4(Position, 1.0);
