@@ -21,13 +21,6 @@ public abstract class UpdateChecker {
                 String version = String.valueOf(versions.get(0).getAsJsonObject().get("version_number")).replace("\"", "");
 
                 var currentVersion = VersionParser.parseSemantic(Initializer.getVersion());
-
-                if (currentVersion.getPrereleaseKey().isPresent()) {
-                    Initializer.LOGGER.info("Pre-release version, skipping update check.");
-
-                    return null;
-                }
-
                 updateAvailable = currentVersion.compareTo(Version.parse(version)) < 0;
 
                 if (updateAvailable) {

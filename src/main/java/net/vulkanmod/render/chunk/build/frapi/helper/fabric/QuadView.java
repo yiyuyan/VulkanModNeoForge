@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces;
+package net.vulkanmod.render.chunk.build.frapi.helper.fabric;
 
 import net.minecraft.util.TriState;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.ShadeMode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;

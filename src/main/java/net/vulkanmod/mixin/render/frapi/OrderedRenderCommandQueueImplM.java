@@ -17,6 +17,7 @@
 package net.vulkanmod.mixin.render.frapi;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.MeshView;
 
 import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.RenderType;
@@ -27,15 +28,14 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.vulkanmod.render.chunk.build.frapi.accessor.AccessRenderCommandQueue;
-import net.vulkanmod.render.chunk.build.frapi.mesh.MeshImpl;
 import org.spongepowered.asm.mixin.Mixin;
 
 import java.util.List;
 
 @Mixin(SubmitNodeStorage.class)
-public abstract class OrderedRenderCommandQueueImplM implements SubmitNodeCollector, AccessRenderCommandQueue {
+abstract class OrderedRenderCommandQueueImplM implements SubmitNodeCollector, AccessRenderCommandQueue {
     @Override
-    public void submitItem(PoseStack matrices, ItemDisplayContext displayContext, int light, int overlay, int outlineColors, int[] tintLayers, List<BakedQuad> quads, RenderType renderLayer, ItemStackRenderState.FoilType glintType, MeshImpl mesh) {
+    public void submitItem(PoseStack matrices, ItemDisplayContext displayContext, int light, int overlay, int outlineColors, int[] tintLayers, List<BakedQuad> quads, RenderType renderLayer, ItemStackRenderState.FoilType glintType, MeshView mesh) {
         OrderedSubmitNodeCollector queue = order(0);
 
         if (queue instanceof AccessRenderCommandQueue access) {

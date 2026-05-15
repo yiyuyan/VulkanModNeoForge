@@ -19,7 +19,6 @@ package net.vulkanmod.render.chunk.build.frapi.helper.fabric;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.MutableQuadView;
 
 /**
  * Handles most texture-baking use cases for model loaders and model libraries

@@ -8,8 +8,6 @@ import com.mojang.blaze3d.systems.ScissorState;
 import com.mojang.blaze3d.textures.GpuTexture;
 import com.mojang.blaze3d.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.VertexFormat;
-
-import java.nio.ByteBuffer;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,20 +15,11 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 
+
 import net.minecraft.SharedConstants;
-import net.vulkanmod.Initializer;
 import net.vulkanmod.interfaces.shader.ExtendedRenderPipeline;
-import net.vulkanmod.vulkan.Renderer;
-import net.vulkanmod.vulkan.Vulkan;
-import net.vulkanmod.vulkan.memory.buffer.StagingBuffer;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import org.lwjgl.system.MemoryStack;
-import org.lwjgl.vulkan.VkBufferCopy;
-import org.lwjgl.vulkan.VkCommandBuffer;
-
-import static org.lwjgl.vulkan.VK10.VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
-import static org.lwjgl.vulkan.VK10.vkCmdCopyBuffer;
 
 
 public class VkRenderPass implements RenderPass {
@@ -163,8 +152,7 @@ public class VkRenderPass implements RenderPass {
 
     @Override
     public void setVertexBuffer(int i, GpuBuffer gpuBuffer) {
-        //Initializer.LOGGER.warn("i: {} buffer: {}",i,gpuBuffer,new Throwable("ctm!!!!"));
-        if (i == 0) {
+        if (i >= 0 && i < 1) {
             this.vertexBuffers[i] = gpuBuffer;
         } else {
             throw new IllegalArgumentException("Vertex buffer slot is out of range: " + i);
@@ -175,8 +163,6 @@ public class VkRenderPass implements RenderPass {
     public void setIndexBuffer(@Nullable GpuBuffer gpuBuffer, VertexFormat.IndexType indexType) {
         this.indexBuffer = gpuBuffer;
         this.indexType = indexType;
-
-        //Initializer.LOGGER.warn("td: ",new Throwable("catch me!!!"));
     }
 
     @Override
@@ -227,7 +213,5 @@ public class VkRenderPass implements RenderPass {
     public @Nullable RenderPipeline getPipeline() {
         return pipeline;
     }
-
-
 }
 

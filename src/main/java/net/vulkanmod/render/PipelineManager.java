@@ -16,6 +16,10 @@ import java.util.function.Function;
 public abstract class PipelineManager {
     public static VertexFormat terrainVertexFormat;
 
+    public static void setTerrainVertexFormat(VertexFormat format) {
+        terrainVertexFormat = format;
+    }
+
     static GraphicsPipeline
             terrainShader, terrainShaderEarlyZ,
             fastBlitPipeline, cloudsPipeline;
@@ -25,18 +29,18 @@ public abstract class PipelineManager {
     public static void init() {
         setTerrainVertexFormat(CustomVertexFormat.COMPRESSED_TERRAIN);
         createBasicPipelines();
-        setDefaultTerrainShaderGetter();
+        setDefaultShader();
         ThreadBuilderPack.defaultTerrainBuilderConstructor();
     }
 
-    public static void setDefaultTerrainShaderGetter() {
+    public static void setDefaultShader() {
         setShaderGetter(
                 renderType -> renderType == TerrainRenderType.TRANSLUCENT ? terrainShaderEarlyZ : terrainShader);
     }
 
     private static void createBasicPipelines() {
-        terrainShaderEarlyZ = createPipeline("terrain_earlyZ", CustomVertexFormat.COMPRESSED_TERRAIN);
-        terrainShader = createPipeline("terrain", CustomVertexFormat.COMPRESSED_TERRAIN);
+        terrainShaderEarlyZ = createPipeline("terrain_earlyZ", terrainVertexFormat);
+        terrainShader = createPipeline("terrain", terrainVertexFormat);
         fastBlitPipeline = createPipeline("blit", CustomVertexFormat.NONE);
         cloudsPipeline = createPipeline("clouds", DefaultVertexFormat.POSITION_COLOR);
     }
@@ -65,14 +69,6 @@ public abstract class PipelineManager {
 
     public static void setShaderGetter(Function<TerrainRenderType, GraphicsPipeline> consumer) {
         shaderGetter = consumer;
-    }
-
-    public static void setTerrainVertexFormat(VertexFormat format) {
-        terrainVertexFormat = format;
-    }
-
-    public static VertexFormat getTerrainVertexFormat() {
-        return terrainVertexFormat;
     }
 
     public static GraphicsPipeline getTerrainDirectShader(RenderType renderType) {

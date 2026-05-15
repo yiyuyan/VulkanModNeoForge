@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import net.vulkanmod.mixin.render.frapi.fabric.accessors.MultipartBlockStateModelMultipartBakedModelAccessor;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.FabricBlockStateModel;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadEmitter;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.FabricBlockStateModel;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.QuadEmitter;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

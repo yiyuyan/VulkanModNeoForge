@@ -24,6 +24,7 @@ import java.util.EnumMap;
 import static org.lwjgl.vulkan.VK10.*;
 
 public class DrawBuffers {
+    public static final int VERTEX_SIZE = PipelineManager.terrainVertexFormat.getVertexSize();
     public static final int INDEX_SIZE = Short.BYTES;
     public static final int UNDEFINED_FACING_IDX = QuadFacing.UNDEFINED.ordinal();
     public static final float POS_OFFSET = CustomVertexFormat.getPositionOffset();
@@ -33,7 +34,6 @@ public class DrawBuffers {
     private static final long cmdBufferPtr = MemoryUtil.nmemAlignedAlloc(CMD_STRIDE, (long) ChunkAreaManager.AREA_SIZE * QuadFacing.COUNT * CMD_STRIDE);
 
     private final int index;
-    public final int vertexSize = PipelineManager.getTerrainVertexFormat().getVertexSize();
     private final Vector3i origin;
     private final int minHeight;
 
@@ -91,15 +91,13 @@ public class DrawBuffers {
             }
         }
 
-        AreaBuffer areaBuffer = null;
-        AreaBuffer.Segment segment = null;
-        boolean doUpload = false;
-        if (size > 0) {
-            areaBuffer = this.getAreaBufferOrAlloc(renderType);
-            areaBuffer.freeSegment(oldOffset);
-            segment = areaBuffer.allocateSegment(size);
-            doUpload = true;
+        if (size == 0) {
+            return;
         }
+
+        AreaBuffer areaBuffer = this.getAreaBufferOrAlloc(renderType);
+        areaBuffer.freeSegment(oldOffset);
+        AreaBuffer.Segment segment = areaBuffer.allocateSegment(size);
 
         int baseInstance = encodeSectionOffset(section.xOffset(), section.yOffset(), section.zOffset());
 
@@ -114,12 +112,12 @@ public class DrawBuffers {
             var vertexBuffer = vertexBuffers[i];
             int vertexCount = 0;
 
-            if (vertexBuffer != null && doUpload) {
+            if (vertexBuffer != null) {
                 areaBuffer.upload(segment, vertexBuffer, offset);
-                vertexOffset = (segment.offset + offset) / vertexSize;
+                vertexOffset = (segment.offset + offset) / VERTEX_SIZE;
 
                 offset += vertexBuffer.remaining();
-                vertexCount = vertexBuffer.limit() / vertexSize;
+                vertexCount = vertexBuffer.limit() / VERTEX_SIZE;
                 indexCount = vertexCount * 6 / 4;
             }
 
@@ -154,7 +152,7 @@ public class DrawBuffers {
         };
 
         return this.vertexBuffers.computeIfAbsent(
-                renderType, renderType1 -> new AreaBuffer(AreaBuffer.Usage.VERTEX, initialSize, vertexSize));
+                renderType, renderType1 -> new AreaBuffer(AreaBuffer.Usage.VERTEX, initialSize, VERTEX_SIZE));
     }
 
     public AreaBuffer getAreaBuffer(TerrainRenderType r) {

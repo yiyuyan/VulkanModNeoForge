@@ -66,13 +66,9 @@ public class Lexer {
 
         // Comment
         if (currentChar == '/') {
-            switch (peek()) {
-                case '/' -> {
-                    return this.lineComment();
-                }
-                case '*' -> {
-                    return this.multiLineComment();
-                }
+            if (peek() == '/') {
+                advance(2);
+                return this.comment();
             }
         }
 
@@ -142,7 +138,18 @@ public class Lexer {
             case '[' -> new Token(Token.TokenType.OPERATOR, "[");
             case ']' -> new Token(Token.TokenType.OPERATOR, "]");
 
-            case '#' -> new Token(Token.TokenType.PREPROCESSOR, "#");
+            case '#' -> {
+                StringBuilder sb = new StringBuilder();
+
+                while (checkEOF() && currentChar != '\n') {
+                    sb.append(currentChar);
+                    advance();
+                }
+                sb.append('\n');
+
+                String value = sb.toString();
+                yield new Token(Token.TokenType.PREPROCESSOR, value);
+            }
 
             case '\"' -> string();
 
@@ -172,33 +179,13 @@ public class Lexer {
         return token;
     }
 
-    private Token lineComment() {
+    private Token comment() {
         StringBuilder sb = new StringBuilder();
         sb.append("//");
-        this.advance(2);
-
         while (checkEOF() && currentChar != '\n') {
             sb.append(currentChar);
             advance();
         }
-        sb.append(currentChar);
-        advance();
-
-        String value = sb.toString();
-        return new Token(Token.TokenType.COMMENT, value);
-    }
-
-    private Token multiLineComment() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("/*");
-        this.advance(2);
-
-        while (checkEOF() && currentChar != '*' && this.peek() != '/') {
-            sb.append(currentChar);
-            advance();
-        }
-        sb.append(currentChar);
-        advance();
         sb.append(currentChar);
         advance();
 
@@ -239,9 +226,6 @@ public class Lexer {
 
     private Token string() {
         StringBuilder sb = new StringBuilder();
-
-        sb.append(currentChar);
-        advance();
         while (checkEOF() && currentChar != '\"') {
             sb.append(currentChar);
             advance();
@@ -250,7 +234,7 @@ public class Lexer {
         advance();
 
         String value = sb.toString();
-        return new Token(Token.TokenType.STRING, value);
+        return new Token(Token.TokenType.COMMENT, value);
     }
 
     private Token spacing() {

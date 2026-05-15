@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-package net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces;
-
+package net.vulkanmod.render.chunk.build.frapi.helper.fabric;
 
 public interface Mesh extends MeshView {
+
 }

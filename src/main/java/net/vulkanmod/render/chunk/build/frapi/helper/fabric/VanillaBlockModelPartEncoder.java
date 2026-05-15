@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import net.minecraft.util.TriState;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.helper.ModelHelper;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadEmitter;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockModelPart;

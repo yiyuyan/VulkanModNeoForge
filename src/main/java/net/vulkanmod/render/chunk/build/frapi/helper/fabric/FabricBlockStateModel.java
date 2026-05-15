@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces;
+package net.vulkanmod.render.chunk.build.frapi.helper.fabric;
 
 import java.util.List;
 import java.util.function.Predicate;
 
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.helper.ModelHelper;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.block.model.BlockStateModel;

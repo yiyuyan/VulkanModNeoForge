@@ -43,7 +43,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadView;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.QuadView;
 import net.vulkanmod.render.chunk.build.frapi.helper.ColorHelper;
 import net.vulkanmod.render.chunk.build.frapi.helper.GeometryHelper;
 import net.vulkanmod.render.chunk.build.frapi.helper.NormalHelper;
@@ -97,6 +97,7 @@ public class QuadViewImpl implements QuadView, ModelQuadView {
 		}
 	}
 
+	/** gets flags used for lighting - lazily computed via {@link GeometryHelper#computeShapeFlags(QuadView)}. */
 	public int geometryFlags() {
 		computeGeometry();
 		return EncodingFormat.geometryFlags(data[baseIndex + HEADER_BITS]);

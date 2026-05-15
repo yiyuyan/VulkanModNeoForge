@@ -1,4 +1,4 @@
-package net.vulkanmod.render.chunk.build.frapi.helper.fabric.helper;
+package net.vulkanmod.render.chunk.build.frapi.helper.fabric;
 
 import net.minecraft.core.Direction;
 import org.jetbrains.annotations.Nullable;

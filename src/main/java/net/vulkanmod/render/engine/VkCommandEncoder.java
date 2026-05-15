@@ -15,7 +15,6 @@ import com.mojang.blaze3d.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.render.GuiRenderer;
 import net.minecraft.util.ARGB;
 import net.vulkanmod.gl.VkGlFramebuffer;
 import net.vulkanmod.gl.VkGlTexture;
@@ -34,7 +33,6 @@ import net.vulkanmod.vulkan.shader.descriptor.ImageDescriptor;
 import net.vulkanmod.vulkan.shader.descriptor.UBO;
 import net.vulkanmod.vulkan.texture.ImageUtil;
 import net.vulkanmod.vulkan.texture.VTextureSelector;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.MemoryStack;
@@ -246,10 +244,8 @@ public class VkCommandEncoder implements CommandEncoder {
                 Renderer.clearAttachments(0x4100, x0, y0, width, height);
             }
             else {
-                VkGpuTexture gpuTexture = (VkGpuTexture) colorAttachment;
-                gpuTexture.getFbo(depthAttachment).bind();
-
-                Renderer.clearAttachments(0x4100, x0, y0, width, height);
+                // TODO
+//                throw new IllegalStateException();
             }
         }
     }
@@ -272,7 +268,7 @@ public class VkCommandEncoder implements CommandEncoder {
     }
 
     @Override
-    public void clearStencilTexture(@NotNull GpuTexture gpuTexture, int i) {
+    public void clearStencilTexture(GpuTexture gpuTexture, int i) {
 
     }
 
@@ -305,24 +301,6 @@ public class VkCommandEncoder implements CommandEncoder {
                         if (!commandBuffer.isRecording()) {
                             commandBuffer.begin(stack);
                         }
-
-                        VkMemoryBarrier.Buffer barrier = VkMemoryBarrier.calloc(1, stack);
-                        barrier.sType$Default();
-
-                        VkBufferMemoryBarrier.Buffer bufferMemoryBarriers = VkBufferMemoryBarrier.calloc(1, stack);
-                        VkBufferMemoryBarrier bufferMemoryBarrier = bufferMemoryBarriers.get(0);
-                        bufferMemoryBarrier.sType$Default();
-                        bufferMemoryBarrier.buffer(vkGpuBuffer.buffer.getId());
-                        bufferMemoryBarrier.srcAccessMask(VK_ACCESS_TRANSFER_WRITE_BIT);
-                        bufferMemoryBarrier.dstAccessMask(VK_ACCESS_TRANSFER_WRITE_BIT);
-                        bufferMemoryBarrier.size(VK_WHOLE_SIZE);
-
-                        vkCmdPipelineBarrier(commandBuffer.handle,
-                                             VK_PIPELINE_STAGE_TRANSFER_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT,
-                                             0,
-                                             barrier,
-                                             bufferMemoryBarriers,
-                                             null);
 
                         VkBufferCopy.Buffer copyRegion = VkBufferCopy.calloc(1, stack);
                         copyRegion.size(size);
@@ -716,20 +694,19 @@ public class VkCommandEncoder implements CommandEncoder {
             if (GlRenderPass.VALIDATION) {
                 if (indexType != null) {
                     if (renderPass.indexBuffer == null) {
-                       // throw new IllegalStateException("Missing index buffer");
-                        indexType = null;
+                        throw new IllegalStateException("Missing index buffer");
                     }
 
-                    if (renderPass.indexBuffer!=null && renderPass.indexBuffer.isClosed()) {
+                    if (renderPass.indexBuffer.isClosed()) {
                         throw new IllegalStateException("Index buffer has been closed!");
                     }
                 }
 
                 if (renderPass.vertexBuffers[0] == null) {
-                    //throw new IllegalStateException("Missing vertex buffer at slot 0");
+                    throw new IllegalStateException("Missing vertex buffer at slot 0");
                 }
 
-                if (renderPass.vertexBuffers[0]!=null && renderPass.vertexBuffers[0].isClosed()) {
+                if (renderPass.vertexBuffers[0].isClosed()) {
                     throw new IllegalStateException("Vertex buffer at slot 0 has been closed!");
                 }
             }

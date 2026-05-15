@@ -5,6 +5,7 @@ import com.mojang.blaze3d.buffers.GpuBuffer;
 import java.nio.ByteBuffer;
 import java.util.function.Supplier;
 
+
 import net.vulkanmod.vulkan.memory.MemoryManager;
 import net.vulkanmod.vulkan.memory.MemoryType;
 import net.vulkanmod.vulkan.memory.MemoryTypes;
@@ -20,7 +21,7 @@ public class VkGpuBuffer extends GpuBuffer {
 
     Buffer buffer;
 
-    protected VkGpuBuffer(VkDebugLabel debugLabel, @Nullable Supplier<String> supplier, int usage, int size) {
+    protected VkGpuBuffer(VkDebugLabel glDebugLabel, @Nullable Supplier<String> supplier, int usage, int size) {
         super(usage, size);
         this.label = supplier;
 
@@ -50,7 +51,7 @@ public class VkGpuBuffer extends GpuBuffer {
 
         MemoryType memoryType =  mappable ? MemoryTypes.HOST_MEM : MemoryTypes.GPU_MEM;
 
-        this.buffer = new Buffer(supplier.get(), vkUsage, memoryType);
+        this.buffer = new Buffer(vkUsage, memoryType);
         this.buffer.createBuffer(this.size());
     }
 

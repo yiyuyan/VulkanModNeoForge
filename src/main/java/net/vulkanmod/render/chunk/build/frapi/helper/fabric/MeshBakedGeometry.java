@@ -7,7 +7,6 @@ package net.vulkanmod.render.chunk.build.frapi.helper.fabric;
 
 import java.util.List;
 import net.minecraft.client.resources.model.QuadCollection;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.Mesh;
 
 
 public final class MeshBakedGeometry extends QuadCollection {

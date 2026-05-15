@@ -9,7 +9,6 @@ public class Token {
         LITERAL,
         OPERATOR,
         PUNCTUATION,
-        STRING,
         SPACING,
         COMMENT,
 

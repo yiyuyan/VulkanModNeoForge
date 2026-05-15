@@ -18,10 +18,11 @@ package net.vulkanmod.render.chunk.build.frapi.helper;
 
 import static net.minecraft.util.Mth.equal;
 
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.QuadView;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
-import net.vulkanmod.render.chunk.build.frapi.mesh.QuadViewImpl;
 import org.joml.Vector3fc;
 
 /**
@@ -53,7 +54,7 @@ public abstract class GeometryHelper {
 	 * Intended use is to optimize lighting when the geometry is regular.
 	 * Expects convex quads with all points co-planar.
 	 */
-	public static int computeShapeFlags(QuadViewImpl quad) {
+	public static int computeShapeFlags(QuadView quad) {
 		Direction lightFace = quad.lightFace();
 		int bits = 0;
 
@@ -77,14 +78,20 @@ public abstract class GeometryHelper {
 	 * Does not validate quad winding order.
 	 * Expects convex quads with all points co-planar.
 	 */
-	public static boolean isQuadParallelToFace(Direction face, QuadViewImpl quad) {
+	public static boolean isQuadParallelToFace(Direction face, QuadView quad) {
 		int i = face.getAxis().ordinal();
 		final float val = quad.posByIndex(0, i);
 		return equal(val, quad.posByIndex(1, i)) && equal(val, quad.posByIndex(2, i)) && equal(val, quad.posByIndex(3, i));
 	}
 
-
-	public static boolean isParallelQuadOnFace(Direction lightFace, QuadViewImpl quad) {
+	/**
+	 * True if quad - already known to be parallel to a face - is actually coplanar with it.
+	 * For compatibility with vanilla resource packs, also true if quad is outside the face.
+	 *
+	 * <p>Test will be unreliable if not already parallel, use {@link #isQuadParallelToFace(Direction, QuadView)}
+	 * for that purpose. Expects convex quads with all points co-planar.
+	 */
+	public static boolean isParallelQuadOnFace(Direction lightFace, QuadView quad) {
 		final float x = quad.posByIndex(0, lightFace.getAxis().ordinal());
 		return lightFace.getAxisDirection() == AxisDirection.POSITIVE ? x >= EPS_MAX : x <= EPS_MIN;
 	}
@@ -98,7 +105,7 @@ public abstract class GeometryHelper {
 	 *
 	 * <p>Expects convex quads with all points co-planar.
 	 */
-	public static boolean isQuadCubic(Direction lightFace, QuadViewImpl quad) {
+	public static boolean isQuadCubic(Direction lightFace, QuadView quad) {
 		int a, b;
 
 		switch (lightFace) {
@@ -125,8 +132,14 @@ public abstract class GeometryHelper {
 		return confirmSquareCorners(a, b, quad);
 	}
 
-
-	private static boolean confirmSquareCorners(int aCoordinate, int bCoordinate, QuadViewImpl quad) {
+	/**
+	 * Used by {@link #isQuadCubic(Direction, QuadView)}.
+	 * True if quad touches all four corners of unit square.
+	 *
+	 * <p>For compatibility with resource packs that contain models with quads exceeding
+	 * block boundaries, considers corners outside the block to be at the corners.
+	 */
+	private static boolean confirmSquareCorners(int aCoordinate, int bCoordinate, QuadView quad) {
 		int flags = 0;
 
 		for (int i = 0; i < 4; i++) {
@@ -157,34 +170,41 @@ public abstract class GeometryHelper {
 		return flags == 15;
 	}
 
-	public static Direction lightFace(QuadViewImpl quad) {
+
+	public static Direction lightFace(QuadView quad) {
 		final Vector3fc normal = quad.faceNormal();
-        return switch (GeometryHelper.longestAxis(normal)) {
-            case X -> normal.x() > 0 ? Direction.EAST : Direction.WEST;
-            case Y -> normal.y() > 0 ? Direction.UP : Direction.DOWN;
-            case Z -> normal.z() > 0 ? Direction.SOUTH : Direction.NORTH;
-            default ->
-                // handle WTF case
-                    Direction.UP;
-        };
+		switch (GeometryHelper.longestAxis(normal)) {
+		case X:
+			return normal.x() > 0 ? Direction.EAST : Direction.WEST;
+
+		case Y:
+			return normal.y() > 0 ? Direction.UP : Direction.DOWN;
+
+		case Z:
+			return normal.z() > 0 ? Direction.SOUTH : Direction.NORTH;
+
+		default:
+			// handle WTF case
+			return Direction.UP;
+		}
 	}
 
 	/**
 	 * Simple 4-way compare, doesn't handle NaN values.
 	 */
 	public static float min(float a, float b, float c, float d) {
-		final float x = Math.min(a, b);
-		final float y = Math.min(c, d);
-		return Math.min(x, y);
+		final float x = a < b ? a : b;
+		final float y = c < d ? c : d;
+		return x < y ? x : y;
 	}
 
 	/**
 	 * Simple 4-way compare, doesn't handle NaN values.
 	 */
 	public static float max(float a, float b, float c, float d) {
-		final float x = Math.max(a, b);
-		final float y = Math.max(c, d);
-		return Math.max(x, y);
+		final float x = a > b ? a : b;
+		final float y = c > d ? c : d;
+		return x > y ? x : y;
 	}
 
 	/**

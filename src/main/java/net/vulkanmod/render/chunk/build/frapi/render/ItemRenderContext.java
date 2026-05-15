@@ -7,6 +7,9 @@ import com.mojang.math.MatrixUtil;
 import java.util.Arrays;
 import java.util.List;
 
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.MeshView;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.QuadEmitter;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.RenderLayerHelper;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
@@ -18,9 +21,6 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.vulkanmod.render.chunk.build.frapi.helper.ColorHelper;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadEmitter;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.helper.RenderLayerHelper;
-import net.vulkanmod.render.chunk.build.frapi.mesh.MeshImpl;
 import net.vulkanmod.render.chunk.build.frapi.mesh.MutableQuadViewImpl;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,7 +42,7 @@ public class ItemRenderContext extends AbstractRenderContext {
 	private PoseStack.Pose specialGlintEntry;
 	private final VertexConsumer[] vertexConsumerCache = new VertexConsumer[3 * GLINT_COUNT];
 
-	public void renderModel(ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource bufferSource, int lightmap, int overlay, int[] tints, List<BakedQuad> modelQuads, MeshImpl mesh, RenderType renderType, ItemStackRenderState.FoilType foilType, boolean ignoreQuadGlint) {
+	public void renderModel(ItemDisplayContext itemDisplayContext, PoseStack matrixStack, MultiBufferSource bufferSource, int lightmap, int overlay, int[] tints, List<BakedQuad> modelQuads, MeshView mesh, RenderType renderType, ItemStackRenderState.FoilType foilType, boolean ignoreQuadGlint) {
 		this.itemDisplayContext = itemDisplayContext;
 		this.matrixStack = matrixStack;
 		this.vertexConsumerProvider = bufferSource;
@@ -64,7 +64,7 @@ public class ItemRenderContext extends AbstractRenderContext {
 		Arrays.fill(vertexConsumerCache, null);
 	}
 
-    private void bufferQuads(List<BakedQuad> vanillaQuads, MeshImpl mesh) {
+    private void bufferQuads(List<BakedQuad> vanillaQuads, MeshView mesh) {
         QuadEmitter emitter = getEmitter();
 
         final int vanillaQuadCount = vanillaQuads.size();

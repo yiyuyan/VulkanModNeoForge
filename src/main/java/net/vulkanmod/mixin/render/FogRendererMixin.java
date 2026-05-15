@@ -16,15 +16,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(FogRenderer.class)
 public class FogRendererMixin {
 
-    @Inject(method = "setupFog", at = @At(
-            value = "INVOKE",
-            target = "Lnet/neoforged/neoforge/client/ClientHooks;onSetupFog(Lnet/minecraft/client/renderer/fog/environment/FogEnvironment;Lnet/minecraft/world/level/material/FogType;Lnet/minecraft/client/Camera;FFLnet/minecraft/client/renderer/fog/FogData;)V",
-    shift = At.Shift.BEFORE)
-    )
+    @Inject(method = "setupFog", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/client/ClientHooks;onSetupFog(Lnet/minecraft/client/renderer/fog/environment/FogEnvironment;Lnet/minecraft/world/level/material/FogType;Lnet/minecraft/client/Camera;FFLnet/minecraft/client/renderer/fog/FogData;)V",shift = At.Shift.BEFORE))
     private void onSetupFog(Camera camera, int i, boolean bl, DeltaTracker deltaTracker, float f,
                             ClientLevel clientLevel, CallbackInfoReturnable<Vector4f> cir,
-                            @Local FogData fogdata, @Local Vector4f fogColor) {
-        VRenderSystem.fogData = fogdata;
+                            @Local FogData fogData, @Local Vector4f fogColor) {
+        VRenderSystem.fogData = fogData;
         VRenderSystem.setShaderFogColor(fogColor.x(), fogColor.y(), fogColor.z(), fogColor.w());
     }
 }

@@ -13,6 +13,7 @@ import com.mojang.blaze3d.textures.GpuTextureView;
 import com.mojang.blaze3d.textures.TextureFormat;
 import com.mojang.logging.LogUtils;
 
+
 import net.minecraft.client.renderer.ShaderDefines;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.blaze3d.GpuDeviceFeatures;
@@ -183,7 +184,7 @@ public class VkGpuDevice implements GpuDevice {
 
     @Override
     public String getRenderer() {
-        return DeviceManager.device.deviceName;
+        return "VulkanMod %s".formatted(Initializer.getVersion()) ;
     }
 
     @Override
@@ -278,7 +279,6 @@ public class VkGpuDevice implements GpuDevice {
                 String src = ShaderLoadUtil.getShaderSource(resourceLocation, shaderType);
 
                 if (src == null) {
-                    System.out.println(resourceLocation+" : "+shaderType);
                     throw new RuntimeException("shader: (%s) not found.");
                 }
 
@@ -375,22 +375,16 @@ public class VkGpuDevice implements GpuDevice {
             throw new RuntimeException("Exception while compiling pipeline %s".formatted(renderPipeline));
         }
 
-        try {
-            EGlProgram eGlProgram = new EGlProgram(1, configName);
-            eGlProgram.setupUniforms(pipeline, renderPipeline.getUniforms(), renderPipeline.getSamplers());
-            extPipeline.setProgram(eGlProgram);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
+        EGlProgram eGlProgram = new EGlProgram(1, configName);
+        eGlProgram.setupUniforms(pipeline, renderPipeline.getUniforms(), renderPipeline.getSamplers());
+        extPipeline.setProgram(eGlProgram);
 
         extPipeline.setPipeline(pipeline);
     }
 
     @Override
     public GpuDeviceProperties deviceProperties() {
-        return new GpuDeviceProperties(){
-
+        return new GpuDeviceProperties() {
             @Override
             public String backendName() {
                 return getBackendName();

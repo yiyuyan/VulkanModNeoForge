@@ -2,9 +2,7 @@ package net.vulkanmod.mixin.profiling;
 
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.resource.ResourceHandle;
-import net.minecraft.client.Camera;
 import net.minecraft.client.CloudStatus;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.state.LevelRenderState;
@@ -47,7 +45,7 @@ public class LevelRendererMixin {
 
     @Inject(method = "method_62214",
             at = @At(value = "INVOKE",
-                     target = "Lnet/minecraft/client/renderer/LevelRenderer;submitEntities(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/state/LevelRenderState;Lnet/minecraft/client/renderer/SubmitNodeCollector;)V"))
+                    target = "Lnet/minecraft/client/renderer/LevelRenderer;submitEntities(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/state/LevelRenderState;Lnet/minecraft/client/renderer/SubmitNodeCollector;)V"))
     private void profilerTerrain2(GpuBufferSlice gpuBufferSlice, LevelRenderState levelRenderState,
                                   ProfilerFiller profilerFiller, Matrix4f matrix4f, ResourceHandle resourceHandle,
                                   ResourceHandle resourceHandle2, boolean bl, Frustum frustum,

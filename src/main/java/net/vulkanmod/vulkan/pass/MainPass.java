@@ -2,7 +2,6 @@ package net.vulkanmod.vulkan.pass;
 
 import com.mojang.blaze3d.textures.GpuTexture;
 import com.mojang.blaze3d.textures.GpuTextureView;
-import net.vulkanmod.vulkan.framebuffer.Framebuffer;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.vulkan.VkCommandBuffer;
 
@@ -23,10 +22,6 @@ public interface MainPass {
     default void rebindMainTarget() {}
 
     default void bindAsTexture() {}
-
-    default Framebuffer getMainFramebuffer() {
-        return null;
-    }
 
     default GpuTexture getColorAttachment() {
         return null;

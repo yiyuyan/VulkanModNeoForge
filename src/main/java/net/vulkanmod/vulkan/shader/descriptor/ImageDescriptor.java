@@ -94,21 +94,6 @@ public class ImageDescriptor implements Descriptor {
         return this.descriptorType == VK_DESCRIPTOR_TYPE_STORAGE_IMAGE;
     }
 
-    @Override
-    public String toString() {
-        return "ImageDescriptor{" +
-                "descriptorType=" + descriptorType +
-                ", binding=" + binding +
-                ", qualifier='" + qualifier + '\'' +
-                ", name='" + name + '\'' +
-                ", imageIdx=" + imageIdx +
-                ", useSampler=" + useSampler +
-                ", isReadOnlyLayout=" + isReadOnlyLayout +
-                ", layout=" + layout +
-                ", mipLevel=" + mipLevel +
-                '}';
-    }
-
     public static class State {
         long imageView, sampler;
 
@@ -125,12 +110,5 @@ public class ImageDescriptor implements Descriptor {
             return this.imageView == imageView && this.sampler == sampler;
         }
 
-        @Override
-        public String toString() {
-            return "State{" +
-                    "imageView=" + imageView +
-                    ", sampler=" + sampler +
-                    '}';
-        }
     }
 }

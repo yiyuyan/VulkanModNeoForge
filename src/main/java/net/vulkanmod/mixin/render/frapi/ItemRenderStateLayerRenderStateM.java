@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(value = ItemStackRenderState.LayerRenderState.class)
-public abstract class ItemRenderStateLayerRenderStateM implements AccessLayerRenderState {
+abstract class ItemRenderStateLayerRenderStateM implements AccessLayerRenderState {
     @Unique
     private final MutableMeshImpl mutableMesh = new MutableMeshImpl();
 

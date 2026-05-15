@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.vulkanmod.render.chunk.build.frapi.helper.fabric.helper;
+package net.vulkanmod.render.chunk.build.frapi.helper.fabric;
 
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;

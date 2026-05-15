@@ -84,12 +84,12 @@ public class VideoModeSet {
         @Override
         public String toString() {
             return "VideoMode[" +
-                   "width=" + width + ", " +
-                   "height=" + height + ", " +
-                   "bitDepth=" + bitDepth + ", " +
-                   "refreshRate=" + refreshRate + ']';
+                    "width=" + width + ", " +
+                    "height=" + height + ", " +
+                    "bitDepth=" + bitDepth + ", " +
+                    "refreshRate=" + refreshRate + ']';
         }
 
-    }
+        }
 
 }

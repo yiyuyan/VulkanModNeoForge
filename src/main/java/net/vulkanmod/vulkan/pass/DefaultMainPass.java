@@ -15,8 +15,6 @@ import org.lwjgl.system.MemoryStack;
 import org.lwjgl.vulkan.VkCommandBuffer;
 import org.lwjgl.vulkan.VkRect2D;
 
-import java.util.function.IntSupplier;
-
 import static org.lwjgl.vulkan.KHRSwapchain.VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 import static org.lwjgl.vulkan.VK10.*;
 
@@ -26,41 +24,17 @@ public class DefaultMainPass implements MainPass {
         return new DefaultMainPass();
     }
 
-    private Framebuffer mainFramebuffer;
+    private final Framebuffer mainFramebuffer;
 
     private RenderPass mainRenderPass;
     private RenderPass auxRenderPass;
 
     private GpuTexture[] colorAttachmentTextures;
     private GpuTextureView[] colorAttachmentTextureViews;
-    IntSupplier imageIdxSupplier;
     private GpuTexture depthAttachmentTexture;
 
     DefaultMainPass() {
-        createResources();
-    }
-
-    private void createResources() {
-        if (this.mainFramebuffer != null) {
-            if (this.mainFramebuffer != Renderer.getInstance()
-                                                .getSwapChain()) {
-                this.mainFramebuffer.cleanUp(true);
-            }
-
-            this.mainRenderPass.cleanUp();
-            this.auxRenderPass.cleanUp();
-        }
-
-        Framebuffer framebuffer;
-        if (Renderer.getInstance().getSwapChain().hasImages()) {
-            framebuffer = Renderer.getInstance().getSwapChain();
-        }
-        else {
-            framebuffer = Framebuffer.builder(10, 10, 1, true)
-                                     .build();
-        }
-
-        this.mainFramebuffer = framebuffer;
+        this.mainFramebuffer = Renderer.getInstance().getSwapChain();
 
         createRenderPasses();
         createAttachmentTextures();
@@ -85,7 +59,7 @@ public class DefaultMainPass implements MainPass {
 
     @Override
     public void begin(VkCommandBuffer commandBuffer, MemoryStack stack) {
-        Framebuffer framebuffer = this.mainFramebuffer;
+        SwapChain framebuffer = Renderer.getInstance().getSwapChain();
 
         VulkanImage colorAttachment = framebuffer.getColorAttachment();
         colorAttachment.transitionImageLayout(stack, commandBuffer, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
@@ -102,10 +76,9 @@ public class DefaultMainPass implements MainPass {
     public void end(VkCommandBuffer commandBuffer) {
         Renderer.getInstance().endRenderPass(commandBuffer);
 
-        if (this.mainFramebuffer == Renderer.getInstance().getSwapChain()) {
-            try (MemoryStack stack = MemoryStack.stackPush()) {
-                this.mainFramebuffer.getColorAttachment().transitionImageLayout(stack, commandBuffer, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
-            }
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            SwapChain framebuffer = Renderer.getInstance().getSwapChain();
+            framebuffer.getColorAttachment().transitionImageLayout(stack, commandBuffer, VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
         }
 
         int result = vkEndCommandBuffer(commandBuffer);
@@ -122,10 +95,11 @@ public class DefaultMainPass implements MainPass {
 
     @Override
     public void onResize() {
-        createResources();
+        this.createAttachmentTextures();
     }
 
     public void rebindMainTarget() {
+        SwapChain swapChain = Renderer.getInstance().getSwapChain();
         VkCommandBuffer commandBuffer = Renderer.getCommandBuffer();
 
         // Do not rebind if the framebuffer is already bound
@@ -134,11 +108,12 @@ public class DefaultMainPass implements MainPass {
             return;
 
         Renderer.getInstance().endRenderPass(commandBuffer);
-        Renderer.getInstance().beginRenderPass(this.auxRenderPass, this.mainFramebuffer);
+        Renderer.getInstance().beginRenderPass(this.auxRenderPass, swapChain);
     }
 
     @Override
     public void bindAsTexture() {
+        SwapChain swapChain = Renderer.getInstance().getSwapChain();
         VkCommandBuffer commandBuffer = Renderer.getCommandBuffer();
 
         // Check if render pass is using the framebuffer
@@ -147,25 +122,20 @@ public class DefaultMainPass implements MainPass {
             Renderer.getInstance().endRenderPass(commandBuffer);
 
         try (MemoryStack stack = MemoryStack.stackPush()) {
-            this.mainFramebuffer.getColorAttachment().transitionImageLayout(stack, commandBuffer, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+            swapChain.getColorAttachment().transitionImageLayout(stack, commandBuffer, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
         }
 
-        VTextureSelector.bindTexture(this.mainFramebuffer.getColorAttachment());
-    }
-
-    @Override
-    public Framebuffer getMainFramebuffer() {
-        return mainFramebuffer;
+        VTextureSelector.bindTexture(swapChain.getColorAttachment());
     }
 
     @Override
     public GpuTexture getColorAttachment() {
-        return this.colorAttachmentTextures[this.imageIdxSupplier.getAsInt()];
+        return this.colorAttachmentTextures[Renderer.getCurrentImage()];
     }
 
     @Override
     public GpuTextureView getColorAttachmentView() {
-        return this.colorAttachmentTextureViews[this.imageIdxSupplier.getAsInt()];
+        return this.colorAttachmentTextureViews[Renderer.getCurrentImage()];
     }
 
     @Override
@@ -177,35 +147,22 @@ public class DefaultMainPass implements MainPass {
         VkGpuDevice device = (VkGpuDevice) RenderSystem.getDevice();
 
         SwapChain swapChain = Renderer.getInstance().getSwapChain();
-        if (this.mainFramebuffer == swapChain) {
-            var swapChainImages = swapChain.getImages();
+        var swapChainImages = swapChain.getImages();
 
-            int imageCount = swapChainImages.size();
-            this.colorAttachmentTextures = new GpuTexture[imageCount];
-            this.colorAttachmentTextureViews = new GpuTextureView[imageCount];
+        if (swapChain.getWidth() == 0 && swapChain.getHeight() == 0)
+            return;
 
-            for (int i = 0; i < imageCount; ++i) {
-                VkGpuTexture attachmentTexture = device.gpuTextureFromVulkanImage(swapChainImages.get(i));
-                GpuTextureView attachmentTextureView = device.createTextureView(attachmentTexture);
-                this.colorAttachmentTextures[i] = attachmentTexture;
-                this.colorAttachmentTextureViews[i] = attachmentTextureView;
-            }
+        int imageCount = swapChainImages.size();
+        this.colorAttachmentTextures = new GpuTexture[imageCount];
+        this.colorAttachmentTextureViews = new GpuTextureView[imageCount];
 
-            this.imageIdxSupplier = Renderer::getCurrentImage;
-        }
-        else {
-            this.colorAttachmentTextures = new GpuTexture[1];
-            this.colorAttachmentTextureViews = new GpuTextureView[1];
-
-            VkGpuTexture attachmentTexture = device.gpuTextureFromVulkanImage(this.mainFramebuffer.getColorAttachment());
+        for (int i = 0; i < imageCount; ++i) {
+            VkGpuTexture attachmentTexture = device.gpuTextureFromVulkanImage(swapChainImages.get(i));
             GpuTextureView attachmentTextureView = device.createTextureView(attachmentTexture);
-            this.colorAttachmentTextures[0] = attachmentTexture;
-            this.colorAttachmentTextureViews[0] = attachmentTextureView;
-
-            // Always return idx 0 as there's only 1 image
-            this.imageIdxSupplier = () -> 0;
+            this.colorAttachmentTextures[i] = attachmentTexture;
+            this.colorAttachmentTextureViews[i] = attachmentTextureView;
         }
 
-        this.depthAttachmentTexture = device.gpuTextureFromVulkanImage(this.mainFramebuffer.getDepthAttachment());
+        this.depthAttachmentTexture = device.gpuTextureFromVulkanImage(swapChain.getDepthAttachment());
     }
 }

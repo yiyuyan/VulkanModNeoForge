@@ -21,9 +21,9 @@ import java.util.function.Consumer;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.jetbrains.annotations.Range;
 
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.Mesh;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadEmitter;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadView;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.Mesh;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.QuadEmitter;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.QuadView;
 
 public class MeshImpl implements Mesh {
 	/** Used to satisfy external calls to {@link #forEach(Consumer)}. */

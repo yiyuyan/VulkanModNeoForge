@@ -32,10 +32,6 @@ public abstract class RenderSystemMixin {
     @Shadow
     public static void assertOnRenderThread() {}
 
-    /**
-     * @author
-     * @reason
-     */
     @Overwrite(remap = false)
     public static void initRenderer(long l, int i, boolean bl, BiFunction<ResourceLocation, ShaderType, String> shaderSource, boolean bl2) {
         renderThread.setPriority(Thread.NORM_PRIORITY + 2);

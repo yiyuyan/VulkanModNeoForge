@@ -6,12 +6,14 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -55,17 +57,20 @@ public class FluidRenderer {
     }
 
     public void renderLiquid(BlockState blockState, FluidState fluidState, BlockPos blockPos) {
-        //FluidRenderHandler handler = FluidRenderHandlerRegistry.INSTANCE.get(fluidState.getType());
-        IClientFluidTypeExtensions handler = IClientFluidTypeExtensions.of(fluidState.getType());
-
+        IClientFluidTypeExtensions handler = IClientFluidTypeExtensions.of(fluidState);
 
         TerrainRenderType renderType = TerrainRenderType.get(ItemBlockRenderTypes.getRenderLayer(fluidState));
         renderType = TerrainRenderType.getRemapped(renderType);
         TerrainBufferBuilder bufferBuilder = this.resources.builderPack.builder(renderType).getBufferBuilder(QuadFacing.UNDEFINED.ordinal());
 
         // Fallback to water/lava in case there's no handler
+       /* if (handler == null) {
+            boolean isLava = fluidState.is(FluidTags.LAVA);
+            handler = FluidRenderHandlerRegistry.INSTANCE.get(isLava ? Fluids.LAVA : Fluids.WATER);
+        }*/
 
-        IClientFluidTypeExtensions.of(fluidState).renderFluid(fluidState,this.resources.getRegion(),blockPos,bufferBuilder,blockState);
+        handler.renderFluid(fluidState,this.resources.getRegion(),blockPos,bufferBuilder,blockState);
+
         //FluidRendering.render(handler, this.resources.getRegion(),blockPos, bufferBuilder, blockState, fluidState, this);
     }
 
@@ -347,7 +352,6 @@ public class FluidRenderer {
             boolean isOverlay = false;
 
             if (sprites.length > 2) {
-
                 if (adjState.getBlock().shouldDisplayFluidOverlay(adjState,region,blockPos,fluidState)) {
                     sprite = sprites[2];
                     isOverlay = true;

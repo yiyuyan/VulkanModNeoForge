@@ -2,6 +2,9 @@ package net.vulkanmod.render.chunk.build.frapi.render;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.objects.Object2ByteLinkedOpenHashMap;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.FabricBlockModelPart;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.QuadEmitter;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.ModelHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
@@ -18,9 +21,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.vulkanmod.interfaces.color.BlockColorsExtended;
 import net.vulkanmod.render.chunk.build.color.BlockColorRegistry;
 import net.vulkanmod.render.chunk.build.frapi.VulkanModRenderer;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.FabricBlockModelPart;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.helper.ModelHelper;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadEmitter;
 import net.vulkanmod.render.chunk.build.light.LightPipeline;
 import net.vulkanmod.render.chunk.build.light.data.QuadLightData;
 import org.jetbrains.annotations.Nullable;
@@ -270,7 +270,7 @@ public abstract class AbstractBlockRenderContext extends AbstractRenderContext {
 			final int partCount = parts.size();
 
 			for (int j = 0; j < partCount; j++) {
-				((FabricBlockModelPart)parts.get(j)).emitQuads(quad, cullTest);
+				((FabricBlockModelPart)(parts.get(j))).emitQuads(quad, cullTest);
 			}
 		}
 

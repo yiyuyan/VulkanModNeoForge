@@ -18,10 +18,10 @@ package net.vulkanmod.render.chunk.build.frapi.mesh;
 
 import java.util.function.Consumer;
 
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.Mesh;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.MutableMesh;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.MutableQuadView;
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.interfaces.QuadEmitter;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.Mesh;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.MutableMesh;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.MutableQuadView;
+import net.vulkanmod.render.chunk.build.frapi.helper.fabric.QuadEmitter;
 
 /**
  * Our implementation of {@link MutableMesh}, mainly used for optimized mesh creation.

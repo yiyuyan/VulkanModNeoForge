@@ -7,6 +7,7 @@ import net.vulkanmod.vulkan.shader.descriptor.ImageDescriptor;
 import net.vulkanmod.vulkan.shader.descriptor.UBO;
 import net.vulkanmod.vulkan.shader.layout.AlignedStruct;
 import net.vulkanmod.vulkan.shader.layout.Uniform;
+import net.vulkanmod.vulkan.texture.VTextureSelector;
 import org.lwjgl.vulkan.VK11;
 
 import java.util.*;
@@ -21,13 +22,10 @@ public class GLSLParser {
     private Token currentToken;
 
     private Stage stage;
-    PreprocessorState preprocessorState = PreprocessorState.DEFAULT;
     State state = State.DEFAULT;
 
     LinkedList<Node> vsStream = new LinkedList<>();
     LinkedList<Node> fsStream = new LinkedList<>();
-
-    Set<String> defines = new HashSet<>();
 
     int currentUniformLocation = 0;
     List<UniformBlock> uniformBlocks = new ArrayList<>();
@@ -57,189 +55,49 @@ public class GLSLParser {
         this.currentInAtt = 0;
         this.currentOutAtt = 0;
 
-        advanceToken();
+        nextToken();
 
         // Parse version
-        parseVersion();
+        if (currentToken.type != Token.TokenType.PREPROCESSOR && !currentToken.value.startsWith("#version")) {
+            throw new IllegalStateException("First glsl line must contain version");
+        }
+        appendToken(new Token(Token.TokenType.PREPROCESSOR, "#version 450\n"));
+        nextToken();
+
 
         while (currentToken.type != Token.TokenType.EOF) {
             switch (currentToken.type) {
                 case PREPROCESSOR -> parsePreprocessor();
-                case COMMENT -> {
+
+                case IDENTIFIER -> {
+                    switch (currentToken.value) {
+                        case "layout" -> parseUniformBlock();
+                        case "uniform" -> parseUniform();
+                        case "in", "out" -> parseAttribute();
+                        default -> appendToken(currentToken);
+                    }
+                }
+
+                case OPERATOR -> {
+                    // TODO: need to parse expressions to replace % operator
                     appendToken(currentToken);
-                    advanceToken();
-                    continue;
                 }
+
+                default -> appendToken(currentToken);
             }
 
-            if (preprocessorState != PreprocessorState.IGNORE) {
-                switch (currentToken.type) {
-                    case PREPROCESSOR -> parsePreprocessor();
-
-                    case IDENTIFIER -> {
-                        switch (currentToken.value) {
-                            case "layout" -> {
-
-                                try {
-                                    parseUniformBlock();
-                                }
-                                catch (Exception e){
-                                    int savedIdx = this.currentTokenIdx - 1;
-
-                                    int peekIdx = currentTokenIdx;
-                                    Token peekToken;
-                                    do {
-                                        peekToken = tokens.get(peekIdx++);
-                                    } while (peekToken.type == Token.TokenType.SPACING || peekToken.type == Token.TokenType.COMMENT);
-
-                                    if (peekToken.type != Token.TokenType.LEFT_PARENTHESIS) {
-                                        appendToken(tokens.get(savedIdx));
-                                        advanceToken();
-                                        continue;
-                                    }
-
-                                    this.currentTokenIdx = peekIdx;
-                                    advanceToken(true);
-                                    int depth = 1;
-                                    while (depth > 0) {
-                                        advanceToken(true);
-                                        if (currentToken.type == Token.TokenType.LEFT_PARENTHESIS) depth++;
-                                        else if (currentToken.type == Token.TokenType.RIGHT_PARENTHESIS) depth--;
-                                    }
-
-                                    int afterParenIdx = currentTokenIdx;
-                                    Token afterParen;
-                                    do {
-                                        afterParen = tokens.get(afterParenIdx++);
-                                    } while (afterParen.type == Token.TokenType.SPACING || afterParen.type == Token.TokenType.COMMENT);
-
-                                    switch (afterParen.value) {
-                                        case "in", "out" -> {
-                                            this.currentTokenIdx = afterParenIdx - 1;
-                                            this.currentToken = afterParen;
-                                            parseAttribute();
-                                        }
-                                        case "uniform" -> {
-                                            int afterUniformIdx = afterParenIdx;
-                                            Token afterUniform;
-                                            do {
-                                                afterUniform = tokens.get(afterUniformIdx++);
-                                            } while (afterUniform.type == Token.TokenType.SPACING || afterUniform.type == Token.TokenType.COMMENT);
-
-                                            if (Set.of("sampler2D", "samplerCube", "isamplerBuffer").contains(afterUniform.value)) {
-                                                this.currentTokenIdx = savedIdx;
-                                                this.currentToken = tokens.get(savedIdx);
-                                                parseUniform();
-                                            } else {
-                                                this.currentTokenIdx = savedIdx;
-                                                this.currentToken = tokens.get(savedIdx);
-                                                parseUniformBlock();
-                                            }
-                                        }
-                                        default -> {
-                                            this.currentTokenIdx = savedIdx;
-                                            this.currentToken = tokens.get(savedIdx);
-                                            while (this.currentTokenIdx < afterParenIdx - 1) {
-                                                appendToken(this.currentToken);
-                                                advanceToken(false);
-                                            }
-                                        }
-                                    }
-                                    continue;
-                                }
-
-                            }
-                            case "uniform" -> parseUniform();
-                            case "in", "out" -> parseAttribute();
-                            default -> appendToken(currentToken);
-                        }
-                    }
-
-                    case OPERATOR -> {
-                        // TODO: need to parse expressions to replace % operator
-                        appendToken(currentToken);
-                    }
-
-                    default -> appendToken(currentToken);
-                }
-            }
-            else {
-                appendToken(currentToken);
-            }
-
-            advanceToken();
+            nextToken();
         }
-    }
-
-    private void parseVersion() {
-        if (currentToken.type != Token.TokenType.PREPROCESSOR) {
-            throw new IllegalStateException("First glsl line must contain #version");
-        }
-
-        advanceToken();
-
-        if (!currentToken.value.startsWith("version")) {
-            throw new IllegalStateException("First glsl line must contain #version");
-        }
-
-        advanceToken();
-        while (!currentToken.value.contains("\n")) {
-            advanceToken();
-        }
-
-        advanceToken();
-        appendToken(new Token(Token.TokenType.PREPROCESSOR, "#version 450\n"));
     }
 
     private void parsePreprocessor()  {
-        int startTokenIdx = this.currentTokenIdx - 1;
-        boolean appendTokens = true;
-
-        advanceToken(true);
-        switch (currentToken.value) {
-            case "define" -> {
-                advanceToken(true);
-
-                this.defines.add(currentToken.value);
-            }
-            case "ifdef" -> {
-                advanceToken(true);
-
-                if (!this.defines.contains(currentToken.value)) {
-                    this.preprocessorState = PreprocessorState.IGNORE;
-                }
-            }
-            case "else" -> {
-                if (preprocessorState != PreprocessorState.IGNORE) {
-                    preprocessorState = PreprocessorState.IGNORE;
-                }
-                else {
-                    preprocessorState = PreprocessorState.DEFAULT;
-                }
-            }
-            case "endif" -> {
-                preprocessorState = PreprocessorState.DEFAULT;
-            }
-            case "line" -> {
-                appendTokens = false;
-            }
-
+        if (!currentToken.value.startsWith("#line")) {
+            appendToken(currentToken);
         }
-
-        this.currentTokenIdx = startTokenIdx;
-        this.currentTokenIdx++;
-        this.currentToken = this.tokens.get(startTokenIdx);
-        do {
-            if (appendTokens) {
-                appendToken(new Token(Token.TokenType.PREPROCESSOR, currentToken.value));
-            }
-
-            advanceToken(false);
-        } while (!currentToken.value.contains("\n"));
     }
 
     private void parseUniform() {
-        advanceToken(true);
+        nextToken(true);
 
         if (currentToken.type != Token.TokenType.IDENTIFIER) {
             throw new IllegalStateException();
@@ -256,7 +114,7 @@ public class GLSLParser {
     }
 
     private void parseSampler(Sampler.Type type) {
-        advanceToken(true);
+        nextToken(true);
 
         if (currentToken.type != Token.TokenType.IDENTIFIER) {
             throw new IllegalStateException();
@@ -264,7 +122,7 @@ public class GLSLParser {
 
         String name = currentToken.value;
 
-        advanceToken(true);
+        nextToken(true);
         if (currentToken.type != Token.TokenType.SEMICOLON) {
             throw new IllegalStateException();
         }
@@ -299,59 +157,59 @@ public class GLSLParser {
     private void parseUniformBlock() {
         this.state = State.LAYOUT;
 
-        advanceToken(true);
+        nextToken(true);
 
         if (currentToken.type != Token.TokenType.LEFT_PARENTHESIS) {
-            throw new IllegalStateException("type != left_parenthesis");
+            throw new IllegalStateException();
         }
 
         do {
-            advanceToken(true);
+            nextToken(true);
         } while (currentToken.type != Token.TokenType.RIGHT_PARENTHESIS);
 
-        advanceToken(true);
+        nextToken(true);
 
         if (!Objects.equals(this.currentToken.value, "uniform")) {
-            throw new IllegalStateException("value != uniform");
+            throw new IllegalStateException();
         }
 
-        advanceToken(true);
+        nextToken(true);
         String name = currentToken.value;
 
         UniformBlock ub = new UniformBlock(name);
 
-        advanceToken(true);
+        nextToken(true);
         if (currentToken.type != Token.TokenType.LEFT_BRACE) {
-            throw new IllegalStateException("type != left brace");
+            throw new IllegalStateException();
         }
 
-        advanceToken(true);
+        nextToken(true);
 
         // Recognize fields
         while (currentToken.type != Token.TokenType.RIGHT_BRACE) {
             if (currentToken.type != Token.TokenType.IDENTIFIER) {
-                throw new IllegalStateException("type != identifier");
+                throw new IllegalStateException();
             }
             String fieldType = this.currentToken.value;
 
-            advanceToken(true);
+            nextToken(true);
             if (currentToken.type != Token.TokenType.IDENTIFIER) {
-                throw new IllegalStateException("type != identifier 2");
+                throw new IllegalStateException();
             }
             String fieldName = this.currentToken.value;
 
-            advanceToken(true);
+            nextToken(true);
             if (currentToken.type != Token.TokenType.SEMICOLON) {
-                throw new IllegalStateException("type != semicolon");
+                throw new IllegalStateException();
             }
 
             // Add field
             ub.addField(new UniformBlock.Field(fieldType, fieldName));
 
-            advanceToken(true);
+            nextToken(true);
         }
 
-        advanceToken(true);
+        nextToken(true);
 
         switch (currentToken.type) {
             case SEMICOLON -> {}
@@ -359,9 +217,9 @@ public class GLSLParser {
             case IDENTIFIER -> {
                 ub.setAlias(currentToken.value);
 
-                advanceToken(true);
+                nextToken(true);
                 if (currentToken.type != Token.TokenType.SEMICOLON) {
-                    throw new IllegalStateException("type != semicolon 2");
+                    throw new IllegalStateException();
                 }
             }
 
@@ -396,29 +254,21 @@ public class GLSLParser {
     private void parseAttribute() {
         this.state = State.ATTRIBUTE;
 
-        Node prevNode = this.prevNode(true);
-
-        // Check if we are not inside a function declaration
-        if (prevNode != null && (prevNode.type.equals(Token.TokenType.LEFT_PARENTHESIS.name()) || prevNode.type.equals(Token.TokenType.COMMA.name())))
-        {
-            return;
-        }
-
         String ioType = this.currentToken.value;
 
-        advanceToken(true);
+        nextToken(true);
         if (currentToken.type != Token.TokenType.IDENTIFIER) {
             throw new IllegalStateException();
         }
         String type = this.currentToken.value;
 
-        advanceToken(true);
+        nextToken(true);
         if (currentToken.type != Token.TokenType.IDENTIFIER) {
             throw new IllegalStateException();
         }
         String id = this.currentToken.value;
 
-        advanceToken(true);
+        nextToken(true);
         if (currentToken.type != Token.TokenType.SEMICOLON) {
             throw new IllegalStateException();
         }
@@ -511,11 +361,11 @@ public class GLSLParser {
         return vertAttribute;
     }
 
-    private void advanceToken() {
-        advanceToken(false);
+    private void nextToken() {
+        nextToken(false);
     }
 
-    private void advanceToken(boolean skipSpace) {
+    private void nextToken(boolean skipSpace) {
         this.currentToken = this.tokens.get(this.currentTokenIdx++);
 
         while (skipSpace && this.currentToken.type == Token.TokenType.SPACING) {
@@ -523,75 +373,15 @@ public class GLSLParser {
         }
     }
 
-    private Token prevToken(boolean skipSpace) {
-        int tokenIdx = this.currentTokenIdx - 1;
-        Token token;
-
-        if (tokenIdx == 0) {
-            return null;
-        }
-
-        tokenIdx--;
-        token = this.tokens.get(tokenIdx);
-
-        while (skipSpace && tokenIdx != 0 &&
-               (token.type == Token.TokenType.SPACING || token.type == Token.TokenType.PREPROCESSOR || token.type == Token.TokenType.COMMENT))
-        {
-            tokenIdx--;
-            token = this.tokens.get(tokenIdx);
-        }
-
-        if (skipSpace && (token.type == Token.TokenType.SPACING || token.type == Token.TokenType.COMMENT || token.type == Token.TokenType.PREPROCESSOR)) {
-            return null;
-        }
-
-        return token;
-    }
-
-    private Node prevNode(boolean skipSpace) {
-        var nodes = getNodeStream();
-        int idx = nodes.size() - 1;
-        String type;
-
-        if (idx == 0) {
-            return null;
-        }
-
-        idx--;
-        Node node;
-        node = nodes.get(idx);
-        type = node.type;
-
-        while (skipSpace && idx != 0 &&
-               (type.equals(Token.TokenType.SPACING.name()) || type.equals(Token.TokenType.PREPROCESSOR.name()) || type.equals(Token.TokenType.COMMENT.name())))
-        {
-            idx--;
-            node = nodes.get(idx);
-            type = node.type;
-        }
-
-        if (skipSpace &&
-            (type.equals(Token.TokenType.SPACING.name()) || type.equals(Token.TokenType.PREPROCESSOR.name()) || type.equals(Token.TokenType.COMMENT.name())))
-        {
-            return null;
-        }
-
-        return node;
-    }
-
     private void appendToken(Token token) {
         this.appendNode(Node.fromToken(token));
     }
 
     private void appendNode(Node node) {
-        this.getNodeStream().add(node);
-    }
-
-    private LinkedList<Node> getNodeStream() {
-        return switch (this.stage) {
-            case VERTEX -> this.vsStream;
-            case FRAGMENT -> this.fsStream;
-        };
+        switch (this.stage) {
+            case VERTEX -> this.vsStream.add(node);
+            case FRAGMENT -> this.fsStream.add(node);
+        }
     }
 
     public String getOutput(Stage stage) {
@@ -646,7 +436,7 @@ public class GLSLParser {
                 builder.addUniformInfo(uniformInfo);
             }
 
-            ubos[i] = builder.buildUBO(uniformBlock.name, uniformBlock.binding, VK11.VK_SHADER_STAGE_ALL);
+             ubos[i] = builder.buildUBO(uniformBlock.name, uniformBlock.binding, VK11.VK_SHADER_STAGE_ALL);
             ++i;
         }
 
@@ -669,11 +459,6 @@ public class GLSLParser {
         }
 
         return imageDescriptors;
-    }
-
-    enum PreprocessorState {
-        IGNORE,
-        DEFAULT
     }
 
     enum State {
@@ -699,15 +484,7 @@ public class GLSLParser {
         }
 
         public static Node fromToken(Token token) {
-            return new Node(token.type.name(), token.value);
-        }
-
-        @Override
-        public String toString() {
-            return "Node{" +
-                   "type='" + type + '\'' +
-                   ", value='" + value + '\'' +
-                   '}';
+            return new Node("token:%s".formatted(token.type), token.value);
         }
     }
 }

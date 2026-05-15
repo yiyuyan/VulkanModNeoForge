@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-package net.vulkanmod.mixin.render.frapi.fabric;
+package net.vulkanmod.render.chunk.build.frapi.helper.fabric;
 
-import net.vulkanmod.render.chunk.build.frapi.helper.fabric.FabricBlockStateModel;
-import org.spongepowered.asm.mixin.Mixin;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.vulkanmod.render.chunk.build.frapi.mesh.MutableQuadViewImpl;
 
-@Mixin(BlockStateModel.class)
-public interface BlockStateModelMixin extends FabricBlockStateModel { }
+@FunctionalInterface
+public interface QuadTransform {
+    /**
+     * Return false to filter out quads from rendering. When more than one transform
+     * is in effect, returning false means unapplied transforms will not receive the quad.
+     */
+    boolean transform(MutableQuadViewImpl quad);
+}
