@@ -6,6 +6,3 @@ Status:
 
 When to resume updates?
 Maybe after July,because I have to prepare an important exam.
-
-
-<table><tr><td bgcolor=black>FUCK NEOFORGE MOD LOADER!</td></tr></table>
