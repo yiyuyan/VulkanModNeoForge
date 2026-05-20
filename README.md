@@ -5,4 +5,4 @@ Status:
 1.21.10-0.6.0-dev Development on hold
 
 When to resume updates?
-Maybe after July,because I have to prepare an important exam.
+Maybe after July,because I have to prepare for an important exam.
