@@ -87,8 +87,8 @@ public class ChunkStatusMap {
     }
 
     public boolean chunkRenderReady(int x, int z) {
-        byte status = map.get(ChunkPos.asLong(x, z));
-        return status == ALL_FLAGS;
+        //byte status = map.get(ChunkPos.asLong(x, z));
+        return map.containsKey(ChunkPos.asLong(x,z));
     }
 
     public void reset() {

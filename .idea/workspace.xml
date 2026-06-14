@@ -130,7 +130,7 @@
       <command value="gradle clean runClient" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.VulkanModNeoForge [build]">
+  <component name="RunManager" selected="Gradle.VulkanModNeoForge [runClient]">
     <configuration name="VulkanModNeoForge [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -242,8 +242,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.VulkanModNeoForge [build]" />
         <item itemvalue="Gradle.VulkanModNeoForge [runClient]" />
+        <item itemvalue="Gradle.VulkanModNeoForge [build]" />
         <item itemvalue="Gradle.VulkanModNeoForge [clean]" />
         <item itemvalue="Gradle.VulkanModNeoForge [clean runClient]" />
       </list>
