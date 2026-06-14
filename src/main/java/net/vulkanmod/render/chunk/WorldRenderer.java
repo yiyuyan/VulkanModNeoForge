@@ -228,7 +228,7 @@ public class WorldRenderer {
 
     public void allChanged() {
         if (this.level != null) {
-//           this.graphicsChanged();
+//            this.graphicsChanged();
             this.level.clearTintCaches();
 
             this.renderRegionCache.clear();
