@@ -78,7 +78,11 @@ public abstract class DeviceManager {
                 currentDevice = new VkPhysicalDevice(ppPhysicalDevices.get(i), instance);
 
                 Device device = new Device(currentDevice);
-                devices.add(device);
+
+                if (device.properties.deviceType() != VK_PHYSICAL_DEVICE_TYPE_OTHER ||
+                        device.properties.limits().maxImageDimension2D() >= 4096) {
+                    devices.add(device);
+                }
             }
 
             return devices;
@@ -90,8 +94,30 @@ public abstract class DeviceManager {
 
         List<Device> devices = new ObjectArrayList<>();
         for (Device device : availableDevices) {
-            if (isDeviceSuitable(device.physicalDevice)) {
+            int deviceType = device.properties.deviceType();
+
+            if (deviceType == VK_PHYSICAL_DEVICE_TYPE_OTHER &&
+                    device.properties.limits().maxImageDimension2D() < 4096) {
+                continue;
+            }
+
+            if (deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) {
                 devices.add(device);
+            }
+        }
+
+        if (devices.isEmpty()) {
+            for (Device device : availableDevices) {
+                int deviceType = device.properties.deviceType();
+                if (deviceType == VK_PHYSICAL_DEVICE_TYPE_OTHER &&
+                        device.properties.limits().maxImageDimension2D() < 4096) {
+                    continue;
+                }
+
+                if (isDeviceSuitable(device.physicalDevice)) {
+                    devices.add(device);
+                    break;
+                }
             }
         }
 

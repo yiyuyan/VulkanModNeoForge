@@ -1,7 +1,9 @@
 package net.vulkanmod.vulkan;
 
+import cn.ksmcbrigade.mr.utils.mixin.MixinAgentUtils;
 import cn.ksmcbrigade.mr.utils.mixin.MixinUtils;
 import net.vulkanmod.Initializer;
+import net.vulkanmod.config.VKNConfig;
 import net.vulkanmod.mixin.compatibility.gl.GL11M;
 import net.vulkanmod.mixin.compatibility.gl.GL14M;
 import net.vulkanmod.mixin.compatibility.gl.GL15M;
@@ -16,6 +18,7 @@ import net.vulkanmod.vulkan.memory.MemoryTypes;
 import net.vulkanmod.vulkan.memory.StagingBuffer;
 import net.vulkanmod.vulkan.queue.Queue;
 import net.vulkanmod.vulkan.shader.Pipeline;
+import net.vulkanmod.vulkan.transformers.VkInstanceTransformer;
 import net.vulkanmod.vulkan.util.VUtil;
 import net.vulkanmod.vulkan.util.VkResult;
 import org.lwjgl.PointerBuffer;
@@ -26,6 +29,7 @@ import org.lwjgl.util.vma.VmaVulkanFunctions;
 import org.lwjgl.vulkan.*;
 
 import javax.annotation.Nullable;
+import java.lang.instrument.Instrumentation;
 import java.nio.IntBuffer;
 import java.nio.LongBuffer;
 import java.util.*;
@@ -155,16 +159,18 @@ public class Vulkan {
         setupDebugMessenger();
 
 
-        /*  With the help of MixinRuntime,we don't need to reapply mixins by hand
+        //  In fact,
+        //  with the help of MixinRuntime,we don't need to reapply mixins by hand
 
-        Initializer.LOGGER.info("Reapply Mixins...");
-        MixinUtils.reapply(GL11M.class);
-        MixinUtils.reapply(GL14M.class);
-        MixinUtils.reapply(GL15M.class);
-        MixinUtils.reapply(GL30M.class);
-        MixinUtils.reapply(Matrix4fM.class);
+        if(VKNConfig.forceReapplyGLMixins){
+            Initializer.LOGGER.info("Reapply Mixins...");
+            MixinUtils.reapply(GL11M.class);
+            MixinUtils.reapply(GL14M.class);
+            MixinUtils.reapply(GL15M.class);
+            MixinUtils.reapply(GL30M.class);
+            MixinUtils.reapply(Matrix4fM.class);
+        }
 
-        */
 
         createSurface(window);
 
@@ -242,6 +248,8 @@ public class Vulkan {
             throw new RuntimeException("Validation requested but not supported");
         }
 
+        transformVulkan();
+
         try (MemoryStack stack = stackPush()) {
 
             // Use calloc to initialize the structs with 0s. Otherwise, the program can crash due to random values
@@ -278,7 +286,21 @@ public class Vulkan {
 
             instance = new VkInstance(instancePtr.get(0), createInfo);
 
-            System.out.println(instance);
+           Initializer.LOGGER.info("Created VkInstance: {}",instance);
+        }
+    }
+
+    private static void transformVulkan() {
+        if(!VKNConfig.useVulkanTransformers) return;
+        Instrumentation inst = MixinAgentUtils.getInst();
+        if(inst!=null){
+            try {
+                Initializer.LOGGER.info("Transforming VkInstance...");
+                inst.addTransformer(new VkInstanceTransformer(),true);
+                inst.retransformClasses(VkInstance.class);
+            } catch (Throwable e) {
+                Initializer.LOGGER.error("Failed to transform Vulkan classes.",e);
+            }
         }
     }
 

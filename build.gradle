@@ -32,6 +32,12 @@ loom {
         accessWidenerPath = file("src/main/resources/vulkanmod.accesswidener")
         accessTransformers = files("src/main/resources/META-INF/accesstransformer.cfg")
     }
+
+    runs {
+        client {
+            vmArgs "-Xss1024m"
+        }
+    }
 }
 
 project.ext.lwjglVersion = "3.3.3"
