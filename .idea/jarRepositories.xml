@@ -19,12 +19,12 @@
     <remote-repository>
       <option name="id" value="LoomGlobalMinecraft" />
       <option name="name" value="LoomGlobalMinecraft" />
-      <option name="url" value="file:/$PROJECT_DIR$/../../.gradle/caches/fabric-loom/minecraftMaven/" />
+      <option name="url" value="file:/$USER_HOME$/.gradle/caches/fabric-loom/minecraftMaven/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="LoomTransformedForgeDependencies" />
       <option name="name" value="LoomTransformedForgeDependencies" />
-      <option name="url" value="file:/$PROJECT_DIR$/../../.gradle/caches/fabric-loom/forge/transformed-dependencies-v1/" />
+      <option name="url" value="file:/$USER_HOME$/.gradle/caches/fabric-loom/forge/transformed-dependencies-v1/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="MavenRepo" />
@@ -65,6 +65,11 @@
       <option name="id" value="MavenLocal" />
       <option name="name" value="MavenLocal" />
       <option name="url" value="file:/$MAVEN_REPOSITORY$/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="Modrinth" />
+      <option name="name" value="Modrinth" />
+      <option name="url" value="https://api.modrinth.com/maven" />
     </remote-repository>
   </component>
 </project>

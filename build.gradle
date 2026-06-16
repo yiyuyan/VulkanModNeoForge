@@ -16,7 +16,10 @@ repositories {
         name = 'NeoForged'
         url = 'https://maven.neoforged.net/releases'
     }
-    mavenLocal()
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+    }
 
     // Add repositories to retrieve artifacts from in here.
     // You should only use this when depending on other mods because
@@ -63,7 +66,7 @@ dependencies {
 	implementation("org.lwjgl:lwjgl-vulkan:$lwjglVersion:$macosNatives")
 	implementation("org.lwjgl:lwjgl-vulkan:$lwjglVersion:$macosArmNatives")
 
-    include(modImplementation("cn.ksmcbrigade.mr:mr:1.0.2-mc1.21"))
+    include(modImplementation("maven.modrinth:mixinruntime:1.0.2-mc1.21"))
 }
 
 processResources {
