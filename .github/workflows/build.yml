@@ -28,7 +28,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build
-        run: ./gradlew --no-daemon clean jarJar build
+        run: ./gradlew --no-daemon clean build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
