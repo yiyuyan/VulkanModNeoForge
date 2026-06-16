@@ -2,14 +2,15 @@ package net.vulkanmod;
 
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.i18n.MavenVersionTranslator;
+import net.neoforged.fml.loading.FMLPaths;
 import net.vulkanmod.config.Config;
 import net.vulkanmod.config.Platform;
+import net.vulkanmod.config.VKNConfig;
 import net.vulkanmod.config.video.VideoModeManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class Initializer {
 	public static final Logger LOGGER = LogManager.getLogger("VulkanMod");
@@ -22,20 +23,29 @@ public class Initializer {
         Platform.init();
 		VideoModeManager.init();
 
-		var configPath = Paths.get("config")
+		var configPath = FMLPaths.CONFIGDIR.get()
 				.resolve("vulkanmod_settings.json");
 
 		CONFIG = loadConfig(configPath);
 	}
 
-	public void onInitializeClient() {
+	@SuppressWarnings("OptionalGetWithoutIsPresent")
+    public void onInitializeClient() {
 
-		VERSION = MavenVersionTranslator.artifactVersionToString(ModList.get().getModContainerById("vulkanmod")
-				.get()
-				.getModInfo()
-				.getVersion());
+        try {
+            VERSION = MavenVersionTranslator.artifactVersionToString(ModList.get().getModContainerById("vulkanmod")
+                    .get()
+                    .getModInfo()
+                    .getVersion());
+        } catch (Exception e) {
+            VERSION = "0.4.8-dev";
 
-		LOGGER.info("== VulkanMod ==");
+			LOGGER.warn("Failed to get the version: {}",e.getMessage());
+        }
+
+        LOGGER.info("== VulkanMod ==");
+
+		VKNConfig.hide();
 	}
 
 	private static Config loadConfig(Path path) {
