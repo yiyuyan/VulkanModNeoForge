@@ -183,7 +183,7 @@ public class VOptionScreen extends Screen {
                 x0, 6,
                 buttonWidth, buttonHeight,
                 Component.translatable("vulkanmod.options.buttons.kofi"),
-                button -> Util.getPlatform().openUri("https://ko-fi.com/xcollateral")
+                button -> Util.getPlatform().openUri("https://afdian.com/a/commonplace")
         );
 
         this.buttons.add(this.applyButton);
