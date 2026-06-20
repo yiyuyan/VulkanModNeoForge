@@ -92,6 +92,10 @@ public class LiquidRenderer {
 
         TextureAtlasSprite[] sprites = FluidSpriteCache.getFluidSprites(region, blockPos, fluidState);
 
+        if (sprites == null || sprites.length < 2 || sprites[0] == null || sprites[1] == null) {
+            return;
+        }
+
         float r = ColorUtil.ARGB.unpackR(color);
         float g = ColorUtil.ARGB.unpackG(color);
         float b = ColorUtil.ARGB.unpackB(color);
@@ -323,8 +327,8 @@ public class LiquidRenderer {
             TextureAtlasSprite sprite = sprites[1];
             boolean isOverlay = false;
 
-            if (sprites.length > 2) {
-                if (adjState.getBlock().shouldDisplayFluidOverlay(adjState,region,blockPos,fluidState)) {
+            if (sprites.length > 2 && sprites[2] != null) {
+                if (adjState.getBlock().shouldDisplayFluidOverlay(adjState, region, blockPos, fluidState)) {
                     sprite = sprites[2];
                     isOverlay = true;
                 }

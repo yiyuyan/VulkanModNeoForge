@@ -76,6 +76,7 @@
     "window.WindowMixin"
   ],
   "mixins": [
+    "compatibility.gl.GL14M",
     "neoforged.ItemDecoratorHandlerMixin",
     "neoforged.MonsterRoomHooksMixin"
   ],

@@ -155,7 +155,7 @@ public class GpuCuller {
      */
     public void recordCull(VkCommandBuffer commandBuffer, ChunkAreaManager areaManager,
                            StaticQueue<ChunkArea> visibleAreas, VFrustum frustum, Matrix4f prevViewProj) {
-        int frame = Renderer.getCurrentFrame();
+        int frame = Renderer.getCurrentFrame() % this.framesNum;
         int frameBase = frame * this.areaCount;
 
         // Hi-Z occlusion setup. Re-point binding 4 only when the target view changes; set[frame] was
