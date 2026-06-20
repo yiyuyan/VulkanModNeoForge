@@ -82,8 +82,7 @@ public class ShaderInstanceM implements ShaderMixed {
             pipelineBuilder.compileShaders();
             this.pipeline = pipelineBuilder.createGraphicsPipeline();
         } catch (Exception e) {
-            System.out.printf("Error on shader %s creation\n", name);
-            e.printStackTrace();
+            Initializer.LOGGER.error("Error on shader {} creation", name, e);
             throw e;
         }
     }
@@ -238,8 +237,7 @@ public class ShaderInstanceM implements ShaderMixed {
             this.isLegacy = true;
 
         } catch (Exception e) {
-            Initializer.LOGGER.error("Error on shader {} conversion/compilation", this.name);
-            e.printStackTrace();
+            Initializer.LOGGER.error("Error on shader {} conversion/compilation", this.name, e);
         }
     }
 }

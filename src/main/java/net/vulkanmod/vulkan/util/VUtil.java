@@ -86,13 +86,13 @@ public class VUtil {
         src.limit(src.capacity()).rewind();
     }
 
-    public static void memcpyImage(ByteBuffer dst, ByteBuffer src, int width, int height, int channels, int unpackSkipRows, int unpackSkipPixels, int unpackRowLenght) {
-        int offset = (unpackSkipRows * unpackRowLenght + unpackSkipPixels) * channels;
+    public static void memcpyImage(ByteBuffer dst, ByteBuffer src, int width, int height, int channels, int unpackSkipRows, int unpackSkipPixels, int unpackRowLength) {
+        int offset = (unpackSkipRows * unpackRowLength + unpackSkipPixels) * channels;
         for (int i = 0; i < height; ++i) {
             src.limit(offset + width * channels);
             src.position(offset);
             dst.put(src);
-            offset += unpackRowLenght * channels;
+            offset += unpackRowLength * channels;
         }
     }
 

@@ -23,6 +23,8 @@ public class AreaBuffer {
 
     private Buffer buffer;
 
+    private Runnable offsetChangedListener;
+
     int size, used = 0;
     int segments = 0;
 
@@ -92,23 +94,23 @@ public class AreaBuffer {
     }
 
     public Segment findSegment(int size) {
-        Segment segment = null;
+        // Fast path: after compaction the tail is usually one big free segment.
+        Segment tail = this.last;
+        if (tail != null && tail.isFree() && tail.size >= size)
+            return tail;
 
-        Segment segment1 = this.first;
-        while (segment1 != null) {
-            if (segment1.isFree() && segment1.size >= size) {
-                if (segment == null || segment1.size < segment.size)
-                    segment = segment1;
-            }
-
-            segment1 = segment1.next;
+        // First-fit: return the first free segment that fits. With compaction
+        // active (reallocate compacts used segments), first-fit's slightly
+        // higher fragmentation is reclaimed on growth, so we trade the old
+        // O(n) best-fit full-scan for an early-exit first-fit.
+        Segment segment = this.first;
+        while (segment != null) {
+            if (segment.isFree() && segment.size >= size)
+                return segment;
+            segment = segment.next;
         }
 
-        if (segment == null || segment.size < size) {
-            return this.reallocate(size);
-        }
-
-        return segment;
+        return this.reallocate(size);
     }
 
     public Segment reallocate(int uploadSize) {
@@ -127,95 +129,62 @@ public class AreaBuffer {
         this.size = newSize;
         Buffer dst = this.allocateBuffer();
 
-        UploadManager.INSTANCE.copyBuffer(this.buffer, dst);
+        Segment segment = this.first;
+        int dstOffset = 0;
+        Segment prevUsed = null;
+        int usedCount = 0;
 
-        // TODO: moving only used segments causes corruption
-//        moveUsedSegments(dst);
+        while (segment != null) {
+            Segment next = segment.next;
+            if (!segment.isFree()) {
+                usedCount++;
+                UploadManager.INSTANCE.copyBuffer(this.buffer, segment.offset, dst, dstOffset, segment.size);
+
+                this.usedSegments.remove(segment.offset);
+                segment.offset = dstOffset;
+                this.usedSegments.put(segment.offset, segment);
+                updateDrawParams(segment);
+
+                segment.prev = prevUsed;
+                if (prevUsed != null) prevUsed.next = segment;
+                else this.first = segment;
+                prevUsed = segment;
+
+                dstOffset += segment.size;
+            }
+            segment = next;
+        }
 
         this.buffer.freeBuffer();
         this.buffer = dst;
 
-        if (last.isFree()) {
-            last.size += increment;
+        if (prevUsed == null) {
+            this.first = new Segment(0, newSize);
+            this.first.prev = null;
+            this.first.next = null;
+            this.last = this.first;
+            this.segments = 1;
+        } else if (dstOffset < newSize) {
+            Segment free = new Segment(dstOffset, newSize - dstOffset);
+            prevUsed.bindNext(free);
+            this.last = free;
+            this.segments = usedCount + 1;
+        } else {
+            prevUsed.next = null;
+            this.last = prevUsed;
+            this.segments = usedCount;
         }
-        else {
-            int offset = last.offset + last.size;
-            Segment segment = new Segment(offset, newSize - offset);
-            segments++;
 
-            last.bindNext(segment);
-
-            last = segment;
-        }
+        if (offsetChangedListener != null) offsetChangedListener.run();
 
         if (DEBUG)
             checkSegments();
 
-        return last;
+        return this.last;
     }
 
-    void moveUsedSegments(Buffer dst) {
-        int srcOffset, dstOffset, uploadSize;
-        int usedCount = 0;
-
-        dstOffset = 0;
-        int currOffset = dstOffset;
-
-        Segment segment = this.first;
-        Segment prevUsed = null;
-
-        srcOffset = -1;
-        uploadSize = 0;
-
-        while (segment != null) {
-            if (!segment.isFree()) {
-                usedCount++;
-
-                if (segment.offset != srcOffset + uploadSize) {
-
-                    if (srcOffset == -1) {
-                        dstOffset = 0;
-                        this.first = segment;
-                        segment.prev = null;
-                    } else {
-                        UploadManager.INSTANCE.copyBuffer(this.buffer, srcOffset, dst, dstOffset, uploadSize);
-
-                        dstOffset += uploadSize;
-                    }
-
-                    srcOffset = segment.offset;
-                    uploadSize = segment.size;
-
-                } else {
-                    uploadSize += segment.size;
-                }
-
-                this.usedSegments.remove(segment.offset);
-                segment.offset = currOffset;
-                currOffset += segment.size;
-                updateDrawParams(segment);
-                this.usedSegments.put(segment.offset, segment);
-
-                if (prevUsed != null) {
-                    prevUsed.bindNext(segment);
-                }
-
-                prevUsed = segment;
-            }
-
-            segment = segment.next;
-        }
-
-        if (uploadSize > 0) {
-            UploadManager.INSTANCE.copyBuffer(this.buffer, srcOffset, dst, dstOffset, uploadSize);
-        }
-
-        if (prevUsed != null) {
-            prevUsed.next = null;
-            this.last = prevUsed;
-
-            this.segments = usedCount;
-        }
+    public void setOffsetChangedListener(Runnable listener) {
+        this.offsetChangedListener = listener;
     }
 
     public void setSegmentFree(int offset) {

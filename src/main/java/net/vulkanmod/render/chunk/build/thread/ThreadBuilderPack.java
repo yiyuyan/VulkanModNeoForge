@@ -38,4 +38,8 @@ public class ThreadBuilderPack {
         this.builders.values().forEach(TerrainBufferBuilder::clear);
     }
 
+    public void freeAll() {
+        this.builders.values().forEach(TerrainBufferBuilder::free);
+    }
+
 }

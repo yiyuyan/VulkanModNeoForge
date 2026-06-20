@@ -8,7 +8,6 @@ import net.vulkanmod.render.chunk.WorldRenderer;
 import net.vulkanmod.render.chunk.buffer.DrawBuffers;
 import net.vulkanmod.render.chunk.build.task.ChunkTask;
 import net.vulkanmod.render.chunk.build.task.CompileResult;
-import net.vulkanmod.render.chunk.build.thread.ThreadBuilderPack;
 import net.vulkanmod.render.chunk.build.thread.BuilderResources;
 import net.vulkanmod.render.vertex.TerrainRenderType;
 
@@ -18,23 +17,26 @@ import java.util.Queue;
 
 public class TaskDispatcher {
     private final Queue<CompileResult> compileResults = Queues.newLinkedBlockingDeque();
-    public final ThreadBuilderPack fixedBuffers;
 
     private volatile boolean stopThreads;
     private Thread[] threads;
     private BuilderResources[] resources;
     private int idleThreads;
-    private final Queue<ChunkTask> highPriorityTasks = Queues.newConcurrentLinkedQueue();
-    private final Queue<ChunkTask> lowPriorityTasks = Queues.newConcurrentLinkedQueue();
+    private final java.util.concurrent.PriorityBlockingQueue<ChunkTask> taskQueue =
+            new java.util.concurrent.PriorityBlockingQueue<>(64,
+                    java.util.Comparator.<ChunkTask>comparingInt(t -> t.highPriority ? 0 : 1)
+                            .thenComparingDouble(t -> t.distSq));
 
     public TaskDispatcher() {
-        this.fixedBuffers = new ThreadBuilderPack();
-
         this.stopThreads = true;
     }
 
     public void createThreads() {
-        int n = Math.max((Runtime.getRuntime().availableProcessors() - 1) / 2, 1);
+        // ~62% of cores for chunk meshing (was (cores-1)/2 ≈ 50%, quite conservative). More builders
+        // = faster chunk loading throughput, while still leaving ~38% of cores for the render/main/
+        // game threads. Scales down safely on low-core machines (4 cores -> 2, 8 -> 5, 16 -> 10, 20 -> 12).
+        int cores = Runtime.getRuntime().availableProcessors();
+        int n = Math.max(1, (cores * 5) / 8);
         createThreads(n);
     }
 
@@ -58,7 +60,10 @@ public class TaskDispatcher {
             BuilderResources builderResources = new BuilderResources();
             Thread thread = new Thread(() -> runTaskThread(builderResources),
                     "Builder-" + i);
-            thread.setPriority(Thread.NORM_PRIORITY);
+            // Below-normal priority: builders run on spare cores but YIELD to the render/main
+            // threads, so heavy chunk loading doesn't steal frame time -> less stutter. (Advisory;
+            // strongest effect on Windows, limited on Linux, but never harmful.)
+            thread.setPriority(Math.max(Thread.MIN_PRIORITY, Thread.NORM_PRIORITY - 2));
 
             this.threads[i] = thread;
             this.resources[i] = builderResources;
@@ -70,33 +75,40 @@ public class TaskDispatcher {
         while(!this.stopThreads) {
             ChunkTask task = this.pollTask();
 
-            if(task == null)
+            if(task == null) {
                 synchronized (this) {
-                    try {
-                        this.idleThreads++;
-                        this.wait();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                    if (this.stopThreads)
+                        break;
+                    if (this.taskQueue.isEmpty()) {
+                        try {
+                            this.idleThreads++;
+                            this.wait();
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                            break;
+                        }
+                        this.idleThreads--;
                     }
-                    this.idleThreads--;
                 }
-
-            if(task == null)
                 continue;
+            }
 
             task.runTask(builderResources);
         }
     }
 
     public void schedule(ChunkTask chunkTask) {
-        if(chunkTask == null)
+        if (chunkTask == null)
             return;
 
-        if (chunkTask.highPriority) {
-            this.highPriorityTasks.offer(chunkTask);
-        } else {
-            this.lowPriorityTasks.offer(chunkTask);
-        }
+        net.minecraft.world.phys.Vec3 cam = WorldRenderer.getCameraPos();
+        RenderSection sec = chunkTask.getSection();
+        double dx = sec.xOffset() + 8 - cam.x;
+        double dy = sec.yOffset() + 8 - cam.y;
+        double dz = sec.zOffset() + 8 - cam.z;
+        chunkTask.distSq = (float) (dx * dx + dy * dy + dz * dz);
+
+        this.taskQueue.offer(chunkTask);
 
         synchronized (this) {
             this.notify();
@@ -105,12 +117,7 @@ public class TaskDispatcher {
 
     @Nullable
     private ChunkTask pollTask() {
-        ChunkTask task = this.highPriorityTasks.poll();
-
-        if(task == null)
-            task = this.lowPriorityTasks.poll();
-
-        return task;
+        return this.taskQueue.poll();
     }
 
     public void stopThreads() {
@@ -131,12 +138,21 @@ public class TaskDispatcher {
             }
         }
 
+        if (this.resources != null) {
+            for (BuilderResources resources : this.resources) {
+                if (resources != null) resources.free();
+            }
+            this.resources = null;
+        }
+        this.threads = null;
     }
 
     public boolean updateSections() {
         CompileResult result;
         boolean flag = false;
-        while((result = this.compileResults.poll()) != null) {
+        int backlog = this.compileResults.size();
+        int budget = Math.min(256, Math.max(64, backlog));
+        while (budget-- > 0 && (result = this.compileResults.poll()) != null) {
             flag = true;
             doSectionUpdate(result);
         }
@@ -178,27 +194,17 @@ public class TaskDispatcher {
         }
     }
 
-    public boolean isIdle() { return this.idleThreads == this.threads.length && this.compileResults.isEmpty(); }
+    public boolean isIdle() { return this.threads == null || (this.idleThreads == this.threads.length && this.compileResults.isEmpty()); }
 
     public void clearBatchQueue() {
-        while(!this.highPriorityTasks.isEmpty()) {
-            ChunkTask chunkTask = this.highPriorityTasks.poll();
-            if (chunkTask != null) {
-                chunkTask.cancel();
-            }
-        }
-
-        while(!this.lowPriorityTasks.isEmpty()) {
-            ChunkTask chunkTask = this.lowPriorityTasks.poll();
-            if (chunkTask != null) {
-                chunkTask.cancel();
-            }
+        ChunkTask chunkTask;
+        while ((chunkTask = this.taskQueue.poll()) != null) {
+            chunkTask.cancel();
         }
     }
 
     public String getStats() {
-        int taskCount = highPriorityTasks.size() + lowPriorityTasks.size();
-        return String.format("iT: %d Ts: %d", this.idleThreads, taskCount);
+        return String.format("iT: %d Ts: %d", this.idleThreads, taskQueue.size());
     }
 
     public BuilderResources[] getResourcesArray() {

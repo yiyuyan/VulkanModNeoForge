@@ -16,19 +16,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LevelRenderer.class)
 public class LevelRendererMixin {
 
-    @Inject(method = "renderClouds", at = @At("HEAD"))
+    // These are cosmetic FPS-profiler push/pop hooks. Their injection points target
+    // renderSectionLayer/ParticleEngine#render by ordinal inside renderLevel, which
+    // NeoForge coremods can shift or remove. require = 0 keeps a moved/absent target
+    // from throwing a MixinTransformerError and crashing the game during init.
+    @Inject(require = 0, method ="renderClouds", at = @At("HEAD"))
     private void pushProfiler(PoseStack poseStack, Matrix4f matrix4f, Matrix4f matrix4f2, float f, double d, double e, double g, CallbackInfo ci) {
         Profiler profiler = Profiler.getMainProfiler();
         profiler.push("Clouds");
     }
 
-    @Inject(method = "renderClouds", at = @At("RETURN"))
+    @Inject(require = 0, method = "renderClouds", at = @At("RETURN"))
     private void popProfiler(PoseStack poseStack, Matrix4f matrix4f, Matrix4f matrix4f2, float f, double d, double e, double g, CallbackInfo ci) {
         Profiler profiler = Profiler.getMainProfiler();
         profiler.pop();
     }
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE",
+    @Inject(require = 0, method = "renderLevel", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/particle/ParticleEngine;render(Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/culling/Frustum;Ljava/util/function/Predicate;)V",
             shift = At.Shift.BEFORE))
     private void pushProfiler3(DeltaTracker deltaTracker, boolean bl, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci) {
@@ -36,7 +40,7 @@ public class LevelRendererMixin {
         profiler.push("Particles");
     }
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE",
+    @Inject(require = 0, method = "renderLevel", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/particle/ParticleEngine;render(Lnet/minecraft/client/renderer/LightTexture;Lnet/minecraft/client/Camera;FLnet/minecraft/client/renderer/culling/Frustum;Ljava/util/function/Predicate;)V",
             shift = At.Shift.AFTER))
     private void popProfiler3(DeltaTracker deltaTracker, boolean bl, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci) {
@@ -44,7 +48,7 @@ public class LevelRendererMixin {
         profiler.pop();
     }
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE",
+    @Inject(require = 0, method = "renderLevel", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/LevelRenderer;renderSectionLayer(Lnet/minecraft/client/renderer/RenderType;DDDLorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V",
             ordinal = 0,
             shift = At.Shift.BEFORE))
@@ -53,7 +57,7 @@ public class LevelRendererMixin {
         profiler.push("Opaque_terrain");
     }
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE",
+    @Inject(require = 0, method = "renderLevel", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/LevelRenderer;renderSectionLayer(Lnet/minecraft/client/renderer/RenderType;DDDLorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V",
             ordinal = 2,
             shift = At.Shift.BEFORE))
@@ -63,7 +67,7 @@ public class LevelRendererMixin {
         profiler.push("entities");
     }
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE",
+    @Inject(require = 0, method = "renderLevel", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/LevelRenderer;renderSectionLayer(Lnet/minecraft/client/renderer/RenderType;DDDLorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V",
             ordinal = 3,
             shift = At.Shift.BEFORE))
@@ -73,7 +77,7 @@ public class LevelRendererMixin {
         profiler.push("Translucent_terrain");
     }
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE",
+    @Inject(require = 0, method = "renderLevel", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/LevelRenderer;renderSectionLayer(Lnet/minecraft/client/renderer/RenderType;DDDLorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V",
             ordinal = 5,
             shift = At.Shift.BEFORE))
@@ -83,7 +87,7 @@ public class LevelRendererMixin {
         profiler.push("Translucent_terrain");
     }
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE",
+    @Inject(require = 0, method = "renderLevel", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/LevelRenderer;renderSectionLayer(Lnet/minecraft/client/renderer/RenderType;DDDLorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V",
             ordinal = 4,
             shift = At.Shift.BEFORE))
@@ -92,7 +96,7 @@ public class LevelRendererMixin {
         profiler.pop();
     }
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE",
+    @Inject(require = 0, method = "renderLevel", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/renderer/LevelRenderer;renderSectionLayer(Lnet/minecraft/client/renderer/RenderType;DDDLorg/joml/Matrix4f;Lorg/joml/Matrix4f;)V",
             ordinal = 6,
             shift = At.Shift.BEFORE))

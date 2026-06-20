@@ -1,9 +1,11 @@
 package net.vulkanmod.render.chunk.buffer;
 
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import net.vulkanmod.render.PipelineManager;
 import net.vulkanmod.render.chunk.ChunkArea;
 import net.vulkanmod.render.chunk.RenderSection;
 import net.vulkanmod.render.chunk.build.UploadBuffer;
+import net.vulkanmod.render.chunk.cull.GpuCuller;
 import net.vulkanmod.render.chunk.util.StaticQueue;
 import net.vulkanmod.render.vertex.CustomVertexFormat;
 import net.vulkanmod.render.vertex.TerrainRenderType;
@@ -31,6 +33,19 @@ public class DrawBuffers {
     AreaBuffer indexBuffer;
     private final EnumMap<TerrainRenderType, AreaBuffer> vertexBuffers = new EnumMap<>(TerrainRenderType.class);
 
+    // GPU-culling metadata registrations: live DrawParameters -> packed (lx,ly,lz area-relative
+    // block offsets, typeIdx). The meta SSBO region is rebuilt whole-area from this map on any
+    // change, because AreaBuffer segment moves rewrite offsets of arbitrary sections.
+    private final Object2LongOpenHashMap<DrawParameters> metaRegistrations = new Object2LongOpenHashMap<>();
+
+    public interface DirtyListener { void markDirty(int areaIndex); }
+    private static DirtyListener dirtyListener = null;
+    public static void setDirtyListener(DirtyListener listener) { dirtyListener = listener; }
+
+    void markMetaDirty() {
+        if (dirtyListener != null) dirtyListener.markDirty(this.index);
+    }
+
     //Need ugly minHeight Parameter to fix custom world heights (exceeding 384 Blocks in total)
     public DrawBuffers(int index, Vector3i origin, int minHeight) {
         this.index = index;
@@ -51,8 +66,10 @@ public class DrawBuffers {
         }
 
         if (!buffer.autoIndices) {
-            if (this.indexBuffer == null)
+            if (this.indexBuffer == null) {
                 this.indexBuffer = new AreaBuffer(AreaBuffer.Usage.INDEX, 60000, INDEX_SIZE);
+                this.indexBuffer.setOffsetChangedListener(this::markMetaDirty);
+            }
 
             AreaBuffer.Segment segment = this.indexBuffer.upload(buffer.getIndexBuffer(), drawParameters.firstIndex, drawParameters);
             firstIndex = segment.offset / INDEX_SIZE;
@@ -61,6 +78,16 @@ public class DrawBuffers {
         drawParameters.indexCount = buffer.indexCount;
         drawParameters.firstIndex = firstIndex;
         drawParameters.vertexOffset = vertexOffset;
+
+        int typeIdx = GpuCuller.typeIndex(renderType);
+        if (typeIdx >= 0) {
+            int lx = section.xOffset() - this.origin.x();
+            int ly = section.yOffset() - this.origin.y();
+            int lz = section.zOffset() - this.origin.z();
+            long packed = ((long) lx << 24) | ((long) ly << 16) | ((long) lz << 8) | typeIdx;
+            this.metaRegistrations.put(drawParameters, packed);
+            markMetaDirty();
+        }
 
         buffer.release();
     }
@@ -75,7 +102,11 @@ public class DrawBuffers {
         };
 
         return this.vertexBuffers.computeIfAbsent(
-                renderType, renderType1 -> new AreaBuffer(AreaBuffer.Usage.VERTEX, initialSize, VERTEX_SIZE));
+                renderType, renderType1 -> {
+                    AreaBuffer ab = new AreaBuffer(AreaBuffer.Usage.VERTEX, initialSize, VERTEX_SIZE);
+                    ab.setOffsetChangedListener(this::markMetaDirty);
+                    return ab;
+                });
     }
 
     public AreaBuffer getAreaBuffer(TerrainRenderType r) {
@@ -173,10 +204,38 @@ public class DrawBuffers {
             updateChunkAreaOrigin(commandBuffer, pipeline, camX, camY, camZ, stack);
         }
 
-        if (terrainRenderType == TerrainRenderType.TRANSLUCENT) {
-            vkCmdBindIndexBuffer(commandBuffer, this.indexBuffer.getId(), 0, VK_INDEX_TYPE_UINT16);
-        }
+        // PLAIN water path: translucent is now sequential-indexed (see BuildTask), so it uses the
+        // shared quad index buffer already bound once per pass in WorldRenderer.renderSectionLayer,
+        // exactly like opaque terrain. No per-area sorted index buffer to bind (this.indexBuffer is
+        // never allocated now), which avoids the sorted-index desync that broke water.
 
+    }
+
+    /**
+     * Rebuilds this area's GPU-cull metadata from live DrawParameters into scratch.
+     * Layout per 32-byte entry: ivec4 posType (lx,ly,lz,typeIdx), ivec4 draw
+     * (indexCount, firstIndex, vertexOffset, baseInstance). Returns entry count.
+     */
+    public int writeSectionMeta(java.nio.ByteBuffer scratch) {
+        long ptr = MemoryUtil.memAddress0(scratch);
+        int count = 0;
+        for (var entry : this.metaRegistrations.object2LongEntrySet()) {
+            if (count >= GpuCuller.AREA_META_CAP) break;
+            DrawParameters dp = entry.getKey();
+            if (dp.indexCount <= 0) continue;
+            long packed = entry.getLongValue();
+            long p = ptr + (long) count * GpuCuller.META_ENTRY_SIZE;
+            MemoryUtil.memPutInt(p,      (int) ((packed >> 24) & 0xFF)); // lx
+            MemoryUtil.memPutInt(p + 4,  (int) ((packed >> 16) & 0xFF)); // ly
+            MemoryUtil.memPutInt(p + 8,  (int) ((packed >> 8) & 0xFF));  // lz
+            MemoryUtil.memPutInt(p + 12, (int) (packed & 0xF));          // typeIdx
+            MemoryUtil.memPutInt(p + 16, dp.indexCount);
+            MemoryUtil.memPutInt(p + 20, dp.firstIndex);
+            MemoryUtil.memPutInt(p + 24, dp.vertexOffset);
+            MemoryUtil.memPutInt(p + 28, dp.baseInstance);
+            count++;
+        }
+        return count;
     }
 
     public void releaseBuffers() {
@@ -189,6 +248,11 @@ public class DrawBuffers {
         if (this.indexBuffer != null)
             this.indexBuffer.freeBuffer();
         this.indexBuffer = null;
+
+        if (!this.metaRegistrations.isEmpty()) {
+            this.metaRegistrations.clear();
+            markMetaDirty();
+        }
 
         this.allocated = false;
     }
@@ -216,8 +280,13 @@ public class DrawBuffers {
         public void reset(ChunkArea chunkArea, TerrainRenderType r) {
             AreaBuffer areaBuffer = chunkArea.getDrawBuffers().getAreaBuffer(r);
             if (areaBuffer != null && this.vertexOffset != -1) {
-                int segmentOffset = this.vertexOffset * VERTEX_SIZE;
-                areaBuffer.setSegmentFree(segmentOffset);
+                areaBuffer.setSegmentFree(this.vertexOffset);
+            }
+
+            DrawBuffers db = chunkArea.getDrawBuffers();
+            if (db.metaRegistrations.containsKey(this)) {
+                db.metaRegistrations.removeLong(this);
+                db.markMetaDirty();
             }
 
             this.indexCount = 0;

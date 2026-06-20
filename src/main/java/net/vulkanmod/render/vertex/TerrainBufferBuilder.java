@@ -182,6 +182,13 @@ public class TerrainBufferBuilder {
         this.nextElementByte = 0;
     }
 
+    public void free() {
+        if (bufferPtr != 0L) {
+            ALLOCATOR.free(bufferPtr);
+            bufferPtr = 0L;
+        }
+    }
+
     public boolean building() {
         return this.building;
     }

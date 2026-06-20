@@ -230,12 +230,9 @@ public class RenderPass {
     }
 
     public void cleanUp() {
-        //TODO
-
         if (!Vulkan.DYNAMIC_RENDERING)
             MemoryManager.getInstance().addFrameOp(
                     () -> vkDestroyRenderPass(Vulkan.getVkDevice(), this.id, null));
-
     }
 
     public long getId() {

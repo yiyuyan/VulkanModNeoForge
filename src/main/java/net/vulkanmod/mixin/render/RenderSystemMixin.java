@@ -215,7 +215,7 @@ public abstract class RenderSystemMixin {
     @Overwrite(remap = false)
     public static void blendEquation(int i) {
         assertOnRenderThread();
-        //TODO
+        VRenderSystem.blendEquation(i);
     }
 
     /**
@@ -368,7 +368,13 @@ public abstract class RenderSystemMixin {
      */
     @Overwrite(remap = false)
     public static void setProjectionMatrix(Matrix4f projectionMatrix, VertexSorting vertexSorting) {
-        Matrix4f matrix4f = new Matrix4f(projectionMatrix);
+        // MC builds its projection with OpenGL clip-space (depth [-1,1]); Vulkan wants [0,1].
+        // If JomlDepthFix retransformed org.joml.Matrix4f, MC already builds EVERY projection
+        // (including directly-built ones entities use) with Vulkan depth, so copy as-is.
+        // Otherwise correct it here so this path stays consistent (fallback). See JomlDepthFix.
+        Matrix4f matrix4f = VRenderSystem.JOML_DEPTH_FIX_ACTIVE
+                ? new Matrix4f(projectionMatrix)
+                : VRenderSystem.toVulkanClip(projectionMatrix);
         if (!isOnRenderThread()) {
             recordRenderCall(() -> {
                 RenderSystemMixin.projectionMatrix = matrix4f;

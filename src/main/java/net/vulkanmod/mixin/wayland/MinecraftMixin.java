@@ -4,17 +4,11 @@ import com.mojang.blaze3d.platform.IconSet;
 import com.mojang.blaze3d.platform.Window;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Options;
 import net.minecraft.server.packs.PackResources;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.VanillaPackResources;
-import net.minecraft.server.packs.repository.PackRepository;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
-import net.neoforged.neoforge.client.loading.ClientModLoader;
 import net.vulkanmod.config.Platform;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -25,16 +19,8 @@ import java.io.IOException;
 public abstract class MinecraftMixin {
 
     @Shadow @Final private Window window;
-    @Shadow @Final public Options options;
 
     @Shadow @Final private VanillaPackResources vanillaPackResources;
-
-    @Shadow @Final private PackRepository resourcePackRepository;
-
-    @Mutable
-    @Shadow @Final private ReloadableResourceManager resourceManager;
-
-    @Shadow private static Minecraft instance;
 
     /**
      * @author
@@ -48,14 +34,11 @@ public abstract class MinecraftMixin {
         }
     }
 
-    @Redirect(method = "<init>",at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;setWindowActive(Z)V"))
-    private void windowsActive(Minecraft instance, boolean bl){
-        instance.setWindowActive(bl);
-        this.resourceManager = new ReloadableResourceManager(PackType.CLIENT_RESOURCES);
-        ClientModLoader.begin(this.instance, this.resourcePackRepository, this.resourceManager);
-    }
-
-    @Redirect(method = "<init>",at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/client/loading/ClientModLoader;begin(Lnet/minecraft/client/Minecraft;Lnet/minecraft/server/packs/repository/PackRepository;Lnet/minecraft/server/packs/resources/ReloadableResourceManager;)V"))
-    private void notBegin(Minecraft e, PackRepository minecraft, ReloadableResourceManager defaultResourcePacks){
-    }
+    // REMOVED: the `windowsActive`/`notBegin` redirects that moved NeoForge's
+    // ClientModLoader.begin(...) earlier and recreated the ReloadableResourceManager.
+    // That ran unconditionally (not just on Wayland) and broke mod resource-reload
+    // listener registration (RegisterClientReloadListenersEvent) for EVERY mod — e.g.
+    // Cobblemon's data-registry listener never ran, so its stores were empty and the
+    // player crashed with "Invalid player data" on world-join. Letting vanilla call
+    // ClientModLoader.begin at its normal point restores correct mod compatibility.
 }

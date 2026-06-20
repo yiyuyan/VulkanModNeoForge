@@ -33,6 +33,8 @@ public abstract class DeviceManager {
 
     public static Device device;
 
+    public static boolean supportsDrawIndirectCount = false;
+
     public static VkPhysicalDeviceProperties deviceProperties;
     public static VkPhysicalDeviceMemoryProperties memoryProperties;
 
@@ -49,11 +51,8 @@ public abstract class DeviceManager {
             DeviceManager.pickPhysicalDevice();
             DeviceManager.createLogicalDevice();
         } catch (Exception e) {
-            try {
-                throw new RuntimeException(e);
-            } catch (RuntimeException ex) {
-                Initializer.LOGGER.error("Error to list available devices info.",ex);
-            }
+            Initializer.LOGGER.error("Failed to initialize Vulkan device.", e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -78,11 +77,7 @@ public abstract class DeviceManager {
                 currentDevice = new VkPhysicalDevice(ppPhysicalDevices.get(i), instance);
 
                 Device device = new Device(currentDevice);
-
-                if (device.properties.deviceType() != VK_PHYSICAL_DEVICE_TYPE_OTHER ||
-                        device.properties.limits().maxImageDimension2D() >= 4096) {
-                    devices.add(device);
-                }
+                devices.add(device);
             }
 
             return devices;
@@ -94,30 +89,8 @@ public abstract class DeviceManager {
 
         List<Device> devices = new ObjectArrayList<>();
         for (Device device : availableDevices) {
-            int deviceType = device.properties.deviceType();
-
-            if (deviceType == VK_PHYSICAL_DEVICE_TYPE_OTHER &&
-                    device.properties.limits().maxImageDimension2D() < 4096) {
-                continue;
-            }
-
-            if (deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) {
+            if (isDeviceSuitable(device.physicalDevice)) {
                 devices.add(device);
-            }
-        }
-
-        if (devices.isEmpty()) {
-            for (Device device : availableDevices) {
-                int deviceType = device.properties.deviceType();
-                if (deviceType == VK_PHYSICAL_DEVICE_TYPE_OTHER &&
-                        device.properties.limits().maxImageDimension2D() < 4096) {
-                    continue;
-                }
-
-                if (isDeviceSuitable(device.physicalDevice)) {
-                    devices.add(device);
-                    break;
-                }
             }
         }
 
@@ -139,6 +112,18 @@ public abstract class DeviceManager {
 
             // Get device properties
             deviceProperties = device.properties;
+
+            // Always log the chosen GPU: on hybrid laptops a pinned config index can
+            // silently select the integrated GPU, which is a catastrophic perf trap.
+            int chosenType = deviceProperties.deviceType();
+            Initializer.LOGGER.info("Vulkan device: {} ({}){}",
+                    deviceProperties.deviceNameString(),
+                    chosenType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU ? "discrete"
+                            : chosenType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU ? "integrated"
+                            : "other",
+                    chosenType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU && suitableDevices.size() > 1
+                            ? " — WARNING: multiple GPUs present; set device:-1 in vulkanmod_settings.json for auto-selection"
+                            : "");
 
             memoryProperties = VkPhysicalDeviceMemoryProperties.malloc();
             vkGetPhysicalDeviceMemoryProperties(physicalDevice, memoryProperties);
@@ -200,6 +185,16 @@ public abstract class DeviceManager {
             deviceVulkan11Features.sType$Default();
             deviceVulkan11Features.shaderDrawParameters(device.isDrawIndirectSupported());
 
+            // Feature support was queried in the Device constructor (availableFeatures12);
+            // only enable what the physical device actually reports.
+            supportsDrawIndirectCount = device.availableFeatures12.drawIndirectCount();
+            Initializer.LOGGER.info("drawIndirectCount: {}", supportsDrawIndirectCount ? "supported" : "NOT supported (GPU culling disabled)");
+
+            VkPhysicalDeviceVulkan12Features deviceVulkan12Features = VkPhysicalDeviceVulkan12Features.calloc(stack);
+            deviceVulkan12Features.sType$Default();
+            deviceVulkan12Features.timelineSemaphore(true);
+            deviceVulkan12Features.drawIndirectCount(supportsDrawIndirectCount);
+
             VkPhysicalDeviceFeatures2 deviceFeatures = VkPhysicalDeviceFeatures2.calloc(stack);
             deviceFeatures.sType$Default();
             deviceFeatures.features().samplerAnisotropy(device.availableFeatures.features().samplerAnisotropy());
@@ -218,7 +213,8 @@ public abstract class DeviceManager {
             createInfo.sType(VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO);
             createInfo.pQueueCreateInfos(queueCreateInfos);
             createInfo.pEnabledFeatures(deviceFeatures.features());
-            createInfo.pNext(deviceVulkan11Features);
+            deviceVulkan12Features.pNext(deviceVulkan11Features.address());
+            createInfo.pNext(deviceVulkan12Features);
 
             if (Vulkan.DYNAMIC_RENDERING) {
                 VkPhysicalDeviceDynamicRenderingFeaturesKHR dynamicRenderingFeaturesKHR = VkPhysicalDeviceDynamicRenderingFeaturesKHR.calloc(stack);

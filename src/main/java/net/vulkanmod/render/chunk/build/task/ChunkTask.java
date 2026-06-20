@@ -19,6 +19,7 @@ public abstract class ChunkTask {
     protected AtomicBoolean cancelled = new AtomicBoolean(false);
     protected final RenderSection section;
     public boolean highPriority = false;
+    public float distSq = 0;
 
     ChunkTask(RenderSection renderSection) {
         this.section = renderSection;
@@ -27,6 +28,10 @@ public abstract class ChunkTask {
     public abstract String name();
 
     public abstract Result runTask(BuilderResources builderResources);
+
+    public RenderSection getSection() {
+        return this.section;
+    }
 
     public void cancel() {
         this.cancelled.set(true);

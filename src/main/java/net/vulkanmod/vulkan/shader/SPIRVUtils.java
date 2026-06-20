@@ -42,8 +42,6 @@ public class SPIRVUtils {
 
     private static ObjectArrayList<String> includePaths;
 
-    private static float time = 0.0f;
-
     static {
         initCompiler();
     }
@@ -86,7 +84,7 @@ public class SPIRVUtils {
             String source = new String(Files.readAllBytes(Paths.get(new URI(shaderFile))));
             return compileShader(shaderFile, source, shaderKind);
         } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
+            Initializer.LOGGER.error("Failed to load shader file {}", shaderFile, e);
         }
         return null;
     }
@@ -115,8 +113,6 @@ public class SPIRVUtils {
 
 
     public static SPIRV compileShader(String filename, String source, ShaderKind shaderKind) {
-        long startTime = System.nanoTime();
-
         source = processSource(source);
 
         Initializer.LOGGER.debug("Compiling shader {} into spv. shaderKind: {}",filename,shaderKind);
@@ -130,8 +126,6 @@ public class SPIRVUtils {
             throw new RuntimeException("Failed to compile shader " + filename + " into SPIR-V:\n" + shaderc_result_get_error_message(result));
         }
 
-        time += (System.nanoTime() - startTime) / 1000000.0f;
-
         return new SPIRV(result, shaderc_result_get_bytes(result));
     }
 
@@ -144,7 +138,7 @@ public class SPIRVUtils {
 
             return new SPIRV(MemoryUtil.memAddress(buffer), buffer);
         } catch (Exception e) {
-            e.printStackTrace();
+            Initializer.LOGGER.error("Failed to read shader stream", e);
         }
         throw new RuntimeException("unable to read inputStream");
     }
@@ -200,7 +194,7 @@ public class SPIRVUtils {
 
         @Override
         public void invoke(long user_data, long include_result) {
-            //TODO:Maybe dump Shader Compiled Binaries here to a .Misc Diretcory to allow easy caching.recompilation...
+            //TODO:Maybe dump Shader Compiled Binaries here to a .Misc Directory to allow easy caching.recompilation...
         }
     }
 
@@ -220,8 +214,9 @@ public class SPIRVUtils {
 
         @Override
         public void free() {
-//            shaderc_result_release(handle);
-            bytecode = null; // Help the GC
+            if (handle != NULL)
+                shaderc_result_release(handle);
+            bytecode = null;
         }
     }
 

@@ -18,7 +18,7 @@ import org.lwjgl.vulkan.VkCommandBuffer;
 public class DrawUtil {
 
     public static void blitToScreen() {
-//        defualtBlit();
+//        defaultBlit();
         fastBlit();
     }
 
@@ -38,7 +38,7 @@ public class DrawUtil {
         RenderSystem.enableCull();
     }
 
-    public static void defualtBlit() {
+    public static void defaultBlit() {
         Matrix4f matrix4f = new Matrix4f().setOrtho(0.0F, 1.0F, 1.0F, 0.0F, 0.0F, 1.0F);
         RenderSystem.setProjectionMatrix(matrix4f, VertexSorting.ORTHOGRAPHIC_Z);
         Matrix4fStack posestack = RenderSystem.getModelViewStack();

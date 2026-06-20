@@ -3,11 +3,16 @@ package net.vulkanmod.vulkan.memory;
 import net.vulkanmod.vulkan.Vulkan;
 import net.vulkanmod.vulkan.device.DeviceManager;
 import net.vulkanmod.vulkan.util.VUtil;
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.vulkan.VkMemoryHeap;
 import org.lwjgl.vulkan.VkMemoryType;
 
 import java.nio.ByteBuffer;
+import java.nio.LongBuffer;
 
+import static org.lwjgl.system.libc.LibCString.nmemcpy;
 import static org.lwjgl.vulkan.VK10.*;
 
 public class MemoryTypes {
@@ -79,7 +84,22 @@ public class MemoryTypes {
 
         @Override
         void copyFromBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
-            // TODO
+            try (MemoryStack stack = MemoryStack.stackPush()) {
+                LongBuffer pStaging = stack.mallocLong(1);
+                PointerBuffer pAlloc = stack.pointers(0L);
+                MemoryManager.getInstance().createBuffer(bufferSize,
+                        VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+                        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+                        pStaging, pAlloc);
+
+                long fence = DeviceManager.getTransferQueue().copyBufferCmd(buffer.getId(), 0, pStaging.get(0), 0, bufferSize);
+                vkWaitForFences(DeviceManager.vkDevice, fence, true, VUtil.UINT64_MAX);
+
+                MemoryManager.MapAndCopy(pAlloc.get(0),
+                        data -> VUtil.memcpy(data.getByteBuffer(0, (int) bufferSize), byteBuffer, (int) bufferSize, 0));
+
+                MemoryManager.freeBuffer(pStaging.get(0), pAlloc.get(0));
+            }
         }
 
         public long copyBuffer(Buffer src, Buffer dst) {
@@ -104,12 +124,12 @@ public class MemoryTypes {
 
         @Override
         void copyToBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
-            VUtil.memcpy(byteBuffer, buffer.data.getByteBuffer(0, (int) buffer.bufferSize), (int) bufferSize, buffer.getUsedBytes());
+            nmemcpy(buffer.data.get(0) + buffer.getUsedBytes(), MemoryUtil.memAddress(byteBuffer), (int) bufferSize);
         }
 
         @Override
         void copyFromBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
-            VUtil.memcpy(buffer.data.getByteBuffer(0, (int) buffer.bufferSize), byteBuffer, 0);
+            nmemcpy(MemoryUtil.memAddress(byteBuffer), buffer.data.get(0), (int) bufferSize);
         }
 
         @Override
@@ -133,12 +153,11 @@ public class MemoryTypes {
         }
 
         void copyToBuffer(Buffer buffer, long dstOffset, long bufferSize, ByteBuffer byteBuffer) {
-            VUtil.memcpy(byteBuffer, buffer.data.getByteBuffer((int) 0, (int) buffer.bufferSize), (int) bufferSize, dstOffset);
+            nmemcpy(buffer.data.get(0) + (int) dstOffset, MemoryUtil.memAddress(byteBuffer), (int) bufferSize);
         }
 
         void copyBuffer(Buffer src, Buffer dst) {
-            VUtil.memcpy(src.data.getByteBuffer(0, src.bufferSize),
-                    dst.data.getByteBuffer(0, dst.bufferSize), src.bufferSize, 0);
+            nmemcpy(dst.data.get(0), src.data.get(0), src.bufferSize);
 
 //            copyBufferCmd(src.getId(), 0, dst.getId(), 0, src.bufferSize);
         }

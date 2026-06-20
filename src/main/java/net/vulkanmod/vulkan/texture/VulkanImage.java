@@ -195,8 +195,11 @@ public class VulkanImage {
         long imageSize = buffer.limit();
 
         CommandPool.CommandBuffer commandBuffer = DeviceManager.getGraphicsQueue().getCommandBuffer();
-        try (MemoryStack stack = stackPush()) {
-            transferDstLayout(stack, commandBuffer.getHandle());
+
+        if (this.currentLayout != VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL) {
+            try (MemoryStack stack = stackPush()) {
+                transferDstLayout(stack, commandBuffer.getHandle());
+            }
         }
 
         StagingBuffer stagingBuffer = Vulkan.getStagingBuffer();
@@ -375,7 +378,7 @@ public class VulkanImage {
 
         if (this.levelImageViews != null)
             Arrays.stream(this.levelImageViews).forEach(
-                    imageView -> vkDestroyImageView(Vulkan.getVkDevice(), this.mainImageView, null));
+                    imageView -> vkDestroyImageView(Vulkan.getVkDevice(), imageView, null));
 
         this.id = 0L;
     }
@@ -403,6 +406,8 @@ public class VulkanImage {
     public long getLevelImageView(int i) {
         return levelImageViews[i];
     }
+
+    public long getLevelView(int level) { return this.levelImageViews[level]; }
 
     public long[] getLevelImageViews() {
         return levelImageViews;
@@ -501,7 +506,8 @@ public class VulkanImage {
             return switch (format) {
                 case VK_FORMAT_R8G8B8A8_UNORM, VK_FORMAT_R8G8B8A8_SRGB,
                      VK_FORMAT_D32_SFLOAT, VK_FORMAT_D24_UNORM_S8_UINT,
-                     VK_FORMAT_R8G8B8A8_UINT, VK_FORMAT_R8G8B8A8_SINT -> 4;
+                     VK_FORMAT_R8G8B8A8_UINT, VK_FORMAT_R8G8B8A8_SINT,
+                     VK_FORMAT_R32_SFLOAT -> 4;
                 case VK_FORMAT_R8_UNORM -> 1;
 
 //                default -> throw new IllegalArgumentException(String.format("Unxepcted format: %s", format));

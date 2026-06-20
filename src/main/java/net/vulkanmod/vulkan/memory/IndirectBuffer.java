@@ -1,6 +1,6 @@
 package net.vulkanmod.vulkan.memory;
 
-import net.vulkanmod.vulkan.Synchronization;
+import net.vulkanmod.render.chunk.buffer.UploadManager;
 import net.vulkanmod.vulkan.Vulkan;
 import net.vulkanmod.vulkan.device.DeviceManager;
 import net.vulkanmod.vulkan.queue.CommandPool;
@@ -52,8 +52,10 @@ public class IndirectBuffer extends Buffer {
         if (commandBuffer == null)
             return;
 
-        DeviceManager.getTransferQueue().submitCommands(commandBuffer);
-        Synchronization.INSTANCE.addCommandBuffer(commandBuffer);
+        // Route through UploadManager so the graphics queue's timeline wait covers
+        // indirect draw commands (DRAW_INDIRECT stage) as well as vertex/index reads.
+        UploadManager.INSTANCE.submitTracked(commandBuffer);
+        // Synchronization.addCommandBuffer is handled inside submitTracked; no duplicate call.
         commandBuffer = null;
     }
 

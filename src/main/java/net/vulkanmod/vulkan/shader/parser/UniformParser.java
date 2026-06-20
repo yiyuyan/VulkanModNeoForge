@@ -52,7 +52,7 @@ public class UniformParser {
                     this.globalUniforms.add(uniform);
             }
 
-            this.resetSate();
+            this.resetState();
             return true;
         }
 
@@ -63,7 +63,7 @@ public class UniformParser {
         this.currentUniforms = stageUniforms[shaderStage.ordinal()];
     }
 
-    private void resetSate() {
+    private void resetState() {
         this.type = null;
         this.name = null;
 //        this.state = State.None;

@@ -91,6 +91,7 @@ public abstract class LevelRendererMixin {
      */
     @Overwrite
     public void onChunkLoaded(ChunkPos chunkPos) {
+        this.worldRenderer.onChunkLoaded(chunkPos.x, chunkPos.z);
     }
 
     /**

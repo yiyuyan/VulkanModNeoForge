@@ -13,10 +13,14 @@ import org.lwjgl.system.MemoryStack;
 import org.lwjgl.vulkan.VkBufferMemoryBarrier;
 import org.lwjgl.vulkan.VkCommandBuffer;
 import org.lwjgl.vulkan.VkMemoryBarrier;
+import org.lwjgl.vulkan.VkSemaphoreCreateInfo;
+import org.lwjgl.vulkan.VkSemaphoreTypeCreateInfo;
 
 import java.nio.ByteBuffer;
+import java.nio.LongBuffer;
 
 import static org.lwjgl.vulkan.VK10.*;
+import static org.lwjgl.vulkan.VK12.*;
 
 public class UploadManager {
     public static UploadManager INSTANCE;
@@ -25,21 +29,54 @@ public class UploadManager {
         INSTANCE = new UploadManager();
     }
 
+    private long uploadSemaphore = VK_NULL_HANDLE;
+    private long timelineValue = 0L;
+
     Queue queue = DeviceManager.getTransferQueue();
     CommandPool.CommandBuffer commandBuffer;
 
     LongOpenHashSet dstBuffers = new LongOpenHashSet();
 
-    public void submitUploads() {
+    private UploadManager() {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            VkSemaphoreTypeCreateInfo typeInfo = VkSemaphoreTypeCreateInfo.calloc(stack)
+                    .sType$Default()
+                    .semaphoreType(VK_SEMAPHORE_TYPE_TIMELINE)
+                    .initialValue(0);
+            VkSemaphoreCreateInfo createInfo = VkSemaphoreCreateInfo.calloc(stack)
+                    .sType$Default()
+                    .pNext(typeInfo);
+            LongBuffer pSemaphore = stack.mallocLong(1);
+            if (vkCreateSemaphore(Vulkan.getVkDevice(), createInfo, null, pSemaphore) != VK_SUCCESS)
+                throw new RuntimeException("Failed to create upload timeline semaphore");
+            this.uploadSemaphore = pSemaphore.get(0);
+        }
+    }
+
+    public long getSemaphore() { return this.uploadSemaphore; }
+    public long getLastSignaledValue() { return this.timelineValue; }
+
+    public synchronized void submitUploads() {
         if (this.commandBuffer == null)
             return;
 
-        this.queue.submitCommands(this.commandBuffer);
+        this.timelineValue++;
+        this.queue.submitCommands(this.commandBuffer, this.uploadSemaphore, this.timelineValue);
 
         Synchronization.INSTANCE.addCommandBuffer(this.commandBuffer);
 
         this.commandBuffer = null;
         this.dstBuffers.clear();
+    }
+
+    /** Submit an externally-recorded transfer command buffer, signaling the upload
+     *  timeline so the next graphics submit orders against it (same guarantee as
+     *  submitUploads). Returns the signaled timeline value. */
+    public synchronized long submitTracked(CommandPool.CommandBuffer commandBuffer) {
+        this.timelineValue++;
+        this.queue.submitCommands(commandBuffer, this.uploadSemaphore, this.timelineValue);
+        Synchronization.INSTANCE.addCommandBuffer(commandBuffer);
+        return this.timelineValue;
     }
 
     public void recordUpload(Buffer buffer, long dstOffset, long bufferSize, ByteBuffer src) {
@@ -109,6 +146,13 @@ public class UploadManager {
         submitUploads();
 
         Synchronization.INSTANCE.waitFences();
+    }
+
+    public void cleanUp() {
+        if (this.uploadSemaphore != VK_NULL_HANDLE) {
+            vkDestroySemaphore(Vulkan.getVkDevice(), this.uploadSemaphore, null);
+            this.uploadSemaphore = VK_NULL_HANDLE;
+        }
     }
 
     private void beginCommands() {

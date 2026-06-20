@@ -47,6 +47,8 @@ public class RenderSection {
 
     public int xOffset, yOffset, zOffset;
 
+    private float lastSortX = Float.NaN, lastSortY, lastSortZ;
+
     private final DrawBuffers.DrawParameters[] drawParametersArray;
 
     // Graph-info
@@ -297,6 +299,24 @@ public class RenderSection {
         return zOffset;
     }
 
+    /** True if the camera moved far enough (relative to this section's distance) that
+     *  translucent quad order may have changed. Far sections need much rarer re-sorts. */
+    public boolean needsTranslucencyResort(float camX, float camY, float camZ) {
+        if (Float.isNaN(this.lastSortX))
+            return true;
+        float dx = camX - this.lastSortX, dy = camY - this.lastSortY, dz = camZ - this.lastSortZ;
+        float moved2 = dx * dx + dy * dy + dz * dz;
+        float sx = camX - (this.xOffset() + 8), sy = camY - (this.yOffset() + 8), sz = camZ - (this.zOffset() + 8);
+        float dist2 = sx * sx + sy * sy + sz * sz;
+        // re-sort when movement exceeds ~10% of distance to the section (min 1 block)
+        float threshold2 = Math.max(1.0f, dist2 * 0.01f);
+        return moved2 > threshold2;
+    }
+
+    public void markTranslucencySorted(float camX, float camY, float camZ) {
+        this.lastSortX = camX; this.lastSortY = camY; this.lastSortZ = camZ;
+    }
+
     public DrawBuffers.DrawParameters getDrawParameters(TerrainRenderType renderType) {
         return drawParametersArray[renderType.ordinal()];
     }
@@ -336,6 +356,9 @@ public class RenderSection {
     }
 
     public byte getVisibilityDirs() {
+        if (!this.isCompiled())
+            return 0b111111;
+
         return (byte) (this.visibility >> (Util.getOppositeDirIdx(this.mainDir) << 3));
     }
 

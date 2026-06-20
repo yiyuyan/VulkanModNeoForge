@@ -30,6 +30,7 @@ public class Device {
 
     public final VkPhysicalDeviceFeatures2 availableFeatures;
     public final VkPhysicalDeviceVulkan11Features availableFeatures11;
+    public final VkPhysicalDeviceVulkan12Features availableFeatures12;
 
 //    public final VkPhysicalDeviceVulkan13Features availableFeatures13;
 //    public final boolean vulkan13Support;
@@ -54,6 +55,11 @@ public class Device {
         this.availableFeatures11 = VkPhysicalDeviceVulkan11Features.malloc();
         this.availableFeatures11.sType$Default();
         this.availableFeatures.pNext(this.availableFeatures11);
+
+        // calloc (not malloc): pNext must be NULL-terminated for the query chain
+        this.availableFeatures12 = VkPhysicalDeviceVulkan12Features.calloc();
+        this.availableFeatures12.sType$Default();
+        this.availableFeatures11.pNext(this.availableFeatures12.address());
 
         //Vulkan 1.3
 //        this.availableFeatures13 = VkPhysicalDeviceVulkan13Features.malloc();

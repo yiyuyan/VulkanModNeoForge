@@ -36,7 +36,7 @@ public class ChunkAreaManager {
         int t = (width >> AREA_SH_XZ) + 2;
 
         int relativeHeight = height - (minHeight >> 4);
-        this.ySize = (relativeHeight & 0x5) == 0 ? (relativeHeight >> AREA_SH_Y) : (relativeHeight >> AREA_SH_Y) + 1;
+        this.ySize = (relativeHeight & 0x7) == 0 ? (relativeHeight >> AREA_SH_Y) : (relativeHeight >> AREA_SH_Y) + 1;
 
         //check if width is even
         if ((t & 1) == 0)

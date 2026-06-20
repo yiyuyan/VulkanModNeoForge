@@ -43,6 +43,7 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.vulkan.EXTDebugUtils.*;
 import static org.lwjgl.vulkan.KHRSwapchain.*;
 import static org.lwjgl.vulkan.VK10.*;
+import static org.lwjgl.vulkan.VK12.*;
 
 public class Renderer {
     private static Renderer INSTANCE;
@@ -295,17 +296,31 @@ public class Renderer {
             VkSubmitInfo submitInfo = VkSubmitInfo.calloc(stack);
             submitInfo.sType(VK_STRUCTURE_TYPE_SUBMIT_INFO);
 
-            submitInfo.waitSemaphoreCount(1);
-            submitInfo.pWaitSemaphores(stack.longs(imageAvailableSemaphores.get(currentFrame)));
-            submitInfo.pWaitDstStageMask(stack.ints(VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT));
+            long uploadSem = UploadManager.INSTANCE.getSemaphore();
+            long uploadValue = UploadManager.INSTANCE.getLastSignaledValue();
+
+            VkTimelineSemaphoreSubmitInfo timelineInfo = VkTimelineSemaphoreSubmitInfo.calloc(stack)
+                    .sType$Default()
+                    .pWaitSemaphoreValues(stack.longs(0L, uploadValue))
+                    .pSignalSemaphoreValues(stack.longs(0L));
+            submitInfo.pNext(timelineInfo);
+
+            submitInfo.waitSemaphoreCount(2);
+            submitInfo.pWaitSemaphores(stack.longs(
+                    imageAvailableSemaphores.get(currentFrame), uploadSem));
+            // Upload->draw ordering is enforced ON THE GPU via this timeline wait (replaces the
+            // old CPU-side Synchronization.waitFences() stall). Coverage: vertex+index reads
+            // (VERTEX_INPUT) and indirect command reads (DRAW_INDIRECT). flushCmds() still uses
+            // the blocking CPU wait and does not rely on this semaphore.
+            submitInfo.pWaitDstStageMask(stack.ints(
+                    VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+                    VK_PIPELINE_STAGE_VERTEX_INPUT_BIT | VK_PIPELINE_STAGE_DRAW_INDIRECT_BIT));
 
             submitInfo.pSignalSemaphores(stack.longs(renderFinishedSemaphores.get(currentFrame)));
 
             submitInfo.pCommandBuffers(stack.pointers(currentCmdBuffer));
 
             vkResetFences(device, inFlightFences.get(currentFrame));
-
-            Synchronization.INSTANCE.waitFences();
 
             if ((vkResult = vkQueueSubmit(DeviceManager.getGraphicsQueue().queue(), submitInfo, inFlightFences.get(currentFrame))) != VK_SUCCESS) {
                 vkResetFences(device, inFlightFences.get(currentFrame));
@@ -362,7 +377,10 @@ public class Renderer {
                 throw new RuntimeException("Failed to submit draw command buffer: %s".formatted(VkResult.decode(vkResult)));
             }
 
+            Profiler p = Profiler.getMainProfiler();
+            p.push("CPU_flush_wait");
             vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.UINT64_MAX);
+            p.pop();
 
             this.beginRenderPass(stack);
         }
@@ -409,6 +427,8 @@ public class Renderer {
         p.round();
         p.push("Frame_ops");
 
+        Synchronization.INSTANCE.pollFences();
+
         // runTick might be called recursively,
         // this check forces sync to avoid upload corruption
         if (lastReset == currentFrame) {
@@ -454,7 +474,10 @@ public class Renderer {
                     .pWaitDstStageMask(stack.ints(VK_PIPELINE_STAGE_ALL_COMMANDS_BIT));
 
             vkQueueSubmit(DeviceManager.getGraphicsQueue().queue(), info, inFlightFences.get(currentFrame));
+            Profiler p = Profiler.getMainProfiler();
+            p.push("CPU_swapchain_wait");
             vkWaitForFences(device, inFlightFences.get(currentFrame), true, -1);
+            p.pop();
         }
     }
 
@@ -521,6 +544,10 @@ public class Renderer {
 
     public RenderPass getBoundRenderPass() {
         return boundRenderPass;
+    }
+
+    public Framebuffer getBoundFramebuffer() {
+        return boundFramebuffer;
     }
 
     public void setMainPass(MainPass mainPass) {

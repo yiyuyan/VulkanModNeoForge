@@ -81,4 +81,12 @@ public class VFrustum {
         float o = (float) (i - this.camZ);
         return this.frustum.testAab(j, k, l, m, n, o);
     }
+
+    public Matrix4f getMatrix() {
+        return this.matrix;
+    }
+
+    public double getCamX() { return this.camX; }
+    public double getCamY() { return this.camY; }
+    public double getCamZ() { return this.camZ; }
 }

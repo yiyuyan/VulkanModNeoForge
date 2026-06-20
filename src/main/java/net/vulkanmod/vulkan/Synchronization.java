@@ -1,6 +1,9 @@
 package net.vulkanmod.vulkan;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.vulkanmod.render.profiling.Profiler;
 import net.vulkanmod.vulkan.queue.CommandPool;
 import net.vulkanmod.vulkan.util.VUtil;
 import org.lwjgl.system.MemoryUtil;
@@ -45,7 +48,14 @@ public class Synchronization {
 
         fences.limit(idx);
 
-        vkWaitForFences(device, fences, true, VUtil.UINT64_MAX);
+        if (RenderSystem.isOnRenderThread()) {
+            Profiler p = Profiler.getMainProfiler();
+            p.push("CPU_fence_wait");
+            vkWaitForFences(device, fences, true, VUtil.UINT64_MAX);
+            p.pop();
+        } else {
+            vkWaitForFences(device, fences, true, VUtil.UINT64_MAX);
+        }
 
         this.commandBuffers.forEach(CommandPool.CommandBuffer::reset);
         this.commandBuffers.clear();
@@ -63,6 +73,35 @@ public class Synchronization {
     public static boolean checkFenceStatus(long fence) {
         VkDevice device = Vulkan.getVkDevice();
         return vkGetFenceStatus(device, fence) == VK_SUCCESS;
+    }
+
+    public synchronized void pollFences() {
+        if (idx == 0)
+            return;
+
+        VkDevice device = Vulkan.getVkDevice();
+
+        // Single status snapshot per fence: drives BOTH compactions (no TOCTOU window)
+        LongOpenHashSet signaled = new LongOpenHashSet();
+        int write = 0;
+        for (int i = 0; i < idx; i++) {
+            long fence = fences.get(i);
+            if (vkGetFenceStatus(device, fence) == VK_SUCCESS) {
+                signaled.add(fence);
+            } else {
+                fences.put(write++, fence);
+            }
+        }
+        idx = write;
+
+        var iterator = commandBuffers.iterator();
+        while (iterator.hasNext()) {
+            CommandPool.CommandBuffer cb = iterator.next();
+            if (signaled.contains(cb.getFence())) {
+                cb.reset();
+                iterator.remove();
+            }
+        }
     }
 
 }

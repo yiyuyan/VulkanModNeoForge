@@ -140,12 +140,14 @@ public class BuildTask extends ChunkTask {
             }
         }
 
-        TerrainBufferBuilder translucentBufferBuilder = bufferBuilders.builder(TerrainRenderType.TRANSLUCENT);
-        if (!translucentBufferBuilder.isCurrentBatchEmpty()) {
-            translucentBufferBuilder.setupQuadSortingPoints();
-            translucentBufferBuilder.setupQuadSorting(camX - (float) startBlockPos.getX(), camY - (float) startBlockPos.getY(), camZ - (float) startBlockPos.getZ());
-            compileResult.transparencyState = translucentBufferBuilder.getSortState();
-        }
+        // PLAIN water path: do NOT per-quad-sort the translucent layer. setupQuadSorting() is the
+        // only thing that sets needsSorting -> a custom per-area sorted index buffer (the machinery
+        // that broke water: striped under indirect draw, missing under direct). By skipping it, the
+        // translucent buffer ends sequential-indexed (sequentialIndex=true -> autoIndices=true) and
+        // renders through the SAME shared sequential index path as opaque terrain, which is flawless.
+        // transparencyState stays null, so RenderSection.resortTransparency() self-no-ops
+        // (hasTransparencyState() == false). Trade-off: water has no back-to-front per-quad blend
+        // sorting (minor ordering artifacts), but it renders solid and stable.
 
         for (TerrainRenderType renderType : TerrainRenderType.VALUES) {
             TerrainBufferBuilder.RenderedBuffer renderedBuffer = bufferBuilders.builder(renderType).end();

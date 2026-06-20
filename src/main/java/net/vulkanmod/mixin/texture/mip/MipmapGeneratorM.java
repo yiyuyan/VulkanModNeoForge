@@ -64,7 +64,12 @@ public abstract class MipmapGeneratorM {
                     nativeImages2[j] = nativeImages[j];
                 } else {
                     NativeImage nativeImage = nativeImages2[j - 1];
-                    NativeImage nativeImage2 = new NativeImage(nativeImage.getWidth() >> 1, nativeImage.getHeight() >> 1, false);
+                    int nextW = nativeImage.getWidth() >> 1;
+                    int nextH = nativeImage.getHeight() >> 1;
+                    if (nextW == 0 || nextH == 0) {
+                        return java.util.Arrays.copyOf(nativeImages2, j);
+                    }
+                    NativeImage nativeImage2 = new NativeImage(nextW, nextH, false);
                     int width = nativeImage2.getWidth();
                     int height = nativeImage2.getHeight();
 

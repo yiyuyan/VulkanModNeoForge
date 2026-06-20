@@ -38,6 +38,19 @@ public class ChunkStatusMap {
 
         if ((current & CHUNK_READY) == CHUNK_READY)
             updateNeighbours(x, z);
+
+        // Re-arm the section graph on every chunk-status change. This is the strongest
+        // possible re-arm point: it fires for DATA and LIGHT arrivals and for neighbour
+        // readiness flips, independent of which client method 1.21.x happens to route
+        // through. Without it, chunks streamed in while standing still are tracked but
+        // never (re)built, leaving a small frozen island that only grows on movement.
+        WorldRenderer worldRenderer = WorldRenderer.getInstance();
+        if (worldRenderer != null)
+            worldRenderer.scheduleGraphUpdate();
+    }
+
+    public void setChunkLoaded(int x, int z) {
+        setChunkStatus(x, z, CHUNK_READY);
     }
 
     public void resetChunkStatus(int x, int z, byte flag) {
@@ -87,8 +100,8 @@ public class ChunkStatusMap {
     }
 
     public boolean chunkRenderReady(int x, int z) {
-        //byte status = map.get(ChunkPos.asLong(x, z));
-        return map.containsKey(ChunkPos.asLong(x,z));
+        byte status = map.get(ChunkPos.asLong(x, z));
+        return status == ALL_FLAGS;
     }
 
     public void reset() {

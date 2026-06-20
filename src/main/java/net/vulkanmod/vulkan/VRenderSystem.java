@@ -46,6 +46,31 @@ public abstract class VRenderSystem {
     public static MappedBuffer TextureMatrix = new MappedBuffer(16 * 4);
     public static MappedBuffer MVP = new MappedBuffer(16 * 4);
 
+    /**
+     * True once {@link net.vulkanmod.vulkan.compat.JomlDepthFix} has retransformed
+     * {@code org.joml.Matrix4f} so projections are built with Vulkan [0, 1] depth GLOBALLY
+     * (covering directly-built projections that entities use, which {@link #toVulkanClip} in
+     * {@code setProjectionMatrix} misses). When true, {@code setProjectionMatrix} must NOT also
+     * apply {@code toVulkanClip} — that would double-correct. When false (retransform
+     * unavailable/failed) we keep the {@code toVulkanClip} fallback.
+     */
+    public static volatile boolean JOML_DEPTH_FIX_ACTIVE = false;
+
+    /**
+     * Remaps an OpenGL-convention projection (clip-space depth in [-1, 1]) to the
+     * Vulkan convention (depth in [0, 1]): z' = 0.5*z + 0.5*w. Pre-multiplying a
+     * projection by this is exactly equivalent to building it with JOML's
+     * {@code zZeroToOne = true}. This replaces the old global {@code Matrix4f}
+     * @Overwrite (which required a JVM agent to reach the system-classloader JOML
+     * class) with a normal correction applied where MC hands us its projection.
+     */
+    private static final Matrix4f VULKAN_CLIP = new Matrix4f().m22(0.5f).m32(0.5f);
+
+    /** Returns a new matrix = VULKAN_CLIP * projection (OpenGL depth -> Vulkan depth). */
+    public static Matrix4f toVulkanClip(Matrix4f openglProjection) {
+        return VULKAN_CLIP.mul(openglProjection, new Matrix4f());
+    }
+
     public static MappedBuffer ChunkOffset = new MappedBuffer(3 * 4);
     public static MappedBuffer lightDirection0 = new MappedBuffer(3 * 4);
     public static MappedBuffer lightDirection1 = new MappedBuffer(3 * 4);
@@ -243,6 +268,10 @@ public abstract class VRenderSystem {
 
     public static void blendFuncSeparate(int srcFactorRGB, int dstFactorRGB, int srcFactorAlpha, int dstFactorAlpha) {
         PipelineState.blendInfo.setBlendFuncSeparate(srcFactorRGB, dstFactorRGB, srcFactorAlpha, dstFactorAlpha);
+    }
+
+    public static void blendEquation(int i) {
+        PipelineState.blendInfo.setBlendOp(i);
     }
 
     public static void enableColorLogicOp() {

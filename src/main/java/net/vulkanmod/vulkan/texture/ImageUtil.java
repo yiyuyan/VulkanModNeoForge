@@ -15,13 +15,13 @@ import static org.lwjgl.vulkan.VK10.*;
 
 public abstract class ImageUtil {
 
-    public static void copyBufferToImageCmd(VkCommandBuffer commandBuffer, long buffer, long image, int mipLevel, int width, int height, int xOffset, int yOffset, int bufferOffset, int bufferRowLenght, int bufferImageHeight) {
+    public static void copyBufferToImageCmd(VkCommandBuffer commandBuffer, long buffer, long image, int mipLevel, int width, int height, int xOffset, int yOffset, int bufferOffset, int bufferRowLength, int bufferImageHeight) {
 
         try (MemoryStack stack = stackPush()) {
 
             VkBufferImageCopy.Buffer region = VkBufferImageCopy.calloc(1, stack);
             region.bufferOffset(bufferOffset);
-            region.bufferRowLength(bufferRowLenght);   // Tightly packed
+            region.bufferRowLength(bufferRowLength);   // Tightly packed
             region.bufferImageHeight(bufferImageHeight);  // Tightly packed
             region.imageSubresource().aspectMask(VK_IMAGE_ASPECT_COLOR_BIT);
             region.imageSubresource().mipLevel(mipLevel);
@@ -64,12 +64,12 @@ public abstract class ImageUtil {
         }
     }
 
-    public static void copyImageToBuffer(VkCommandBuffer commandBuffer, long buffer, long image, int mipLevel, int width, int height, int xOffset, int yOffset, int bufferOffset, int bufferRowLenght, int bufferImageHeight) {
+    public static void copyImageToBuffer(VkCommandBuffer commandBuffer, long buffer, long image, int mipLevel, int width, int height, int xOffset, int yOffset, int bufferOffset, int bufferRowLength, int bufferImageHeight) {
         try (MemoryStack stack = stackPush()) {
 
             VkBufferImageCopy.Buffer region = VkBufferImageCopy.calloc(1, stack);
             region.bufferOffset(bufferOffset);
-            region.bufferRowLength(bufferRowLenght);   // Tightly packed
+            region.bufferRowLength(bufferRowLength);   // Tightly packed
             region.bufferImageHeight(bufferImageHeight);  // Tightly packed
             region.imageSubresource().aspectMask(VK_IMAGE_ASPECT_COLOR_BIT);
             region.imageSubresource().mipLevel(mipLevel);
@@ -96,8 +96,8 @@ public abstract class ImageUtil {
 
                 VkImageMemoryBarrier.Buffer barrier = VkImageMemoryBarrier.calloc(1, stack);
                 barrier.sType(VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER);
-                barrier.oldLayout(VK_IMAGE_USAGE_TRANSFER_DST_BIT);
-                barrier.newLayout(VK_IMAGE_USAGE_TRANSFER_SRC_BIT);
+                barrier.oldLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+                barrier.newLayout(VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
                 barrier.srcQueueFamilyIndex(VK_QUEUE_FAMILY_IGNORED);
                 barrier.dstQueueFamilyIndex(VK_QUEUE_FAMILY_IGNORED);
                 barrier.image(image.getId());
@@ -148,7 +148,7 @@ public abstract class ImageUtil {
 
             VkImageMemoryBarrier.Buffer barrier = VkImageMemoryBarrier.calloc(1, stack);
             barrier.sType(VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER);
-            barrier.oldLayout(VK_IMAGE_USAGE_TRANSFER_SRC_BIT);
+            barrier.oldLayout(VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
             barrier.newLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
             barrier.srcQueueFamilyIndex(VK_QUEUE_FAMILY_IGNORED);
             barrier.dstQueueFamilyIndex(VK_QUEUE_FAMILY_IGNORED);
@@ -171,7 +171,7 @@ public abstract class ImageUtil {
                     null,
                     barrier);
 
-            barrier.oldLayout(VK_IMAGE_USAGE_TRANSFER_DST_BIT);
+            barrier.oldLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
             barrier.subresourceRange().baseMipLevel(image.mipLevels - 1);
             barrier.subresourceRange().levelCount(1);
 

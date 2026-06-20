@@ -1,6 +1,5 @@
 package net.vulkanmod.vulkan;
 
-import cn.ksmcbrigade.mr.utils.mixin.MixinAgentUtils;
 import cn.ksmcbrigade.mr.utils.mixin.MixinUtils;
 import net.vulkanmod.Initializer;
 import net.vulkanmod.config.VKNConfig;
@@ -8,7 +7,7 @@ import net.vulkanmod.mixin.compatibility.gl.GL11M;
 import net.vulkanmod.mixin.compatibility.gl.GL14M;
 import net.vulkanmod.mixin.compatibility.gl.GL15M;
 import net.vulkanmod.mixin.compatibility.gl.GL30M;
-import net.vulkanmod.mixin.matrix.Matrix4fM;
+import net.vulkanmod.render.chunk.buffer.UploadManager;
 import net.vulkanmod.vulkan.device.Device;
 import net.vulkanmod.vulkan.device.DeviceManager;
 import net.vulkanmod.vulkan.framebuffer.SwapChain;
@@ -18,7 +17,7 @@ import net.vulkanmod.vulkan.memory.MemoryTypes;
 import net.vulkanmod.vulkan.memory.StagingBuffer;
 import net.vulkanmod.vulkan.queue.Queue;
 import net.vulkanmod.vulkan.shader.Pipeline;
-import net.vulkanmod.vulkan.transformers.VkInstanceTransformer;
+import net.vulkanmod.vulkan.texture.SamplerManager;
 import net.vulkanmod.vulkan.util.VUtil;
 import net.vulkanmod.vulkan.util.VkResult;
 import org.lwjgl.PointerBuffer;
@@ -29,7 +28,6 @@ import org.lwjgl.util.vma.VmaVulkanFunctions;
 import org.lwjgl.vulkan.*;
 
 import javax.annotation.Nullable;
-import java.lang.instrument.Instrumentation;
 import java.nio.IntBuffer;
 import java.nio.LongBuffer;
 import java.util.*;
@@ -155,22 +153,20 @@ public class Vulkan {
     private static int DEFAULT_DEPTH_FORMAT = 0;
 
     public static void initVulkan(long window) {
-        createInstance();
-        setupDebugMessenger();
-
-
-        //  In fact,
-        //  with the help of MixinRuntime,we don't need to reapply mixins by hand
+        // Make org.joml.Matrix4f build projections with Vulkan [0,1] depth globally so entities
+        // (which use directly-built projections) are no longer depth-clipped to invisibility.
+        // Fail-safe: on any failure rendering falls back to toVulkanClip. See JomlDepthFix.
+        net.vulkanmod.vulkan.compat.JomlDepthFix.install();
 
         if(VKNConfig.forceReapplyGLMixins){
-            Initializer.LOGGER.info("Reapply Mixins...");
             MixinUtils.reapply(GL11M.class);
             MixinUtils.reapply(GL14M.class);
             MixinUtils.reapply(GL15M.class);
             MixinUtils.reapply(GL30M.class);
-            MixinUtils.reapply(Matrix4fM.class);
         }
 
+        createInstance();
+        setupDebugMessenger();
 
         createSurface(window);
 
@@ -224,12 +220,15 @@ public class Vulkan {
 
         freeStagingBuffers();
 
+        UploadManager.INSTANCE.cleanUp();
+
         try {
             MemoryManager.getInstance().freeAllBuffers();
         } catch (Exception e) {
-            e.printStackTrace();
+            Initializer.LOGGER.error("Failed to free buffers during cleanup", e);
         }
 
+        SamplerManager.cleanUp();
         vmaDestroyAllocator(allocator);
 
         DeviceManager.destroy();
@@ -248,8 +247,6 @@ public class Vulkan {
             throw new RuntimeException("Validation requested but not supported");
         }
 
-        transformVulkan();
-
         try (MemoryStack stack = stackPush()) {
 
             // Use calloc to initialize the structs with 0s. Otherwise, the program can crash due to random values
@@ -257,9 +254,9 @@ public class Vulkan {
             VkApplicationInfo appInfo = VkApplicationInfo.calloc(stack);
 
             appInfo.sType(VK_STRUCTURE_TYPE_APPLICATION_INFO);
-            appInfo.pApplicationName(stack.UTF8Safe("VulkanMod"));
+            appInfo.pApplicationName(stack.UTF8Safe("vulkanmod"));
             appInfo.applicationVersion(VK_MAKE_VERSION(1, 0, 0));
-            appInfo.pEngineName(stack.UTF8Safe("VulkanMod Engine"));
+            appInfo.pEngineName(stack.UTF8Safe("vulkanmod Engine"));
             appInfo.engineVersion(VK_MAKE_VERSION(1, 0, 0));
             appInfo.apiVersion(VK_API_VERSION_1_2);
 
@@ -286,21 +283,7 @@ public class Vulkan {
 
             instance = new VkInstance(instancePtr.get(0), createInfo);
 
-           Initializer.LOGGER.info("Created VkInstance: {}",instance);
-        }
-    }
-
-    private static void transformVulkan() {
-        if(!VKNConfig.useVulkanTransformers) return;
-        Instrumentation inst = MixinAgentUtils.getInst();
-        if(inst!=null){
-            try {
-                Initializer.LOGGER.info("Transforming VkInstance...");
-                inst.addTransformer(new VkInstanceTransformer(),true);
-                inst.retransformClasses(VkInstance.class);
-            } catch (Throwable e) {
-                Initializer.LOGGER.error("Failed to transform Vulkan classes.",e);
-            }
+            Initializer.LOGGER.debug("Vulkan instance created");
         }
     }
 

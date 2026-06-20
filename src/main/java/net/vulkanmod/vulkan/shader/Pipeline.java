@@ -416,6 +416,8 @@ public abstract class Pipeline {
             allocInfo.descriptorPool(descriptorPool);
             allocInfo.pSetLayouts(layout);
 
+            if (this.sets != null)
+                MemoryUtil.memFree(this.sets);
             this.sets = MemoryUtil.memAllocLong(this.poolSize);
 
             int result = vkAllocateDescriptorSets(DEVICE, allocInfo, this.sets);
@@ -472,6 +474,7 @@ public abstract class Pipeline {
             vkResetDescriptorPool(DEVICE, descriptorPool, 0);
             vkDestroyDescriptorPool(DEVICE, descriptorPool, null);
 
+            MemoryUtil.memFree(this.sets);
             MemoryUtil.memFree(this.dynamicOffsets);
         }
 

@@ -41,7 +41,6 @@ public class SectionGraph {
     public RenderRegionBuilder renderRegionCache;
     int nonEmptyChunks;
 
-
     public SectionGraph(Level level, SectionGrid sectionGrid, TaskDispatcher taskDispatcher) {
         this.level = level;
         this.sectionGrid = sectionGrid;
@@ -160,7 +159,7 @@ public class SectionGraph {
     }
 
     private void updateRenderChunks() {
-        int maxDirectionsChanges = Initializer.CONFIG.advCulling - 1;
+        int maxDirectionsChanges = Math.max(0, Initializer.CONFIG.advCulling - 1);
 
         while (this.sectionQueue.hasNext()) {
             RenderSection renderSection = this.sectionQueue.poll();
@@ -168,8 +167,9 @@ public class SectionGraph {
             if (notInFrustum(renderSection))
                 continue;
 
-            if (renderSection.directionChanges > maxDirectionsChanges)
+            if (renderSection.directionChanges > maxDirectionsChanges) {
                 continue;
+            }
 
             if (!renderSection.isCompletelyEmpty()) {
                 renderSection.getChunkArea().sectionQueue.add(renderSection);
@@ -187,7 +187,7 @@ public class SectionGraph {
                 this.rebuildQueue.add(renderSection);
             }
 
-            byte dirs = (byte) (renderSection.getVisibilityDirs() & renderSection.getDirections());
+            byte dirs = (byte) (renderSection.adjDirs & renderSection.getDirections());
 
             visitAdjacentNodes(renderSection, dirs);
         }
@@ -197,8 +197,14 @@ public class SectionGraph {
         for (int i = 0; i < this.rebuildQueue.size(); i++) {
             RenderSection section = this.rebuildQueue.get(i);
 
-            section.rebuildChunkAsync(this.taskDispatcher, this.renderRegionCache);
-            section.setNotDirty();
+            // Only clear the dirty flag if a build was actually scheduled. If the
+            // section's chunk is not render-ready yet (createCompileTask returns null
+            // because data/light/neighbours haven't all arrived), keep it dirty so it
+            // is retried on a later graph update once the chunk becomes ready, instead
+            // of being silently dropped until the camera happens to move.
+            if (section.rebuildChunkAsync(this.taskDispatcher, this.renderRegionCache)) {
+                section.setNotDirty();
+            }
         }
         this.rebuildQueue.clear();
     }
@@ -291,6 +297,10 @@ public class SectionGraph {
         byte dc = increase ? (byte) (renderSection.directionChanges + 1) : renderSection.directionChanges;
 
         relativeSection.directionChanges = dc < relativeSection.directionChanges ? dc : relativeSection.directionChanges;
+    }
+
+    public VFrustum getFrustum() {
+        return this.frustum;
     }
 
     public AreaSetQueue getChunkAreaQueue() {

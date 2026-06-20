@@ -51,6 +51,13 @@ public abstract class Buffer {
 
     protected void setAllocation(long allocation) {this.allocation = allocation; }
 
+    /** Mapped host pointer — valid for host-mappable memory types only. */
+    public long getDataPtr() {
+        if (this.data == null)
+            throw new IllegalStateException("buffer is not host-mappable (type=" + this.type.getType() + ")");
+        return this.data.get(0);
+    }
+
     public BufferInfo getBufferInfo() { return new BufferInfo(this.id, this.allocation, this.bufferSize, this.type.getType()); }
 
     public record BufferInfo(long id, long allocation, long bufferSize, MemoryType.Type type) {

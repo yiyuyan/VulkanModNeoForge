@@ -10,7 +10,6 @@ import org.lwjgl.vulkan.*;
 import static org.lwjgl.vulkan.VK10.*;
 
 public class GraphicsQueue extends Queue {
-    public static GraphicsQueue INSTANCE;
 
     private static CommandPool.CommandBuffer currentCmdBuffer;
 

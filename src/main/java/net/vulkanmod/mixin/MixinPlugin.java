@@ -13,7 +13,12 @@ import java.util.Set;
 public class MixinPlugin implements IMixinConfigPlugin {
 
     @Override
-    public void onLoad(String mixinPackage) {}
+    public void onLoad(String mixinPackage) {
+        // Enlarge the per-thread LWJGL MemoryStack (default 64 KB) before any Vulkan
+        // init runs. The default stack can overflow into an OutOfMemoryError while
+        // enumerating instance extensions/layers during vkCreateInstance on some drivers.
+        org.lwjgl.system.Configuration.STACK_SIZE.set(512);
+    }
 
     @Override
     public String getRefMapperConfig() {
@@ -22,6 +27,9 @@ public class MixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        if (mixinClassName.contains(".wayland.")) {
+            return "wayland".equals(System.getenv("XDG_SESSION_TYPE"));
+        }
         return true;
     }
 

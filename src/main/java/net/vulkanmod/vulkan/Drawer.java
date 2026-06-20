@@ -33,6 +33,10 @@ public class Drawer {
 
     private int currentFrame;
 
+    private long lastIndexId = -1;
+    private long lastIndexOffset = -1;
+    private int lastIndexType = -1;
+
     public Drawer() {
         // Index buffers
         this.quadsIndexBuffer = new AutoIndexBuffer(AutoIndexBuffer.QUAD_U16_MAX_VERTEX_COUNT, AutoIndexBuffer.DrawType.QUADS);
@@ -45,6 +49,9 @@ public class Drawer {
 
     public void setCurrentFrame(int currentFrame) {
         this.currentFrame = currentFrame;
+        this.lastIndexId = -1;
+        this.lastIndexOffset = -1;
+        this.lastIndexType = -1;
     }
 
     public void createResources(int framesNum) {
@@ -141,7 +148,15 @@ public class Drawer {
     }
 
     public void bindIndexBuffer(VkCommandBuffer commandBuffer, IndexBuffer indexBuffer) {
-        vkCmdBindIndexBuffer(commandBuffer, indexBuffer.getId(), indexBuffer.getOffset(), indexBuffer.indexType.type);
+        long id = indexBuffer.getId();
+        long off = indexBuffer.getOffset();
+        int type = indexBuffer.indexType.type;
+        if (id == lastIndexId && off == lastIndexOffset && type == lastIndexType)
+            return;
+        vkCmdBindIndexBuffer(commandBuffer, id, off, type);
+        lastIndexId = id;
+        lastIndexOffset = off;
+        lastIndexType = type;
     }
 
     public void cleanUpResources() {

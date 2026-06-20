@@ -7,7 +7,6 @@ import net.vulkanmod.render.chunk.buffer.AreaBuffer;
 import net.vulkanmod.vulkan.Vulkan;
 import net.vulkanmod.vulkan.device.DeviceManager;
 import net.vulkanmod.vulkan.texture.VulkanImage;
-import net.vulkanmod.vulkan.util.Pair;
 import net.vulkanmod.vulkan.util.VkResult;
 import org.apache.commons.lang3.Validate;
 import org.lwjgl.PointerBuffer;
@@ -47,7 +46,7 @@ public class MemoryManager {
     private ObjectArrayList<VulkanImage>[] freeableImages = new ObjectArrayList[Frames];
 
     private ObjectArrayList<Runnable>[] frameOps = new ObjectArrayList[Frames];
-    private ObjectArrayList<Pair<AreaBuffer, Integer>>[] segmentsToFree = new ObjectArrayList[Frames];
+    private ObjectArrayList<SegmentFreeEntry>[] segmentsToFree = new ObjectArrayList[Frames];
 
     //debug
     private ObjectArrayList<StackTraceElement[]>[] stackTraces;
@@ -166,8 +165,6 @@ public class MemoryManager {
             imageInfo.usage(usage);
             imageInfo.samples(VK_SAMPLE_COUNT_1_BIT);
 //            imageInfo.sharingMode(VK_SHARING_MODE_CONCURRENT);
-            // TODO hardcoded queue family indices
-            imageInfo.pQueueFamilyIndices(stack.ints(0, 1));
 
             VmaAllocationCreateInfo allocationInfo = VmaAllocationCreateInfo.calloc(stack);
             allocationInfo.requiredFlags(memProperties);
@@ -230,6 +227,11 @@ public class MemoryManager {
 
         freeableBuffers[currentFrame].add(bufferInfo);
 
+        if (buffer.data != null) {
+            org.lwjgl.PointerBuffer oldData = buffer.data;
+            this.frameOps[currentFrame].add(() -> MemoryUtil.memFree(oldData));
+        }
+
         if (DEBUG)
             stackTraces[currentFrame].add(new Throwable().getStackTrace());
     }
@@ -283,15 +285,16 @@ public class MemoryManager {
 
     private void freeSegments(int frame) {
         var list = this.segmentsToFree[frame];
-        for (var pair : list) {
-            pair.first.setSegmentFree(pair.second);
+        for (int i = 0; i < list.size(); i++) {
+            SegmentFreeEntry entry = list.get(i);
+            entry.buffer.setSegmentFree(entry.offset);
         }
 
         list.clear();
     }
 
     public void addToFreeSegment(AreaBuffer areaBuffer, int offset) {
-        this.segmentsToFree[this.currentFrame].add(new Pair<>(areaBuffer, offset));
+        this.segmentsToFree[this.currentFrame].add(new SegmentFreeEntry(areaBuffer, offset));
     }
 
     public int getNativeMemoryMB() {
@@ -321,6 +324,16 @@ public class MemoryManager {
             long budget = vmaBudget.budget();
 
             return String.format("Device Memory Heap Usage: %d/%dMB", bytesInMb(usage), bytesInMb(budget));
+        }
+    }
+
+    private static final class SegmentFreeEntry {
+        final AreaBuffer buffer;
+        final int offset;
+
+        SegmentFreeEntry(AreaBuffer buffer, int offset) {
+            this.buffer = buffer;
+            this.offset = offset;
         }
     }
 }

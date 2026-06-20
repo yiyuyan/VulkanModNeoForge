@@ -46,6 +46,10 @@ public abstract class Queue {
         return this.commandPool.submitCommands(commandBuffer, queue);
     }
 
+    public synchronized long submitCommands(CommandPool.CommandBuffer commandBuffer, long timelineSemaphore, long signalValue) {
+        return this.commandPool.submitCommands(commandBuffer, queue, timelineSemaphore, signalValue);
+    }
+
     public VkQueue queue() {
         return this.queue;
     }

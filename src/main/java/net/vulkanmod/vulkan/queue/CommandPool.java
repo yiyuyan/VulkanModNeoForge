@@ -12,6 +12,7 @@ import java.util.List;
 
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.vulkan.VK10.*;
+import static org.lwjgl.vulkan.VK12.*;
 
 public class CommandPool {
     long id;
@@ -104,6 +105,31 @@ public class CommandPool {
             vkQueueSubmit(queue, submitInfo, fence);
 
             return fence;
+        }
+    }
+
+    public long submitCommands(CommandBuffer commandBuffer, VkQueue queue, long timelineSemaphore, long signalValue) {
+
+        try (MemoryStack stack = stackPush()) {
+            long fence = commandBuffer.fence;
+
+            vkEndCommandBuffer(commandBuffer.handle);
+
+            vkResetFences(Vulkan.getVkDevice(), commandBuffer.fence);
+
+            VkTimelineSemaphoreSubmitInfo timelineInfo = VkTimelineSemaphoreSubmitInfo.calloc(stack)
+                    .sType$Default()
+                    .pSignalSemaphoreValues(stack.longs(signalValue));
+
+            VkSubmitInfo submitInfo = VkSubmitInfo.calloc(stack);
+            submitInfo.sType(VK_STRUCTURE_TYPE_SUBMIT_INFO);
+            submitInfo.pNext(timelineInfo);
+            submitInfo.pCommandBuffers(stack.pointers(commandBuffer.handle));
+            submitInfo.pSignalSemaphores(stack.longs(timelineSemaphore));
+
+            vkQueueSubmit(queue, submitInfo, fence);
+
+            return signalValue;
         }
     }
 

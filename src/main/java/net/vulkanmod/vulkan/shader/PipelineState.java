@@ -269,7 +269,7 @@ public class PipelineState {
         }
 
         public static int blendOp(int state) {
-            return state >>> FUN_OFFSET;
+            return decode(state, FUN_OFFSET, OP_MASK);
         }
 
     }
@@ -296,9 +296,22 @@ public class PipelineState {
 
         public static int glToVulkan(int f) {
             return switch (f) {
-                case 5387 -> VK_LOGIC_OP_OR_REVERSE;
-                //TODO complete
-
+                case 0x1500 -> VK_LOGIC_OP_CLEAR;
+                case 0x1501 -> VK_LOGIC_OP_AND;
+                case 0x1502 -> VK_LOGIC_OP_AND_REVERSE;
+                case 0x1503 -> VK_LOGIC_OP_COPY;
+                case 0x1504 -> VK_LOGIC_OP_AND_INVERTED;
+                case 0x1505 -> VK_LOGIC_OP_NO_OP;
+                case 0x1506 -> VK_LOGIC_OP_XOR;
+                case 0x1507 -> VK_LOGIC_OP_OR;
+                case 0x1508 -> VK_LOGIC_OP_NOR;
+                case 0x1509 -> VK_LOGIC_OP_EQUIVALENT;
+                case 0x150A -> VK_LOGIC_OP_INVERT;
+                case 0x150B -> VK_LOGIC_OP_OR_REVERSE;
+                case 0x150C -> VK_LOGIC_OP_COPY_INVERTED;
+                case 0x150D -> VK_LOGIC_OP_OR_INVERTED;
+                case 0x150E -> VK_LOGIC_OP_NAND;
+                case 0x150F -> VK_LOGIC_OP_SET;
                 default -> VK_LOGIC_OP_AND;
             };
         }

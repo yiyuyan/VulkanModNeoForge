@@ -1,5 +1,6 @@
 package net.vulkanmod.vulkan.memory;
 
+import net.vulkanmod.Initializer;
 import net.vulkanmod.render.chunk.util.Util;
 import net.vulkanmod.vulkan.util.VUtil;
 import org.lwjgl.system.MemoryUtil;
@@ -48,6 +49,6 @@ public class StagingBuffer extends Buffer {
         MemoryManager.getInstance().addToFreeable(this);
         this.createBuffer(newSize);
 
-        System.out.println("resized staging buffer to: " + newSize);
+        Initializer.LOGGER.debug("Resized staging buffer to {} bytes", newSize);
     }
 }
