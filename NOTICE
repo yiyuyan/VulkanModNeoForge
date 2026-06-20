@@ -1,0 +1,11 @@
+This is a VulkanMod NeoForge Unofficial Fork.
+
+This project is an unofficial modified fork of xCollateral/VulkanMod:
+https://github.com/xCollateral/VulkanMod
+
+The fork was modified on 2026-06-20 for Minecraft 1.21 NeoForge compatibility, release metadata cleanup, and local compatibility fixes.
+
+Original project authorship and contribution credit belongs to xCollateral and VulkanMod contributors.
+Fork maintenance credit: commonplace.
+
+This fork is not endorsed by or affiliated with the upstream VulkanMod maintainers. The VulkanMod name, logo, and related project branding may be subject to rights outside the LGPLv3 code license.
