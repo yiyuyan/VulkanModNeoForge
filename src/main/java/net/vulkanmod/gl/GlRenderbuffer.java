@@ -1,6 +1,7 @@
 package net.vulkanmod.gl;
 
 import it.unimi.dsi.fastutil.ints.Int2ReferenceOpenHashMap;
+import net.vulkanmod.vulkan.memory.MemoryManager;
 import net.vulkanmod.vulkan.texture.ImageUtil;
 import net.vulkanmod.vulkan.texture.SamplerManager;
 import net.vulkanmod.vulkan.texture.VTextureSelector;
@@ -42,7 +43,9 @@ public class GlRenderbuffer {
     }
 
     public static void deleteRenderbuffer(int i) {
-        map.remove(i);
+        GlRenderbuffer r = map.remove(i);
+        if (r != null && r.vulkanImage != null)
+            MemoryManager.getInstance().addToFreeable(r.vulkanImage);
     }
 
     public static GlRenderbuffer getRenderbuffer(int id) {

@@ -201,8 +201,7 @@ public class GlTexture {
         if (target != GL11.GL_TEXTURE_2D)
             throw new UnsupportedOperationException("target != GL_TEXTURE_2D not supported");
 
-        // TODO: crashing
-//        boundTexture.generateMipmaps();
+        boundTexture.generateMipmaps();
     }
 
     public static void getTexImage(int tex, int level, int format, int type, long pixels) {
@@ -276,7 +275,7 @@ public class GlTexture {
             this.vulkanImage = new VulkanImage.Builder(width, height)
                     .setMipLevels(maxLevel + 1)
                     .setFormat(vkFormat)
-                    .addUsage(VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT)
+                    .addUsage(VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT)
                     .createVulkanImage();
     }
 

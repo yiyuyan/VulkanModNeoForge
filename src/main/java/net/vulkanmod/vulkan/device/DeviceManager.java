@@ -56,14 +56,14 @@ public abstract class DeviceManager {
         }
     }
 
+
+
     static List<Device> getAvailableDevices(VkInstance instance) {
         try (MemoryStack stack = stackPush()) {
             List<Device> devices = new ObjectArrayList<>();
 
             IntBuffer deviceCount = stack.ints(0);
-
             vkEnumeratePhysicalDevices(instance, deviceCount, null);
-
             if (deviceCount.get(0) == 0) {
                 return List.of();
             }
@@ -71,15 +71,22 @@ public abstract class DeviceManager {
             PointerBuffer ppPhysicalDevices = stack.mallocPointer(deviceCount.get(0));
             vkEnumeratePhysicalDevices(instance, deviceCount, ppPhysicalDevices);
 
-            VkPhysicalDevice currentDevice;
-
             for (int i = 0; i < ppPhysicalDevices.capacity(); i++) {
-                currentDevice = new VkPhysicalDevice(ppPhysicalDevices.get(i), instance);
+                long handle = ppPhysicalDevices.get(i);
+                VkPhysicalDevice phDevice = new VkPhysicalDevice(handle, instance);
 
-                Device device = new Device(currentDevice);
+                VkPhysicalDeviceProperties props = VkPhysicalDeviceProperties.calloc(stack);
+                vkGetPhysicalDeviceProperties(phDevice, props);
+
+                int deviceType = props.deviceType();
+                if (deviceType == VK_PHYSICAL_DEVICE_TYPE_OTHER &&
+                        props.limits().maxImageDimension2D() < 4096) {
+                    continue;
+                }
+
+                Device device = new Device(phDevice);
                 devices.add(device);
             }
-
             return devices;
         }
     }
@@ -89,8 +96,30 @@ public abstract class DeviceManager {
 
         List<Device> devices = new ObjectArrayList<>();
         for (Device device : availableDevices) {
-            if (isDeviceSuitable(device.physicalDevice)) {
+            int deviceType = device.properties.deviceType();
+
+            if (deviceType == VK_PHYSICAL_DEVICE_TYPE_OTHER &&
+                    device.properties.limits().maxImageDimension2D() < 4096) {
+                continue;
+            }
+
+            if (deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) {
                 devices.add(device);
+            }
+        }
+
+        if (devices.isEmpty()) {
+            for (Device device : availableDevices) {
+                int deviceType = device.properties.deviceType();
+                if (deviceType == VK_PHYSICAL_DEVICE_TYPE_OTHER &&
+                        device.properties.limits().maxImageDimension2D() < 4096) {
+                    continue;
+                }
+
+                if (isDeviceSuitable(device.physicalDevice)) {
+                    devices.add(device);
+                    break;
+                }
             }
         }
 

@@ -3,6 +3,7 @@ package net.vulkanmod.gl;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import it.unimi.dsi.fastutil.ints.Int2ReferenceOpenHashMap;
 import net.minecraft.client.Minecraft;
+import net.vulkanmod.Initializer;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.VRenderSystem;
 import net.vulkanmod.vulkan.framebuffer.Framebuffer;
@@ -117,7 +118,10 @@ public class GlFramebuffer {
     }
 
     public static int glCheckFramebufferStatus(int target) {
-        //TODO
+        if (boundFramebuffer == null)
+            return GL30.GL_FRAMEBUFFER_UNDEFINED;
+        if (boundFramebuffer.framebuffer == null || boundFramebuffer.colorAttachment == null)
+            return GL30.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT;
         return GL30.GL_FRAMEBUFFER_COMPLETE;
     }
 
@@ -186,7 +190,8 @@ public class GlFramebuffer {
     }
 
     void setDepthAttachment(GlTexture texture) {
-        //TODO check if texture is in depth format
+        if (!VulkanImage.isDepthFormat(texture.vulkanImage.format))
+            Initializer.LOGGER.warn("Attaching non-depth texture as depth attachment");
         this.depthAttachment = texture.vulkanImage;
         createAndBind();
     }
@@ -197,7 +202,8 @@ public class GlFramebuffer {
     }
 
     void setDepthAttachment(GlRenderbuffer texture) {
-        //TODO check if texture is in depth format
+        if (!VulkanImage.isDepthFormat(texture.vulkanImage.format))
+            Initializer.LOGGER.warn("Attaching non-depth renderbuffer as depth attachment");
         this.depthAttachment = texture.vulkanImage;
         createAndBind();
     }

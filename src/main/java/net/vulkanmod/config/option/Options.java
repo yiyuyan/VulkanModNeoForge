@@ -260,6 +260,9 @@ public abstract class Options {
                                 value -> config.indirectDraw = value,
                                 () -> config.indirectDraw)
                                 .setTooltip(Component.translatable("vulkanmod.options.indirectDraw.tooltip")),
+                        new SwitchOption(Component.translatable("vulkanmod.options.occlusionCulling"),
+                                value -> config.occlusionCulling = value,
+                                () -> config.occlusionCulling),
                 })
         };
 
