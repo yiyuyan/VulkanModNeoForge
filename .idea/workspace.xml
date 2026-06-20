@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Vulkan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Vulkan.java" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="UPDATE">
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/ComputePipeline.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/ImageComputePipeline.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -383,7 +384,31 @@
       <option name="project" value="LOCAL" />
       <updated>1781940454442</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="UPDATE">
+      <option name="closed" value="true" />
+      <created>1781940650091</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1781940650091</updated>
+    </task>
+    <task id="LOCAL-00017" summary="UPDATE">
+      <option name="closed" value="true" />
+      <created>1781940948295</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1781940948295</updated>
+    </task>
+    <task id="LOCAL-00018" summary="UPDATE">
+      <option name="closed" value="true" />
+      <created>1781940961398</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1781940961398</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
