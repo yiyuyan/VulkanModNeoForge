@@ -1,12 +1,6 @@
 package net.vulkanmod.vulkan;
 
-import cn.ksmcbrigade.mr.utils.mixin.MixinUtils;
 import net.vulkanmod.Initializer;
-import net.vulkanmod.config.VKNConfig;
-import net.vulkanmod.mixin.compatibility.gl.GL11M;
-import net.vulkanmod.mixin.compatibility.gl.GL14M;
-import net.vulkanmod.mixin.compatibility.gl.GL15M;
-import net.vulkanmod.mixin.compatibility.gl.GL30M;
 import net.vulkanmod.render.chunk.buffer.UploadManager;
 import net.vulkanmod.vulkan.device.Device;
 import net.vulkanmod.vulkan.device.DeviceManager;
@@ -157,14 +151,6 @@ public class Vulkan {
         // (which use directly-built projections) are no longer depth-clipped to invisibility.
         // Fail-safe: on any failure rendering falls back to toVulkanClip. See JomlDepthFix.
         net.vulkanmod.vulkan.compat.JomlDepthFix.install();
-
-        if(VKNConfig.forceReapplyGLMixins){
-            MixinUtils.reapply(GL11M.class);
-            MixinUtils.reapply(GL14M.class);
-            MixinUtils.reapply(GL15M.class);
-            MixinUtils.reapply(GL30M.class);
-        }
-
         createInstance();
         setupDebugMessenger();
 
