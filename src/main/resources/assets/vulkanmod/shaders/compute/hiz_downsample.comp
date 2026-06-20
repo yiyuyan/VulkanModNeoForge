@@ -1,0 +1,24 @@
+#version 450
+layout(local_size_x = 8, local_size_y = 8) in;
+
+layout(binding = 0) uniform sampler2D uSrc;          // previous mip (or scene depth for mip 0)
+layout(binding = 1, r32f) uniform writeonly image2D uDst; // this mip
+
+layout(push_constant) uniform PC {
+    ivec2 dstSize;   // size of the destination mip
+    int   isDepth;   // 1 when uSrc is the scene depth attachment (mip 0), else 0
+} pc;
+
+void main() {
+    ivec2 d = ivec2(gl_GlobalInvocationID.xy);
+    if (d.x >= pc.dstSize.x || d.y >= pc.dstSize.y) return;
+
+    // Gather the 2x2 source texels covering this destination texel.
+    ivec2 s = d * 2;
+    float a = texelFetch(uSrc, s,                0).r;
+    float b = texelFetch(uSrc, s + ivec2(1,0),   0).r;
+    float c = texelFetch(uSrc, s + ivec2(0,1),   0).r;
+    float e = texelFetch(uSrc, s + ivec2(1,1),   0).r;
+    float far = max(max(a, b), max(c, e));   // standard depth: farthest is largest
+    imageStore(uDst, d, vec4(far, 0, 0, 0));
+}
