@@ -206,6 +206,7 @@ public class VulkanModDiscover implements IModFileCandidateLocator {
                         Field field = displayWindow.getClass().getDeclaredField("window");
                         field.setAccessible(true);
                         window = (long) field.get(displayWindow);
+                        LogUtils.getLogger().info("Get current window: {}",window);
                         Field windowTickF = displayWindow.getClass().getDeclaredField("windowTick");
                         windowTickF.setAccessible(true);
                         windowTickF.set(displayWindow,new ScheduledFuture<>(){
@@ -256,7 +257,6 @@ public class VulkanModDiscover implements IModFileCandidateLocator {
                                 return false;
                             }
                         });
-                        LogUtils.getLogger().info("Get current window: {}",window);
                         glfwDestroyWindow(window);
                         VKCUnsafeUtils.setClass(displayWindow, VKCDisplayWindow.class);
 
