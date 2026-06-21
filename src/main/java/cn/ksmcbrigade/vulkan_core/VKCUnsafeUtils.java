@@ -16,6 +16,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.module.ResolvedModule;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -100,6 +101,27 @@ public class VKCUnsafeUtils {
         } catch (Throwable var4) {
             var4.printStackTrace();
             return null;
+        }
+    }
+
+    public static <T> void setClass(Object targetClass,Class<T> clazz){
+        if (targetClass==null || clazz==null || targetClass.getClass()==clazz) return;
+        try {
+            Object unsafe = Class.forName("io.netty.util.internal.shaded.org.jctools.util.UnsafeAccess").getField("UNSAFE").get(null);
+            Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
+
+            Method getIntVolatileM = unsafeClass.getMethod("getIntVolatile", Object.class, long.class);
+            Method putIntVolatileM = unsafeClass.getMethod("putIntVolatile", Object.class, long.class, int.class);
+            Method allocateInstanceM = unsafeClass.getMethod("allocateInstance", Class.class);
+
+            getIntVolatileM.setAccessible(true);
+            putIntVolatileM.setAccessible(true);
+            allocateInstanceM.setAccessible(true);
+
+            Object oed = allocateInstanceM.invoke(unsafe,clazz);
+            putIntVolatileM.invoke(unsafe,targetClass,8L,(int)getIntVolatileM.invoke(unsafe,oed,8L));
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 

@@ -21,6 +21,27 @@ repositories {
         url = "https://api.modrinth.com/maven"
     }
 
+    maven { url = "https://maven.createmod.net" } // Ponder, Flywheel
+
+    maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
+    maven { url = "https://maven.blamejared.com" } // JEI, Vazkii's Mods
+    maven { url = "https://maven.theillusivec4.top/" } // Curios API
+    maven { url = "https://maven.squiddev.cc" } // CC: Tweaked
+    maven { url = "https://www.cursemaven.com" }
+    maven { url = "https://api.modrinth.com/maven" }
+    maven { url = "https://maven.ftb.dev/releases" } // FTB Mods
+    maven { url = "https://maven.architectury.dev" } // Arch API
+    // NeoForge config api port, needed by ponder
+    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven" }
+    maven {
+        url = "https://jm.gserv.me/repository/maven-public" // JourneyMap
+        content {
+            includeGroup "info.journeymap"
+            includeGroup "mysticdrew"
+        }
+    }
+    maven { url "https://chocolateminecraft.com/maven" } // Xaero
+
     // Add repositories to retrieve artifacts from in here.
     // You should only use this when depending on other mods because
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
@@ -67,6 +88,13 @@ dependencies {
 	implementation("org.lwjgl:lwjgl-vulkan:$lwjglVersion:$macosArmNatives")
 
     include(modImplementation("maven.modrinth:mixinruntime:1.0.2-mc1.21"))
+
+    //combat create
+
+//    modApi("com.tterrag.registrate:Registrate:$registrate_version")
+    modImplementation("dev.engine-room.flywheel:flywheel-neoforge-api-1.21.1:1.0.6")
+    //modImplementation("net.createmod.ponder:ponder-neoforge:1.0.82+mc1.21.1")
+   // modImplementation("maven.modrinth:create:6.0.10+mc1.21.1")
 }
 
 processResources {
