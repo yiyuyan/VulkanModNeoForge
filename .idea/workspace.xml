@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="fix VulkanModDiscover">
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="fix VulkanModDiscover and PipelineManager">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan_core/services/VulkanModDiscover.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan_core/services/VulkanModDiscover.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/VKNConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/VKNConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/PipelineManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/PipelineManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan/NeoVulkanMod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan/NeoVulkanMod.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -274,9 +272,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.VulkanModNeoForge [build]" />
         <item itemvalue="Gradle.VulkanModNeoForge [runClient]" />
         <item itemvalue="Gradle.VulkanModNeoForge [clean build runClient]" />
-        <item itemvalue="Gradle.VulkanModNeoForge [build]" />
         <item itemvalue="Gradle.VulkanModNeoForge [clean]" />
         <item itemvalue="Gradle.VulkanModNeoForge [clean runClient]" />
       </list>
@@ -514,7 +512,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782047336146</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="fix VulkanModDiscover and PipelineManager">
+      <option name="closed" value="true" />
+      <created>1782049510162</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1782049510162</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -553,7 +559,8 @@
     <MESSAGE value="update 0.4.9-dev+1" />
     <MESSAGE value="fix log" />
     <MESSAGE value="fix VulkanModDiscover" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix VulkanModDiscover" />
+    <MESSAGE value="fix VulkanModDiscover and PipelineManager" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix VulkanModDiscover and PipelineManager" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

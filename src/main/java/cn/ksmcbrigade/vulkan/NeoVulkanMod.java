@@ -1,7 +1,11 @@
 package cn.ksmcbrigade.vulkan;
 
+import net.minecraft.network.chat.Component;
+import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.vulkanmod.Initializer;
+import net.vulkanmod.config.gui.VOptionScreen;
 
 @Mod(NeoVulkanMod.MOD_ID)
 public final class NeoVulkanMod {
@@ -12,5 +16,6 @@ public final class NeoVulkanMod {
         // However, some things (like registries and resources) may still be uninitialized.
         // Proceed with mild caution.
         new Initializer().onInitializeClient();
+        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class,()-> (IConfigScreenFactory) (modContainer, arg) -> new VOptionScreen(Component.literal("Video Setting"),arg));
     }
 }
