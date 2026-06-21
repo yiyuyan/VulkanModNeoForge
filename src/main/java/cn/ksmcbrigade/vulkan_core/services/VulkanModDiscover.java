@@ -249,18 +249,60 @@ public class VulkanModDiscover implements IModFileCandidateLocator {
                                 return false;
                             }
                         });
+                        Field initializationFutureF = DisplayWindow.class.getDeclaredField("initializationFuture");
+                        initializationFutureF.setAccessible(true);
+                        initializationFutureF.set(displayWindow,new ScheduledFuture<>(){
+
+                            @Override
+                            public boolean cancel(boolean mayInterruptIfRunning) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean isCancelled() {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean isDone() {
+                                return false;
+                            }
+
+                            @Override
+                            public Object get() throws InterruptedException, ExecutionException {
+                                return null;
+                            }
+
+                            @Override
+                            public Object get(long timeout, @NotNull TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
+                                return null;
+                            }
+
+                            @Override
+                            public int compareTo(@NotNull Delayed o) {
+                                return 0;
+                            }
+
+                            @Override
+                            public long getDelay(@NotNull TimeUnit unit) {
+                                return 0;
+                            }
+                        });
+
+                        Field renderSchedulerF = DisplayWindow.class.getDeclaredField("renderScheduler");
+                        renderSchedulerF.setAccessible(true);
+                        renderSchedulerF.set(displayWindow,Executors.newScheduledThreadPool(1));
+
                         glfwDestroyWindow(window);
+
                         VKCUnsafeUtils.setClass(displayWindow, VKCDisplayWindow.class);
 
+                        LogUtils.getLogger().info("Replaced the window handler's provider runtime.");
                     } catch (Throwable e) {
                         LogUtils.getLogger().error("Failed to runtime replace early display.",e);
-                        directExit();
+                        exitNow();
                     }
-
                 }
-
-
-                LogUtils.getLogger().info("Replaced the window handler's provider runtime.");
             }
 
             LogUtils.getLogger().info(LogMarkers.CORE,"VulkanTransformationService is Loaded.");

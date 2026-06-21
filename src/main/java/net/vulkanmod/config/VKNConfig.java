@@ -72,14 +72,14 @@ public class VKNConfig {
                 ArrayList<ModContainer> modContainers = new ArrayList<>();
 
                 for (IModFileInfo modFile : ModList.get().getModFiles()) {
-                    if(!modFile.getFile().getFilePath().toFile().getParentFile().getName().equals("vulkan-libs") && modFile.getFile() instanceof ModFile modFile1){
+                    if(!modFile.getFile().getFilePath().toAbsolutePath().toString().contains("vulkan-libs") && modFile.getFile() instanceof ModFile modFile1){
                         modFiles.add(modFile1);
                     }
                 }
 
                 for (IModInfo info : ModList.get().getMods()) {
                     IModFile modFile = info.getOwningFile().getFile();
-                    if(!modFile.getFilePath().toFile().getParentFile().getName().equals("vulkan-libs") && info instanceof ModInfo modInfo){
+                    if(!modFile.getFilePath().toAbsolutePath().toString().contains("vulkan-libs") && info instanceof ModInfo modInfo){
                         modInfos.add(modInfo);
                     }
                 }
@@ -96,6 +96,7 @@ public class VKNConfig {
                 setLoadedModsM.setAccessible(true);
                 setLoadedModsM.invoke(ModList.get(),modContainers);
 
+                Initializer.LOGGER.info("Hide VulkanLibs Successfully!");
             } catch (Throwable e) {
                 Initializer.LOGGER.warn("Failed to hide Vulkan libs: {}",e.getMessage());
             }
