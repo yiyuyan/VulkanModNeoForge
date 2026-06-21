@@ -98,15 +98,7 @@ public class VulkanModDiscover implements IModFileCandidateLocator {
             }
 
             if(earlyDisplay && directExit()){
-                JOptionPane.showMessageDialog(
-                        null,
-                        "The earlyWindowControl has been turned off.\nPlease restart the game.",
-                        "VulkanModNeoForge",
-                        JOptionPane.WARNING_MESSAGE
-                );
-                LogUtils.getLogger().info(LogMarkers.CORE,"The earlyWindowControl has been turned.Please restart the game.");
-                LogUtils.getLogger().warn(LogMarkers.CORE,"Exiting...");
-                System.exit(0);
+                exitNow();
             }
             else if(earlyDisplay){
                 ImmediateWindowProvider provider = new ImmediateWindowProvider() {
@@ -261,7 +253,8 @@ public class VulkanModDiscover implements IModFileCandidateLocator {
                         VKCUnsafeUtils.setClass(displayWindow, VKCDisplayWindow.class);
 
                     } catch (Throwable e) {
-                        throw new RuntimeException(e);
+                        LogUtils.getLogger().error("Failed to runtime replace early display.",e);
+                        directExit();
                     }
 
                 }
@@ -275,6 +268,18 @@ public class VulkanModDiscover implements IModFileCandidateLocator {
             LogUtils.getLogger().info(LogMarkers.CORE,"[VulkanCore] Can't close the early window control.");
             e.printStackTrace();
         }
+    }
+
+    private static void exitNow() {
+        JOptionPane.showMessageDialog(
+                null,
+                "The earlyWindowControl has been turned off.\nPlease restart the game.",
+                "VulkanModNeoForge",
+                JOptionPane.WARNING_MESSAGE
+        );
+        LogUtils.getLogger().info(LogMarkers.CORE,"The earlyWindowControl has been turned.Please restart the game.");
+        LogUtils.getLogger().warn(LogMarkers.CORE,"Exiting...");
+        System.exit(0);
     }
 
     @Override
@@ -342,6 +347,11 @@ public class VulkanModDiscover implements IModFileCandidateLocator {
         VKCUnsafeUtils.setFieldValue(context,"locatedPaths",located);
 
         //LogUtils.getLogger().info(LogMarkers.SCAN,Arrays.toString(VKCUnsafeUtils.getFieldValue(context, "locatedPaths", Set.class).toArray()));
+    }
+
+    @Override
+    public int getPriority() {
+        return Integer.MAX_VALUE;
     }
 
     private static boolean directExit(){
