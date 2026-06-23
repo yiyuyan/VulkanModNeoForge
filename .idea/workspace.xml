@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Use VertexBuffer usage to determine memory type&#10;Update 0.4.9-dev+3&#10;Sync 845e86b">
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/clouds/LevelRendererM.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/sky/CloudRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Use VertexBuffer usage to Improve clouds rendering&#10;Update 0.4.9-dev+4&#10;Sync 41c3d58">
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/BufferUploaderM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/BufferUploaderM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/RenderSystemMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/RenderSystemMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Drawer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Drawer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/AutoIndexBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/AutoIndexBuffer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -542,7 +542,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782215611353</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Use VertexBuffer usage to Improve clouds rendering&#10;Update 0.4.9-dev+4&#10;Sync 41c3d58">
+      <option name="closed" value="true" />
+      <created>1782215809377</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1782215809377</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -587,7 +595,8 @@
     <MESSAGE value="fix VulkanModDiscover and PipelineManager" />
     <MESSAGE value="Implement CPU backface culling&#10;Update 0.4.9-dev+2&#10;Sync e76ded5" />
     <MESSAGE value="Use VertexBuffer usage to determine memory type&#10;Update 0.4.9-dev+3&#10;Sync 845e86b" />
-    <option name="LAST_COMMIT_MESSAGE" value="Use VertexBuffer usage to determine memory type&#10;Update 0.4.9-dev+3&#10;Sync 845e86b" />
+    <MESSAGE value="Use VertexBuffer usage to Improve clouds rendering&#10;Update 0.4.9-dev+4&#10;Sync 41c3d58" />
+    <option name="LAST_COMMIT_MESSAGE" value="Use VertexBuffer usage to Improve clouds rendering&#10;Update 0.4.9-dev+4&#10;Sync 41c3d58" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

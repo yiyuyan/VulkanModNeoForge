@@ -29,13 +29,16 @@ public abstract class RenderSystemMixin {
     @Shadow @Final private static Matrix4fStack modelViewStack;
     @Shadow private static Matrix4f modelViewMatrix;
     @Shadow private static Matrix4f textureMatrix;
+
     @Shadow @Final private static int[] shaderTextures;
     @Shadow @Final private static float[] shaderColor;
     @Shadow @Final private static Vector3f[] shaderLightDirections;
-
     @Shadow @Final private static float[] shaderFogColor;
 
     @Shadow private static @Nullable Thread renderThread;
+
+    @Shadow public static VertexSorting vertexSorting;
+    @Shadow private static VertexSorting savedVertexSorting;
 
     @Shadow
     public static void assertOnRenderThread() {
@@ -215,7 +218,7 @@ public abstract class RenderSystemMixin {
     @Overwrite(remap = false)
     public static void blendEquation(int i) {
         assertOnRenderThread();
-        VRenderSystem.blendEquation(i);
+        //TODO
     }
 
     /**
@@ -368,22 +371,18 @@ public abstract class RenderSystemMixin {
      */
     @Overwrite(remap = false)
     public static void setProjectionMatrix(Matrix4f projectionMatrix, VertexSorting vertexSorting) {
-        // MC builds its projection with OpenGL clip-space (depth [-1,1]); Vulkan wants [0,1].
-        // If JomlDepthFix retransformed org.joml.Matrix4f, MC already builds EVERY projection
-        // (including directly-built ones entities use) with Vulkan depth, so copy as-is.
-        // Otherwise correct it here so this path stays consistent (fallback). See JomlDepthFix.
-        Matrix4f matrix4f = VRenderSystem.JOML_DEPTH_FIX_ACTIVE
-                ? new Matrix4f(projectionMatrix)
-                : VRenderSystem.toVulkanClip(projectionMatrix);
+        Matrix4f matrix4f = new Matrix4f(projectionMatrix);
         if (!isOnRenderThread()) {
             recordRenderCall(() -> {
                 RenderSystemMixin.projectionMatrix = matrix4f;
+                RenderSystem.vertexSorting = vertexSorting;
 
                 VRenderSystem.applyProjectionMatrix(matrix4f);
                 VRenderSystem.calculateMVP();
             });
         } else {
             RenderSystemMixin.projectionMatrix = matrix4f;
+            RenderSystem.vertexSorting = vertexSorting;
 
             VRenderSystem.applyProjectionMatrix(matrix4f);
             VRenderSystem.calculateMVP();
@@ -449,6 +448,7 @@ public abstract class RenderSystemMixin {
     @Overwrite(remap = false)
     private static void _restoreProjectionMatrix() {
         projectionMatrix = savedProjectionMatrix;
+        vertexSorting = savedVertexSorting;
 
         VRenderSystem.applyProjectionMatrix(projectionMatrix);
         VRenderSystem.calculateMVP();
