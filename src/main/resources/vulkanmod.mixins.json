@@ -52,6 +52,7 @@
     "render.frapi.ItemRendererMixin",
     "render.frapi.ModelBlockRendererM",
     "render.frapi.fluid.FluidRenderingImplMixin",
+    "render.frapi.fix.RendererAccessImplMixin",
     "render.particle.SingleQuadParticleM",
     "render.target.MainTargetMixin",
     "render.target.RenderTargetMixin",

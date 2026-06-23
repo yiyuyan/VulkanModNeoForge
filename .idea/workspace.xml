@@ -4,62 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Update 0.5.0-dev+4&#10;Forgified Fabric API is in need.&#10;Update Fabric API dependencies&#10;Please DONOT USE THIS VERSION,IT IS UNSTABLE">
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/helper/GeometryHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/helper/NormalHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/helper/TextureHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/material/MaterialFinderImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/material/MaterialViewImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/material/RenderMaterialImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/mesh/EncodingFormat.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/mesh/MeshBuilderImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/mesh/MeshImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/mesh/MutableQuadViewImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/mesh/QuadViewImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/AbstractBlockRenderContext.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/AbstractRenderContext.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/BlockRenderContext.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/ItemRenderContext.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Implement Fabric Rendering API&#10;Update 0.5.0-dev+5&#10;Sync 5774bf3&#10;Fuck you,NeoForge!&#10;Fuck you,Fabric!">
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frapi/fix/RendererAccessImplMixin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/Initializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/Initializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/option/Options.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/option/Options.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/MinecraftMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/MinecraftMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/ShaderInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/ShaderInstanceM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/block/BakedQuadM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/block/BakedQuadM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/entity/model/ModelPartCubeM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/entity/model/ModelPartCubeM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/ChunkAreaManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/ChunkAreaManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/RenderSection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/RenderSection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/DrawBuffers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/DrawBuffers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/BlockRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/BlockRenderer.java.disabled" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/LiquidRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/renderer/FluidRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/RenderRegion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/RenderRegion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/TaskDispatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/task/TaskDispatcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/biome/BoxBlur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/color/BoxBlur.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/biome/TintCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/color/TintCache.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/VulkanModRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/VulkanModRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/helper/ColorHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/helper/ColorHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/LightPipeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/LightPipeline.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/data/ArrayLightDataCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/data/ArrayLightDataCache.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/flat/FlatLightPipeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/flat/FlatLightPipeline.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/smooth/NewSmoothLightPipeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/smooth/NewSmoothLightPipeline.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/smooth/SmoothLightPipeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/smooth/SmoothLightPipeline.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/task/BuildTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/task/BuildTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/task/ChunkTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/task/ChunkTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/thread/BuilderResources.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/thread/BuilderResources.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/cull/QuadFacing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/cull/QuadFacing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/graph/SectionGraph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/graph/SectionGraph.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/model/quad/ModelQuad.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/model/quad/ModelQuad.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/model/quad/ModelQuadFlags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/model/quad/ModelQuadFlags.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/model/quad/QuadView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/model/quad/ModelQuadView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainBufferBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainBufferBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainRenderType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainRenderType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/VertexBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/VertexBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/util/ColorUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/util/ColorUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -150,7 +97,7 @@
     "Gradle.VulkanModNeoForge [build].executor": "Run",
     "Gradle.VulkanModNeoForge [clean build runClient].executor": "Run",
     "Gradle.VulkanModNeoForge [clean runClient].executor": "Run",
-    "Gradle.VulkanModNeoForge [runClient].executor": "Debug",
+    "Gradle.VulkanModNeoForge [runClient].executor": "Run",
     "Gradle.下载源代码.executor": "Run",
     "Gradle.构建 VulkanModNeoForge.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -190,7 +137,7 @@
       <command value="gradle build" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.VulkanModNeoForge [runClient]">
+  <component name="RunManager" selected="Gradle.VulkanModNeoForge [build]">
     <configuration name="VulkanModNeoForge [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -659,7 +606,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782225837837</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Implement Fabric Rendering API&#10;Update 0.5.0-dev+5&#10;Sync 5774bf3&#10;Fuck you,NeoForge!&#10;Fuck you,Fabric!">
+      <option name="closed" value="true" />
+      <created>1782232431521</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1782232431521</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -680,7 +635,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="clean codes" />
     <MESSAGE value="update SectionBufferBuilderPoolM" />
     <MESSAGE value="update ChunkStatusMap&#10;Fuck NeoForge!" />
     <MESSAGE value="update build.gralde and workflows/build.yml" />
@@ -705,7 +659,8 @@
     <MESSAGE value="Add backface culling setting's translatable components&#10;Sync a7ffe3d" />
     <MESSAGE value="Fix biome blending not applied in some cases&#10;Update 0.5.0-dev+3" />
     <MESSAGE value="Update 0.5.0-dev+4&#10;Forgified Fabric API is in need.&#10;Update Fabric API dependencies&#10;Please DONOT USE THIS VERSION,IT IS UNSTABLE" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update 0.5.0-dev+4&#10;Forgified Fabric API is in need.&#10;Update Fabric API dependencies&#10;Please DONOT USE THIS VERSION,IT IS UNSTABLE" />
+    <MESSAGE value="Implement Fabric Rendering API&#10;Update 0.5.0-dev+5&#10;Sync 5774bf3&#10;Fuck you,NeoForge!&#10;Fuck you,Fabric!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement Fabric Rendering API&#10;Update 0.5.0-dev+5&#10;Sync 5774bf3&#10;Fuck you,NeoForge!&#10;Fuck you,Fabric!" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

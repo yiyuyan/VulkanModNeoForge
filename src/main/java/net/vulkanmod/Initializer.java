@@ -1,6 +1,8 @@
 package net.vulkanmod;
 
+import cn.ksmcbrigade.vulkan_core.VKCUnsafeUtils;
 import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
+import net.fabricmc.fabric.impl.renderer.RendererAccessImpl;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.i18n.MavenVersionTranslator;
 import net.neoforged.fml.loading.FMLPaths;
@@ -11,6 +13,7 @@ import net.vulkanmod.render.chunk.build.frapi.VulkanModRenderer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.Field;
 import java.nio.file.Path;
 
 public class Initializer {
@@ -29,6 +32,20 @@ public class Initializer {
 
 		CONFIG = loadConfig(configPath);
 
+		if(RendererAccess.INSTANCE.getRenderer() != null && RendererAccess.INSTANCE instanceof RendererAccessImpl rendererAccess) {
+            try {
+                VKCUnsafeUtils.setFieldValue(rendererAccess, "activeRenderer", null);
+            } catch (Exception e) {
+                try {
+                    Field field = RendererAccessImpl.class.getDeclaredField("activeRenderer");
+                    field.setAccessible(true);
+                    field.set(rendererAccess,null);
+                } catch (NoSuchFieldException | IllegalAccessException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+
+        }
 		RendererAccess.INSTANCE.registerRenderer(VulkanModRenderer.INSTANCE);
 	}
 
