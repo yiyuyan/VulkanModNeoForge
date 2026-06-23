@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Use VertexBuffer usage to Improve clouds rendering&#10;Update 0.4.9-dev+4&#10;Sync 41c3d58">
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/BufferUploaderM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/BufferUploaderM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/RenderSystemMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/RenderSystemMixin.java" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Update 0.5.0-dev+1">
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Drawer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Drawer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/AutoIndexBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/AutoIndexBuffer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/IndexBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/IndexBuffer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +98,7 @@
     "Gradle.VulkanModNeoForge [build].executor": "Run",
     "Gradle.VulkanModNeoForge [clean build runClient].executor": "Run",
     "Gradle.VulkanModNeoForge [clean runClient].executor": "Run",
-    "Gradle.VulkanModNeoForge [runClient].executor": "Debug",
+    "Gradle.VulkanModNeoForge [runClient].executor": "Run",
     "Gradle.下载源代码.executor": "Run",
     "Gradle.构建 VulkanModNeoForge.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -110,6 +110,7 @@
     "git-widget-placeholder": "1.21neo__new",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/VKN/VulkanModNeoForge",
+    "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "库",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.2",
@@ -550,7 +551,31 @@
       <option name="project" value="LOCAL" />
       <updated>1782215809377</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="UUse sorted index buffer on immediate rendering if needed&#10;Sync 5921d83">
+      <option name="closed" value="true" />
+      <created>1782216123161</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1782216123161</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Refactor skip allocation mixin to prevent null pointer exception&#10;Remove RenderBuffersM.java&#10;Add SectionBufferBuilderPoolM.java&#10;Update 0.4.9-dev+5&#10;Sync 863eaeb">
+      <option name="closed" value="true" />
+      <created>1782216288160</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1782216288160</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Update 0.5.0-dev+1">
+      <option name="closed" value="true" />
+      <created>1782216352482</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1782216352482</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -571,9 +596,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="init" />
-    <MESSAGE value="第一个neoforge可运行版本" />
-    <MESSAGE value="first version what can run in the neoforge product env" />
     <MESSAGE value="Update VulkanModCore and fix SPIRVUtils" />
     <MESSAGE value="update" />
     <MESSAGE value="update 0.4.8-dev+1&#10;clean codes" />
@@ -596,7 +618,10 @@
     <MESSAGE value="Implement CPU backface culling&#10;Update 0.4.9-dev+2&#10;Sync e76ded5" />
     <MESSAGE value="Use VertexBuffer usage to determine memory type&#10;Update 0.4.9-dev+3&#10;Sync 845e86b" />
     <MESSAGE value="Use VertexBuffer usage to Improve clouds rendering&#10;Update 0.4.9-dev+4&#10;Sync 41c3d58" />
-    <option name="LAST_COMMIT_MESSAGE" value="Use VertexBuffer usage to Improve clouds rendering&#10;Update 0.4.9-dev+4&#10;Sync 41c3d58" />
+    <MESSAGE value="UUse sorted index buffer on immediate rendering if needed&#10;Sync 5921d83" />
+    <MESSAGE value="Refactor skip allocation mixin to prevent null pointer exception&#10;Remove RenderBuffersM.java&#10;Add SectionBufferBuilderPoolM.java&#10;Update 0.4.9-dev+5&#10;Sync 863eaeb" />
+    <MESSAGE value="Update 0.5.0-dev+1" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update 0.5.0-dev+1" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
