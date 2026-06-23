@@ -26,7 +26,7 @@ import net.vulkanmod.render.model.quad.QuadView;
 import net.vulkanmod.render.vertex.TerrainBufferBuilder;
 import net.vulkanmod.render.vertex.TerrainBuilder;
 import net.vulkanmod.render.vertex.TerrainRenderType;
-import net.vulkanmod.render.vertex.VertexUtil;
+import net.vulkanmod.render.vertex.format.I32_SNorm;
 import net.vulkanmod.vulkan.util.ColorUtil;
 import org.joml.Vector3f;
 
@@ -100,7 +100,7 @@ public class BlockRenderer {
                                  LightPipeline lightPipeline, Direction cullFace) {
         QuadLightData quadLightData = resources.quadLightData;
 
-        TerrainBufferBuilder bufferBuilder = terrainBuilder.getBufferBuilder(QuadFacing.NONE.ordinal());
+        TerrainBufferBuilder bufferBuilder = terrainBuilder.getBufferBuilder(QuadFacing.UNDEFINED.ordinal());
 
         for (BakedQuad bakedQuad : quads) {
             QuadView quadView = (QuadView) bakedQuad;
@@ -125,7 +125,7 @@ public class BlockRenderer {
 
     public static void putQuadData(TerrainBufferBuilder bufferBuilder, Vector3f pos, QuadView quad, QuadLightData quadLightData, float red, float green, float blue) {
         Vec3i normal = quad.getFacingDirection().getNormal();
-        int packedNormal = VertexUtil.packNormal(normal.getX(), normal.getY(), normal.getZ());
+        int packedNormal = I32_SNorm.packNormal(normal.getX(), normal.getY(), normal.getZ());
         float[] brightnessArr = quadLightData.br;
         int[] lights = quadLightData.lm;
         int idx = QuadUtils.getIterationStartIdx(brightnessArr, lights);

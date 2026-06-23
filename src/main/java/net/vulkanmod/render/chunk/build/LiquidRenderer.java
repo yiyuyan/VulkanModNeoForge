@@ -26,9 +26,7 @@ import net.vulkanmod.render.model.quad.ModelQuadFlags;
 import net.vulkanmod.render.model.quad.QuadUtils;
 import net.vulkanmod.render.vertex.TerrainBufferBuilder;
 import net.vulkanmod.render.vertex.TerrainBuilder;
-import net.vulkanmod.render.vertex.VertexUtil;
 import net.vulkanmod.vulkan.util.ColorUtil;
-import org.joml.Vector3f;
 
 public class LiquidRenderer {
     private static final float MAX_FLUID_HEIGHT = 0.8888889F;
@@ -421,7 +419,7 @@ public class LiquidRenderer {
         int k = QuadUtils.getIterationStartIdx(quadLightData.br);
 
         // All fluid geometry goes to the NONE facing buffer (no backface culling for fluids)
-        TerrainBufferBuilder bufferBuilder = builder.getBufferBuilder(QuadFacing.NONE.ordinal());
+        TerrainBufferBuilder bufferBuilder = builder.getBufferBuilder(QuadFacing.UNDEFINED.ordinal());
         bufferBuilder.ensureCapacity();
 
         int i;

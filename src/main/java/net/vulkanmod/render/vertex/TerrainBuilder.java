@@ -49,7 +49,7 @@ public class TerrainBuilder {
     }
 
     public void setupQuadSortingPoints() {
-        TerrainBufferBuilder noneBuilder = bufferBuilders[QuadFacing.NONE.ordinal()];
+        TerrainBufferBuilder noneBuilder = bufferBuilders[QuadFacing.UNDEFINED.ordinal()];
         quadSorter.setupQuadSortingPoints(noneBuilder.getPtr(), noneBuilder.getVertices(), format);
     }
 

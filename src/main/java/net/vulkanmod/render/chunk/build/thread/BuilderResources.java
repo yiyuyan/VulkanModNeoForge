@@ -5,7 +5,7 @@ import net.vulkanmod.render.chunk.RenderSection;
 import net.vulkanmod.render.chunk.build.BlockRenderer;
 import net.vulkanmod.render.chunk.build.LiquidRenderer;
 import net.vulkanmod.render.chunk.build.RenderRegion;
-import net.vulkanmod.render.chunk.build.TintCache;
+import net.vulkanmod.render.chunk.build.biome.TintCache;
 import net.vulkanmod.render.chunk.build.light.LightMode;
 import net.vulkanmod.render.chunk.build.light.LightPipeline;
 import net.vulkanmod.render.chunk.build.light.data.ArrayLightDataCache;

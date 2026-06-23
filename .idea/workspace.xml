@@ -4,11 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Update 0.5.0-dev+1">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Drawer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Drawer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/IndexBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/IndexBuffer.java" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Add backface culling setting's translatable components&#10;Sync a7ffe3d">
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/VulkanModRenderer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/helper/ColorHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/entity/model/ModelPartM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/entity/model/ModelPartM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/BufferBuilderM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/BufferBuilderM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/VertexConsumerM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/VertexConsumerM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/vertex/VertexMultiConsumersM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/vertex/VertexMultiConsumersM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/DrawBuffers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/DrawBuffers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/BlockRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/BlockRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/LiquidRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/LiquidRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/RenderRegion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/RenderRegion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/TintCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/biome/TintCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/biome/BoxBlur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/biome/BoxBlur.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/thread/BuilderResources.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/thread/BuilderResources.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/cull/QuadFacing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/cull/QuadFacing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/VertexUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/format/I32_SNorm.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -575,7 +587,23 @@
       <option name="project" value="LOCAL" />
       <updated>1782216352482</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Implement IndexBuffer resize&#10;Update 0.5.0-dev+2&#10;Sync a290169">
+      <option name="closed" value="true" />
+      <created>1782216682409</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1782216682409</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Add backface culling setting's translatable components&#10;Sync a7ffe3d">
+      <option name="closed" value="true" />
+      <created>1782216914642</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1782216914642</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -596,8 +624,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Update VulkanModCore and fix SPIRVUtils" />
-    <MESSAGE value="update" />
     <MESSAGE value="update 0.4.8-dev+1&#10;clean codes" />
     <MESSAGE value="fix Vulkan.java&#10;Update VKNConfig and VkInstanceTransformer" />
     <MESSAGE value="clean codes" />
@@ -621,7 +647,9 @@
     <MESSAGE value="UUse sorted index buffer on immediate rendering if needed&#10;Sync 5921d83" />
     <MESSAGE value="Refactor skip allocation mixin to prevent null pointer exception&#10;Remove RenderBuffersM.java&#10;Add SectionBufferBuilderPoolM.java&#10;Update 0.4.9-dev+5&#10;Sync 863eaeb" />
     <MESSAGE value="Update 0.5.0-dev+1" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update 0.5.0-dev+1" />
+    <MESSAGE value="Implement IndexBuffer resize&#10;Update 0.5.0-dev+2&#10;Sync a290169" />
+    <MESSAGE value="Add backface culling setting's translatable components&#10;Sync a7ffe3d" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add backface culling setting's translatable components&#10;Sync a7ffe3d" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

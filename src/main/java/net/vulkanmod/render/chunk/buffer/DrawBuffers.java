@@ -52,7 +52,7 @@ public class DrawBuffers {
         var vertexBuffers = buffer.getVertexBuffers();
 
         if (buffer.indexOnly) {
-            DrawParameters dp = section.getDrawParameters(renderType, QuadFacing.NONE.ordinal());
+            DrawParameters dp = section.getDrawParameters(renderType, QuadFacing.UNDEFINED.ordinal());
             AreaBuffer.Segment seg = this.indexBuffer.upload(buffer.getIndexBuffer(), dp.firstIndex, dp);
             dp.firstIndex = seg.offset / INDEX_SIZE;
             buffer.release();
@@ -73,7 +73,7 @@ public class DrawBuffers {
                 indexCount = faceBuffer.limit() / VERTEX_SIZE * 6 / 4;
             }
 
-            if (i == QuadFacing.NONE.ordinal() && !buffer.autoIndices) {
+            if (i == QuadFacing.UNDEFINED.ordinal() && !buffer.autoIndices) {
                 if (this.indexBuffer == null) {
                     this.indexBuffer = new AreaBuffer(AreaBuffer.Usage.INDEX, 60000, INDEX_SIZE);
                     this.indexBuffer.setOffsetChangedListener(this::markMetaDirty);
@@ -93,7 +93,7 @@ public class DrawBuffers {
             int ly = section.yOffset() - this.origin.y();
             int lz = section.zOffset() - this.origin.z();
             long packed = ((long) lx << 24) | ((long) ly << 16) | ((long) lz << 8) | typeIdx;
-            this.metaRegistrations.put(section.getDrawParameters(renderType, QuadFacing.NONE.ordinal()), packed);
+            this.metaRegistrations.put(section.getDrawParameters(renderType, QuadFacing.UNDEFINED.ordinal()), packed);
             markMetaDirty();
         }
 
@@ -135,7 +135,7 @@ public class DrawBuffers {
 
     private int getMask(Vec3 camera, RenderSection section) {
         final int sx = section.xOffset, sy = section.yOffset, sz = section.zOffset;
-        int mask = 1 << QuadFacing.NONE.ordinal();
+        int mask = 1 << QuadFacing.UNDEFINED.ordinal();
         mask |= camera.x - sx >= 0 ? 1 << QuadFacing.X_POS.ordinal() : 0;
         mask |= camera.y - sy >= 0 ? 1 << QuadFacing.Y_POS.ordinal() : 0;
         mask |= camera.z - sz >= 0 ? 1 << QuadFacing.Z_POS.ordinal() : 0;
