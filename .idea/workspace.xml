@@ -134,8 +134,8 @@
     <option name="myCommands">
       <command value="gradle clean runClient" />
       <command value="gradle clean build runClient" />
-      <command value="gradle runClient" />
       <command value="gradle build" />
+      <command value="gradle runClient" />
     </option>
   </component>
   <component name="RunManager" selected="Gradle.VulkanModNeoForge [runClient]">

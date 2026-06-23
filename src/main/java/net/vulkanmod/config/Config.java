@@ -20,7 +20,7 @@ public class Config {
     public boolean windowedFullscreen = false;
 
     public int advCulling = 2;
-    public boolean indirectDraw = false;
+    public boolean indirectDraw = true;
     public boolean gpuCulling = true;
     // Hi-Z occlusion culling. Requires gpuCulling + device support. Default OFF: the GPU
     // wiring (pyramid build + occlusion test) is still pending in-game validation under

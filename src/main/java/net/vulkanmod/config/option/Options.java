@@ -256,13 +256,13 @@ public abstract class Options {
                                 },
                                 () -> config.uniqueOpaqueLayer)
                                 .setTooltip(Component.translatable("vulkanmod.options.uniqueOpaqueLayer.tooltip")),
-                        new SwitchOption(Component.translatable("vulkanmod.options.backFaceCulling"),
+                        new SwitchOption(Component.translatable("vulkanmod.options.backfaceCulling"),
                                 value -> {
                                     config.backFaceCulling = value;
                                     Minecraft.getInstance().levelRenderer.allChanged();
                                 },
                                 () -> config.backFaceCulling)
-                                .setTooltip(Component.nullToEmpty("Experimental Warn: Maybe no more fixes.")),
+                                .setTooltip(Component.translatable("vulkanmod.options.backfaceCulling.tooltip")),
                         new SwitchOption(Component.translatable("vulkanmod.options.occlusionCulling"),
                                 value -> {
                                     config.occlusionCulling = value;
