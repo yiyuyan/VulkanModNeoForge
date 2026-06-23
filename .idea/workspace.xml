@@ -4,35 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="fix VulkanModDiscover and PipelineManager">
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/cull/QuadFacing.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/cn.ksmcbrigade.vulkan.vulkanmod.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/cn.ksmcbrigade.vulkan.vulkanmod.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/vulkanmod.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/vulkanmod.test.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Use VertexBuffer usage to determine memory type&#10;Update 0.4.9-dev+3&#10;Sync 845e86b">
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/clouds/LevelRendererM.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/sky/CloudRenderer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/Config.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/option/Options.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/option/Options.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/ChunkAreaManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/ChunkAreaManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/RenderSection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/RenderSection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/DrawBuffers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/DrawBuffers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/BlockRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/BlockRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/LiquidRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/LiquidRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/TaskDispatcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/TaskDispatcher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/UploadBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/UploadBuffer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/task/BuildTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/task/BuildTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/task/SortTransparencyTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/task/SortTransparencyTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/thread/ThreadBuilderPack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/thread/ThreadBuilderPack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/profiling/ProfilerOverlay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/profiling/ProfilerOverlay.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/QuadSorter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/QuadSorter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainBufferBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainBufferBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/lang/en_us.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/lang/en_us.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/lang/zh_cn.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/lang/zh_cn.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/lang/zh_hk.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/lang/zh_hk.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/lang/zh_tw.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/lang/zh_tw.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -550,7 +526,23 @@
       <option name="project" value="LOCAL" />
       <updated>1782049510162</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Implement CPU backface culling&#10;Update 0.4.9-dev+2&#10;Sync e76ded5">
+      <option name="closed" value="true" />
+      <created>1782215317658</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1782215317658</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Use VertexBuffer usage to determine memory type&#10;Update 0.4.9-dev+3&#10;Sync 845e86b">
+      <option name="closed" value="true" />
+      <created>1782215611353</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1782215611353</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -593,7 +585,9 @@
     <MESSAGE value="fix log" />
     <MESSAGE value="fix VulkanModDiscover" />
     <MESSAGE value="fix VulkanModDiscover and PipelineManager" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix VulkanModDiscover and PipelineManager" />
+    <MESSAGE value="Implement CPU backface culling&#10;Update 0.4.9-dev+2&#10;Sync e76ded5" />
+    <MESSAGE value="Use VertexBuffer usage to determine memory type&#10;Update 0.4.9-dev+3&#10;Sync 845e86b" />
+    <option name="LAST_COMMIT_MESSAGE" value="Use VertexBuffer usage to determine memory type&#10;Update 0.4.9-dev+3&#10;Sync 845e86b" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
