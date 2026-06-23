@@ -1,7 +1,6 @@
 package net.vulkanmod.render.chunk.build.task;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.chunk.VisGraph;
 import net.minecraft.core.BlockPos;
@@ -13,7 +12,10 @@ import net.minecraft.world.phys.Vec3;
 import net.vulkanmod.Initializer;
 import net.vulkanmod.render.chunk.RenderSection;
 import net.vulkanmod.render.chunk.WorldRenderer;
-import net.vulkanmod.render.chunk.build.*;
+import net.vulkanmod.render.chunk.build.renderer.BlockRenderer;
+import net.vulkanmod.render.chunk.build.renderer.FluidRenderer;
+import net.vulkanmod.render.chunk.build.RenderRegion;
+import net.vulkanmod.render.chunk.build.UploadBuffer;
 import net.vulkanmod.render.chunk.build.thread.BuilderResources;
 import net.vulkanmod.render.chunk.build.thread.ThreadBuilderPack;
 import net.vulkanmod.render.chunk.cull.QuadFacing;
@@ -91,7 +93,9 @@ public class BuildTask extends ChunkTask {
         builderResources.update(this.region, this.section);
 
         BlockRenderer blockRenderer = builderResources.blockRenderer;
-        LiquidRenderer liquidRenderer = builderResources.liquidRenderer;
+
+        FluidRenderer fluidRenderer = builderResources.fluidRenderer;
+
         BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
 
         for (int y = 0; y < 16; ++y) {
@@ -112,31 +116,33 @@ public class BuildTask extends ChunkTask {
                     }
 
                     FluidState fluidState = blockState.getFluidState();
-                    TerrainRenderType renderType;
-                    TerrainBuilder terrainBuilder;
                     if (!fluidState.isEmpty()) {
-                        renderType = TerrainRenderType.get(ItemBlockRenderTypes.getRenderLayer(fluidState));
-                        terrainBuilder = getTerrainBuilder(bufferBuilders, renderType);
-                        terrainBuilder.setBlockAttributes(blockState);
-                        liquidRenderer.renderLiquid(blockState, fluidState, blockPos, terrainBuilder);
+                        fluidRenderer.renderLiquid(blockState, fluidState, blockPos);
                     }
 
                     if (blockState.getRenderShape() == RenderShape.MODEL) {
-                        renderType = TerrainRenderType.get(ItemBlockRenderTypes.getChunkRenderType(blockState));
-                        terrainBuilder = getTerrainBuilder(bufferBuilders, renderType);
-                        terrainBuilder.setBlockAttributes(blockState);
                         pos.set(blockPos.getX() & 15, blockPos.getY() & 15, blockPos.getZ() & 15);
-                        blockRenderer.renderBlock(blockState, blockPos, renderType, pos, terrainBuilder);
+                        blockRenderer.renderBlock(blockState, blockPos, pos);
                     }
                 }
             }
         }
 
+        /*TerrainBuilder trasnlucentTerrainBuilder = bufferBuilders.builder(TerrainRenderType.TRANSLUCENT);
+        if (trasnlucentTerrainBuilder.getBufferBuilder(QuadFacing.UNDEFINED.ordinal()).getVertices() > 0) {
+            trasnlucentTerrainBuilder.setupQuadSortingPoints();
+            trasnlucentTerrainBuilder.setupQuadSorting(camX - (float) startBlockPos.getX(), camY - (float) startBlockPos.getY(), camZ - (float) startBlockPos.getZ());
+            compileResult.transparencyState = trasnlucentTerrainBuilder.getSortState();
+        }*/
+
         for (TerrainRenderType renderType : TerrainRenderType.VALUES) {
             TerrainBuilder builder = bufferBuilders.builder(renderType);
+
             TerrainBuilder.DrawState drawState = builder.endDrawing();
+
             UploadBuffer uploadBuffer = new UploadBuffer(builder, drawState);
             compileResult.renderedLayers.put(renderType, uploadBuffer);
+
             builder.clear();
         }
 
@@ -170,6 +176,7 @@ public class BuildTask extends ChunkTask {
                 case TRANSLUCENT, TRIPWIRE -> TerrainRenderType.TRANSLUCENT;
             };
         }
+
         return renderType;
     }
 
@@ -181,5 +188,6 @@ public class BuildTask extends ChunkTask {
                 compileResult.globalBlockEntities.add(blockEntity);
             }
         }
+
     }
 }

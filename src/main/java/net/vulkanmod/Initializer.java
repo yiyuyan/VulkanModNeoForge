@@ -1,12 +1,13 @@
 package net.vulkanmod;
 
+import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.i18n.MavenVersionTranslator;
 import net.neoforged.fml.loading.FMLPaths;
 import net.vulkanmod.config.Config;
 import net.vulkanmod.config.Platform;
-import net.vulkanmod.config.VKNConfig;
 import net.vulkanmod.config.video.VideoModeManager;
+import net.vulkanmod.render.chunk.build.frapi.VulkanModRenderer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,6 +28,8 @@ public class Initializer {
 				.resolve("vulkanmod_settings.json");
 
 		CONFIG = loadConfig(configPath);
+
+		RendererAccess.INSTANCE.registerRenderer(VulkanModRenderer.INSTANCE);
 	}
 
 	@SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -38,7 +41,7 @@ public class Initializer {
                     .getModInfo()
                     .getVersion());
         } catch (Exception e) {
-            VERSION = "0.4.9-dev";
+            VERSION = "0.5.0-dev";
 
 			LOGGER.warn("Failed to get the version: {}",e.getMessage());
         }

@@ -1,4 +1,4 @@
-package net.vulkanmod.render.chunk.build.biome;
+package net.vulkanmod.render.chunk.build.color;
 
 public abstract class BoxBlur {
 

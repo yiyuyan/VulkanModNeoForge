@@ -27,9 +27,8 @@ import net.minecraft.world.phys.Vec3;
 import net.vulkanmod.Initializer;
 import net.vulkanmod.render.PipelineManager;
 import net.vulkanmod.render.chunk.buffer.DrawBuffers;
-import net.vulkanmod.render.chunk.build.BlockRenderer;
 import net.vulkanmod.render.chunk.build.RenderRegionBuilder;
-import net.vulkanmod.render.chunk.build.TaskDispatcher;
+import net.vulkanmod.render.chunk.build.task.TaskDispatcher;
 import net.vulkanmod.render.chunk.build.task.ChunkTask;
 import net.vulkanmod.render.chunk.cull.GpuCuller;
 import net.vulkanmod.render.chunk.graph.SectionGraph;
@@ -104,7 +103,7 @@ public class WorldRenderer {
         this.taskDispatcher = new TaskDispatcher();
         ChunkTask.setTaskDispatcher(this.taskDispatcher);
         allocateIndirectBuffers();
-        BlockRenderer.setBlockColors(this.minecraft.getBlockColors());
+        TerrainRenderType.updateMapping();
         Renderer.getInstance().addOnResizeCallback(() -> {
             if (this.indirectBuffers.length != Renderer.getFramesNum())
                 allocateIndirectBuffers();

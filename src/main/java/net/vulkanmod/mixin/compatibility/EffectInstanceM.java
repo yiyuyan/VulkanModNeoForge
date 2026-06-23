@@ -1,6 +1,7 @@
 package net.vulkanmod.mixin.compatibility;
 
 import com.google.gson.JsonObject;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.shaders.BlendMode;
 import com.mojang.blaze3d.shaders.EffectProgram;
@@ -66,12 +67,11 @@ public class EffectInstanceM {
     @Inject(method = "<init>",
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/client/renderer/EffectInstance;updateLocations()V",
-                    shift = At.Shift.AFTER),
-            locals = LocalCapture.CAPTURE_FAILHARD
+                    shift = At.Shift.AFTER)
     )
     private void inj(ResourceProvider arg, String string,
-                     CallbackInfo ci, ResourceLocation rl, ResourceLocation resourcelocation,
-                     Resource resource, Reader reader, JsonObject jsonobject, String s, String s1) {
+                     CallbackInfo ci,
+                     @Local(name = "s") String s, @Local(name = "s1") String s1) {
         createShaders(arg, s, s1);
     }
 

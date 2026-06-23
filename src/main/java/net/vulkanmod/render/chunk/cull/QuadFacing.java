@@ -16,7 +16,7 @@ public enum QuadFacing {
     public static final QuadFacing[] VALUES = QuadFacing.values();
     public static final int COUNT = VALUES.length;
 
-    public static QuadFacing from(Direction direction) {
+    public static QuadFacing fromDirection(Direction direction) {
         return switch (direction) {
             case DOWN -> Y_NEG;
             case UP -> Y_POS;

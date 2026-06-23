@@ -22,7 +22,7 @@ import net.vulkanmod.render.chunk.build.light.data.QuadLightData;
 import net.vulkanmod.render.chunk.build.thread.BuilderResources;
 import net.vulkanmod.render.chunk.cull.QuadFacing;
 import net.vulkanmod.render.model.quad.QuadUtils;
-import net.vulkanmod.render.model.quad.QuadView;
+import net.vulkanmod.render.model.quad.ModelQuadView;
 import net.vulkanmod.render.vertex.TerrainBufferBuilder;
 import net.vulkanmod.render.vertex.TerrainBuilder;
 import net.vulkanmod.render.vertex.TerrainRenderType;
@@ -103,27 +103,27 @@ public class BlockRenderer {
         TerrainBufferBuilder bufferBuilder = terrainBuilder.getBufferBuilder(QuadFacing.UNDEFINED.ordinal());
 
         for (BakedQuad bakedQuad : quads) {
-            QuadView quadView = (QuadView) bakedQuad;
-            lightPipeline.calculate(quadView, blockPos, quadLightData, cullFace,
+            ModelQuadView modelQuadView = (ModelQuadView) bakedQuad;
+            lightPipeline.calculate(modelQuadView, blockPos, quadLightData, cullFace,
                     bakedQuad.getDirection(), bakedQuad.isShade());
-            putQuadData(bufferBuilder, quadView, quadLightData);
+            putQuadData(bufferBuilder, modelQuadView, quadLightData);
         }
     }
 
-    private void putQuadData(TerrainBufferBuilder bufferBuilder, QuadView quadView, QuadLightData quadLightData) {
+    private void putQuadData(TerrainBufferBuilder bufferBuilder, ModelQuadView modelQuadView, QuadLightData quadLightData) {
         float r, g, b;
-        if (quadView.isTinted()) {
-            int color = blockColors.getColor(blockState, resources.region, blockPos, quadView.getColorIndex());
+        if (modelQuadView.isTinted()) {
+            int color = blockColors.getColor(blockState, resources.region, blockPos, modelQuadView.getColorIndex());
             r = ColorUtil.ARGB.unpackR(color);
             g = ColorUtil.ARGB.unpackG(color);
             b = ColorUtil.ARGB.unpackB(color);
         } else {
             r = 1.0F; g = 1.0F; b = 1.0F;
         }
-        putQuadData(bufferBuilder, pos, quadView, quadLightData, r, g, b);
+        putQuadData(bufferBuilder, pos, modelQuadView, quadLightData, r, g, b);
     }
 
-    public static void putQuadData(TerrainBufferBuilder bufferBuilder, Vector3f pos, QuadView quad, QuadLightData quadLightData, float red, float green, float blue) {
+    public static void putQuadData(TerrainBufferBuilder bufferBuilder, Vector3f pos, ModelQuadView quad, QuadLightData quadLightData, float red, float green, float blue) {
         Vec3i normal = quad.getFacingDirection().getNormal();
         int packedNormal = I32_SNorm.packNormal(normal.getX(), normal.getY(), normal.getZ());
         float[] brightnessArr = quadLightData.br;

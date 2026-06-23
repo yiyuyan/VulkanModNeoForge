@@ -67,7 +67,7 @@ public class ShaderInstanceM implements ShaderMixed {
         return pipeline;
     }
 
-    @Inject(method = "<init>", at = @At("RETURN"))
+    @Inject(method = "<init>(Lnet/minecraft/server/packs/resources/ResourceProvider;Ljava/lang/String;Lcom/mojang/blaze3d/vertex/VertexFormat;)V", at = @At("RETURN"))
     private void create(ResourceProvider resourceProvider, String name, VertexFormat format, CallbackInfo ci) {
 
         try {
