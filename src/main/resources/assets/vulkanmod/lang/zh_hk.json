@@ -48,5 +48,6 @@
 
   "vulkanmod.options.textureAnimations": "紋理動畫",
 
-  "vulkanmod.options.occlusionCulling": "遮擋剔除"
+  "vulkanmod.options.occlusionCulling": "遮擋剔除",
+  "vulkanmod.options.backFaceCulling": "背面剔除"
 }

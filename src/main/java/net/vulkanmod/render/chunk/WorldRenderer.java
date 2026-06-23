@@ -73,13 +73,11 @@ public class WorldRenderer {
     private float lastCamRotY;
 
     private SectionGrid sectionGrid;
-
     private SectionGraph sectionGraph;
     private boolean graphNeedsUpdate;
     private int lastSingleplayerViewDistance = -1;
 
     private final Set<BlockEntity> globalBlockEntities = Sets.newHashSet();
-
     private final TaskDispatcher taskDispatcher;
 
     private double xTransparentOld;
@@ -88,18 +86,15 @@ public class WorldRenderer {
     private double zTransparentOld;
 
     IndirectBuffer[] indirectBuffers;
-
     private GpuCuller gpuCuller;
 
-    // Hi-Z occlusion: the view-proj + camera that produced the CURRENT pyramid (set at build time,
-    // consumed by next frame's cull). prevViewProjScratch holds it re-based to this frame's camera.
+    // Hi-Z occlusion data
     private final Matrix4f hiZViewProj = new Matrix4f();
     private final Matrix4f prevViewProjScratch = new Matrix4f();
     private double hiZCamX, hiZCamY, hiZCamZ;
     private boolean hiZMatrixValid = false;
 
     public RenderRegionBuilder renderRegionCache;
-
     private final List<Runnable> onAllChangedCallbacks = new ObjectArrayList<>();
 
     private WorldRenderer(RenderBuffers renderBuffers) {
@@ -109,9 +104,7 @@ public class WorldRenderer {
         this.taskDispatcher = new TaskDispatcher();
         ChunkTask.setTaskDispatcher(this.taskDispatcher);
         allocateIndirectBuffers();
-
         BlockRenderer.setBlockColors(this.minecraft.getBlockColors());
-
         Renderer.getInstance().addOnResizeCallback(() -> {
             if (this.indirectBuffers.length != Renderer.getFramesNum())
                 allocateIndirectBuffers();
@@ -121,32 +114,19 @@ public class WorldRenderer {
     private void allocateIndirectBuffers() {
         if (this.indirectBuffers != null)
             Arrays.stream(this.indirectBuffers).forEach(Buffer::freeBuffer);
-
         this.indirectBuffers = new IndirectBuffer[Renderer.getFramesNum()];
-
         for (int i = 0; i < this.indirectBuffers.length; ++i) {
             this.indirectBuffers[i] = new IndirectBuffer(1000000, MemoryTypes.HOST_MEM);
-//            this.indirectBuffers[i] = new IndirectBuffer(1000000, MemoryTypes.GPU_MEM);
         }
-
-//        uniformBuffers = new UniformBuffers(100000, MemoryTypes.GPU_MEM);
     }
 
     public static WorldRenderer init(RenderBuffers renderBuffers) {
         return Objects.requireNonNullElseGet(INSTANCE, () -> INSTANCE = new WorldRenderer(renderBuffers));
     }
 
-    public static WorldRenderer getInstance() {
-        return INSTANCE;
-    }
-
-    public static ClientLevel getLevel() {
-        return INSTANCE.level;
-    }
-
-    public static Vec3 getCameraPos() {
-        return INSTANCE.cameraPos;
-    }
+    public static WorldRenderer getInstance() { return INSTANCE; }
+    public static ClientLevel getLevel() { return INSTANCE.level; }
+    public static Vec3 getCameraPos() { return INSTANCE.cameraPos; }
 
     private void benchCallback() {
         BuildTimeProfiler.runBench(this.graphNeedsUpdate || !this.taskDispatcher.isIdle());
@@ -155,7 +135,6 @@ public class WorldRenderer {
     public void setupRenderer(Camera camera, Frustum frustum, boolean isCapturedFrustum, boolean spectator) {
         Profiler profiler = Profiler.getMainProfiler();
         profiler.push("Setup_Renderer");
-
         benchCallback();
 
         this.cameraPos = camera.getPosition();
@@ -185,28 +164,17 @@ public class WorldRenderer {
 
         this.level.getProfiler().popPush("cull");
         this.minecraft.getProfiler().popPush("culling");
-
         this.minecraft.getProfiler().popPush("update");
 
         boolean cameraMoved = false;
         float d_xRot = Math.abs(camera.getXRot() - this.lastCamRotX);
         float d_yRot = Math.abs(camera.getYRot() - this.lastCamRotY);
         cameraMoved |= d_xRot > 2.0f || d_yRot > 2.0f;
-
         cameraMoved |= cameraX != this.lastCameraX || cameraY != this.lastCameraY || cameraZ != this.lastCameraZ;
         this.graphNeedsUpdate |= cameraMoved;
-
-        // Keep re-running the section graph while chunk builds are still in flight, so the
-        // flood-fill keeps expanding ring by ring until every reachable section is built.
-        // In multiplayer the constant packet stream re-arms the graph for free; a quiet,
-        // pre-generated singleplayer world has no such stream, so without this the cascade
-        // can stall into a small island that only grows when the camera moves.
         this.graphNeedsUpdate |= !this.taskDispatcher.isIdle();
 
         if (!isCapturedFrustum) {
-            //Debug
-//            this.graphNeedsUpdate = true;
-
             if (this.graphNeedsUpdate) {
                 this.graphNeedsUpdate = false;
                 this.lastCameraX = cameraX;
@@ -214,29 +182,19 @@ public class WorldRenderer {
                 this.lastCameraZ = cameraZ;
                 this.lastCamRotX = camera.getXRot();
                 this.lastCamRotY = camera.getYRot();
-
                 this.sectionGraph.update(camera, frustum, spectator);
             }
         }
 
         this.indirectBuffers[Renderer.getCurrentFrame()].reset();
-//        this.uniformBuffers.reset();
 
         if (this.gpuCuller != null && this.sectionGraph.getFrustum() != null) {
             this.minecraft.getProfiler().push("gpu_cull");
             Renderer renderer = Renderer.getInstance();
-
-            // Compute/fill/update commands are illegal inside a render pass, so suspend
-            // the frame's pass around the cull recording and RESUME it afterwards —
-            // every draw later in the frame (sky, terrain) assumes a bound pass, and
-            // leaving it ended crashes pipeline creation with a null renderPass.
             var prevRenderPass = renderer.getBoundRenderPass();
             var prevFramebuffer = renderer.getBoundFramebuffer();
             renderer.endRenderPass();
 
-            // Re-base the matrix that produced the current Hi-Z pyramid (a PREVIOUS frame, with a
-            // previous camera origin) onto THIS frame's camera-relative space, so the occlusion test
-            // projects this frame's camera-relative section AABBs correctly: adjusted = prevVP * T(camDelta).
             var vf = this.sectionGraph.getFrustum();
             if (this.hiZMatrixValid) {
                 float dx = (float) (vf.getCamX() - this.hiZCamX);
@@ -263,10 +221,8 @@ public class WorldRenderer {
 
     public void uploadSections() {
         this.minecraft.getProfiler().push("upload");
-
         Profiler profiler = Profiler.getMainProfiler();
         profiler.push("Uploads");
-
         try {
             if (this.taskDispatcher.updateSections())
                 this.graphNeedsUpdate = true;
@@ -274,9 +230,7 @@ public class WorldRenderer {
             Initializer.LOGGER.error("Failed to upload section geometry", e);
             this.graphNeedsUpdate = true;
         }
-
         profiler.pop();
-
         this.minecraft.getProfiler().pop();
     }
 
@@ -287,26 +241,19 @@ public class WorldRenderer {
 
     public void allChanged() {
         if (this.level != null) {
-//           this.graphicsChanged();
             this.level.clearTintCaches();
-
             this.renderRegionCache.clear();
             this.taskDispatcher.createThreads();
-
             this.graphNeedsUpdate = true;
-//            this.generateClouds = true;
-
             this.syncSingleplayerViewDistance();
             this.renderDistance = this.minecraft.options.getEffectiveRenderDistance();
             if (this.sectionGrid != null) {
                 this.sectionGrid.releaseAllBuffers();
             }
-
             this.taskDispatcher.clearBatchQueue();
             synchronized (this.globalBlockEntities) {
                 this.globalBlockEntities.clear();
             }
-
             this.sectionGrid = new SectionGrid(this.level, this.renderDistance);
             this.sectionGraph = new SectionGraph(this.level, this.sectionGrid, this.taskDispatcher);
 
@@ -319,42 +266,28 @@ public class WorldRenderer {
                 ChunkAreaManager areaManager = this.sectionGrid.getChunkAreaManager();
                 this.gpuCuller = new GpuCuller(areaManager.size, Renderer.getFramesNum());
                 DrawBuffers.setDirtyListener(this.gpuCuller::markDirty);
-                // Seed: areas that already hold geometry (e.g. culler recreated mid-world)
-                // must be rebuilt into the new culler's metadata buffer.
                 for (int i = 0; i < areaManager.size; i++) {
                     if (areaManager.getChunkArea(i).getDrawBuffers().isAllocated())
                         this.gpuCuller.markDirty(i);
                 }
-                Initializer.LOGGER.info("GPU culling: enabled ({} areas)", areaManager.size);
             } else {
                 DrawBuffers.setDirtyListener(null);
-                Initializer.LOGGER.info("GPU culling: disabled ({})",
-                        GpuCuller.isSupported() ? "config" : "device unsupported");
             }
 
             this.onAllChangedCallbacks.forEach(Runnable::run);
-
             Entity entity = this.minecraft.getCameraEntity();
             if (entity != null) {
                 this.sectionGrid.repositionCamera(entity.getX(), entity.getZ());
             }
-
         }
     }
 
-
     private void syncSingleplayerViewDistance() {
-        if (!this.minecraft.hasSingleplayerServer())
-            return;
-
+        if (!this.minecraft.hasSingleplayerServer()) return;
         IntegratedServer server = this.minecraft.getSingleplayerServer();
-        if (server == null || server.getPlayerList() == null)
-            return;
-
+        if (server == null || server.getPlayerList() == null) return;
         int viewDistance = this.minecraft.options.renderDistance().get();
-        if (viewDistance == this.lastSingleplayerViewDistance)
-            return;
-
+        if (viewDistance == this.lastSingleplayerViewDistance) return;
         this.lastSingleplayerViewDistance = viewDistance;
         this.minecraft.options.setServerRenderDistance(viewDistance);
         server.execute(() -> server.getPlayerList().setViewDistance(viewDistance));
@@ -367,8 +300,6 @@ public class WorldRenderer {
         this.lastCameraSectionX = Integer.MIN_VALUE;
         this.lastCameraSectionY = Integer.MIN_VALUE;
         this.lastCameraSectionZ = Integer.MIN_VALUE;
-
-//        this.entityRenderDispatcher.setLevel(level);
         this.level = level;
         ChunkStatusMap.createInstance(renderDistance);
         if (level != null) {
@@ -378,26 +309,18 @@ public class WorldRenderer {
                 this.sectionGrid.releaseAllBuffers();
                 this.sectionGrid = null;
             }
-
             this.taskDispatcher.stopThreads();
-
             this.graphNeedsUpdate = true;
         }
-
     }
 
-    public void addOnAllChangedCallback(Runnable runnable) {
-        this.onAllChangedCallbacks.add(runnable);
-    }
+    public void addOnAllChangedCallback(Runnable runnable) { this.onAllChangedCallbacks.add(runnable); }
+    public void clearOnAllChangedCallbacks() { this.onAllChangedCallbacks.clear(); }
 
-    public void clearOnAllChangedCallbacks() {
-        this.onAllChangedCallbacks.clear();
-    }
-
-    public void renderSectionLayer(RenderType renderType, double camX, double camY, double camZ, Matrix4f modelView, Matrix4f projection) {
+    public void renderSectionLayer(RenderType renderType, double camX, double camY, double camZ,
+                                   Matrix4f modelView, Matrix4f projection) {
         TerrainRenderType terrainRenderType = TerrainRenderType.get(renderType);
         renderType.setupRenderState();
-
         this.sortTranslucentSections(camX, camY, camZ);
 
         this.minecraft.getProfiler().push("filterempty");
@@ -412,32 +335,28 @@ public class WorldRenderer {
         Renderer renderer = Renderer.getInstance();
         GraphicsPipeline pipeline = PipelineManager.getTerrainShader(terrainRenderType);
         renderer.bindGraphicsPipeline(pipeline);
-
         VTextureSelector.bindShaderTextures(pipeline);
 
-        IndexBuffer indexBuffer = Renderer.getDrawer().getQuadsIndexBuffer().getIndexBuffer();
-        Renderer.getDrawer().bindIndexBuffer(Renderer.getCommandBuffer(), indexBuffer);
+        IndexBuffer globalIndexBuffer = Renderer.getDrawer().getQuadsIndexBuffer().getIndexBuffer();
+        Renderer.getDrawer().bindIndexBuffer(Renderer.getCommandBuffer(), globalIndexBuffer);
 
         int currentFrame = Renderer.getCurrentFrame();
-        Set<TerrainRenderType> allowedRenderTypes = Initializer.CONFIG.uniqueOpaqueLayer ? TerrainRenderType.COMPACT_RENDER_TYPES : TerrainRenderType.SEMI_COMPACT_RENDER_TYPES;
+        Set<TerrainRenderType> allowedRenderTypes = Initializer.CONFIG.uniqueOpaqueLayer
+                ? TerrainRenderType.COMPACT_RENDER_TYPES
+                : TerrainRenderType.SEMI_COMPACT_RENDER_TYPES;
+
         if (allowedRenderTypes.contains(terrainRenderType)) {
             terrainRenderType.setCutoutUniform();
-
-            // Uniform values are constant within a render-type pass (per-area data goes
-            // through push constants in bindBuffers), so upload + bind the descriptor set
-            // ONCE per pass instead of twice per chunk area (the old code also paid this
-            // cost for areas it then skipped as empty).
             renderer.uploadAndBindUBOs(pipeline);
 
             final int gpuTypeIdx = this.gpuCuller != null ? GpuCuller.typeIndex(terrainRenderType) : -1;
+            Vec3 cameraVec = new Vec3(camX, camY, camZ);
 
             for (Iterator<ChunkArea> iterator = this.sectionGraph.getChunkAreaQueue().iterator(isTranslucent); iterator.hasNext(); ) {
                 ChunkArea chunkArea = iterator.next();
                 DrawBuffers drawBuffers = chunkArea.drawBuffers;
 
                 if (gpuTypeIdx >= 0) {
-                    // GPU-generated draws: the compute pass culled sections and wrote the
-                    // commands; only bind per-area state and issue the count-based draw.
                     if (drawBuffers.getAreaBuffer(terrainRenderType) != null && this.gpuCuller.hasEntries(chunkArea.index)) {
                         drawBuffers.bindBuffers(Renderer.getCommandBuffer(), pipeline, terrainRenderType, camX, camY, camZ);
                         this.gpuCuller.drawArea(Renderer.getCommandBuffer(), chunkArea.index, gpuTypeIdx);
@@ -447,28 +366,23 @@ public class WorldRenderer {
 
                 var queue = chunkArea.sectionQueue;
                 if (drawBuffers.getAreaBuffer(terrainRenderType) != null && queue.size() > 0) {
-
                     drawBuffers.bindBuffers(Renderer.getCommandBuffer(), pipeline, terrainRenderType, camX, camY, camZ);
-
-                    // Translucent (water/glass) is now SEQUENTIAL-indexed (see BuildTask) — its index
-                    // buffer is never re-uploaded, so it can use the batched indirect path safely, just
-                    // like opaque terrain (one indirect draw per area instead of one vkCmdDrawIndexed
-                    // per section — a real CPU draw-call saving in water-heavy views). The old
-                    // sorted-index desync that forced translucent to direct draw no longer exists.
                     if (indirectDraw)
-                        drawBuffers.buildDrawBatchesIndirect(indirectBuffers[currentFrame], queue, terrainRenderType);
+                        drawBuffers.buildDrawBatchesIndirect(cameraVec, indirectBuffers[currentFrame], queue, terrainRenderType);
                     else
-                        drawBuffers.buildDrawBatchesDirect(queue, terrainRenderType);
+                        drawBuffers.buildDrawBatchesDirect(cameraVec, queue, terrainRenderType);
+
+                    if (isTranslucent && drawBuffers.getIndexBuffer() != null) {
+                        Renderer.getDrawer().bindIndexBuffer(Renderer.getCommandBuffer(), globalIndexBuffer);
+                    }
                 }
             }
         }
 
         if (terrainRenderType == TerrainRenderType.CUTOUT || terrainRenderType == TerrainRenderType.TRIPWIRE) {
             indirectBuffers[currentFrame].submitUploads();
-//            uniformBuffers.submitUploads();
         }
 
-        //Need to reset push constants in case the pipeline will still be used for rendering
         if (!indirectDraw || this.gpuCuller != null) {
             VRenderSystem.setChunkOffset(0, 0, 0);
             renderer.pushConstants(pipeline);
@@ -476,34 +390,22 @@ public class WorldRenderer {
 
         this.minecraft.getProfiler().pop();
         renderType.clearRenderState();
-
         VRenderSystem.applyMVP(RenderSystem.getModelViewMatrix(), RenderSystem.getProjectionMatrix());
 
-        // Build the Hi-Z occlusion pyramid from the opaque depth, right after the last opaque
-        // layer (CUTOUT) and before the translucent layers — so translucent (water/glass) depth
-        // does NOT pollute the occluder set and wrongly cull opaque chunks behind it. Compute is
-        // illegal inside a render pass, so suspend the bound pass and RESUME with the auxiliary
-        // LOAD pass (rebindMainTarget): the bound main pass uses LOAD_OP_DONT_CARE and a naive
-        // resume would leave the opaque color+depth undefined. The pyramid is consumed by next
-        // frame's cull (previous-frame Hi-Z). Gated off by default until runtime-validated.
         if (terrainRenderType == TerrainRenderType.CUTOUT
                 && this.gpuCuller != null && Initializer.CONFIG.occlusionCulling) {
             this.minecraft.getProfiler().push("hiz_build");
             VulkanImage depth = Vulkan.getSwapChain().getDepthAttachment();
             var cmd = Renderer.getCommandBuffer();
             renderer.endRenderPass();
-            this.gpuCuller.ensureHiZ(depth);                            // (re)creates pyramid + depth-only view
+            this.gpuCuller.ensureHiZ(depth);
             try (MemoryStack stack = MemoryStack.stackPush()) {
-                depth.readOnlyLayout(stack, cmd);                       // -> SHADER_READ_ONLY for sampling
+                depth.readOnlyLayout(stack, cmd);
                 this.gpuCuller.recordHiZBuild(cmd);
-                depth.transitionImageLayout(stack, cmd,                 // restore for translucent depth writes
-                        VK10.VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
+                depth.transitionImageLayout(stack, cmd, VK10.VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
             }
-            renderer.getMainPass().rebindMainTarget();                 // resume with aux LOAD pass
+            renderer.getMainPass().rebindMainTarget();
 
-            // Remember the view-proj + camera that produced THIS pyramid; next frame's cull re-bases
-            // it onto that frame's camera (see setupRenderer). Copy the matrix — the frustum mutates
-            // its own instance each frame.
             var hzf = this.sectionGraph.getFrustum();
             if (hzf != null) {
                 this.hiZViewProj.set(hzf.getMatrix());
@@ -518,12 +420,6 @@ public class WorldRenderer {
 
     private void sortTranslucentSections(double camX, double camY, double camZ) {
         this.minecraft.getProfiler().push("translucent_sort");
-
-        // One-to-one with yiyuyan's translucent re-sort: on a >2-block camera move, re-sort the
-        // nearest ~15 sections UNCONDITIONALLY (the BFS section queue is near-to-far ordered).
-        // B's earlier distance-adaptive throttle (needsTranslucencyResort + a per-trigger cap) is
-        // removed: it left water sections with a stale back-to-front quad order, which is the
-        // ocean z-fighting/striping. This matches the known-good yiyuyan behavior exactly.
         double d0 = camX - this.xTransparentOld;
         double d1 = camY - this.yTransparentOld;
         double d2 = camZ - this.zTransparentOld;
@@ -531,14 +427,12 @@ public class WorldRenderer {
             this.xTransparentOld = camX;
             this.yTransparentOld = camY;
             this.zTransparentOld = camZ;
-
             var queue = this.sectionGraph.getSectionQueue();
             final int n = Math.min(queue.size(), 15);
             for (int i = 0; i < n; i++) {
                 queue.get(i).resortTransparency(this.taskDispatcher);
             }
         }
-
         this.minecraft.getProfiler().pop();
     }
 
@@ -547,9 +441,7 @@ public class WorldRenderer {
         Profiler profiler = Profiler.getMainProfiler();
         profiler.pop();
         profiler.push("Block-entities");
-
         MultiBufferSource bufferSource = this.renderBuffers.bufferSource();
-
         for (RenderSection renderSection : this.sectionGraph.getBlockEntitiesSections()) {
             List<BlockEntity> list = renderSection.getCompiledSection().getBlockEntities();
             if (!list.isEmpty()) {
@@ -570,7 +462,6 @@ public class WorldRenderer {
                             };
                         }
                     }
-
                     this.minecraft.getBlockEntityRenderDispatcher().render(blockEntity, gameTime, poseStack, bufferSource1);
                     poseStack.popPose();
                 }
@@ -578,77 +469,31 @@ public class WorldRenderer {
         }
     }
 
-    public void scheduleGraphUpdate() {
-        this.graphNeedsUpdate = true;
-    }
-
-    /**
-     * Called when a chunk column finishes (re)loading on the client. Marks every
-     * render section of that column dirty and re-arms the graph update, so newly
-     * arrived / changed chunks are actually (re)built. The vanilla port left this
-     * path empty, which froze the visible region until the camera moved.
-     */
+    public void scheduleGraphUpdate() { this.graphNeedsUpdate = true; }
     public void onChunkLoaded(int chunkX, int chunkZ) {
-        if (this.sectionGrid == null)
-            return;
-
+        if (this.sectionGrid == null) return;
         for (RenderSection section : this.sectionGrid.getRenderSectionsAt(chunkX, chunkZ)) {
             section.setDirty(false);
         }
         this.renderRegionCache.remove(chunkX, chunkZ);
         this.graphNeedsUpdate = true;
     }
-
-    public boolean graphNeedsUpdate() {
-        return this.graphNeedsUpdate;
-    }
-
-    public int getVisibleSectionsCount() {
-        return this.sectionGraph.getSectionQueue().size();
-    }
-
+    public boolean graphNeedsUpdate() { return this.graphNeedsUpdate; }
+    public int getVisibleSectionsCount() { return this.sectionGraph.getSectionQueue().size(); }
     public void setSectionDirty(int x, int y, int z, boolean flag) {
         this.sectionGrid.setDirty(x, y, z, flag);
-
         this.renderRegionCache.remove(x, z);
-
-        // Arm the section-graph update so this edit is re-meshed THIS frame. The dirty->rebuild
-        // scheduling only happens inside sectionGraph.update(), which runs only when
-        // graphNeedsUpdate is set. Standing still in a loaded (idle) world nothing else arms it,
-        // so a placed/broken block wasn't re-meshed until some incidental trigger ~1s later. The
-        // resulting rebuild is already high-priority (createCompileTask marks rebuilds), so once
-        // scheduled it jumps the queue and the change shows next frame.
         this.graphNeedsUpdate = true;
     }
-
-    public SectionGrid getSectionGrid() {
-        return this.sectionGrid;
-    }
-
-    public ChunkAreaManager getChunkAreaManager() {
-        return this.sectionGrid.chunkAreaManager;
-    }
-
-    public TaskDispatcher getTaskDispatcher() {
-        return taskDispatcher;
-    }
-
-    public short getLastFrame() {
-        return this.sectionGraph.getLastFrame();
-    }
-
-    public int getRenderDistance() {
-        return this.renderDistance;
-    }
-
-    public String getChunkStatistics() {
-        return this.sectionGraph.getStatistics();
-    }
-
+    public SectionGrid getSectionGrid() { return this.sectionGrid; }
+    public ChunkAreaManager getChunkAreaManager() { return this.sectionGrid.chunkAreaManager; }
+    public TaskDispatcher getTaskDispatcher() { return taskDispatcher; }
+    public short getLastFrame() { return this.sectionGraph.getLastFrame(); }
+    public int getRenderDistance() { return this.renderDistance; }
+    public String getChunkStatistics() { return this.sectionGraph.getStatistics(); }
     public void cleanUp() {
         if (indirectBuffers != null)
             Arrays.stream(indirectBuffers).forEach(Buffer::freeBuffer);
-
         if (gpuCuller != null) {
             VK10.vkDeviceWaitIdle(Vulkan.getVkDevice());
             gpuCuller.cleanUp();
@@ -656,5 +501,4 @@ public class WorldRenderer {
             DrawBuffers.setDirtyListener(null);
         }
     }
-
 }

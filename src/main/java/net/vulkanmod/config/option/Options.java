@@ -256,6 +256,20 @@ public abstract class Options {
                                 },
                                 () -> config.uniqueOpaqueLayer)
                                 .setTooltip(Component.translatable("vulkanmod.options.uniqueOpaqueLayer.tooltip")),
+                        new SwitchOption(Component.translatable("vulkanmod.options.backFaceCulling"),
+                                value -> {
+                                    config.backFaceCulling = value;
+                                    Minecraft.getInstance().levelRenderer.allChanged();
+                                },
+                                () -> config.backFaceCulling)
+                                .setTooltip(Component.nullToEmpty("Experimental Warn: Maybe no more fixes.")),
+                        new SwitchOption(Component.translatable("vulkanmod.options.occlusionCulling"),
+                                value -> {
+                                    config.occlusionCulling = value;
+                                    Minecraft.getInstance().levelRenderer.allChanged();
+                                },
+                                () -> config.occlusionCulling)
+                                .setTooltip(Component.nullToEmpty("Experimental Warn: Maybe no more fixes.")),
                         new SwitchOption(Component.translatable("vulkanmod.options.indirectDraw"),
                                 value -> config.indirectDraw = value,
                                 () -> config.indirectDraw)

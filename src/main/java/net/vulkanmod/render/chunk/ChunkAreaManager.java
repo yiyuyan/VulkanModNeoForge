@@ -126,7 +126,6 @@ public class ChunkAreaManager {
 
                     chunkArea.setPosition(x1, y1, z1);
                     chunkArea.releaseBuffers();
-
                 }
             }
         }
@@ -149,7 +148,6 @@ public class ChunkAreaManager {
 
                     chunkArea.setPosition(x1, y1, z1);
                     chunkArea.releaseBuffers();
-
                 }
             }
         }
@@ -241,5 +239,4 @@ public class ChunkAreaManager {
                 String.format("Allocations: %d Frag: %d MB", count, frag)
         };
     }
-
 }

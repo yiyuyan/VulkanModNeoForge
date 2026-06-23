@@ -13,13 +13,11 @@ import net.minecraft.world.phys.Vec3;
 import net.vulkanmod.Initializer;
 import net.vulkanmod.render.chunk.RenderSection;
 import net.vulkanmod.render.chunk.WorldRenderer;
-import net.vulkanmod.render.chunk.build.BlockRenderer;
-import net.vulkanmod.render.chunk.build.LiquidRenderer;
-import net.vulkanmod.render.chunk.build.RenderRegion;
-import net.vulkanmod.render.chunk.build.UploadBuffer;
+import net.vulkanmod.render.chunk.build.*;
 import net.vulkanmod.render.chunk.build.thread.BuilderResources;
 import net.vulkanmod.render.chunk.build.thread.ThreadBuilderPack;
-import net.vulkanmod.render.vertex.TerrainBufferBuilder;
+import net.vulkanmod.render.chunk.cull.QuadFacing;
+import net.vulkanmod.render.vertex.TerrainBuilder;
 import net.vulkanmod.render.vertex.TerrainRenderType;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -93,9 +91,7 @@ public class BuildTask extends ChunkTask {
         builderResources.update(this.region, this.section);
 
         BlockRenderer blockRenderer = builderResources.blockRenderer;
-
         LiquidRenderer liquidRenderer = builderResources.liquidRenderer;
-
         BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
 
         for (int y = 0; y < 16; ++y) {
@@ -117,45 +113,31 @@ public class BuildTask extends ChunkTask {
 
                     FluidState fluidState = blockState.getFluidState();
                     TerrainRenderType renderType;
-                    TerrainBufferBuilder bufferBuilder;
+                    TerrainBuilder terrainBuilder;
                     if (!fluidState.isEmpty()) {
                         renderType = TerrainRenderType.get(ItemBlockRenderTypes.getRenderLayer(fluidState));
-
-                        bufferBuilder = getBufferBuilder(bufferBuilders, renderType);
-                        bufferBuilder.setBlockAttributes(blockState);
-
-                        liquidRenderer.renderLiquid(blockState, fluidState, blockPos, bufferBuilder);
+                        terrainBuilder = getTerrainBuilder(bufferBuilders, renderType);
+                        terrainBuilder.setBlockAttributes(blockState);
+                        liquidRenderer.renderLiquid(blockState, fluidState, blockPos, terrainBuilder);
                     }
 
                     if (blockState.getRenderShape() == RenderShape.MODEL) {
                         renderType = TerrainRenderType.get(ItemBlockRenderTypes.getChunkRenderType(blockState));
-
-                        bufferBuilder = getBufferBuilder(bufferBuilders, renderType);
-                        bufferBuilder.setBlockAttributes(blockState);
-
+                        terrainBuilder = getTerrainBuilder(bufferBuilders, renderType);
+                        terrainBuilder.setBlockAttributes(blockState);
                         pos.set(blockPos.getX() & 15, blockPos.getY() & 15, blockPos.getZ() & 15);
-                        blockRenderer.renderBlock(blockState, blockPos, pos, bufferBuilder);
+                        blockRenderer.renderBlock(blockState, blockPos, renderType, pos, terrainBuilder);
                     }
                 }
             }
         }
 
-        // PLAIN water path: do NOT per-quad-sort the translucent layer. setupQuadSorting() is the
-        // only thing that sets needsSorting -> a custom per-area sorted index buffer (the machinery
-        // that broke water: striped under indirect draw, missing under direct). By skipping it, the
-        // translucent buffer ends sequential-indexed (sequentialIndex=true -> autoIndices=true) and
-        // renders through the SAME shared sequential index path as opaque terrain, which is flawless.
-        // transparencyState stays null, so RenderSection.resortTransparency() self-no-ops
-        // (hasTransparencyState() == false). Trade-off: water has no back-to-front per-quad blend
-        // sorting (minor ordering artifacts), but it renders solid and stable.
-
         for (TerrainRenderType renderType : TerrainRenderType.VALUES) {
-            TerrainBufferBuilder.RenderedBuffer renderedBuffer = bufferBuilders.builder(renderType).end();
-            if (renderedBuffer != null) {
-                UploadBuffer uploadBuffer = new UploadBuffer(renderedBuffer);
-                compileResult.renderedLayers.put(renderType, uploadBuffer);
-                renderedBuffer.release();
-            }
+            TerrainBuilder builder = bufferBuilders.builder(renderType);
+            TerrainBuilder.DrawState drawState = builder.endDrawing();
+            UploadBuffer uploadBuffer = new UploadBuffer(builder, drawState);
+            compileResult.renderedLayers.put(renderType, uploadBuffer);
+            builder.clear();
         }
 
         compileResult.visibilitySet = visGraph.resolve();
@@ -165,12 +147,12 @@ public class BuildTask extends ChunkTask {
 
     private void setupBufferBuilders(ThreadBuilderPack builderPack) {
         for (TerrainRenderType renderType : TerrainRenderType.VALUES) {
-            TerrainBufferBuilder bufferBuilder = builderPack.builder(renderType);
+            TerrainBuilder bufferBuilder = builderPack.builder(renderType);
             bufferBuilder.begin();
         }
     }
 
-    private TerrainBufferBuilder getBufferBuilder(ThreadBuilderPack bufferBuilders, TerrainRenderType renderType) {
+    private TerrainBuilder getTerrainBuilder(ThreadBuilderPack bufferBuilders, TerrainRenderType renderType) {
         renderType = compactRenderTypes(renderType);
         return bufferBuilders.builder(renderType);
     }
@@ -188,7 +170,6 @@ public class BuildTask extends ChunkTask {
                 case TRANSLUCENT, TRIPWIRE -> TerrainRenderType.TRANSLUCENT;
             };
         }
-
         return renderType;
     }
 
@@ -200,6 +181,5 @@ public class BuildTask extends ChunkTask {
                 compileResult.globalBlockEntities.add(blockEntity);
             }
         }
-
     }
 }

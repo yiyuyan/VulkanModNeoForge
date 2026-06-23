@@ -33,6 +33,8 @@ public class Config {
 
     public int ambientOcclusion = 1;
 
+    public boolean backFaceCulling = true;
+
     public void write() {
 
         if(!Files.exists(CONFIG_PATH.getParent())) {

@@ -38,5 +38,6 @@
 
   "vulkanmod.options.windowedFullscreen": "Windowed Fullscreen",
 
-  "vulkanmod.options.occlusionCulling": "Occlusion Culling"
+  "vulkanmod.options.occlusionCulling": "Occlusion Culling",
+  "vulkanmod.options.backFaceCulling": "Back Face Culling"
 }

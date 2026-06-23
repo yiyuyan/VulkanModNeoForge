@@ -16,12 +16,16 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.vulkanmod.Initializer;
 import net.vulkanmod.render.chunk.build.light.LightPipeline;
 import net.vulkanmod.render.chunk.build.light.data.QuadLightData;
 import net.vulkanmod.render.chunk.build.thread.BuilderResources;
+import net.vulkanmod.render.chunk.cull.QuadFacing;
 import net.vulkanmod.render.model.quad.QuadUtils;
 import net.vulkanmod.render.model.quad.QuadView;
 import net.vulkanmod.render.vertex.TerrainBufferBuilder;
+import net.vulkanmod.render.vertex.TerrainBuilder;
+import net.vulkanmod.render.vertex.TerrainRenderType;
 import net.vulkanmod.render.vertex.VertexUtil;
 import net.vulkanmod.vulkan.util.ColorUtil;
 import org.joml.Vector3f;
@@ -29,27 +33,23 @@ import org.joml.Vector3f;
 import java.util.List;
 
 public class BlockRenderer {
-
     static final Direction[] DIRECTIONS = Direction.values();
     private static BlockColors blockColors;
 
     RandomSource randomSource = RandomSource.createNewThreadLocalInstance();
-
     Vector3f pos;
     BlockPos blockPos;
     BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
-
     BuilderResources resources;
-
     BlockState blockState;
 
-    public void setResources(BuilderResources resources) {
-        this.resources = resources;
-    }
+    final boolean backFaceCulling = Initializer.CONFIG.backFaceCulling;
+    private TerrainRenderType renderType;
+
+    public void setResources(BuilderResources resources) { this.resources = resources; }
 
     final Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> occlusionCache = new Object2ByteLinkedOpenHashMap<>(2048, 0.25F) {
-        protected void rehash(int i) {
-        }
+        protected void rehash(int i) {}
     };
 
     public BlockRenderer() {
@@ -60,32 +60,27 @@ public class BlockRenderer {
         BlockRenderer.blockColors = blockColors;
     }
 
-    public void renderBlock(BlockState blockState, BlockPos blockPos, Vector3f pos, TerrainBufferBuilder bufferBuilder) {
+    public void renderBlock(BlockState blockState, BlockPos blockPos, TerrainRenderType renderType, Vector3f pos, TerrainBuilder bufferBuilder) {
         this.pos = pos;
         this.blockPos = blockPos;
         this.blockState = blockState;
-
+        this.renderType = renderType;
         long seed = blockState.getSeed(blockPos);
-
         BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(blockState);
         tessellateBlock(model, bufferBuilder, seed);
     }
 
-    public void tessellateBlock(BakedModel bakedModel, TerrainBufferBuilder bufferBuilder, long seed) {
+    public void tessellateBlock(BakedModel bakedModel, TerrainBuilder bufferBuilder, long seed) {
         Vec3 offset = blockState.getOffset(resources.region, blockPos);
-
         pos.add((float) offset.x, (float) offset.y, (float) offset.z);
 
         boolean useAO = Minecraft.useAmbientOcclusion() && blockState.getLightEmission() == 0 && bakedModel.useAmbientOcclusion();
         LightPipeline lightPipeline = useAO ? resources.smoothLightPipeline : resources.flatLightPipeline;
 
-        //noinspection ForLoopReplaceableByForEach
         for (int i = 0; i < DIRECTIONS.length; ++i) {
             Direction direction = DIRECTIONS[i];
-
             randomSource.setSeed(seed);
             List<BakedQuad> quads = bakedModel.getQuads(blockState, direction, randomSource);
-
             if (!quads.isEmpty()) {
                 mutableBlockPos.setWithOffset(blockPos, direction);
                 if (shouldRenderFace(blockState, direction, mutableBlockPos)) {
@@ -101,13 +96,16 @@ public class BlockRenderer {
         }
     }
 
-    private void renderModelFace(TerrainBufferBuilder bufferBuilder, List<BakedQuad> quads, LightPipeline lightPipeline, Direction cullFace) {
+    private void renderModelFace(TerrainBuilder terrainBuilder, List<BakedQuad> quads,
+                                 LightPipeline lightPipeline, Direction cullFace) {
         QuadLightData quadLightData = resources.quadLightData;
 
-        for (int i = 0; i < quads.size(); ++i) {
-            BakedQuad bakedQuad = quads.get(i);
+        TerrainBufferBuilder bufferBuilder = terrainBuilder.getBufferBuilder(QuadFacing.NONE.ordinal());
+
+        for (BakedQuad bakedQuad : quads) {
             QuadView quadView = (QuadView) bakedQuad;
-            lightPipeline.calculate(quadView, blockPos, quadLightData, cullFace, bakedQuad.getDirection(), bakedQuad.isShade());
+            lightPipeline.calculate(quadView, blockPos, quadLightData, cullFace,
+                    bakedQuad.getDirection(), bakedQuad.isShade());
             putQuadData(bufferBuilder, quadView, quadLightData);
         }
     }
@@ -120,24 +118,17 @@ public class BlockRenderer {
             g = ColorUtil.ARGB.unpackG(color);
             b = ColorUtil.ARGB.unpackB(color);
         } else {
-            r = 1.0F;
-            g = 1.0F;
-            b = 1.0F;
+            r = 1.0F; g = 1.0F; b = 1.0F;
         }
-
         putQuadData(bufferBuilder, pos, quadView, quadLightData, r, g, b);
     }
 
     public static void putQuadData(TerrainBufferBuilder bufferBuilder, Vector3f pos, QuadView quad, QuadLightData quadLightData, float red, float green, float blue) {
         Vec3i normal = quad.getFacingDirection().getNormal();
         int packedNormal = VertexUtil.packNormal(normal.getX(), normal.getY(), normal.getZ());
-
         float[] brightnessArr = quadLightData.br;
         int[] lights = quadLightData.lm;
-
-        // Rotate triangles if needed to fix AO anisotropy
         int idx = QuadUtils.getIterationStartIdx(brightnessArr, lights);
-
         bufferBuilder.ensureCapacity();
 
         for (byte i = 0; i < 4; ++i) {
@@ -145,18 +136,14 @@ public class BlockRenderer {
             final float y = pos.y() + quad.getY(idx);
             final float z = pos.z() + quad.getZ(idx);
 
-            final float r, g, b;
-            final float quadR, quadG, quadB;
-
             final int quadColor = quad.getColor(idx);
-            quadR = ColorUtil.RGBA.unpackR(quadColor);
-            quadG = ColorUtil.RGBA.unpackG(quadColor);
-            quadB = ColorUtil.RGBA.unpackB(quadColor);
-
+            float quadR = ColorUtil.RGBA.unpackR(quadColor);
+            float quadG = ColorUtil.RGBA.unpackG(quadColor);
+            float quadB = ColorUtil.RGBA.unpackB(quadColor);
             final float brightness = brightnessArr[idx];
-            r = quadR * brightness * red;
-            g = quadG * brightness * green;
-            b = quadB * brightness * blue;
+            float r = quadR * brightness * red;
+            float g = quadG * brightness * green;
+            float b = quadB * brightness * blue;
 
             final int color = ColorUtil.RGBA.pack(r, g, b, 1.0f);
             final int light = lights[idx];
@@ -164,53 +151,31 @@ public class BlockRenderer {
             final float v = quad.getV(idx);
 
             bufferBuilder.vertex(x, y, z, color, u, v, light, packedNormal);
-
             idx = (idx + 1) & 0b11;
         }
-
     }
 
     public boolean shouldRenderFace(BlockState blockState, Direction direction, BlockPos adjPos) {
         BlockGetter blockGetter = resources.region;
         BlockState adjBlockState = blockGetter.getBlockState(adjPos);
-
-        if (blockState.skipRendering(adjBlockState, direction)) {
-            return false;
-        }
-
+        if (blockState.skipRendering(adjBlockState, direction)) return false;
         if (adjBlockState.canOcclude()) {
             VoxelShape shape = blockState.getFaceOcclusionShape(blockGetter, blockPos, direction);
-
-            if (shape.isEmpty())
-                return true;
-
+            if (shape.isEmpty()) return true;
             VoxelShape adjShape = adjBlockState.getFaceOcclusionShape(blockGetter, adjPos, direction.getOpposite());
-
-            if (adjShape.isEmpty())
-                return true;
-
-            if (shape == Shapes.block() && adjShape == Shapes.block()) {
-                return false;
-            }
+            if (adjShape.isEmpty()) return true;
+            if (shape == Shapes.block() && adjShape == Shapes.block()) return false;
 
             Block.BlockStatePairKey blockStatePairKey = new Block.BlockStatePairKey(blockState, adjBlockState, direction);
-
             byte b = occlusionCache.getAndMoveToFirst(blockStatePairKey);
-            if (b != 127) {
-                return b != 0;
-            } else {
+            if (b != 127) return b != 0;
+            else {
                 boolean bl = Shapes.joinIsNotEmpty(shape, adjShape, BooleanOp.ONLY_FIRST);
-
-                if (occlusionCache.size() == 2048) {
-                    occlusionCache.removeLastByte();
-                }
-
+                if (occlusionCache.size() == 2048) occlusionCache.removeLastByte();
                 occlusionCache.putAndMoveToFirst(blockStatePairKey, (byte) (bl ? 1 : 0));
                 return bl;
             }
         }
-
         return true;
     }
 }
-

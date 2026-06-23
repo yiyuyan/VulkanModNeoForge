@@ -19,11 +19,13 @@ import net.neoforged.neoforge.client.textures.FluidSpriteCache;
 import net.vulkanmod.render.chunk.build.light.LightPipeline;
 import net.vulkanmod.render.chunk.build.light.data.QuadLightData;
 import net.vulkanmod.render.chunk.build.thread.BuilderResources;
+import net.vulkanmod.render.chunk.cull.QuadFacing;
 import net.vulkanmod.render.chunk.util.Util;
 import net.vulkanmod.render.model.quad.ModelQuad;
 import net.vulkanmod.render.model.quad.ModelQuadFlags;
 import net.vulkanmod.render.model.quad.QuadUtils;
 import net.vulkanmod.render.vertex.TerrainBufferBuilder;
+import net.vulkanmod.render.vertex.TerrainBuilder;
 import net.vulkanmod.render.vertex.VertexUtil;
 import net.vulkanmod.vulkan.util.ColorUtil;
 import org.joml.Vector3f;
@@ -32,7 +34,6 @@ public class LiquidRenderer {
     private static final float MAX_FLUID_HEIGHT = 0.8888889F;
 
     private final BlockPos.MutableBlockPos mBlockPos = new BlockPos.MutableBlockPos();
-
     private final ModelQuad modelQuad = new ModelQuad();
 
     BuilderResources resources;
@@ -43,7 +44,7 @@ public class LiquidRenderer {
         this.resources = resources;
     }
 
-    public void renderLiquid(BlockState blockState, FluidState fluidState, BlockPos blockPos, TerrainBufferBuilder vertexConsumer) {
+    public void renderLiquid(BlockState blockState, FluidState fluidState, BlockPos blockPos, TerrainBuilder vertexConsumer) {
         tessellate(blockState, fluidState, blockPos, vertexConsumer);
     }
 
@@ -67,7 +68,6 @@ public class LiquidRenderer {
     }
 
     public static boolean shouldRenderFace(BlockAndTintGetter blockAndTintGetter, BlockPos blockPos, FluidState fluidState, BlockState blockState, Direction direction, BlockState adjBlockState) {
-
         if (adjBlockState.getFluidState().getType().isSame(fluidState.getType()))
             return false;
 
@@ -84,11 +84,11 @@ public class LiquidRenderer {
         return blockAndTintGetter.getBlockState(mBlockPos);
     }
 
-    public void tessellate(BlockState blockState, FluidState fluidState, BlockPos blockPos, TerrainBufferBuilder vertexConsumer) {
+    public void tessellate(BlockState blockState, FluidState fluidState, BlockPos blockPos, TerrainBuilder vertexConsumer) {
         BlockAndTintGetter region = this.resources.region;
 
         final IClientFluidTypeExtensions handler = getFluidRenderHandler(fluidState);
-        int color = handler.getTintColor(fluidState,region, blockPos);
+        int color = handler.getTintColor(fluidState, region, blockPos);
 
         TextureAtlasSprite[] sprites = FluidSpriteCache.getFluidSprites(region, blockPos, fluidState);
 
@@ -114,7 +114,6 @@ public class LiquidRenderer {
         BlockState westState = getAdjBlockState(region, posX, posY, posZ, Direction.WEST);
         BlockState eastState = getAdjBlockState(region, posX, posY, posZ, Direction.EAST);
 
-//        boolean rUf = !isNeighborSameFluid(fluidState, upFluid);
         boolean rUf = shouldRenderFace(region, blockPos, fluidState, blockState, Direction.UP, upState);
         boolean rDf = shouldRenderFace(region, blockPos, fluidState, blockState, Direction.DOWN, downState)
                 && !isFaceOccludedByState(region, MAX_FLUID_HEIGHT, Direction.DOWN, blockPos, downState);
@@ -153,11 +152,11 @@ public class LiquidRenderer {
         float x0 = (posX & 15);
         float y0 = (posY & 15);
         float z0 = (posZ & 15);
-//            float x = 0.001F;
         float y = rDf ? 0.001F : 0.0F;
 
         modelQuad.setFlags(0);
 
+        // Top face
         if (rUf && !isFaceOccludedByState(region, Math.min(Math.min(nwHeight, swHeight), Math.min(seHeight, neHeight)), Direction.UP, blockPos, upState)) {
             float u0, u1, u2, u3;
             float v0, v1, v2, v3;
@@ -222,9 +221,9 @@ public class LiquidRenderer {
             if (fluidState.shouldRenderBackwardUpFace(region, blockPos.above())) {
                 putQuad(modelQuad, vertexConsumer, x0, y0, z0, true);
             }
-
         }
 
+        // Bottom face
         if (rDf) {
             float u0, u1, v0, v1;
 
@@ -244,11 +243,11 @@ public class LiquidRenderer {
             updateColor(r, g, b, brightness);
 
             putQuad(modelQuad, vertexConsumer, x0, y0, z0, false);
-
         }
 
         modelQuad.setFlags(ModelQuadFlags.IS_PARALLEL | ModelQuadFlags.IS_ALIGNED);
 
+        // Side faces
         for (Direction direction : Util.XZ_DIRECTIONS) {
             float h1;
             float h2;
@@ -355,14 +354,11 @@ public class LiquidRenderer {
             if (!isOverlay) {
                 putQuad(modelQuad, vertexConsumer, x0, y0, z0, true);
             }
-
         }
     }
 
     private static IClientFluidTypeExtensions getFluidRenderHandler(FluidState fluidState) {
         IClientFluidTypeExtensions handler = IClientFluidTypeExtensions.of(fluidState);
-        //FluidRenderHandler handler = FluidRenderHandlerRegistry.INSTANCE.get(fluidState.getType());
-
 
         // Fallback to water in case no handler was found
         if (handler == null) {
@@ -401,7 +397,6 @@ public class LiquidRenderer {
             fs[0] += f;
             fs[1]++;
         }
-
     }
 
     private float getHeight(BlockAndTintGetter blockAndTintGetter, Fluid fluid, BlockPos blockPos) {
@@ -419,21 +414,14 @@ public class LiquidRenderer {
         }
     }
 
-    private int calculateNormal(ModelQuad quad) {
-        // TODO
-        Vector3f normal = new Vector3f(quad.getX(1), quad.getY(1), quad.getZ(1))
-                .cross(quad.getX(3), quad.getY(3), quad.getZ(3));
-        normal.normalize();
-
-        return VertexUtil.packNormal(normal.x(), normal.y(), normal.z());
-    }
-
-    private void putQuad(ModelQuad quad, TerrainBufferBuilder bufferBuilder, float xOffset, float yOffset, float zOffset, boolean flip) {
+    private void putQuad(ModelQuad quad, TerrainBuilder builder, float xOffset, float yOffset, float zOffset, boolean flip) {
         QuadLightData quadLightData = resources.quadLightData;
 
         // Rotate triangles if needed to fix AO anisotropy
         int k = QuadUtils.getIterationStartIdx(quadLightData.br);
 
+        // All fluid geometry goes to the NONE facing buffer (no backface culling for fluids)
+        TerrainBufferBuilder bufferBuilder = builder.getBufferBuilder(QuadFacing.NONE.ordinal());
         bufferBuilder.ensureCapacity();
 
         int i;
@@ -449,7 +437,6 @@ public class LiquidRenderer {
             k += (flip ? -1 : +1);
             k &= 0b11;
         }
-
     }
 
     private void setVertex(ModelQuad quad, int i, float x, float y, float z, float u, float v) {
@@ -462,9 +449,7 @@ public class LiquidRenderer {
 
     private void updateQuad(ModelQuad quad, BlockPos blockPos,
                             LightPipeline lightPipeline, Direction dir) {
-
         lightPipeline.calculate(quad, blockPos, resources.quadLightData, null, dir, false);
-
     }
 
     private void updateColor(float r, float g, float b, float brightness) {

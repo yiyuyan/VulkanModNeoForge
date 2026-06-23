@@ -1,6 +1,7 @@
 package net.vulkanmod.render.chunk.build;
 
 import com.google.common.collect.Queues;
+import net.minecraft.world.phys.Vec3;
 import net.vulkanmod.render.chunk.ChunkArea;
 import net.vulkanmod.render.chunk.ChunkAreaManager;
 import net.vulkanmod.render.chunk.RenderSection;
@@ -9,14 +10,15 @@ import net.vulkanmod.render.chunk.buffer.DrawBuffers;
 import net.vulkanmod.render.chunk.build.task.ChunkTask;
 import net.vulkanmod.render.chunk.build.task.CompileResult;
 import net.vulkanmod.render.chunk.build.thread.BuilderResources;
+import net.vulkanmod.render.chunk.build.thread.ThreadBuilderPack;
 import net.vulkanmod.render.vertex.TerrainRenderType;
-
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Queue;
 
 public class TaskDispatcher {
     private final Queue<CompileResult> compileResults = Queues.newLinkedBlockingDeque();
+    public final ThreadBuilderPack fixedBuffers;
 
     private volatile boolean stopThreads;
     private Thread[] threads;
@@ -28,13 +30,11 @@ public class TaskDispatcher {
                             .thenComparingDouble(t -> t.distSq));
 
     public TaskDispatcher() {
+        this.fixedBuffers = new ThreadBuilderPack();
         this.stopThreads = true;
     }
 
     public void createThreads() {
-        // ~62% of cores for chunk meshing (was (cores-1)/2 ≈ 50%, quite conservative). More builders
-        // = faster chunk loading throughput, while still leaving ~38% of cores for the render/main/
-        // game threads. Scales down safely on low-core machines (4 cores -> 2, 8 -> 5, 16 -> 10, 20 -> 12).
         int cores = Runtime.getRuntime().availableProcessors();
         int n = Math.max(1, (cores * 5) / 8);
         createThreads(n);
@@ -44,7 +44,6 @@ public class TaskDispatcher {
         if(!this.stopThreads) {
             this.stopThreads();
         }
-
         this.stopThreads = false;
 
         if(this.resources != null) {
@@ -58,13 +57,8 @@ public class TaskDispatcher {
 
         for (int i = 0; i < n; i++) {
             BuilderResources builderResources = new BuilderResources();
-            Thread thread = new Thread(() -> runTaskThread(builderResources),
-                    "Builder-" + i);
-            // Below-normal priority: builders run on spare cores but YIELD to the render/main
-            // threads, so heavy chunk loading doesn't steal frame time -> less stutter. (Advisory;
-            // strongest effect on Windows, limited on Linux, but never harmful.)
+            Thread thread = new Thread(() -> runTaskThread(builderResources), "Builder-" + i);
             thread.setPriority(Math.max(Thread.MIN_PRIORITY, Thread.NORM_PRIORITY - 2));
-
             this.threads[i] = thread;
             this.resources[i] = builderResources;
             thread.start();
@@ -74,11 +68,9 @@ public class TaskDispatcher {
     private void runTaskThread(BuilderResources builderResources) {
         while(!this.stopThreads) {
             ChunkTask task = this.pollTask();
-
             if(task == null) {
                 synchronized (this) {
-                    if (this.stopThreads)
-                        break;
+                    if (this.stopThreads) break;
                     if (this.taskQueue.isEmpty()) {
                         try {
                             this.idleThreads++;
@@ -92,16 +84,14 @@ public class TaskDispatcher {
                 }
                 continue;
             }
-
             task.runTask(builderResources);
         }
     }
 
     public void schedule(ChunkTask chunkTask) {
-        if (chunkTask == null)
-            return;
+        if (chunkTask == null) return;
 
-        net.minecraft.world.phys.Vec3 cam = WorldRenderer.getCameraPos();
+        Vec3 cam = WorldRenderer.getCameraPos();
         RenderSection sec = chunkTask.getSection();
         double dx = sec.xOffset() + 8 - cam.x;
         double dy = sec.yOffset() + 8 - cam.y;
@@ -109,10 +99,7 @@ public class TaskDispatcher {
         chunkTask.distSq = (float) (dx * dx + dy * dy + dz * dz);
 
         this.taskQueue.offer(chunkTask);
-
-        synchronized (this) {
-            this.notify();
-        }
+        synchronized (this) { this.notify(); }
     }
 
     @Nullable
@@ -121,21 +108,12 @@ public class TaskDispatcher {
     }
 
     public void stopThreads() {
-        if(this.stopThreads)
-            return;
-
+        if(this.stopThreads) return;
         this.stopThreads = true;
-
-        synchronized (this) {
-            this.notifyAll();
-        }
+        synchronized (this) { this.notifyAll(); }
 
         for (Thread thread : this.threads) {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            try { thread.join(); } catch (InterruptedException e) { throw new RuntimeException(e); }
         }
 
         if (this.resources != null) {
@@ -156,7 +134,6 @@ public class TaskDispatcher {
             flag = true;
             doSectionUpdate(result);
         }
-
         return flag;
     }
 
@@ -169,32 +146,29 @@ public class TaskDispatcher {
         ChunkArea renderArea = section.getChunkArea();
         DrawBuffers drawBuffers = renderArea.getDrawBuffers();
 
-        // Check if area has been dismissed before uploading
         ChunkAreaManager chunkAreaManager = WorldRenderer.getInstance().getChunkAreaManager();
-        if (chunkAreaManager.getChunkArea(renderArea.index) != renderArea)
-            return;
+        if (chunkAreaManager.getChunkArea(renderArea.index) != renderArea) return;
 
         if(compileResult.fullUpdate) {
             var renderLayers = compileResult.renderedLayers;
             for(TerrainRenderType renderType : TerrainRenderType.VALUES) {
                 UploadBuffer uploadBuffer = renderLayers.get(renderType);
-
                 if(uploadBuffer != null) {
                     drawBuffers.upload(section, uploadBuffer, renderType);
                 } else {
-                    section.getDrawParameters(renderType).reset(renderArea, renderType);
+                    section.resetDrawParameters(renderType);
                 }
             }
-
             compileResult.updateSection();
-        }
-        else {
+        } else {
             UploadBuffer uploadBuffer = compileResult.renderedLayers.get(TerrainRenderType.TRANSLUCENT);
             drawBuffers.upload(section, uploadBuffer, TerrainRenderType.TRANSLUCENT);
         }
     }
 
-    public boolean isIdle() { return this.threads == null || (this.idleThreads == this.threads.length && this.compileResults.isEmpty()); }
+    public boolean isIdle() {
+        return this.threads == null || (this.idleThreads == this.threads.length && this.compileResults.isEmpty());
+    }
 
     public void clearBatchQueue() {
         ChunkTask chunkTask;
