@@ -20,6 +20,7 @@
     "compatibility.ProgramM",
     "compatibility.UniformM",
     "compatibility.gl.GL11M",
+    "compatibility.gl.GL14M",
     "compatibility.gl.GL15M",
     "compatibility.gl.GL30M",
     "debug.DebugScreenOverlayM",
@@ -76,7 +77,6 @@
     "window.WindowMixin"
   ],
   "mixins": [
-    "compatibility.gl.GL14M",
     "neoforged.ItemDecoratorHandlerMixin",
     "neoforged.MonsterRoomHooksMixin"
   ],

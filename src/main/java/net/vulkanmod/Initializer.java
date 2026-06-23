@@ -38,7 +38,7 @@ public class Initializer {
                     .getModInfo()
                     .getVersion());
         } catch (Exception e) {
-            VERSION = "0.4.8-dev";
+            VERSION = "0.4.9-dev";
 
 			LOGGER.warn("Failed to get the version: {}",e.getMessage());
         }
