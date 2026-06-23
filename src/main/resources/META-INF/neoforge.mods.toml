@@ -24,7 +24,13 @@ side = "BOTH"
 [[dependencies.vulkanmod]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21,)"
+versionRange = "[1.21,1.21.2)"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.vulkanmod]]
+modId = "fabric_api_base"
+type = "required"
+versionRange = "[0,)"
 ordering = "NONE"
 side = "BOTH"
 

@@ -4,23 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Add backface culling setting's translatable components&#10;Sync a7ffe3d">
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/VulkanModRenderer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/helper/ColorHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/entity/model/ModelPartM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/entity/model/ModelPartM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/BufferBuilderM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/BufferBuilderM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/VertexConsumerM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/VertexConsumerM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/vertex/VertexMultiConsumersM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/vertex/VertexMultiConsumersM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/DrawBuffers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/DrawBuffers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/BlockRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/BlockRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/LiquidRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/LiquidRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/RenderRegion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/RenderRegion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/TintCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/biome/TintCache.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/biome/BoxBlur.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/biome/BoxBlur.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/thread/BuilderResources.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/thread/BuilderResources.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/cull/QuadFacing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/cull/QuadFacing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/VertexUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/format/I32_SNorm.java" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Fix biome blending not applied in some cases&#10;Update 0.5.0-dev+3">
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan/NeoVulkanMod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan/NeoVulkanMod.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/Initializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/Initializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/VKNConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/VKNConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/neoforge.mods.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/neoforge.mods.toml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,12 +137,12 @@
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="gradle clean runClient" />
+      <command value="gradle runClient" />
       <command value="gradle clean build runClient" />
       <command value="gradle build" />
-      <command value="gradle runClient" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.VulkanModNeoForge [runClient]">
+  <component name="RunManager" selected="Gradle.VulkanModNeoForge [build]">
     <configuration name="VulkanModNeoForge [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -290,8 +282,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.VulkanModNeoForge [runClient]" />
         <item itemvalue="Gradle.VulkanModNeoForge [build]" />
+        <item itemvalue="Gradle.VulkanModNeoForge [runClient]" />
         <item itemvalue="Gradle.VulkanModNeoForge [clean build runClient]" />
         <item itemvalue="Gradle.VulkanModNeoForge [clean]" />
         <item itemvalue="Gradle.VulkanModNeoForge [clean runClient]" />
@@ -603,7 +595,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782216914642</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Fix biome blending not applied in some cases&#10;Update 0.5.0-dev+3">
+      <option name="closed" value="true" />
+      <created>1782218435277</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1782218435277</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -624,7 +624,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="update 0.4.8-dev+1&#10;clean codes" />
     <MESSAGE value="fix Vulkan.java&#10;Update VKNConfig and VkInstanceTransformer" />
     <MESSAGE value="clean codes" />
     <MESSAGE value="update SectionBufferBuilderPoolM" />
@@ -649,7 +648,8 @@
     <MESSAGE value="Update 0.5.0-dev+1" />
     <MESSAGE value="Implement IndexBuffer resize&#10;Update 0.5.0-dev+2&#10;Sync a290169" />
     <MESSAGE value="Add backface culling setting's translatable components&#10;Sync a7ffe3d" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add backface culling setting's translatable components&#10;Sync a7ffe3d" />
+    <MESSAGE value="Fix biome blending not applied in some cases&#10;Update 0.5.0-dev+3" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix biome blending not applied in some cases&#10;Update 0.5.0-dev+3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

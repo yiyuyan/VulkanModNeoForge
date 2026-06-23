@@ -44,8 +44,6 @@ public class Initializer {
         }
 
         LOGGER.info("== VulkanMod ==");
-
-		VKNConfig.hide();
 	}
 
 	private static Config loadConfig(Path path) {
