@@ -113,7 +113,7 @@ public class EffectInstanceM {
             GlslConverter converter = new GlslConverter();
 
             converter.process(vshSrc, fshSrc);
-            Initializer.LOGGER.info("creating ubo for vsh: {} ; fsh: {}",vertexShader,fragShader);
+            //Initializer.LOGGER.info("creating ubo for vsh: {} ; fsh: {}",vertexShader,fragShader);
             UBO ubo = converter.createUBO();
             this.setUniformSuppliers(ubo);
 
