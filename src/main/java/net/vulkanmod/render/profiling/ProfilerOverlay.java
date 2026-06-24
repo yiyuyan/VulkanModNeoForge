@@ -137,7 +137,7 @@ public class ProfilerOverlay {
             return;
 
         Profiler.ProfilerResults results = Profiler.getMainProfiler().getProfilerResults();
-        if (results == null)
+        if (results == null || results.partialResults.size() < 2)
             return;
 
         frametime = results.getResult().value;

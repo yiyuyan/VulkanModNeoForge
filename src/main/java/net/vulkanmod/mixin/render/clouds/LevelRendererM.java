@@ -5,6 +5,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.vulkanmod.render.profiling.Profiler;
 import net.vulkanmod.render.sky.CloudRenderer;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -34,6 +35,7 @@ public abstract class LevelRendererM {
         }
 
         this.cloudRenderer.renderClouds(this.level, poseStack, modelView, projection, this.ticks, partialTicks, camX, camY, camZ);
+        Profiler.getMainProfiler().pop();
         ci.cancel();
     }
 
