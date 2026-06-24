@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.util.GsonHelper;
-import net.vulkanmod.Initializer;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.Vulkan;
 import net.vulkanmod.vulkan.device.DeviceManager;
@@ -587,6 +586,7 @@ public abstract class Pipeline {
 
             for (JsonElement jsonelement2 : fields) {
                 JsonObject jsonobject2 = GsonHelper.convertToJsonObject(jsonelement2, "uniform");
+                //need to store some infos
                 String name = GsonHelper.getAsString(jsonobject2, "name");
                 String type2 = GsonHelper.getAsString(jsonobject2, "type");
                 int count = GsonHelper.getAsInt(jsonobject2, "count");
@@ -603,6 +603,9 @@ public abstract class Pipeline {
                         }
 
                         uniformInfo.setBufferSupplier(uniformSupplier);
+                    }
+                    else {
+                        throw new IllegalStateException("No uniform supplier found for uniform: (%s:%s)".formatted(type2, name));
                     }
                 }
 
@@ -642,13 +645,16 @@ public abstract class Pipeline {
             AlignedStruct.Builder builder = new AlignedStruct.Builder();
 
             for (JsonElement jsonelement : jsonArray) {
-                JsonObject jsonobject2 = GsonHelper.convertToJsonObject(jsonelement, "PC");
+                JsonObject jsonobject2 = GsonHelper.convertToJsonObject(jsonelement, "PushConstants");
 
                 String name = GsonHelper.getAsString(jsonobject2, "name");
                 String type2 = GsonHelper.getAsString(jsonobject2, "type");
-                int j = GsonHelper.getAsInt(jsonobject2, "count");
+                int count = GsonHelper.getAsInt(jsonobject2, "count");
 
-                builder.addUniformInfo(type2, name, j);
+                Uniform.Info uniformInfo = Uniform.createUniformInfo(type2, name, count);
+                uniformInfo.setupSupplier();
+
+                builder.addUniformInfo(uniformInfo);
             }
 
             this.pushConstants = builder.buildPushConstant();

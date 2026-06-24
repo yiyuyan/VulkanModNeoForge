@@ -4,18 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Fix profiler result missing entries&#10;Add shader namespace check&#10;Fix out of bounds error&#10;Sync:&#10;52dd96f, abee6c8, 51fa204">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/clouds/clouds.fsh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/clouds/clouds.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/clouds/clouds.vsh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Add clouds shader&#10;Update 0.5.0-dev+10&#10;Sync aebc01d">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/clouds/LevelRendererM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/clouds/LevelRendererM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/PipelineManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/PipelineManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/sky/CloudRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/sky/CloudRenderer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/VRenderSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/VRenderSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/Uniform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/Uniform.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/SPIRVUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/SPIRVUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Uniforms.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Uniforms.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/clouds/clouds.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/clouds/clouds.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/clouds/clouds.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/clouds/clouds.vsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain.vsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain_earlyZ/terrain_earlyZ.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain_earlyZ/terrain_earlyZ.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_clouds/rendertype_clouds.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_clouds/rendertype_clouds.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -695,7 +697,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782308812096</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="Add clouds shader&#10;Update 0.5.0-dev+10&#10;Sync aebc01d">
+      <option name="closed" value="true" />
+      <created>1782309663707</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1782309663707</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -716,7 +726,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="update ver" />
     <MESSAGE value="update 0.4.9-dev+1" />
     <MESSAGE value="fix log" />
     <MESSAGE value="fix VulkanModDiscover" />
@@ -741,7 +750,8 @@
     <MESSAGE value="Refactor: remove unused interface" />
     <MESSAGE value="Fix profiler result missing entries" />
     <MESSAGE value="Fix profiler result missing entries&#10;Add shader namespace check&#10;Fix out of bounds error&#10;Sync:&#10;52dd96f, abee6c8, 51fa204" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix profiler result missing entries&#10;Add shader namespace check&#10;Fix out of bounds error&#10;Sync:&#10;52dd96f, abee6c8, 51fa204" />
+    <MESSAGE value="Add clouds shader&#10;Update 0.5.0-dev+10&#10;Sync aebc01d" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add clouds shader&#10;Update 0.5.0-dev+10&#10;Sync aebc01d" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

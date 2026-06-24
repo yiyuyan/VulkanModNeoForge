@@ -119,7 +119,7 @@ public class CloudRenderer {
         poseStack.mulPose(modelView);
         poseStack.translate(-xTranslation, yTranslation, -zTranslation);
 
-        VRenderSystem.setChunkOffset(-xTranslation, 0, -zTranslation);
+        VRenderSystem.setModelOffset(-xTranslation, 0, -zTranslation);
 
         Vec3 cloudColor = level.getCloudColor(partialTicks);
         RenderSystem.setShaderColor((float) cloudColor.x, (float) cloudColor.y, (float) cloudColor.z, 0.8f);
@@ -147,7 +147,7 @@ public class CloudRenderer {
 
         RenderSystem.enableCull();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        VRenderSystem.setChunkOffset(0.0f, 0.0f, 0.0f);
+        VRenderSystem.setModelOffset(0.0f, 0.0f, 0.0f);
 
         poseStack.popPose();
     }

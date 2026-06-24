@@ -70,7 +70,7 @@ public abstract class VRenderSystem {
         return VULKAN_CLIP.mul(openglProjection, new Matrix4f());
     }
 
-    public static MappedBuffer ChunkOffset = new MappedBuffer(3 * 4);
+    public static MappedBuffer modelOffset = new MappedBuffer(3 * 4);
     public static MappedBuffer lightDirection0 = new MappedBuffer(3 * 4);
     public static MappedBuffer lightDirection1 = new MappedBuffer(3 * 4);
 
@@ -103,8 +103,8 @@ public abstract class VRenderSystem {
         VRenderSystem.window = window;
     }
 
-    public static ByteBuffer getChunkOffset() {
-        return ChunkOffset.buffer;
+    public static ByteBuffer getModelOffset() {
+        return modelOffset.buffer;
     }
 
     public static int maxSupportedTextureSize() {
@@ -153,8 +153,8 @@ public abstract class VRenderSystem {
         return MVP;
     }
 
-    public static void setChunkOffset(float f1, float f2, float f3) {
-        long ptr = ChunkOffset.ptr;
+    public static void setModelOffset(float f1, float f2, float f3) {
+        long ptr = modelOffset.ptr;
         VUtil.UNSAFE.putFloat(ptr, f1);
         VUtil.UNSAFE.putFloat(ptr + 4, f2);
         VUtil.UNSAFE.putFloat(ptr + 8, f3);

@@ -383,7 +383,7 @@ public class WorldRenderer {
         }
 
         if (!indirectDraw || this.gpuCuller != null) {
-            VRenderSystem.setChunkOffset(0, 0, 0);
+            VRenderSystem.setModelOffset(0, 0, 0);
             renderer.pushConstants(pipeline);
         }
 
