@@ -31,7 +31,7 @@ public abstract class LevelRendererM {
     @Inject(method = "renderClouds",at = @At("HEAD"),cancellable = true)
     public void renderClouds(PoseStack poseStack, Matrix4f modelView, Matrix4f projection, float partialTicks, double camX, double camY, double camZ,CallbackInfo ci) {
         if (this.cloudRenderer == null) {
-            this.cloudRenderer = new CloudRenderer(CLOUDS_LOCATION);
+            this.cloudRenderer = new CloudRenderer();
         }
 
         this.cloudRenderer.renderClouds(this.level, poseStack, modelView, projection, this.ticks, partialTicks, camX, camY, camZ);
@@ -49,7 +49,7 @@ public abstract class LevelRendererM {
     @Inject(method = "onResourceManagerReload", at = @At("RETURN"))
     private void onReload(ResourceManager resourceManager, CallbackInfo ci) {
         if (this.cloudRenderer != null) {
-            this.cloudRenderer.loadTexture(CLOUDS_LOCATION);
+            this.cloudRenderer.loadTexture();
         }
     }
 

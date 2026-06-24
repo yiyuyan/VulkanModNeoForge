@@ -7,12 +7,14 @@ import net.minecraft.client.CloudStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.phys.Vec3;
+import net.vulkanmod.render.PipelineManager;
+import net.vulkanmod.render.VBO;
+import net.vulkanmod.vulkan.VRenderSystem;
+import net.vulkanmod.vulkan.shader.GraphicsPipeline;
 import net.vulkanmod.vulkan.util.ColorUtil;
 import org.apache.commons.lang3.Validate;
 import org.joml.Matrix4f;
@@ -20,7 +22,8 @@ import org.joml.Matrix4f;
 import java.io.IOException;
 
 public class CloudRenderer {
-    // TODO move to util
+    private static final ResourceLocation TEXTURE_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/clouds.png");
+
     private static final int DIR_NEG_Y_BIT = 1 << 0;
     private static final int DIR_POS_Y_BIT = 1 << 1;
     private static final int DIR_NEG_X_BIT = 1 << 2;
@@ -28,27 +31,31 @@ public class CloudRenderer {
     private static final int DIR_NEG_Z_BIT = 1 << 4;
     private static final int DIR_POS_Z_BIT = 1 << 5;
 
+    private static final byte Y_BELOW_CLOUDS = 0;
+    private static final byte Y_ABOVE_CLOUDS = 1;
+    private static final byte Y_INSIDE_CLOUDS = 2;
+
     private static final int CELL_WIDTH = 12;
     private static final int CELL_HEIGHT = 4;
 
     private CloudGrid cloudGrid;
 
     private int prevCloudX;
-    private int prevCloudY;
     private int prevCloudZ;
+    private byte prevCloudY;
 
     private CloudStatus prevCloudsType;
     private boolean prevInsideClouds;
 
     private boolean generateClouds;
-    private VertexBuffer cloudBuffer;
+    private VBO cloudBuffer;
 
-    public CloudRenderer(ResourceLocation textureLocation) {
-        loadTexture(textureLocation);
+    public CloudRenderer() {
+        loadTexture();
     }
 
-    public void loadTexture(ResourceLocation location) {
-        this.cloudGrid = createCloudGrid(location);
+    public void loadTexture() {
+        this.cloudGrid = createCloudGrid(TEXTURE_LOCATION);
     }
 
     public void renderClouds(ClientLevel level, PoseStack poseStack, Matrix4f modelView, Matrix4f projection, float ticks, float partialTicks, double camX, double camY, double camZ) {
@@ -68,16 +75,25 @@ public class CloudRenderer {
         int centerCellX = (int) Math.floor(centerX / CELL_WIDTH);
         int centerCellZ = (int) Math.floor(centerZ / CELL_WIDTH);
 
-        boolean insideClouds = (centerY >= -4.0f && centerY <= 0.0f);
+        byte yState;
+        if (centerY < -4.0f) {
+            yState = Y_BELOW_CLOUDS;
+        }
+        else if (centerY > 0.0f) {
+            yState = Y_ABOVE_CLOUDS;
+        }
+        else {
+            yState = Y_INSIDE_CLOUDS;
+        }
 
         if (centerCellX != this.prevCloudX || centerCellZ != this.prevCloudZ
                 || (minecraft.options.getCloudsType() != this.prevCloudsType)
-                || (this.prevInsideClouds != insideClouds)
+                || (this.prevCloudY != yState)
                 || this.cloudBuffer == null) {
             this.prevCloudX = centerCellX;
             this.prevCloudZ = centerCellZ;
             this.prevCloudsType = minecraft.options.getCloudsType();
-            this.prevInsideClouds = insideClouds;
+            this.prevCloudY = yState;
             this.generateClouds = true;
         }
 
@@ -87,34 +103,33 @@ public class CloudRenderer {
                 this.cloudBuffer.close();
             }
 
-            this.cloudBuffer = new VertexBuffer(VertexBuffer.Usage.STATIC);
-            this.cloudBuffer.bind();
+            this.cloudBuffer = new VBO(VertexBuffer.Usage.STATIC);
 
             MeshData cloudsMesh = this.buildClouds(Tesselator.getInstance(), centerCellX, centerCellZ, centerY);
             this.cloudBuffer.upload(cloudsMesh);
-            VertexBuffer.unbind();
         }
 
         FogRenderer.levelFogColor();
 
-        float xTranslation = (float)(centerX - (centerCellX * CELL_WIDTH));
-        float yTranslation = (float) centerY;
-        float zTranslation = (float)(centerZ - (centerCellZ * CELL_WIDTH));
+        float xTranslation = (float) (centerX - (centerCellX * CELL_WIDTH));
+        float yTranslation = (float) (centerY);
+        float zTranslation = (float) (centerZ - (centerCellZ * CELL_WIDTH));
 
         poseStack.pushPose();
         poseStack.mulPose(modelView);
         poseStack.translate(-xTranslation, yTranslation, -zTranslation);
 
+        VRenderSystem.setChunkOffset(-xTranslation, 0, -zTranslation);
+
         Vec3 cloudColor = level.getCloudColor(partialTicks);
         RenderSystem.setShaderColor((float) cloudColor.x, (float) cloudColor.y, (float) cloudColor.z, 0.8f);
 
-        this.cloudBuffer.bind();
-
-        ShaderInstance shaderInstance = GameRenderer.getPositionColorShader();
+        GraphicsPipeline pipeline = PipelineManager.getCloudsPipeline();
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
 
         boolean fastClouds = this.prevCloudsType == CloudStatus.FAST;
+        boolean insideClouds = yState == Y_INSIDE_CLOUDS;
         boolean disableCull = insideClouds || (fastClouds && centerY <= 0.0f);
 
         if (disableCull) {
@@ -123,17 +138,16 @@ public class CloudRenderer {
 
         if (!fastClouds) {
             RenderSystem.colorMask(false, false, false, false);
-            this.cloudBuffer.drawWithShader(poseStack.last().pose(), projection, shaderInstance);
+            this.cloudBuffer.drawWithShader(poseStack.last().pose(), projection, pipeline);
 
             RenderSystem.colorMask(true, true, true, true);
         }
 
-        this.cloudBuffer.drawWithShader(poseStack.last().pose(), projection, shaderInstance);
+        this.cloudBuffer.drawWithShader(poseStack.last().pose(), projection, pipeline);
 
         RenderSystem.enableCull();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-        VertexBuffer.unbind();
+        VRenderSystem.setChunkOffset(0.0f, 0.0f, 0.0f);
 
         poseStack.popPose();
     }
@@ -211,7 +225,8 @@ public class CloudRenderer {
 
                 }
             }
-        } else {
+        }
+        else {
 
             for (int cellX = -renderDistance; cellX < renderDistance; ++cellX) {
                 for (int cellZ = -renderDistance; cellZ < renderDistance; ++cellZ) {

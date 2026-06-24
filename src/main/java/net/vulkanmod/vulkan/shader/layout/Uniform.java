@@ -1,5 +1,6 @@
 package net.vulkanmod.vulkan.shader.layout;
 
+import net.vulkanmod.Initializer;
 import net.vulkanmod.vulkan.shader.Uniforms;
 import net.vulkanmod.vulkan.util.MappedBuffer;
 import org.lwjgl.system.MemoryUtil;
@@ -29,6 +30,10 @@ public class Uniform {
     }
 
     void update(long ptr) {
+        if(values==null){
+            Initializer.LOGGER.error("Failed to get values when updating uniform: {}",this.getName());
+            return;
+        }
         MappedBuffer src = values.get();
         MemoryUtil.memCopy(src.ptr, ptr + this.offset, this.size);
     }

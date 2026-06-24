@@ -3,7 +3,6 @@ package net.vulkanmod.vulkan;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Window;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.vulkanmod.vulkan.device.DeviceManager;
 import net.vulkanmod.vulkan.shader.PipelineState;
@@ -298,5 +297,4 @@ public abstract class VRenderSystem {
     public static void disablePolygonOffset() {
         Renderer.setDepthBias(0.0F, 0.0F);
     }
-
 }
