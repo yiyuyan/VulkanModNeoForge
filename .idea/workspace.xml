@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Add missing normal vector copy&#10;Sync ca9cf7b">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Improve glsl conversion&#10;Improve compatibility&#10;Add image format info&#10;Sync 4ec5d6a,eedfa54,5c8bbfe">
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/clouds/LevelRendererM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/clouds/LevelRendererM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/MTextureUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/MTextureUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/parser/GlslConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/parser/GlslConverter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -640,7 +636,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782273370727</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="Improve glsl conversion&#10;Improve compatibility&#10;Add image format info&#10;Sync 4ec5d6a,eedfa54,5c8bbfe">
+      <option name="closed" value="true" />
+      <created>1782273799125</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1782273799125</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -661,7 +665,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="fix build.yml" />
     <MESSAGE value="UPDATE" />
     <MESSAGE value="UPDATE ASSETS" />
     <MESSAGE value="UPDATED" />
@@ -686,7 +689,8 @@
     <MESSAGE value="Fix VulkanModRenderer&#10;Fuck you,NeoForge!&#10;Fuck you,Fabric!" />
     <MESSAGE value="Use normal to calculate quad facing&#10;Update 0.5.0-dev+6&#10;Sync 0ef9f9a" />
     <MESSAGE value="Add missing normal vector copy&#10;Sync ca9cf7b" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add missing normal vector copy&#10;Sync ca9cf7b" />
+    <MESSAGE value="Improve glsl conversion&#10;Improve compatibility&#10;Add image format info&#10;Sync 4ec5d6a,eedfa54,5c8bbfe" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve glsl conversion&#10;Improve compatibility&#10;Add image format info&#10;Sync 4ec5d6a,eedfa54,5c8bbfe" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
