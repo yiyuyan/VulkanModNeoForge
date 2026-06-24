@@ -4,8 +4,196 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Improve glsl conversion&#10;Improve compatibility&#10;Add image format info&#10;Sync 4ec5d6a,eedfa54,5c8bbfe">
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Use custom color resolver if requested&#10;- Implement BlockColorRegistry for fast look up&#10;- Refactor&#10;- Update 0.5.0-dev+8&#10;- Sync b56a22d">
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/shader/ShaderLoadUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain_earlyZ/terrain_earlyZ.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain_earlyZ/terrain_earlyZ.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/blit_screen/blit_screen.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/blit_screen/blit_screen.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/blit_screen/blit_screen.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/entity/entity.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/entity/entity.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/glint/glint.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/glint/glint.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/gui/gui.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/gui/gui.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/lightmap/lightmap.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/lightmap/lightmap.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/particle/particle.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/particle/particle.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/particle/particle.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position/position.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position/position.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position/position.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_color/position_color.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_color/position_color.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_color/position_color.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_color_lightmap/position_color_lightmap.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_color_lightmap/position_color_lightmap.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_color_lightmap/position_color_lightmap.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_color_normal/position_color_normal.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_color_normal/position_color_normal.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_color_normal/position_color_normal.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_color_tex/position_color_tex.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_color_tex/position_color_tex.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_color_tex/position_color_tex.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_color_tex_lightmap/position_color_tex_lightmap.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_color_tex_lightmap/position_color_tex_lightmap.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_color_tex_lightmap/position_color_tex_lightmap.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_tex/position_tex.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_tex/position_tex.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_tex/position_tex.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_tex_color/position_tex_color.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_tex_color/position_tex_color.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_tex_color/position_tex_color.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_tex_color_normal/position_tex_color_normal.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_tex_color_normal/position_tex_color_normal.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/position_tex_color_normal/position_tex_color_normal.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_armor_cutout_no_cull/rendertype_armor_cutout_no_cull.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_armor_cutout_no_cull/rendertype_armor_cutout_no_cull.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_armor_cutout_no_cull/rendertype_armor_cutout_no_cull.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_armor_entity_glint/rendertype_armor_entity_glint.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_armor_entity_glint/rendertype_armor_entity_glint.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_armor_entity_glint/rendertype_armor_entity_glint.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_armor_glint/rendertype_armor_glint.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_armor_translucent/rendertype_armor_translucent.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_beacon_beam/rendertype_beacon_beam.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_beacon_beam/rendertype_beacon_beam.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_beacon_beam/rendertype_beacon_beam.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_breeze_wind/rendertype_breeze_wind.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_breeze_wind/rendertype_breeze_wind.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_breeze_wind/rendertype_breeze_wind.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_clouds/rendertype_clouds.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_clouds/rendertype_clouds.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_clouds/rendertype_clouds.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_crumbling/rendertype_crumbling.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_crumbling/rendertype_crumbling.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_crumbling/rendertype_crumbling.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_cutout/rendertype_cutout.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_cutout/rendertype_cutout.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_cutout/rendertype_cutout.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_cutout_mipped/rendertype_cutout_mipped.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_cutout_mipped/rendertype_cutout_mipped.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_cutout_mipped/rendertype_cutout_mipped.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_end_gateway/rendertype_end_gateway.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_end_portal/rendertype_end_portal.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_end_portal/rendertype_end_portal.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_end_portal/rendertype_end_portal.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_energy_swirl/rendertype_energy_swirl.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_energy_swirl/rendertype_energy_swirl.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_energy_swirl/rendertype_energy_swirl.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_alpha/rendertype_entity_alpha.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_alpha/rendertype_entity_alpha.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_alpha/rendertype_entity_alpha.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_cutout/rendertype_entity_cutout.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_cutout_no_cull/rendertype_entity_cutout_no_cull.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_cutout_no_cull_z_offset/rendertype_entity_cutout_no_cull_z_offset.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_decal/rendertype_entity_decal.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_decal/rendertype_entity_decal.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_decal/rendertype_entity_decal.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_glint/rendertype_entity_glint.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_glint/rendertype_entity_glint.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_glint/rendertype_entity_glint.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_glint_direct/rendertype_entity_glint_direct.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_glint_direct/rendertype_entity_glint_direct.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_glint_direct/rendertype_entity_glint_direct.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_no_outline/rendertype_entity_no_outline.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_no_outline/rendertype_entity_no_outline.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_no_outline/rendertype_entity_no_outline.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_shadow/rendertype_entity_shadow.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_shadow/rendertype_entity_shadow.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_shadow/rendertype_entity_shadow.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_smooth_cutout/rendertype_entity_smooth_cutout.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_solid/rendertype_entity_solid.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_solid/rendertype_entity_solid.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_solid/rendertype_entity_solid.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_translucent/rendertype_entity_translucent.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_translucent_cull/rendertype_entity_translucent_cull.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_translucent_cull/rendertype_entity_translucent_cull.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_translucent_cull/rendertype_entity_translucent_cull.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_translucent_emissive/rendertype_entity_translucent_emissive.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_translucent_emissive/rendertype_entity_translucent_emissive.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_entity_translucent_emissive/rendertype_entity_translucent_emissive.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_eyes/rendertype_eyes.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_eyes/rendertype_eyes.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_eyes/rendertype_eyes.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_glint/rendertype_glint.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_glint_direct/rendertype_glint_direct.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_glint_translucent/rendertype_glint_translucent.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_gui/rendertype_gui.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_gui_ghost_recipe_overlay.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_gui_overlay/rendertype_gui_overlay.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_gui_text_highlight.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_item_entity_translucent_cull/rendertype_item_entity_translucent_cull.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_item_entity_translucent_cull/rendertype_item_entity_translucent_cull.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_item_entity_translucent_cull/rendertype_item_entity_translucent_cull.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_leash/rendertype_leash.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_leash/rendertype_leash.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_leash/rendertype_leash.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_lightning/rendertype_lightning.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_lightning/rendertype_lightning.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_lightning/rendertype_lightning.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_lines/rendertype_lines.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_lines/rendertype_lines.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_lines/rendertype_lines.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_outline/rendertype_outline.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_outline/rendertype_outline.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_outline/rendertype_outline.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_solid/rendertype_solid.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_solid/rendertype_solid.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_solid/rendertype_solid.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text/rendertype_text.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text/rendertype_text.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text/rendertype_text.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text_background/rendertype_text_background.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text_background/rendertype_text_background.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text_background/rendertype_text_background.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text_background_see_through/rendertype_text_background_see_through.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text_background_see_through/rendertype_text_background_see_through.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text_background_see_through/rendertype_text_background_see_through.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text_intensity/rendertype_text_intensity.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text_intensity/rendertype_text_intensity.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text_intensity/rendertype_text_intensity.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text_intensity_see_through/rendertype_text_intensity_see_through.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text_intensity_see_through/rendertype_text_intensity_see_through.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text_intensity_see_through/rendertype_text_intensity_see_through.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text_see_through/rendertype_text_see_through.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text_see_through/rendertype_text_see_through.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_text_see_through/rendertype_text_see_through.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_translucent/rendertype_translucent.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_translucent/rendertype_translucent.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_translucent/rendertype_translucent.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_translucent_moving_block/rendertype_translucent_moving_block.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_translucent_moving_block/rendertype_translucent_moving_block.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_translucent_moving_block/rendertype_translucent_moving_block.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_translucent_no_crumbling/rendertype_translucent_no_crumbling.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_translucent_no_crumbling/rendertype_translucent_no_crumbling.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_translucent_no_crumbling/rendertype_translucent_no_crumbling.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_tripwire/rendertype_tripwire.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_tripwire/rendertype_tripwire.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_tripwire/rendertype_tripwire.vsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_water_mask/rendertype_water_mask.fsh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_water_mask/rendertype_water_mask.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_water_mask/rendertype_water_mask.vsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/interfaces/ShaderMixed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/interfaces/ShaderMixed.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/ShaderInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/ShaderInstanceM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/PipelineManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/PipelineManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/DrawBuffers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/DrawBuffers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/SPIRVUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/SPIRVUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Uniforms.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Uniforms.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/AlignedStruct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/AlignedStruct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/Uniform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/Uniform.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/Vec1f.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/Vec1f.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/Vec1i.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/Vec1i.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/parser/GlslConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/parser/GlslConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/parser/UniformParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/parser/UniformParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain.vsh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +283,7 @@
     "Gradle.VulkanModNeoForge [build].executor": "Run",
     "Gradle.VulkanModNeoForge [clean build runClient].executor": "Run",
     "Gradle.VulkanModNeoForge [clean runClient].executor": "Run",
-    "Gradle.VulkanModNeoForge [runClient].executor": "Debug",
+    "Gradle.VulkanModNeoForge [runClient].executor": "Run",
     "Gradle.下载源代码.executor": "Run",
     "Gradle.构建 VulkanModNeoForge.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -644,7 +832,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782273799125</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Use custom color resolver if requested&#10;- Implement BlockColorRegistry for fast look up&#10;- Refactor&#10;- Update 0.5.0-dev+8&#10;- Sync b56a22d">
+      <option name="closed" value="true" />
+      <created>1782274146768</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1782274146768</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -665,7 +861,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="UPDATE" />
     <MESSAGE value="UPDATE ASSETS" />
     <MESSAGE value="UPDATED" />
     <MESSAGE value="fix DeviceManager and Device" />
@@ -690,7 +885,8 @@
     <MESSAGE value="Use normal to calculate quad facing&#10;Update 0.5.0-dev+6&#10;Sync 0ef9f9a" />
     <MESSAGE value="Add missing normal vector copy&#10;Sync ca9cf7b" />
     <MESSAGE value="Improve glsl conversion&#10;Improve compatibility&#10;Add image format info&#10;Sync 4ec5d6a,eedfa54,5c8bbfe" />
-    <option name="LAST_COMMIT_MESSAGE" value="Improve glsl conversion&#10;Improve compatibility&#10;Add image format info&#10;Sync 4ec5d6a,eedfa54,5c8bbfe" />
+    <MESSAGE value="Use custom color resolver if requested&#10;- Implement BlockColorRegistry for fast look up&#10;- Refactor&#10;- Update 0.5.0-dev+8&#10;- Sync b56a22d" />
+    <option name="LAST_COMMIT_MESSAGE" value="Use custom color resolver if requested&#10;- Implement BlockColorRegistry for fast look up&#10;- Refactor&#10;- Update 0.5.0-dev+8&#10;- Sync b56a22d" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

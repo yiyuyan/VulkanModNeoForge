@@ -1,10 +1,12 @@
 package net.vulkanmod.vulkan.shader.parser;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.vulkanmod.vulkan.shader.Pipeline;
+import net.vulkanmod.Initializer;
 import net.vulkanmod.vulkan.shader.descriptor.ImageDescriptor;
-import net.vulkanmod.vulkan.shader.layout.AlignedStruct;
 import net.vulkanmod.vulkan.shader.descriptor.UBO;
+import net.vulkanmod.vulkan.shader.layout.AlignedStruct;
+import net.vulkanmod.vulkan.shader.layout.Uniform;
+import org.lwjgl.vulkan.VK11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,19 +21,18 @@ public class UniformParser {
     private String type;
     private String name;
 
-    private UBO ubo;
     private List<ImageDescriptor> imageDescriptors;
 
     public UniformParser(GlslConverter converterInstance) {
         this.converterInstance = converterInstance;
 
-        for(int i = 0; i < this.stageUniforms.length; ++i) {
+        for (int i = 0; i < this.stageUniforms.length; ++i) {
             this.stageUniforms[i] = new StageUniforms();
         }
     }
 
     public boolean parseToken(String token) {
-        if(token.matches("uniform")) return false;
+        if (token.matches("uniform")) return false;
 
         if (this.type == null) {
             this.type = token;
@@ -47,12 +48,13 @@ public class UniformParser {
             if ("sampler2D".equals(this.type)) {
                 if (!this.currentUniforms.samplers.contains(uniform))
                     this.currentUniforms.samplers.add(uniform);
-            } else {
+            }
+            else {
                 if (!this.globalUniforms.contains(uniform))
                     this.globalUniforms.add(uniform);
             }
 
-            this.resetState();
+            this.resetSate();
             return true;
         }
 
@@ -63,7 +65,7 @@ public class UniformParser {
         this.currentUniforms = stageUniforms[shaderStage.ordinal()];
     }
 
-    private void resetState() {
+    private void resetSate() {
         this.type = null;
         this.name = null;
 //        this.state = State.None;
@@ -72,11 +74,9 @@ public class UniformParser {
     public String createUniformsCode() {
         StringBuilder builder = new StringBuilder();
 
-        this.ubo = this.createUBO();
-
         //hardcoded 0 binding as it should always be 0 in this case
         builder.append(String.format("layout(binding = %d) uniform UniformBufferObject {\n", 0));
-        for(Uniform uniform : this.globalUniforms) {
+        for (Uniform uniform : this.globalUniforms) {
             builder.append(String.format("%s %s;\n", uniform.type, uniform.name));
         }
         builder.append("};\n\n");
@@ -89,23 +89,37 @@ public class UniformParser {
 
         this.imageDescriptors = createSamplerList();
 
-        for(ImageDescriptor imageDescriptor : this.imageDescriptors) {
-            builder.append(String.format("layout(binding = %d) uniform %s %s;\n", imageDescriptor.getBinding(), imageDescriptor.qualifier, imageDescriptor.name));
+        for (ImageDescriptor imageDescriptor : this.imageDescriptors) {
+            builder.append(String.format("layout(binding = %d) uniform %s %s;\n", imageDescriptor.getBinding(),
+                    imageDescriptor.qualifier, imageDescriptor.name));
         }
         builder.append("\n");
 
         return builder.toString();
     }
 
-    private UBO createUBO() {
+    public UBO createUBO() {
         AlignedStruct.Builder builder = new AlignedStruct.Builder();
 
-        for(Uniform uniform : this.globalUniforms) {
-            builder.addUniformInfo(uniform.type, uniform.name);
+        for (UniformParser.Uniform uniform : this.globalUniforms) {
+            String name = uniform.name();
+            String type = uniform.type();
+
+            net.vulkanmod.vulkan.shader.layout.Uniform.Info uniformInfo = net.vulkanmod.vulkan.shader.layout.Uniform.createUniformInfo(type, name);
+
+            uniformInfo.setupSupplier();
+
+            if (uniformInfo.hasSupplier()) {
+                builder.addUniformInfo(uniformInfo);
+            } else {
+                Initializer.LOGGER.warn("Skipping uniform with no supplier: {} {}", type, name);
+            }
+
+            //builder.addUniformInfo(uniformInfo);
         }
 
-        //hardcoded 0 binding as it should always be 0 in this case
-        return builder.buildUBO(0, Pipeline.Builder.getStageFromString("all"));
+        // Use binding 0 for global uniforms
+        return builder.buildUBO(0, VK11.VK_SHADER_STAGE_ALL);
     }
 
     private List<ImageDescriptor> createSamplerList() {
@@ -113,8 +127,8 @@ public class UniformParser {
 
         List<ImageDescriptor> imageDescriptors = new ObjectArrayList<>();
 
-        for(StageUniforms stageUniforms : this.stageUniforms) {
-            for(Uniform uniform : stageUniforms.samplers) {
+        for (StageUniforms stageUniforms : this.stageUniforms) {
+            for (Uniform uniform : stageUniforms.samplers) {
                 int imageIdx = currentLocation - 1;
                 imageDescriptors.add(new ImageDescriptor(currentLocation, uniform.type, uniform.name, imageIdx));
                 currentLocation++;
@@ -126,20 +140,21 @@ public class UniformParser {
 
     public static String removeSemicolon(String s) {
         int last = s.length() - 1;
-        if((s.charAt(last)) != ';' )
+        if ((s.charAt(last)) != ';')
             throw new IllegalArgumentException("last char is not ;");
         return s.substring(0, last);
     }
 
-    public UBO getUbo() {
-        return this.ubo;
+    public List<Uniform> getGlobalUniforms() {
+        return globalUniforms;
     }
 
     public List<ImageDescriptor> getSamplers() {
         return this.imageDescriptors;
     }
 
-    public record Uniform(String type, String name) {}
+    public record Uniform(String type, String name) {
+    }
 
     private static class StageUniforms {
         List<Uniform> samplers = new ArrayList<>();

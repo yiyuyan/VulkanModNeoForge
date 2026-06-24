@@ -1,6 +1,5 @@
 package net.vulkanmod.mixin.compatibility;
 
-import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.shaders.BlendMode;
@@ -31,11 +30,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -115,7 +112,7 @@ public class EffectInstanceM {
             GlslConverter converter = new GlslConverter();
 
             converter.process(vshSrc, fshSrc);
-            UBO ubo = converter.getUBO();
+            UBO ubo = converter.createUBO();
             this.setUniformSuppliers(ubo);
 
             Pipeline.Builder builder = new Pipeline.Builder(DefaultVertexFormat.POSITION);

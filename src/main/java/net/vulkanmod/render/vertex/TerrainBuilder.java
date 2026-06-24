@@ -37,8 +37,8 @@ public class TerrainBuilder {
         this.indexBufferPtr = ALLOCATOR.malloc(size);
         this.indexBufferCapacity = size;
 
-        this.format = PipelineManager.TERRAIN_VERTEX_FORMAT;
-        this.vertexBuilder = PipelineManager.TERRAIN_VERTEX_FORMAT == CustomVertexFormat.COMPRESSED_TERRAIN
+        this.format = PipelineManager.terrainVertexFormat;
+        this.vertexBuilder = PipelineManager.terrainVertexFormat == CustomVertexFormat.COMPRESSED_TERRAIN
                 ? new VertexBuilder.CompressedVertexBuilder() : new VertexBuilder.DefaultVertexBuilder();
 
         var bufferBuilders = new TerrainBufferBuilder[QuadFacing.COUNT];

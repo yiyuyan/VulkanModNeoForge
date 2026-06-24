@@ -29,7 +29,7 @@ import static org.lwjgl.system.MemoryUtil.memASCII;
 import static org.lwjgl.util.shaderc.Shaderc.*;
 
 public class SPIRVUtils {
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
     private static final boolean OPTIMIZATIONS = true;
 
     private static long compiler;
@@ -79,7 +79,7 @@ public class SPIRVUtils {
             includePaths.add(url.toExternalForm());
     }
 
-    public static SPIRV compileShaderAbsoluteFile(String shaderFile, ShaderKind shaderKind) {
+    /*public static SPIRV compileShaderAbsoluteFile(String shaderFile, ShaderKind shaderKind) {
         try {
             String source = new String(Files.readAllBytes(Paths.get(new URI(shaderFile))));
             return compileShader(shaderFile, source, shaderKind);
@@ -87,7 +87,7 @@ public class SPIRVUtils {
             Initializer.LOGGER.error("Failed to load shader file {}", shaderFile, e);
         }
         return null;
-    }
+    }*/
 
     private static String processSource(String source){
         StringBuilder builder = new StringBuilder();
@@ -113,6 +113,10 @@ public class SPIRVUtils {
 
 
     public static SPIRV compileShader(String filename, String source, ShaderKind shaderKind) {
+        if (source == null) {
+            throw new NullPointerException("source for %s.%s is null".formatted(filename, shaderKind));
+        }
+
         source = processSource(source);
 
         Initializer.LOGGER.debug("Compiling shader {} into spv. shaderKind: {}",filename,shaderKind);
@@ -129,7 +133,7 @@ public class SPIRVUtils {
         return new SPIRV(result, shaderc_result_get_bytes(result));
     }
 
-    private static SPIRV readFromStream(InputStream inputStream) {
+    /*private static SPIRV readFromStream(InputStream inputStream) {
         try {
             byte[] bytes = inputStream.readAllBytes();
             ByteBuffer buffer = MemoryUtil.memAlloc(bytes.length);
@@ -141,7 +145,7 @@ public class SPIRVUtils {
             Initializer.LOGGER.error("Failed to read shader stream", e);
         }
         throw new RuntimeException("unable to read inputStream");
-    }
+    }*/
 
     public enum ShaderKind {
         VERTEX_SHADER(shaderc_glsl_vertex_shader),

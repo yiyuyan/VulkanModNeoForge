@@ -51,4 +51,15 @@ public class Uniforms {
         vec4f_uniformMap.put("FogColor", VRenderSystem::getShaderFogColor);
 
     }
+
+    public static Supplier<MappedBuffer> getUniformSupplier(String type, String name) {
+        return switch (type) {
+            case "mat4" -> Uniforms.mat4f_uniformMap.get(name);
+            case "vec4" -> Uniforms.vec4f_uniformMap.get(name);
+            case "vec3" -> Uniforms.vec3f_uniformMap.get(name);
+            case "vec2" -> Uniforms.vec2f_uniformMap.get(name);
+
+            default -> null;
+        };
+    }
 }

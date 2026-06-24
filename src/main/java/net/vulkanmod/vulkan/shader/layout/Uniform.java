@@ -1,5 +1,6 @@
 package net.vulkanmod.vulkan.shader.layout;
 
+import net.vulkanmod.Initializer;
 import net.vulkanmod.vulkan.shader.Uniforms;
 import net.vulkanmod.vulkan.util.MappedBuffer;
 import org.lwjgl.system.MemoryUtil;
@@ -17,18 +18,12 @@ public class Uniform {
         this.info = info;
         this.offset = info.offset * 4L;
         this.size = info.size * 4;
-        this.setSupplier();
+
+        this.setupSupplier();
     }
 
-    void setSupplier() {
-        this.values = switch (info.type) {
-            case "mat4" -> Uniforms.mat4f_uniformMap.get(info.name);
-            case "vec4" -> Uniforms.vec4f_uniformMap.get(info.name);
-            case "vec3" -> Uniforms.vec3f_uniformMap.get(info.name);
-            case "vec2" -> Uniforms.vec2f_uniformMap.get(info.name);
-
-            default -> null;
-        };
+    protected void setupSupplier() {
+        this.values = this.info.bufferSupplier;
     }
 
     public void setSupplier(Supplier<MappedBuffer> supplier) {
@@ -41,7 +36,6 @@ public class Uniform {
 
     void update(long ptr) {
         MappedBuffer src = values.get();
-
         MemoryUtil.memCopy(src.ptr, ptr + this.offset, this.size);
     }
 
@@ -61,11 +55,14 @@ public class Uniform {
 
     public int getSize() { return info.size; }
 
+    public Info getInfo() {
+        return info;
+    }
+
     public String toString() {
         return String.format("%s: %s offset: %d", info.type, info.name, info.offset);
     }
 
-    //TODO
     public static Info createUniformInfo(String type, String name, int count) {
         return switch (type) {
             case "matrix4x4" -> new Info("mat4", name, 4, 16);
@@ -98,11 +95,15 @@ public class Uniform {
     }
 
     public static class Info {
-        final String type;
-        final String name;
-        final int align;
-        final int size;
+        public final String type;
+        public final String name;
+        public final int align;
+        public final int size;
         int offset;
+
+        Supplier<MappedBuffer> bufferSupplier;
+        Supplier<Integer> intSupplier;
+        Supplier<Float> floatSupplier;
 
         Info(String type, String name, int align, int size) {
             this.type = type;
@@ -116,5 +117,51 @@ public class Uniform {
         int computeAlignmentOffset(int builderOffset) {
             return this.offset = builderOffset + ((align - (builderOffset % align)) % align);
         }
+
+        public void setupSupplier() {
+            switch (this.type) {
+                case "float" -> {
+                    this.floatSupplier = Uniforms.vec1f_uniformMap.get(this.name);
+                    if (this.floatSupplier != null) {
+                        this.bufferSupplier = null;
+                    } else {
+                        this.bufferSupplier = Uniforms.getUniformSupplier(this.type, this.name);
+                        if (this.bufferSupplier == null) {
+                            Initializer.LOGGER.warn("No float supplier found for uniform: " + this.name);
+                        }
+                    }
+                }
+                case "int" -> {
+                    this.intSupplier = Uniforms.vec1i_uniformMap.get(this.name);
+                    if (this.intSupplier != null) {
+                        this.bufferSupplier = null;
+                    } else {
+                        this.bufferSupplier = Uniforms.getUniformSupplier(this.type, this.name);
+                        if (this.bufferSupplier == null) {
+                            Initializer.LOGGER.warn("No int supplier found for uniform: " + this.name);
+                        }
+                    }
+                }
+                default -> {
+                    this.bufferSupplier = Uniforms.getUniformSupplier(this.type, this.name);
+                    if (this.bufferSupplier == null) {
+                        Initializer.LOGGER.warn("No buffer supplier found for uniform: " + this.type + " " + this.name);
+                    }
+                }
+            }
+        }
+
+        public boolean hasSupplier() {
+            return switch (this.type) {
+                case "float" -> this.floatSupplier != null || this.bufferSupplier != null;
+                case "int" -> this.intSupplier != null || this.bufferSupplier != null;
+                default -> this.bufferSupplier != null;
+            };
+        }
+
+        public void setBufferSupplier(Supplier<MappedBuffer> supplier) {
+            this.bufferSupplier = supplier;
+        }
+
     }
 }

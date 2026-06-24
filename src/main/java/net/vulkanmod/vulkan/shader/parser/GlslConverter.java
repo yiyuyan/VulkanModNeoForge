@@ -174,8 +174,8 @@ public class GlslConverter {
         this.inOutParser.setShaderStage(this.shaderStage);
     }
 
-    public UBO getUBO() {
-        return this.uniformParser.getUbo();
+    public UBO createUBO() {
+        return this.uniformParser.createUBO();
     }
 
     public List<ImageDescriptor> getSamplerList() {
