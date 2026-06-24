@@ -2,14 +2,17 @@ package net.vulkanmod.vulkan.shader.parser;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.vulkanmod.Initializer;
+import net.vulkanmod.vulkan.shader.Uniforms;
 import net.vulkanmod.vulkan.shader.descriptor.ImageDescriptor;
 import net.vulkanmod.vulkan.shader.descriptor.UBO;
 import net.vulkanmod.vulkan.shader.layout.AlignedStruct;
 import net.vulkanmod.vulkan.shader.layout.Uniform;
+import net.vulkanmod.vulkan.util.MappedBuffer;
 import org.lwjgl.vulkan.VK11;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class UniformParser {
 
@@ -105,14 +108,14 @@ public class UniformParser {
             String name = uniform.name();
             String type = uniform.type();
 
-            net.vulkanmod.vulkan.shader.layout.Uniform.Info uniformInfo = net.vulkanmod.vulkan.shader.layout.Uniform.createUniformInfo(type, name);
+            net.vulkanmod.vulkan.shader.layout.Uniform.Info uniformInfo =
+                    net.vulkanmod.vulkan.shader.layout.Uniform.createUniformInfo(type, name);
 
-            //uniformInfo.setupSupplier();
+            uniformInfo.setupSupplier();
 
             builder.addUniformInfo(uniformInfo);
         }
 
-        // Use binding 0 for global uniforms
         return builder.buildUBO(0, VK11.VK_SHADER_STAGE_ALL);
     }
 

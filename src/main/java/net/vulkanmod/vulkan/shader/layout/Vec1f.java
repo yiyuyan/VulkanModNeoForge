@@ -8,25 +8,23 @@ import java.util.function.Supplier;
 public class Vec1f extends Uniform {
     private Supplier<Float> floatSupplier;
 
-    public Vec1f(Info info) {
+    Vec1f(Info info) {
         super(info);
-    }
-
-    protected void setupSupplier() {
-        if (this.info.floatSupplier != null) {
-            this.floatSupplier = this.info.floatSupplier;
-        } else {
-            this.setSupplier(this.info.bufferSupplier);
-        }
+        this.floatSupplier = info.floatSupplier;
     }
 
     @Override
     public void setSupplier(Supplier<MappedBuffer> supplier) {
-        this.floatSupplier = () -> supplier.get().getFloat(0);
+        this.floatSupplier = () -> {
+            MappedBuffer buffer = supplier.get();
+            return MemoryUtil.memGetFloat(buffer.ptr);
+        };
+        this.values = null;
     }
 
+    @Override
     void update(long ptr) {
-        float f = this.floatSupplier.get();
-        MemoryUtil.memPutFloat(ptr + this.offset, f);
+        float value = floatSupplier.get();
+        MemoryUtil.memPutFloat(ptr + this.offset, value);
     }
 }

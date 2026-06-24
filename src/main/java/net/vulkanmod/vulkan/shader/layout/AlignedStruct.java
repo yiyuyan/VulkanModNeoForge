@@ -54,6 +54,7 @@ public abstract class AlignedStruct {
         public void addUniformInfo(Uniform.Info uniformInfo) {
             this.currentOffset = uniformInfo.computeAlignmentOffset(this.currentOffset);
             this.currentOffset += uniformInfo.size;
+            uniformInfo.setupSupplier();
             this.uniforms.add(uniformInfo);
         }
 

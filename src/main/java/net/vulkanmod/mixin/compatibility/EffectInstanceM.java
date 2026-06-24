@@ -130,9 +130,12 @@ public class EffectInstanceM {
     }
 
     private void setUniformSuppliers(UBO ubo) {
-
         for(Uniform v_uniform : ubo.getUniforms()) {
             com.mojang.blaze3d.shaders.Uniform uniform = this.uniformMap.get(v_uniform.getName());
+
+            if (uniform == null) {
+                continue;
+            }
 
             Supplier<MappedBuffer> supplier;
             ByteBuffer byteBuffer;
@@ -152,7 +155,6 @@ public class EffectInstanceM {
 
             v_uniform.setSupplier(supplier);
         }
-
     }
 
     private String[] decompose(String string, char c) {

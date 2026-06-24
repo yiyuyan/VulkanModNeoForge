@@ -4,190 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Use custom color resolver if requested&#10;- Implement BlockColorRegistry for fast look up&#10;- Refactor&#10;- Update 0.5.0-dev+8&#10;- Sync b56a22d">
-      <change beforePath="$PROJECT_DIR$/.idea/modules/cn.ksmcbrigade.vulkan.vulkanmod.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/cn.ksmcbrigade.vulkan.vulkanmod.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/vulkanmod.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/vulkanmod.test.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Refactored pipeline builder and creation&#10;- Update 0.5.0-dev+9">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/interfaces/ExtendedRenderTarget.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/PipelineManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/PipelineManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/target/RenderTargetMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/target/RenderTargetMixin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Uniforms.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Uniforms.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/AlignedStruct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/AlignedStruct.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/Uniform.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/Uniform.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/Vec1f.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/Vec1f.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/Vec1i.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/layout/Vec1i.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/parser/UniformParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/parser/UniformParser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain_Z.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/blit_screen/blit_screen.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/blit_screen/blit_screen.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/blit_screen/blit_screen.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/particle/particle.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/particle/particle.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/particle/particle.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position/position.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position/position.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position/position.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_color/position_color.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_color/position_color.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_color/position_color.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_color_lightmap/position_color_lightmap.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_color_lightmap/position_color_lightmap.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_color_lightmap/position_color_lightmap.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_color_normal/position_color_normal.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_color_normal/position_color_normal.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_color_normal/position_color_normal.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_color_tex/position_color_tex.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_color_tex/position_color_tex.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_color_tex/position_color_tex.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_color_tex_lightmap/position_color_tex_lightmap.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_color_tex_lightmap/position_color_tex_lightmap.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_color_tex_lightmap/position_color_tex_lightmap.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_tex/position_tex.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_tex/position_tex.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_tex/position_tex.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_tex_color/position_tex_color.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_tex_color/position_tex_color.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_tex_color/position_tex_color.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_tex_color_normal/position_tex_color_normal.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_tex_color_normal/position_tex_color_normal.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/position_tex_color_normal/position_tex_color_normal.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_armor_cutout_no_cull/rendertype_armor_cutout_no_cull.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_armor_cutout_no_cull/rendertype_armor_cutout_no_cull.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_armor_cutout_no_cull/rendertype_armor_cutout_no_cull.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_armor_entity_glint/rendertype_armor_entity_glint.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_armor_entity_glint/rendertype_armor_entity_glint.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_armor_entity_glint/rendertype_armor_entity_glint.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_armor_glint/rendertype_armor_glint.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_armor_glint/rendertype_armor_glint.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_armor_glint/rendertype_armor_glint.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_beacon_beam/rendertype_beacon_beam.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_beacon_beam/rendertype_beacon_beam.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_beacon_beam/rendertype_beacon_beam.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_breeze_wind/rendertype_breeze_wind.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_breeze_wind/rendertype_breeze_wind.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_breeze_wind/rendertype_breeze_wind.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_clouds/rendertype_clouds.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_clouds/rendertype_clouds.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_clouds/rendertype_clouds.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_crumbling/rendertype_crumbling.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_crumbling/rendertype_crumbling.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_crumbling/rendertype_crumbling.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_cutout/rendertype_cutout.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_cutout/rendertype_cutout.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_cutout/rendertype_cutout.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_cutout_mipped/rendertype_cutout_mipped.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_cutout_mipped/rendertype_cutout_mipped.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_cutout_mipped/rendertype_cutout_mipped.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_end_portal/rendertype_end_portal.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_end_portal/rendertype_end_portal.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_end_portal/rendertype_end_portal.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_energy_swirl/rendertype_energy_swirl.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_energy_swirl/rendertype_energy_swirl.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_energy_swirl/rendertype_energy_swirl.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_alpha/rendertype_entity_alpha.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_alpha/rendertype_entity_alpha.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_alpha/rendertype_entity_alpha.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_cutout/rendertype_entity_cutout.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_cutout/rendertype_entity_cutout.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_cutout/rendertype_entity_cutout.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_cutout_no_cull/rendertype_entity_cutout_no_cull.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_cutout_no_cull/rendertype_entity_cutout_no_cull.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_cutout_no_cull/rendertype_entity_cutout_no_cull.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_cutout_no_cull_z_offset/rendertype_entity_cutout_no_cull_z_offset.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_cutout_no_cull_z_offset/rendertype_entity_cutout_no_cull_z_offset.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_cutout_no_cull_z_offset/rendertype_entity_cutout_no_cull_z_offset.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_decal/rendertype_entity_decal.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_decal/rendertype_entity_decal.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_decal/rendertype_entity_decal.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_glint/rendertype_entity_glint.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_glint/rendertype_entity_glint.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_glint/rendertype_entity_glint.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_glint_direct/rendertype_entity_glint_direct.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_glint_direct/rendertype_entity_glint_direct.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_glint_direct/rendertype_entity_glint_direct.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_no_outline/rendertype_entity_no_outline.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_no_outline/rendertype_entity_no_outline.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_no_outline/rendertype_entity_no_outline.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_shadow/rendertype_entity_shadow.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_shadow/rendertype_entity_shadow.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_shadow/rendertype_entity_shadow.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_smooth_cutout/rendertype_entity_smooth_cutout.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_smooth_cutout/rendertype_entity_smooth_cutout.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_smooth_cutout/rendertype_entity_smooth_cutout.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_solid/rendertype_entity_solid.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_solid/rendertype_entity_solid.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_solid/rendertype_entity_solid.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_translucent/rendertype_entity_translucent.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_translucent/rendertype_entity_translucent.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_translucent/rendertype_entity_translucent.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_translucent_cull/rendertype_entity_translucent_cull.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_translucent_cull/rendertype_entity_translucent_cull.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_translucent_cull/rendertype_entity_translucent_cull.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_translucent_emissive/rendertype_entity_translucent_emissive.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_translucent_emissive/rendertype_entity_translucent_emissive.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_entity_translucent_emissive/rendertype_entity_translucent_emissive.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_eyes/rendertype_eyes.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_eyes/rendertype_eyes.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_eyes/rendertype_eyes.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_glint/rendertype_glint.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_glint/rendertype_glint.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_glint/rendertype_glint.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_glint_direct/rendertype_glint_direct.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_glint_direct/rendertype_glint_direct.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_glint_direct/rendertype_glint_direct.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_glint_translucent/rendertype_glint_translucent.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_glint_translucent/rendertype_glint_translucent.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_glint_translucent/rendertype_glint_translucent.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_item_entity_translucent_cull/rendertype_item_entity_translucent_cull.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_item_entity_translucent_cull/rendertype_item_entity_translucent_cull.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_item_entity_translucent_cull/rendertype_item_entity_translucent_cull.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_leash/rendertype_leash.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_leash/rendertype_leash.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_leash/rendertype_leash.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_lightning/rendertype_lightning.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_lightning/rendertype_lightning.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_lightning/rendertype_lightning.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_lines/rendertype_lines.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_lines/rendertype_lines.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_lines/rendertype_lines.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_outline/rendertype_outline.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_outline/rendertype_outline.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_outline/rendertype_outline.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_solid/rendertype_solid.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_solid/rendertype_solid.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_solid/rendertype_solid.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text/rendertype_text.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text/rendertype_text.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text/rendertype_text.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text_background/rendertype_text_background.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text_background/rendertype_text_background.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text_background/rendertype_text_background.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text_background_see_through/rendertype_text_background_see_through.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text_background_see_through/rendertype_text_background_see_through.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text_background_see_through/rendertype_text_background_see_through.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text_intensity/rendertype_text_intensity.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text_intensity/rendertype_text_intensity.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text_intensity/rendertype_text_intensity.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text_intensity_see_through/rendertype_text_intensity_see_through.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text_intensity_see_through/rendertype_text_intensity_see_through.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text_intensity_see_through/rendertype_text_intensity_see_through.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text_see_through/rendertype_text_see_through.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text_see_through/rendertype_text_see_through.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_text_see_through/rendertype_text_see_through.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_translucent/rendertype_translucent.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_translucent/rendertype_translucent.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_translucent/rendertype_translucent.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_translucent_moving_block/rendertype_translucent_moving_block.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_translucent_moving_block/rendertype_translucent_moving_block.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_translucent_moving_block/rendertype_translucent_moving_block.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_translucent_no_crumbling/rendertype_translucent_no_crumbling.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_translucent_no_crumbling/rendertype_translucent_no_crumbling.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_translucent_no_crumbling/rendertype_translucent_no_crumbling.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_tripwire/rendertype_tripwire.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_tripwire/rendertype_tripwire.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_tripwire/rendertype_tripwire.vsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_water_mask/rendertype_water_mask.fsh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_water_mask/rendertype_water_mask.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/minecraft/core/rendertype_water_mask/rendertype_water_mask.vsh" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -277,7 +105,7 @@
     "Gradle.VulkanModNeoForge [build].executor": "Run",
     "Gradle.VulkanModNeoForge [clean build runClient].executor": "Run",
     "Gradle.VulkanModNeoForge [clean runClient].executor": "Run",
-    "Gradle.VulkanModNeoForge [runClient].executor": "Debug",
+    "Gradle.VulkanModNeoForge [runClient].executor": "Run",
     "Gradle.下载源代码.executor": "Run",
     "Gradle.构建 VulkanModNeoForge.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -834,7 +662,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782274146768</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="Refactored pipeline builder and creation&#10;- Update 0.5.0-dev+9">
+      <option name="closed" value="true" />
+      <created>1782307412575</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1782307412575</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -855,7 +691,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="UPDATE ASSETS" />
     <MESSAGE value="UPDATED" />
     <MESSAGE value="fix DeviceManager and Device" />
     <MESSAGE value="More languages support." />
@@ -880,7 +715,8 @@
     <MESSAGE value="Add missing normal vector copy&#10;Sync ca9cf7b" />
     <MESSAGE value="Improve glsl conversion&#10;Improve compatibility&#10;Add image format info&#10;Sync 4ec5d6a,eedfa54,5c8bbfe" />
     <MESSAGE value="Use custom color resolver if requested&#10;- Implement BlockColorRegistry for fast look up&#10;- Refactor&#10;- Update 0.5.0-dev+8&#10;- Sync b56a22d" />
-    <option name="LAST_COMMIT_MESSAGE" value="Use custom color resolver if requested&#10;- Implement BlockColorRegistry for fast look up&#10;- Refactor&#10;- Update 0.5.0-dev+8&#10;- Sync b56a22d" />
+    <MESSAGE value="Refactored pipeline builder and creation&#10;- Update 0.5.0-dev+9" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored pipeline builder and creation&#10;- Update 0.5.0-dev+9" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

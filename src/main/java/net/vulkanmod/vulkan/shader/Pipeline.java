@@ -587,7 +587,6 @@ public abstract class Pipeline {
 
             for (JsonElement jsonelement2 : fields) {
                 JsonObject jsonobject2 = GsonHelper.convertToJsonObject(jsonelement2, "uniform");
-                //need to store some infos
                 String name = GsonHelper.getAsString(jsonobject2, "name");
                 String type2 = GsonHelper.getAsString(jsonobject2, "type");
                 int count = GsonHelper.getAsInt(jsonobject2, "count");
@@ -596,13 +595,15 @@ public abstract class Pipeline {
                 uniformInfo.setupSupplier();
 
                 if (!uniformInfo.hasSupplier()) {
-                    var uniformSupplier = this.uniformSupplierGetter.apply(uniformInfo);
+                    if (this.uniformSupplierGetter != null) {
+                        var uniformSupplier = this.uniformSupplierGetter.apply(uniformInfo);
 
-                    if (uniformSupplier == null) {
-                        throw new IllegalStateException("No uniform supplier found for uniform: (%s:%s)".formatted(type2, name));
+                        if (uniformSupplier == null) {
+                            throw new IllegalStateException("No uniform supplier found for uniform: (%s:%s)".formatted(type2, name));
+                        }
+
+                        uniformInfo.setBufferSupplier(uniformSupplier);
                     }
-
-                    uniformInfo.setBufferSupplier(this.uniformSupplierGetter.apply(uniformInfo));
                 }
 
                 builder.addUniformInfo(uniformInfo);
