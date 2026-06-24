@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceProvider;
+import net.vulkanmod.Initializer;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.shader.GraphicsPipeline;
 import net.vulkanmod.vulkan.shader.Pipeline;
@@ -112,6 +113,7 @@ public class EffectInstanceM {
             GlslConverter converter = new GlslConverter();
 
             converter.process(vshSrc, fshSrc);
+            Initializer.LOGGER.info("creating ubo for vsh: {} ; fsh: {}",vertexShader,fragShader);
             UBO ubo = converter.createUBO();
             this.setUniformSuppliers(ubo);
 

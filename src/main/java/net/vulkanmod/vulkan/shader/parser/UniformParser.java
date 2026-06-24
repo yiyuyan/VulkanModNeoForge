@@ -107,15 +107,9 @@ public class UniformParser {
 
             net.vulkanmod.vulkan.shader.layout.Uniform.Info uniformInfo = net.vulkanmod.vulkan.shader.layout.Uniform.createUniformInfo(type, name);
 
-            uniformInfo.setupSupplier();
+            //uniformInfo.setupSupplier();
 
-            if (uniformInfo.hasSupplier()) {
-                builder.addUniformInfo(uniformInfo);
-            } else {
-                Initializer.LOGGER.warn("Skipping uniform with no supplier: {} {}", type, name);
-            }
-
-            //builder.addUniformInfo(uniformInfo);
+            builder.addUniformInfo(uniformInfo);
         }
 
         // Use binding 0 for global uniforms

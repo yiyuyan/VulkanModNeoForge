@@ -23,7 +23,13 @@ public class Uniform {
     }
 
     protected void setupSupplier() {
+        // First try info's bufferSupplier
         this.values = this.info.bufferSupplier;
+
+        // If null, try to get from Uniforms
+        if (this.values == null) {
+            this.values = Uniforms.getUniformSupplier(this.info.type, this.info.name);
+        }
     }
 
     public void setSupplier(Supplier<MappedBuffer> supplier) {
@@ -35,6 +41,15 @@ public class Uniform {
     }
 
     void update(long ptr) {
+        if (this.values == null) {
+            // Last attempt to get supplier
+            this.values = Uniforms.getUniformSupplier(this.info.type, this.info.name);
+            if (this.values == null) {
+                Initializer.LOGGER.error("failed to get values when updating uniform: {}", this.getName());
+                return; // Skip update if no supplier available
+            }
+        }
+
         MappedBuffer src = values.get();
         MemoryUtil.memCopy(src.ptr, ptr + this.offset, this.size);
     }
@@ -71,7 +86,6 @@ public class Uniform {
                 case 3 -> new Info("vec3", name, 4, 3);
                 case 2 -> new Info("vec2", name, 2, 2);
                 case 1 -> new Info("float", name, 1, 1);
-
                 default -> throw new IllegalStateException("Unexpected value: " + count);
             };
             case "int" -> new Info("int", name, 1, 1);
@@ -83,13 +97,10 @@ public class Uniform {
         return switch (type) {
             case "mat4" -> new Info(type, name, 4, 16);
             case "mat3" -> new Info(type, name, 4, 9);
-
             case "vec4" -> new Info(type, name, 4, 4);
             case "vec3" -> new Info(type, name, 4, 3);
             case "vec2" -> new Info(type, name, 2, 2);
-
             case "float", "int" -> new Info(type, name, 1, 1);
-
             default -> throw new RuntimeException("not admitted type: " + type);
         };
     }
@@ -122,31 +133,18 @@ public class Uniform {
             switch (this.type) {
                 case "float" -> {
                     this.floatSupplier = Uniforms.vec1f_uniformMap.get(this.name);
-                    if (this.floatSupplier != null) {
-                        this.bufferSupplier = null;
-                    } else {
+                    if (this.floatSupplier == null) {
                         this.bufferSupplier = Uniforms.getUniformSupplier(this.type, this.name);
-                        if (this.bufferSupplier == null) {
-                            Initializer.LOGGER.warn("No float supplier found for uniform: " + this.name);
-                        }
                     }
                 }
                 case "int" -> {
                     this.intSupplier = Uniforms.vec1i_uniformMap.get(this.name);
-                    if (this.intSupplier != null) {
-                        this.bufferSupplier = null;
-                    } else {
+                    if (this.intSupplier == null) {
                         this.bufferSupplier = Uniforms.getUniformSupplier(this.type, this.name);
-                        if (this.bufferSupplier == null) {
-                            Initializer.LOGGER.warn("No int supplier found for uniform: " + this.name);
-                        }
                     }
                 }
                 default -> {
                     this.bufferSupplier = Uniforms.getUniformSupplier(this.type, this.name);
-                    if (this.bufferSupplier == null) {
-                        Initializer.LOGGER.warn("No buffer supplier found for uniform: " + this.type + " " + this.name);
-                    }
                 }
             }
         }
@@ -162,6 +160,5 @@ public class Uniform {
         public void setBufferSupplier(Supplier<MappedBuffer> supplier) {
             this.bufferSupplier = supplier;
         }
-
     }
 }
