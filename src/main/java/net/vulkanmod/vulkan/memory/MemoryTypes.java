@@ -67,7 +67,7 @@ public class MemoryTypes {
         }
 
         @Override
-        void createBuffer(Buffer buffer, int size) {
+        void createBuffer(Buffer buffer, long size) {
             MemoryManager.getInstance().createBuffer(buffer, size,
                     VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT | buffer.usage,
                     VK_MEMORY_HEAP_DEVICE_LOCAL_BIT);
@@ -76,7 +76,7 @@ public class MemoryTypes {
         @Override
         void copyToBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
             StagingBuffer stagingBuffer = Vulkan.getStagingBuffer();
-            stagingBuffer.copyBuffer((int) bufferSize, byteBuffer);
+            stagingBuffer.copyBuffer(bufferSize, byteBuffer);
 
             DeviceManager.getTransferQueue().copyBufferCmd(stagingBuffer.id, stagingBuffer.offset, buffer.getId(), buffer.getUsedBytes(), bufferSize);
         }
@@ -95,7 +95,7 @@ public class MemoryTypes {
                 vkWaitForFences(DeviceManager.vkDevice, fence, true, VUtil.UINT64_MAX);
 
                 MemoryManager.MapAndCopy(pAlloc.get(0),
-                        data -> VUtil.memcpy(data.getByteBuffer(0, (int) bufferSize), byteBuffer, (int) bufferSize, 0));
+                        data -> VUtil.memcpy(data.getByteBuffer(0, (int) bufferSize), byteBuffer, bufferSize, 0));
 
                 MemoryManager.freeBuffer(pStaging.get(0), pAlloc.get(0));
             }
@@ -123,12 +123,12 @@ public class MemoryTypes {
 
         @Override
         void copyToBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
-            nmemcpy(buffer.data.get(0) + buffer.getUsedBytes(), MemoryUtil.memAddress(byteBuffer), (int) bufferSize);
+            nmemcpy(buffer.data + buffer.getUsedBytes(), MemoryUtil.memAddress(byteBuffer), bufferSize);
         }
 
         @Override
         void copyFromBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
-            nmemcpy(MemoryUtil.memAddress(byteBuffer), buffer.data.get(0), (int) bufferSize);
+            nmemcpy(MemoryUtil.memAddress(byteBuffer), buffer.data, bufferSize);
         }
 
         @Override
@@ -144,7 +144,7 @@ public class MemoryTypes {
         }
 
         @Override
-        void createBuffer(Buffer buffer, int size) {
+        void createBuffer(Buffer buffer, long size) {
 
             MemoryManager.getInstance().createBuffer(buffer, size,
                     VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT | buffer.usage,
@@ -152,11 +152,11 @@ public class MemoryTypes {
         }
 
         void copyToBuffer(Buffer buffer, long dstOffset, long bufferSize, ByteBuffer byteBuffer) {
-            nmemcpy(buffer.data.get(0) + (int) dstOffset, MemoryUtil.memAddress(byteBuffer), (int) bufferSize);
+            nmemcpy(buffer.data + dstOffset, MemoryUtil.memAddress(byteBuffer), bufferSize);
         }
 
         void copyBuffer(Buffer src, Buffer dst) {
-            nmemcpy(dst.data.get(0), src.data.get(0), src.bufferSize);
+            nmemcpy(dst.data, src.data, src.bufferSize);
 
 //            copyBufferCmd(src.getId(), 0, dst.getId(), 0, src.bufferSize);
         }
@@ -169,7 +169,7 @@ public class MemoryTypes {
         }
 
         @Override
-        void createBuffer(Buffer buffer, int size) {
+        void createBuffer(Buffer buffer, long size) {
             MemoryManager.getInstance().createBuffer(buffer, size,
                     VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT | buffer.usage,
                     VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
@@ -183,7 +183,7 @@ public class MemoryTypes {
         }
 
         @Override
-        void createBuffer(Buffer buffer, int size) {
+        void createBuffer(Buffer buffer, long size) {
             MemoryManager.getInstance().createBuffer(buffer, size,
                     VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT | buffer.usage,
                     VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);

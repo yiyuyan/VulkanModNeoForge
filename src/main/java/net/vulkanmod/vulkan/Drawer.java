@@ -56,7 +56,7 @@ public class Drawer {
 
         if (this.vertexBuffers != null) {
             Arrays.stream(this.vertexBuffers).iterator().forEachRemaining(
-                    Buffer::freeBuffer
+                    Buffer::scheduleFree
             );
         }
         this.vertexBuffers = new VertexBuffer[framesNum];
@@ -64,7 +64,7 @@ public class Drawer {
 
         if (this.indexBuffers != null) {
             Arrays.stream(this.indexBuffers).iterator().forEachRemaining(
-                    Buffer::freeBuffer
+                    Buffer::scheduleFree
             );
         }
         this.indexBuffers = new IndexBuffer[framesNum];
@@ -72,7 +72,7 @@ public class Drawer {
 
         if (this.uniformBuffers != null) {
             Arrays.stream(this.uniformBuffers).iterator().forEachRemaining(
-                    Buffer::freeBuffer
+                    Buffer::scheduleFree
             );
         }
         this.uniformBuffers = new UniformBuffer[framesNum];
@@ -153,10 +153,12 @@ public class Drawer {
             MemoryManager.freeBuffer(buffer.getId(), buffer.getAllocation());
         }
 
-        this.quadsIndexBuffer.freeBuffer();
-        this.linesIndexBuffer.freeBuffer();
-        this.triangleFanIndexBuffer.freeBuffer();
-        this.debugLineStripIndexBuffer.freeBuffer();
+        this.quadsIndexBuffer.scheduleFree();
+        this.quadsIntIndexBuffer.scheduleFree();
+        this.triangleStripIndexBuffer.scheduleFree();
+        this.linesIndexBuffer.scheduleFree();
+        this.triangleFanIndexBuffer.scheduleFree();
+        this.debugLineStripIndexBuffer.scheduleFree();
     }
 
     public AutoIndexBuffer getQuadsIndexBuffer() {

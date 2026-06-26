@@ -13,27 +13,27 @@ public class UniformBuffer extends Buffer {
         return align(uploadSize, minOffset);
     }
 
-    public UniformBuffer(int size, MemoryType memoryType) {
+    public UniformBuffer(long size, MemoryType memoryType) {
         super(VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, memoryType);
         this.createBuffer(size);
     }
 
-    public void checkCapacity(int size) {
+    public void checkCapacity(long size) {
         if (size > this.bufferSize - this.usedBytes) {
             resizeBuffer((this.bufferSize + size) * 2);
         }
     }
 
-    public void updateOffset(int alignedSize) {
+    public void updateOffset(long alignedSize) {
         usedBytes += alignedSize;
     }
 
-    private void resizeBuffer(int newSize) {
+    private void resizeBuffer(long newSize) {
         MemoryManager.getInstance().addToFreeable(this);
         createBuffer(newSize);
     }
 
     public long getPointer() {
-        return this.data.get(0) + usedBytes;
+        return this.data + usedBytes;
     }
 }

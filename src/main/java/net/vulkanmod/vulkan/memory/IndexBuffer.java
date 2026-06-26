@@ -8,11 +8,11 @@ public class IndexBuffer extends Buffer {
 
     public IndexType indexType;
 
-    public IndexBuffer(int size, MemoryType type) {
+    public IndexBuffer(long size, MemoryType type) {
         this(size, type, IndexType.SHORT);
     }
 
-    public IndexBuffer(int size, MemoryType type, IndexType indexType) {
+    public IndexBuffer(long size, MemoryType type, IndexType indexType) {
         super(VK_BUFFER_USAGE_INDEX_BUFFER_BIT, type);
         this.indexType = indexType;
 
@@ -20,7 +20,7 @@ public class IndexBuffer extends Buffer {
     }
 
     public void copyBuffer(ByteBuffer byteBuffer) {
-        int size = byteBuffer.remaining();
+        long size = byteBuffer.remaining();
 
         if(size > this.bufferSize - this.usedBytes) {
             resizeBuffer((this.bufferSize + size) * 2);
@@ -31,7 +31,7 @@ public class IndexBuffer extends Buffer {
         usedBytes += size;
     }
 
-    private void resizeBuffer(int newSize) {
+    private void resizeBuffer(long newSize) {
         MemoryManager.getInstance().addToFreeable(this);
         this.createBuffer(newSize);
     }

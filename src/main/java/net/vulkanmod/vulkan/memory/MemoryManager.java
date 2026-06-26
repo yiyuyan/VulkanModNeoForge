@@ -123,7 +123,7 @@ public class MemoryManager {
         }
     }
 
-    public synchronized void createBuffer(Buffer buffer, int size, int usage, int properties) {
+    public synchronized void createBuffer(Buffer buffer, long size, int usage, int properties) {
 
         try (MemoryStack stack = stackPush()) {
             buffer.setBufferSize(size);
@@ -227,11 +227,6 @@ public class MemoryManager {
 
         freeableBuffers[currentFrame].add(bufferInfo);
 
-        if (buffer.data != null) {
-            org.lwjgl.PointerBuffer oldData = buffer.data;
-            this.frameOps[currentFrame].add(() -> MemoryUtil.memFree(oldData));
-        }
-
         if (DEBUG)
             stackTraces[currentFrame].add(new Throwable().getStackTrace());
     }
@@ -264,11 +259,11 @@ public class MemoryManager {
         if (DEBUG)
             stackTraces[frame].clear();
 
-        this.freeImages();
+        this.freeImages(frame);
     }
 
-    private void freeImages() {
-        List<VulkanImage> bufferList = freeableImages[currentFrame];
+    private void freeImages(int frame) {
+        List<VulkanImage> bufferList = freeableImages[frame];
         for (VulkanImage image : bufferList) {
 
             image.doFree();
@@ -293,7 +288,7 @@ public class MemoryManager {
         list.clear();
     }
 
-    public void addToFreeSegment(AreaBuffer areaBuffer, int offset) {
+    public void addToFreeSegment(AreaBuffer areaBuffer, long offset) {
         this.segmentsToFree[this.currentFrame].add(new SegmentFreeEntry(areaBuffer, offset));
     }
 
@@ -329,9 +324,9 @@ public class MemoryManager {
 
     private static final class SegmentFreeEntry {
         final AreaBuffer buffer;
-        final int offset;
+        final long offset;
 
-        SegmentFreeEntry(AreaBuffer buffer, int offset) {
+        SegmentFreeEntry(AreaBuffer buffer, long offset) {
             this.buffer = buffer;
             this.offset = offset;
         }

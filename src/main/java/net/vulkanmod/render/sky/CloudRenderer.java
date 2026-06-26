@@ -45,7 +45,6 @@ public class CloudRenderer {
     private byte prevCloudY;
 
     private CloudStatus prevCloudsType;
-    private boolean prevInsideClouds;
 
     private boolean generateClouds;
     private VBO cloudBuffer;
@@ -169,7 +168,7 @@ public class CloudRenderer {
         BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
         int renderDistance = 32;
-        boolean insideClouds = this.prevInsideClouds;
+        boolean insideClouds = false;
 
         if (this.prevCloudsType == CloudStatus.FANCY) {
 

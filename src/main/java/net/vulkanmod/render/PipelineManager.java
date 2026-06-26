@@ -84,5 +84,6 @@ public abstract class PipelineManager {
         terrainShaderEarlyZ.cleanUp();
         terrainShader.cleanUp();
         fastBlitPipeline.cleanUp();
+        cloudsPipeline.cleanUp();
     }
 }

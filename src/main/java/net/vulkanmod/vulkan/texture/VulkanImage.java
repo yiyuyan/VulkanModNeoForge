@@ -45,6 +45,7 @@ public class VulkanImage {
     private final int usage;
 
     private int currentLayout;
+    private long size;
 
     //Used for swap chain images
     public VulkanImage(long id, int format, int mipLevels, int width, int height, int formatSize, int usage, long imageView) {
@@ -60,6 +61,7 @@ public class VulkanImage {
         this.aspect = getAspect(this.format);
 
         this.sampler = SamplerManager.getTextureSampler((byte) this.mipLevels, (byte) 0);
+        this.size = (long) width * height * formatSize;
     }
 
     private VulkanImage(Builder builder) {
@@ -76,6 +78,7 @@ public class VulkanImage {
         VulkanImage image = new VulkanImage(builder);
 
         image.createImage(builder.mipLevels, builder.width, builder.height, builder.format, builder.usage);
+        image.size = (long) builder.width * builder.height * builder.formatSize;
         image.mainImageView = createImageView(image.id, builder.format, image.aspect, builder.mipLevels);
 
         image.sampler = SamplerManager.getTextureSampler(builder.mipLevels, builder.samplerFlags);
@@ -201,7 +204,7 @@ public class VulkanImage {
             StagingBuffer stagingBuffer = Vulkan.getStagingBuffer();
             stagingBuffer.align(this.formatSize);
 
-            stagingBuffer.copyBuffer((int) imageSize, buffer);
+            stagingBuffer.copyBuffer(imageSize, buffer);
 
             ImageUtil.copyBufferToImageCmd(stack, commandBuffer.getHandle(), stagingBuffer.getId(), id, mipLevel, width, height, xOffset, yOffset,
                                            (int) (stagingBuffer.getOffset() + (unpackRowLength * unpackSkipRows + unpackSkipPixels) * this.formatSize), unpackRowLength, height);

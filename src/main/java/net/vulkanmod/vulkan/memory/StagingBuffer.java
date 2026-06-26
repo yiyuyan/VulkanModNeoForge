@@ -12,7 +12,7 @@ import static org.lwjgl.vulkan.VK10.*;
 
 public class StagingBuffer extends Buffer {
 
-    public StagingBuffer(int bufferSize) {
+    public StagingBuffer(long bufferSize) {
         super(VK_BUFFER_USAGE_TRANSFER_SRC_BIT, MemoryTypes.HOST_MEM);
         this.usedBytes = 0;
         this.offset = 0;
@@ -20,14 +20,13 @@ public class StagingBuffer extends Buffer {
         this.createBuffer(bufferSize);
     }
 
-    public void copyBuffer(int size, ByteBuffer byteBuffer) {
+    public void copyBuffer(long size, ByteBuffer byteBuffer) {
 
         if(size > this.bufferSize - this.usedBytes) {
             resizeBuffer((this.bufferSize + size) * 2);
         }
 
-//        VUtil.memcpy(byteBuffer, this.data.getByteBuffer(0, this.bufferSize), this.usedBytes);
-        nmemcpy(this.data.get(0) + this.usedBytes, MemoryUtil.memAddress(byteBuffer), size);
+        nmemcpy(this.data + this.usedBytes, MemoryUtil.memAddress(byteBuffer), size);
 
         offset = usedBytes;
         usedBytes += size;
@@ -36,7 +35,7 @@ public class StagingBuffer extends Buffer {
     }
 
     public void align(int alignment) {
-        int alignedValue = Util.align(usedBytes, alignment);
+        int alignedValue = Util.align((int) usedBytes, alignment);
 
         if(alignedValue > this.bufferSize) {
             resizeBuffer((this.bufferSize) * 2);
@@ -45,7 +44,7 @@ public class StagingBuffer extends Buffer {
         usedBytes = alignedValue;
     }
 
-    private void resizeBuffer(int newSize) {
+    private void resizeBuffer(long newSize) {
         MemoryManager.getInstance().addToFreeable(this);
         this.createBuffer(newSize);
 

@@ -36,7 +36,6 @@
     "render.GameRendererMixin",
     "render.GlProgramManagerMixin",
     "render.GlStateManagerM",
-    "render.LevelRendererMixin",
     "render.MinecraftMixin",
     "render.RenderSystemMixin",
     "render.RenderTypeM",

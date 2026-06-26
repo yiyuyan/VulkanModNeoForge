@@ -78,9 +78,9 @@ public class VUtil {
         src.limit(src.capacity()).rewind();
     }
 
-    public static void memcpy(ByteBuffer src, ByteBuffer dst, int size, long offset) {
+    public static void memcpy(ByteBuffer src, ByteBuffer dst, long size, long offset) {
         dst.position((int)offset);
-        src.limit(size);
+        src.limit((int) size);
 
         MemoryUtil.memCopy(src, dst);
         src.limit(src.capacity()).rewind();

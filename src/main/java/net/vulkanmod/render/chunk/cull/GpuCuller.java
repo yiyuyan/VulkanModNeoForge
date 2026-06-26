@@ -348,11 +348,11 @@ public class GpuCuller {
 
     public void cleanUp() {
         this.pipeline.cleanUp();
-        this.metaBuffer.freeBuffer();
-        this.areaInfoBuffer.freeBuffer();
-        this.cmdBuffer.freeBuffer();
-        this.countBuffer.freeBuffer();
-        this.occlParamsBuffer.freeBuffer();
+        this.metaBuffer.scheduleFree();
+        this.areaInfoBuffer.scheduleFree();
+        this.cmdBuffer.scheduleFree();
+        this.countBuffer.scheduleFree();
+        this.occlParamsBuffer.scheduleFree();
         MemoryUtil.memFree(this.metaScratch);
         this.dummyHiZ.free();
         if (this.hiZPyramid != null) {

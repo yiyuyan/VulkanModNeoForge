@@ -27,6 +27,7 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -79,6 +80,12 @@ public class EffectInstanceM {
         return null;
     }
 
+    @Unique
+    private void scheduleCleanUp() {
+        if (this.pipeline != null)
+            this.pipeline.scheduleCleanUp();
+    }
+
     /**
      * @author
      * @reason
@@ -90,8 +97,7 @@ public class EffectInstanceM {
             uniform.close();
         }
 
-        //TODO
-//        ProgramManager.releaseProgram(this);
+        this.scheduleCleanUp();
     }
 
     private void createShaders(ResourceProvider resourceManager, String vertexShader, String fragShader) {

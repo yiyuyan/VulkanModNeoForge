@@ -70,7 +70,7 @@ public class AutoIndexBuffer {
             int newVertexCount = this.vertexCount * 2;
             Initializer.LOGGER.info("Reallocating AutoIndexBuffer from {} to {}", this.vertexCount, newVertexCount);
 
-            this.indexBuffer.freeBuffer();
+            this.indexBuffer.scheduleFree();
             createIndexBuffer(newVertexCount);
         }
     }
@@ -199,8 +199,8 @@ public class AutoIndexBuffer {
 
     public IndexBuffer getIndexBuffer() { return this.indexBuffer; }
 
-    public void freeBuffer() {
-        this.indexBuffer.freeBuffer();
+    public void scheduleFree() {
+        this.indexBuffer.scheduleFree();
     }
 
     public enum DrawType {

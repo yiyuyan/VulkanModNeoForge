@@ -155,7 +155,7 @@ public class AreaBuffer {
             segment = next;
         }
 
-        this.buffer.freeBuffer();
+        this.buffer.scheduleFree();
         this.buffer = dst;
 
         if (prevUsed == null) {
@@ -187,8 +187,8 @@ public class AreaBuffer {
         this.offsetChangedListener = listener;
     }
 
-    public void setSegmentFree(int offset) {
-        Segment segment = usedSegments.remove(offset * elementSize);
+    public void setSegmentFree(long offset) {
+        Segment segment = usedSegments.remove((int) (offset * elementSize));
 
         if (segment == null)
             return;
@@ -235,8 +235,8 @@ public class AreaBuffer {
         return this.buffer.getId();
     }
 
-    public void freeBuffer() {
-        this.buffer.freeBuffer();
+    public void scheduleFree() {
+        this.buffer.scheduleFree();
     }
 
     public int fragmentation() {

@@ -112,7 +112,7 @@ public class WorldRenderer {
 
     private void allocateIndirectBuffers() {
         if (this.indirectBuffers != null)
-            Arrays.stream(this.indirectBuffers).forEach(Buffer::freeBuffer);
+            Arrays.stream(this.indirectBuffers).forEach(Buffer::scheduleFree);
         this.indirectBuffers = new IndirectBuffer[Renderer.getFramesNum()];
         for (int i = 0; i < this.indirectBuffers.length; ++i) {
             this.indirectBuffers[i] = new IndirectBuffer(1000000, MemoryTypes.HOST_MEM);
@@ -394,7 +394,7 @@ public class WorldRenderer {
         if (terrainRenderType == TerrainRenderType.CUTOUT
                 && this.gpuCuller != null && Initializer.CONFIG.occlusionCulling) {
             this.minecraft.getProfiler().push("hiz_build");
-            VulkanImage depth = Vulkan.getSwapChain().getDepthAttachment();
+            VulkanImage depth = Renderer.getInstance().getSwapChain().getDepthAttachment();
             var cmd = Renderer.getCommandBuffer();
             renderer.endRenderPass();
             this.gpuCuller.ensureHiZ(depth);
@@ -492,7 +492,7 @@ public class WorldRenderer {
     public String getChunkStatistics() { return this.sectionGraph.getStatistics(); }
     public void cleanUp() {
         if (indirectBuffers != null)
-            Arrays.stream(indirectBuffers).forEach(Buffer::freeBuffer);
+            Arrays.stream(indirectBuffers).forEach(Buffer::scheduleFree);
         if (gpuCuller != null) {
             VK10.vkDeviceWaitIdle(Vulkan.getVkDevice());
             gpuCuller.cleanUp();

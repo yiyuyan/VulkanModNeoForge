@@ -1,18 +1,16 @@
 package net.vulkanmod.vulkan.memory;
 
-import org.lwjgl.PointerBuffer;
-
 public abstract class Buffer {
     protected long id;
     protected long allocation;
 
-    protected int bufferSize;
-    protected int usedBytes;
-    protected int offset;
+    protected long bufferSize;
+    protected long usedBytes;
+    protected long offset;
 
     protected MemoryType type;
     protected int usage;
-    protected PointerBuffer data;
+    protected long data;
 
     protected Buffer(int usage, MemoryType type) {
         //TODO: check usage
@@ -21,15 +19,19 @@ public abstract class Buffer {
 
     }
 
-    protected void createBuffer(int bufferSize) {
+    protected void createBuffer(long bufferSize) {
         this.type.createBuffer(this, bufferSize);
 
         if(this.type.mappable()) {
-            this.data = MemoryManager.getInstance().Map(this.allocation);
+            this.data = MemoryManager.getInstance().Map(this.allocation).get(0);
         }
     }
 
     public void freeBuffer() {
+        MemoryManager.getInstance().addToFreeable(this);
+    }
+
+    public void scheduleFree() {
         MemoryManager.getInstance().addToFreeable(this);
     }
 
@@ -43,9 +45,9 @@ public abstract class Buffer {
 
     public long getId() { return id; }
 
-    public int getBufferSize() { return bufferSize; }
+    public long getBufferSize() { return bufferSize; }
 
-    protected void setBufferSize(int size) { this.bufferSize = size; }
+    protected void setBufferSize(long size) { this.bufferSize = size; }
 
     protected void setId(long id) { this.id = id; }
 
@@ -53,9 +55,9 @@ public abstract class Buffer {
 
     /** Mapped host pointer — valid for host-mappable memory types only. */
     public long getDataPtr() {
-        if (this.data == null)
+        if (this.data == 0)
             throw new IllegalStateException("buffer is not host-mappable (type=" + this.type.getType() + ")");
-        return this.data.get(0);
+        return this.data;
     }
 
     public BufferInfo getBufferInfo() { return new BufferInfo(this.id, this.allocation, this.bufferSize, this.type.getType()); }

@@ -374,9 +374,9 @@ public class DrawBuffers {
 
     public void releaseBuffers() {
         if (!allocated) return;
-        vertexBuffers.values().forEach(AreaBuffer::freeBuffer);
+        vertexBuffers.values().forEach(AreaBuffer::scheduleFree);
         vertexBuffers.clear();
-        if (indexBuffer != null) indexBuffer.freeBuffer();
+        if (indexBuffer != null) indexBuffer.scheduleFree();
         indexBuffer = null;
         allocated = false;
     }

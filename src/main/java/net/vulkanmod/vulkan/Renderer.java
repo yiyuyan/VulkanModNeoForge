@@ -13,6 +13,7 @@ import net.vulkanmod.render.profiling.Profiler;
 import net.vulkanmod.render.texture.ImageUploadHelper;
 import net.vulkanmod.vulkan.device.DeviceManager;
 import net.vulkanmod.vulkan.framebuffer.Framebuffer;
+import net.vulkanmod.vulkan.framebuffer.SwapChain;
 import net.vulkanmod.vulkan.framebuffer.RenderPass;
 import net.vulkanmod.vulkan.memory.MemoryManager;
 import net.vulkanmod.vulkan.pass.DefaultMainPass;
@@ -54,8 +55,8 @@ public class Renderer {
     private static boolean swapChainUpdate = false;
     public static boolean skipRendering = false;
 
-    public static void initRenderer() {
-        INSTANCE = new Renderer();
+    public static void initRenderer(SwapChain swapChain) {
+        INSTANCE = new Renderer(swapChain);
         INSTANCE.init();
     }
 
@@ -80,6 +81,7 @@ public class Renderer {
     private long boundPipelineHandle;
 
     private Drawer drawer;
+    private SwapChain swapChain;
 
     private int framesNum;
     private int imagesNum;
@@ -97,14 +99,15 @@ public class Renderer {
     private VkCommandBuffer currentCmdBuffer;
     private boolean recordingCmds = false;
 
-    MainPass mainPass = DefaultMainPass.create();
+    MainPass mainPass;
 
     private final List<Runnable> onResizeCallbacks = new ObjectArrayList<>();
 
-    public Renderer() {
+    public Renderer(SwapChain swapChain) {
+        this.swapChain = swapChain;
         device = Vulkan.getVkDevice();
         framesNum = Initializer.CONFIG.frameQueueSize;
-        imagesNum = getSwapChain().getImagesNum();
+        imagesNum = swapChain.getImagesNum();
     }
 
     public static void setLineWidth(float width) {
@@ -115,6 +118,7 @@ public class Renderer {
     }
 
     private void init() {
+        this.mainPass = DefaultMainPass.create();
         MemoryManager.createInstance(Renderer.getFramesNum());
         Vulkan.createStagingBuffers();
 
@@ -202,7 +206,7 @@ public class Renderer {
             recreateSwapChain();
             swapChainUpdate = false;
 
-            if (getSwapChain().getWidth() == 0 && getSwapChain().getHeight() == 0) {
+            if (swapChain.getWidth() == 0 && swapChain.getHeight() == 0) {
                 skipRendering = true;
                 Minecraft.getInstance().noRender = true;
             } else {
@@ -232,7 +236,7 @@ public class Renderer {
 
             IntBuffer pImageIndex = stack.mallocInt(1);
 
-            int vkResult = vkAcquireNextImageKHR(device, Vulkan.getSwapChain().getId(), VUtil.UINT64_MAX,
+            int vkResult = vkAcquireNextImageKHR(device, swapChain.getId(), VUtil.UINT64_MAX,
                     imageAvailableSemaphores.get(currentFrame), VK_NULL_HANDLE, pImageIndex);
 
             if (vkResult == VK_SUBOPTIMAL_KHR || vkResult == VK_ERROR_OUT_OF_DATE_KHR || swapChainUpdate) {
@@ -338,7 +342,7 @@ public class Renderer {
             presentInfo.pWaitSemaphores(stack.longs(renderFinishedSemaphores.get(currentFrame)));
 
             presentInfo.swapchainCount(1);
-            presentInfo.pSwapchains(stack.longs(Vulkan.getSwapChain().getId()));
+            presentInfo.pSwapchains(stack.longs(swapChain.getId()));
 
             presentInfo.pImageIndices(stack.ints(imageIndex));
 
@@ -489,15 +493,17 @@ public class Renderer {
         Synchronization.INSTANCE.waitFences();
         Vulkan.waitIdle();
 
+        swapChain = Vulkan.getSwapChain();
+
         commandBuffers.forEach(commandBuffer -> vkResetCommandBuffer(commandBuffer, 0));
 
-        Vulkan.getSwapChain().recreate();
+        swapChain.recreate();
 
         //Semaphores need to be recreated in order to make them unsignaled
         destroySyncObjects();
 
         int newFramesNum = Initializer.CONFIG.frameQueueSize;
-        imagesNum = getSwapChain().getImagesNum();
+        imagesNum = swapChain.getImagesNum();
 
         if (framesNum != newFramesNum) {
             UploadManager.INSTANCE.submitUploads();
@@ -559,6 +565,10 @@ public class Renderer {
 
     public MainPass getMainPass() {
         return this.mainPass;
+    }
+
+    public SwapChain getSwapChain() {
+        return swapChain;
     }
 
     public void addOnResizeCallback(Runnable runnable) {
@@ -711,8 +721,8 @@ public class Renderer {
 
     public static void resetViewport() {
         try (MemoryStack stack = stackPush()) {
-            int width = getSwapChain().getWidth();
-            int height = getSwapChain().getHeight();
+            int width = INSTANCE.swapChain.getWidth();
+            int height = INSTANCE.swapChain.getHeight();
 
             VkViewport.Buffer viewport = VkViewport.malloc(1, stack);
             viewport.x(0.0f);

@@ -2,7 +2,7 @@ package net.vulkanmod.mixin.texture.image;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.vulkanmod.vulkan.Vulkan;
+import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.texture.ImageUtil;
 import net.vulkanmod.vulkan.texture.VTextureSelector;
 import net.vulkanmod.vulkan.texture.VulkanImage;
@@ -91,7 +91,7 @@ public abstract class MNativeImage {
                 int v =  MemoryUtil.memGetInt(this.pixels + l);
 
                 //TODO
-                if(Vulkan.getSwapChain().isBGRAformat)
+                if(Renderer.getInstance().getSwapChain().isBGRAformat)
                     v = ColorUtil.BGRAtoRGBA(v);
 
                 v = v | 255 << this.format.alphaOffset();
