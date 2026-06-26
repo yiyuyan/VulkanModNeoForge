@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Fix crash when clouds mesh is empty&#10;- Update 0.5.1-dev+1&#10;- Sync 3cfe478">
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/MemoryTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/MemoryTypes.java" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Use non cached memory type&#10;- Sync 1bbd0ac">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/data/ArrayLightDataCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/data/ArrayLightDataCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/data/LightDataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/data/LightDataAccess.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/flat/FlatLightPipeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/flat/FlatLightPipeline.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/smooth/NewSmoothLightPipeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/smooth/NewSmoothLightPipeline.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/smooth/SmoothLightPipeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/light/smooth/SmoothLightPipeline.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -300,15 +306,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="7796000" />
-    </task>
-    <task id="LOCAL-00007" summary="update 0.4.8-dev+1&#10;clean codes">
-      <option name="closed" value="true" />
-      <created>1778158722746</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1778158722746</updated>
+      <workItem from="1782437909229" duration="8212000" />
     </task>
     <task id="LOCAL-00008" summary="fix VulkanModDiscover">
       <option name="closed" value="true" />
@@ -694,7 +692,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782446464612</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="Use non cached memory type&#10;- Sync 1bbd0ac">
+      <option name="closed" value="true" />
+      <created>1782446682980</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1782446682980</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -715,7 +721,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Use VertexBuffer usage to Improve clouds rendering&#10;Update 0.4.9-dev+4&#10;Sync 41c3d58" />
     <MESSAGE value="UUse sorted index buffer on immediate rendering if needed&#10;Sync 5921d83" />
     <MESSAGE value="Refactor skip allocation mixin to prevent null pointer exception&#10;Remove RenderBuffersM.java&#10;Add SectionBufferBuilderPoolM.java&#10;Update 0.4.9-dev+5&#10;Sync 863eaeb" />
     <MESSAGE value="Update 0.5.0-dev+1" />
@@ -740,7 +745,8 @@
     <MESSAGE value="Fix incorrect entity shaders&#10;- Sync 8da1470" />
     <MESSAGE value="Use fixed size staging buffer&#10;- Refactor classes&#10;- Add missing resources' clean up&#10;- Track allocated image memory&#10;- Update 0.5.0-dev+14&#10;- Sync 3ac10f3" />
     <MESSAGE value="Fix crash when clouds mesh is empty&#10;- Update 0.5.1-dev+1&#10;- Sync 3cfe478" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix crash when clouds mesh is empty&#10;- Update 0.5.1-dev+1&#10;- Sync 3cfe478" />
+    <MESSAGE value="Use non cached memory type&#10;- Sync 1bbd0ac" />
+    <option name="LAST_COMMIT_MESSAGE" value="Use non cached memory type&#10;- Sync 1bbd0ac" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
