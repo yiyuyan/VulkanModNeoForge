@@ -4,8 +4,6 @@ import net.vulkanmod.Initializer;
 import net.vulkanmod.render.chunk.util.Util;
 import net.vulkanmod.vulkan.memory.MemoryManager;
 import net.vulkanmod.vulkan.memory.MemoryTypes;
-import net.vulkanmod.vulkan.util.VUtil;
-import org.lwjgl.system.MemoryUtil;
 
 import java.nio.ByteBuffer;
 
@@ -14,24 +12,28 @@ import static org.lwjgl.vulkan.VK10.*;
 
 public class StagingBuffer extends Buffer {
 
-    public StagingBuffer(long bufferSize) {
+    public StagingBuffer(long size) {
         super(VK_BUFFER_USAGE_TRANSFER_SRC_BIT, MemoryTypes.HOST_MEM);
-        this.usedBytes = 0;
-        this.offset = 0;
-
-        this.createBuffer(bufferSize);
+        this.createBuffer(size);
     }
 
-    public void copyBuffer(long size, ByteBuffer byteBuffer) {
+    public void copyBuffer(int size, ByteBuffer byteBuffer) {
+        this.copyBuffer(size, org.lwjgl.system.MemoryUtil.memAddress(byteBuffer));
+    }
 
-        if(size > this.bufferSize - this.usedBytes) {
-            resizeBuffer((this.bufferSize + size) * 2);
+    public void copyBuffer(int size, long srcPtr) {
+        if (size > this.bufferSize) {
+            throw new IllegalArgumentException("Upload size is greater than staging buffer size.");
         }
 
-        nmemcpy(this.data + this.usedBytes, MemoryUtil.memAddress(byteBuffer), size);
+        if (size > this.bufferSize - this.usedBytes) {
+            submitUploads();
+        }
 
-        offset = usedBytes;
-        usedBytes += size;
+        nmemcpy(this.data + this.usedBytes, srcPtr, size);
+
+        this.offset = this.usedBytes;
+        this.usedBytes += size;
     }
 
     public void align(int alignment) {
@@ -44,10 +46,8 @@ public class StagingBuffer extends Buffer {
         usedBytes = alignedValue;
     }
 
-    private void resizeBuffer(long newSize) {
-        MemoryManager.getInstance().addToFreeable(this);
-        this.createBuffer(newSize);
-
-        Initializer.LOGGER.debug("Resized staging buffer to {} bytes", newSize);
+    private void submitUploads() {
+        this.usedBytes = 0;
     }
+
 }

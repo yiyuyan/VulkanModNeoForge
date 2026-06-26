@@ -1,7 +1,6 @@
 package net.vulkanmod.vulkan.memory.buffer;
 
 import net.vulkanmod.vulkan.device.DeviceManager;
-import net.vulkanmod.vulkan.memory.MemoryManager;
 import net.vulkanmod.vulkan.memory.MemoryType;
 
 import static net.vulkanmod.vulkan.util.VUtil.align;
@@ -9,10 +8,10 @@ import static org.lwjgl.vulkan.VK10.VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
 
 public class UniformBuffer extends Buffer {
 
-    private final static int minOffset = (int) DeviceManager.deviceProperties.limits().minUniformBufferOffsetAlignment();
+    private final static int MIN_OFFSET_ALIGNMENT = (int) DeviceManager.deviceProperties.limits().minUniformBufferOffsetAlignment();
 
     public static int getAlignedSize(int uploadSize) {
-        return align(uploadSize, minOffset);
+        return align(uploadSize, MIN_OFFSET_ALIGNMENT);
     }
 
     public UniformBuffer(long size, MemoryType memoryType) {
@@ -30,12 +29,8 @@ public class UniformBuffer extends Buffer {
         usedBytes += alignedSize;
     }
 
-    private void resizeBuffer(long newSize) {
-        MemoryManager.getInstance().addToFreeable(this);
-        createBuffer(newSize);
-    }
-
     public long getPointer() {
         return this.data + usedBytes;
     }
+
 }

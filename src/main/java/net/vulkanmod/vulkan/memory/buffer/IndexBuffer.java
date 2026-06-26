@@ -1,9 +1,6 @@
 package net.vulkanmod.vulkan.memory.buffer;
 
-import net.vulkanmod.vulkan.memory.MemoryManager;
 import net.vulkanmod.vulkan.memory.MemoryType;
-
-import java.nio.ByteBuffer;
 
 import static org.lwjgl.vulkan.VK10.*;
 
@@ -22,35 +19,17 @@ public class IndexBuffer extends Buffer {
         this.createBuffer(size);
     }
 
-    public void copyBuffer(ByteBuffer byteBuffer) {
-        long size = byteBuffer.remaining();
-
-        if(size > this.bufferSize - this.usedBytes) {
-            resizeBuffer((this.bufferSize + size) * 2);
-        }
-
-        this.type.copyToBuffer(this, size, byteBuffer);
-        offset = usedBytes;
-        usedBytes += size;
-    }
-
-    private void resizeBuffer(long newSize) {
-        MemoryManager.getInstance().addToFreeable(this);
-        this.createBuffer(newSize);
-    }
-
     public enum IndexType {
         UINT16(2, VK_INDEX_TYPE_UINT16),
         UINT32(4, VK_INDEX_TYPE_UINT32);
 
         public final int size;
-        public final int type;
+        public final int value;
 
-        IndexType(int size, int type) {
+        IndexType(int size, int value) {
             this.size = size;
-            this.type = type;
+            this.value = value;
         }
     }
-
 
 }

@@ -195,7 +195,13 @@ public class VulkanImage {
     }
 
     public void uploadSubTextureAsync(int mipLevel, int width, int height, int xOffset, int yOffset, int unpackSkipRows, int unpackSkipPixels, int unpackRowLength, ByteBuffer buffer) {
-        long imageSize = buffer.limit();
+        this.uploadSubTextureAsync(mipLevel, width, height,
+                                   xOffset, yOffset, unpackSkipRows, unpackSkipPixels, unpackRowLength,
+                                   org.lwjgl.system.MemoryUtil.memAddress(buffer));
+    }
+
+    public void uploadSubTextureAsync(int mipLevel, int width, int height, int xOffset, int yOffset, int unpackSkipRows, int unpackSkipPixels, int unpackRowLength, long srcPtr) {
+        long uploadSize = (long) unpackRowLength * height * this.formatSize;
 
         CommandPool.CommandBuffer commandBuffer = ImageUploadHelper.INSTANCE.getOrStartCommandBuffer();
         try (MemoryStack stack = stackPush()) {
@@ -204,16 +210,12 @@ public class VulkanImage {
             StagingBuffer stagingBuffer = Vulkan.getStagingBuffer();
             stagingBuffer.align(this.formatSize);
 
-            stagingBuffer.copyBuffer(imageSize, buffer);
+            srcPtr += ((long) unpackRowLength * unpackSkipRows + unpackSkipPixels) * this.formatSize;
 
-            int uploadOffset = (unpackRowLength * unpackSkipRows + unpackSkipPixels) * this.formatSize;
-
-            if (uploadOffset > imageSize) {
-                throw new java.nio.BufferOverflowException();
-            }
+            stagingBuffer.copyBuffer((int) uploadSize, srcPtr);
 
             ImageUtil.copyBufferToImageCmd(stack, commandBuffer.getHandle(), stagingBuffer.getId(), id, mipLevel, width, height, xOffset, yOffset,
-                                           (int) (stagingBuffer.getOffset() + uploadOffset), unpackRowLength, height);
+                                           (int) (stagingBuffer.getOffset()), unpackRowLength, height);
         }
     }
 

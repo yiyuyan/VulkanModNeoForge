@@ -85,7 +85,7 @@ public class UploadManager {
         VkCommandBuffer commandBuffer = this.commandBuffer.getHandle();
 
         StagingBuffer stagingBuffer = Vulkan.getStagingBuffer();
-        stagingBuffer.copyBuffer(bufferSize, src);
+        stagingBuffer.copyBuffer((int) bufferSize, src);
 
         if (!this.dstBuffers.add(buffer.getId())) {
             try (MemoryStack stack = MemoryStack.stackPush()) {

@@ -4,12 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Fix FAPI fluid rendering implementation&#10;Remove mixin that didn't allow vanilla fluid rendering invocation&#10;- Sync fd3568c&#10;- Sync b8eb72e&#10;- Update 0.5.4-dev+3">
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Refactor VRenderSystem&#10;- Sync ed80bc4&#10;- Update 0.5.4-dev+4">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/RenderSystemMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/RenderSystemMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Renderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/VRenderSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/VRenderSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/VBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/VBO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/UploadManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/UploadManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Drawer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Drawer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/MemoryType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/MemoryType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/MemoryTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/MemoryTypes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/buffer/Buffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/buffer/Buffer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/buffer/IndexBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/buffer/IndexBuffer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/buffer/IndirectBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/buffer/IndirectBuffer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/buffer/StagingBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/buffer/StagingBuffer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/buffer/UniformBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/buffer/UniformBuffer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/buffer/VertexBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/buffer/VertexBuffer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/buffer/index/AutoIndexBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/buffer/index/AutoIndexBuffer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/ImageUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/ImageUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/VulkanImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/VulkanImage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/util/VUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/util/VUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -304,15 +317,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="24438000" />
-    </task>
-    <task id="LOCAL-00038" summary="Update 0.5.0-dev+4&#10;Forgified Fabric API is in need.&#10;Update Fabric API dependencies&#10;Please DONOT USE THIS VERSION,IT IS UNSTABLE">
-      <option name="closed" value="true" />
-      <created>1782225837837</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1782225837837</updated>
+      <workItem from="1782437909229" duration="25601000" />
     </task>
     <task id="LOCAL-00039" summary="Implement Fabric Rendering API&#10;Update 0.5.0-dev+5&#10;Sync 5774bf3&#10;Fuck you,NeoForge!&#10;Fuck you,Fabric!">
       <option name="closed" value="true" />
@@ -698,7 +703,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782463840423</updated>
     </task>
-    <option name="localTasksCounter" value="87" />
+    <task id="LOCAL-00087" summary="Refactor VRenderSystem&#10;- Sync ed80bc4&#10;- Update 0.5.4-dev+4">
+      <option name="closed" value="true" />
+      <created>1782464247102</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1782464247102</updated>
+    </task>
+    <option name="localTasksCounter" value="88" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -719,7 +732,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Fix crash on setting texture parameter&#10;- Implement missing methods&#10;- Update 0.5.1-dev+5&#10;- Sync 20dcc21&#10;- Sync 8b41398&#10;- Remove neoforged mixins" />
     <MESSAGE value="Improve set viewport compatibility&#10;- Sync 1ad99e0&#10;- Update 0.5.1-dev+6" />
     <MESSAGE value="Improve shader compatibility&#10;- shader uniforms and samplers&#10;- Sync ac508a7&#10;- Update 0.5.1-dev+7" />
     <MESSAGE value="Improve shader compatibility&#10;- shader uniforms and samplers" />
@@ -744,7 +756,8 @@
     <MESSAGE value="Improve program and uniform compatibility&#10;- Sync 3a0d4b8&#10;- Update 0.5.4-dev+2" />
     <MESSAGE value="Fix FAPI fluid rendering implementation&#10;Remove mixin that didn't allow vanilla fluid rendering invocation&#10;- Sync fd3568c" />
     <MESSAGE value="Fix FAPI fluid rendering implementation&#10;Remove mixin that didn't allow vanilla fluid rendering invocation&#10;- Sync fd3568c&#10;- Sync b8eb72e&#10;- Update 0.5.4-dev+3" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix FAPI fluid rendering implementation&#10;Remove mixin that didn't allow vanilla fluid rendering invocation&#10;- Sync fd3568c&#10;- Sync b8eb72e&#10;- Update 0.5.4-dev+3" />
+    <MESSAGE value="Refactor VRenderSystem&#10;- Sync ed80bc4&#10;- Update 0.5.4-dev+4" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor VRenderSystem&#10;- Sync ed80bc4&#10;- Update 0.5.4-dev+4" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

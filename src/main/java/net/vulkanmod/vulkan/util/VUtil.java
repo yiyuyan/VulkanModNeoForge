@@ -6,6 +6,8 @@ import org.lwjgl.system.MemoryUtil;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
+import net.vulkanmod.vulkan.memory.buffer.Buffer;
+
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.Collection;
@@ -13,6 +15,7 @@ import java.util.Collection;
 import static org.lwjgl.system.MemoryStack.stackGet;
 
 public class VUtil {
+    public static final boolean CHECKS = false;
     public static final int UINT32_MAX = 0xFFFFFFFF;
     public static final long UINT64_MAX = 0xFFFFFFFFFFFFFFFFL;
 
@@ -111,6 +114,18 @@ public class VUtil {
             buffer.putFloat(f);
         }
         floatBuffer.position(0);
+    }
+
+    public static void memcpy(ByteBuffer src, Buffer dst, long size, long srcOffset, long dstOffset) {
+        if (CHECKS) {
+            if (size > dst.getBufferSize() - dstOffset) {
+                throw new IllegalArgumentException("Upload size is greater than available dst buffer size");
+            }
+        }
+
+        final long dstPtr = dst.getDataPtr() + dstOffset;
+        final long srcPtr = MemoryUtil.memAddress(src) + srcOffset;
+        MemoryUtil.memCopy(srcPtr, dstPtr, size);
     }
 
     public static int align(int x, int align) {

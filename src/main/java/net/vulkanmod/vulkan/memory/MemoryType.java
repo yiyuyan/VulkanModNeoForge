@@ -19,7 +19,7 @@ public abstract class MemoryType {
 
     public abstract void createBuffer(Buffer buffer, long size);
 
-    public abstract void copyToBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer);
+    public abstract void copyToBuffer(Buffer buffer, ByteBuffer src, long size, long srcOffset, long dstOffset);
 
     public abstract void copyFromBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer);
 

@@ -1,7 +1,6 @@
 package net.vulkanmod.render.chunk;
 
 import com.google.common.collect.Sets;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.SheetedDecalTextureGenerator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -337,7 +336,7 @@ public class WorldRenderer {
         VTextureSelector.bindShaderTextures(pipeline);
 
         IndexBuffer globalIndexBuffer = Renderer.getDrawer().getQuadsIndexBuffer().getIndexBuffer();
-        Renderer.getDrawer().bindIndexBuffer(Renderer.getCommandBuffer(), globalIndexBuffer);
+        Renderer.getDrawer().bindIndexBuffer(Renderer.getCommandBuffer(), globalIndexBuffer, globalIndexBuffer.indexType.value);
 
         int currentFrame = Renderer.getCurrentFrame();
         Set<TerrainRenderType> allowedRenderTypes = Initializer.CONFIG.uniqueOpaqueLayer
@@ -372,7 +371,7 @@ public class WorldRenderer {
                         drawBuffers.buildDrawBatchesDirect(cameraVec, queue, terrainRenderType);
 
                     if (isTranslucent && drawBuffers.getIndexBuffer() != null) {
-                        Renderer.getDrawer().bindIndexBuffer(Renderer.getCommandBuffer(), globalIndexBuffer);
+                        Renderer.getDrawer().bindIndexBuffer(Renderer.getCommandBuffer(), globalIndexBuffer, globalIndexBuffer.indexType.value);
                     }
                 }
             }

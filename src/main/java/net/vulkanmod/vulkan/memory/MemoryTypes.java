@@ -76,11 +76,11 @@ public class MemoryTypes {
         }
 
         @Override
-        public void copyToBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
+        public void copyToBuffer(Buffer buffer, ByteBuffer src, long size, long srcOffset, long dstOffset) {
             StagingBuffer stagingBuffer = Vulkan.getStagingBuffer();
-            stagingBuffer.copyBuffer(bufferSize, byteBuffer);
+            stagingBuffer.copyBuffer((int) size, src);
 
-            DeviceManager.getTransferQueue().copyBufferCmd(stagingBuffer.getId(), stagingBuffer.getOffset(), buffer.getId(), buffer.getUsedBytes(), bufferSize);
+            DeviceManager.getTransferQueue().copyBufferCmd(stagingBuffer.getId(), stagingBuffer.getOffset(), buffer.getId(), dstOffset, size);
         }
 
         @Override
@@ -124,8 +124,8 @@ public class MemoryTypes {
         }
 
         @Override
-        public void copyToBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
-            nmemcpy(buffer.getDataPtr() + buffer.getUsedBytes(), MemoryUtil.memAddress(byteBuffer), bufferSize);
+        public void copyToBuffer(Buffer buffer, ByteBuffer src, long size, long srcOffset, long dstOffset) {
+            VUtil.memcpy(src, buffer, size, srcOffset, dstOffset);
         }
 
         @Override
