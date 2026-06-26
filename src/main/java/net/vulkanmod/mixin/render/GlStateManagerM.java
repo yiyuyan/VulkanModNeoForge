@@ -212,7 +212,8 @@ public class GlStateManagerM {
      */
     @Overwrite(remap = false)
     public static void _texSubImage2D(int target, int level, int offsetX, int offsetY, int width, int height, int format, int type, long pixels) {
-
+        RenderSystem.assertOnRenderThreadOrInit();
+        GlTexture.texSubImage2D(target, level, offsetX, offsetY, width, height, format, type, pixels);
     }
 
     /**

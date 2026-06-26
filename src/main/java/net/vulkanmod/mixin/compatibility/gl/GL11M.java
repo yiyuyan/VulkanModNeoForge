@@ -21,6 +21,24 @@ public class GL11M {
 
     /**
      * @author
+     * @reason
+     */
+    @Overwrite(remap = false)
+    public static void glPixelStorei(@NativeType("GLenum") int pname, @NativeType("GLint") int param) {
+        GlTexture.pixelStoreI(pname, param);
+    }
+
+    /**
+     * @author
+     * @reason
+     */
+    @Overwrite(remap = false)
+    public static void glBlendFunc(@NativeType("GLenum") int sfactor, @NativeType("GLenum") int dfactor) {
+        // TODO
+    }
+
+    /**
+     * @author
      * @reason ideally Scissor should be used. but using vkCmdSetScissor() caused glitches with invisible menus with replay mod, so disabled for now as temp fix
      */
     @Overwrite(remap = false)
