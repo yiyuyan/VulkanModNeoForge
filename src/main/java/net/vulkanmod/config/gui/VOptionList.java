@@ -207,6 +207,7 @@ public class VOptionList extends GuiElement {
         GuiRenderer.enableScissor(x, y, width, height);
 
         this.renderList(mouseX, mouseY);
+        GuiRenderer.flush();
         GuiRenderer.disableScissor();
 
         // Scroll bar
