@@ -401,7 +401,7 @@ public class VulkanModDiscover implements IModFileCandidateLocator {
             File file = new File("config/vkn-early-config.json");
             if(!file.exists()){
                 JsonObject obj = new JsonObject();
-                obj.addProperty("directExit",false);
+                obj.addProperty("directExit",true);
                 FileUtils.writeStringToFile(file,obj.toString());
             }
             JsonObject obj = JsonParser.parseString(FileUtils.readFileToString(file)).getAsJsonObject();

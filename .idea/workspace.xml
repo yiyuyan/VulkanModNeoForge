@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Set bound framebuffer on begin rendering&#10;- Fixes null pointer exception&#10;- Sync 1139f7d">
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/update/MLightTexture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/update/MLightTexture.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/sky/CloudRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/sky/CloudRenderer.java" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Reset blend function before drawing&#10;- Improve mixin compatibility&#10;- Sync 4c47fb6&#10;- Sync 868bbf1&#10;- Update 0.5.1-dev+3">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan_core/services/VulkanModDiscover.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/ksmcbrigade/vulkan_core/services/VulkanModDiscover.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +137,7 @@
       <command value="gradle build" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.VulkanModNeoForge [runClient]">
+  <component name="RunManager" selected="Gradle.VulkanModNeoForge [build]">
     <configuration name="VulkanModNeoForge [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -302,15 +301,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="8839000" />
-    </task>
-    <task id="LOCAL-00010" summary="clean codes">
-      <option name="closed" value="true" />
-      <created>1781405413583</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1781405413583</updated>
+      <workItem from="1782437909229" duration="9214000" />
     </task>
     <task id="LOCAL-00011" summary="update SectionBufferBuilderPoolM">
       <option name="closed" value="true" />
@@ -696,7 +687,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782447432671</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="Reset blend function before drawing&#10;- Improve mixin compatibility&#10;- Sync 4c47fb6&#10;- Sync 868bbf1&#10;- Update 0.5.1-dev+3">
+      <option name="closed" value="true" />
+      <created>1782447675157</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1782447675157</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -717,7 +716,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Update 0.5.0-dev+1" />
     <MESSAGE value="Implement IndexBuffer resize&#10;Update 0.5.0-dev+2&#10;Sync a290169" />
     <MESSAGE value="Add backface culling setting's translatable components&#10;Sync a7ffe3d" />
     <MESSAGE value="Fix biome blending not applied in some cases&#10;Update 0.5.0-dev+3" />
@@ -742,7 +740,8 @@
     <MESSAGE value="Use non cached memory type&#10;- Sync 1bbd0ac" />
     <MESSAGE value="Use level renderer light values to improve compatibility&#10;- Update 0.5.1-dev+2&#10;- Sync 349de86" />
     <MESSAGE value="Set bound framebuffer on begin rendering&#10;- Fixes null pointer exception&#10;- Sync 1139f7d" />
-    <option name="LAST_COMMIT_MESSAGE" value="Set bound framebuffer on begin rendering&#10;- Fixes null pointer exception&#10;- Sync 1139f7d" />
+    <MESSAGE value="Reset blend function before drawing&#10;- Improve mixin compatibility&#10;- Sync 4c47fb6&#10;- Sync 868bbf1&#10;- Update 0.5.1-dev+3" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reset blend function before drawing&#10;- Improve mixin compatibility&#10;- Sync 4c47fb6&#10;- Sync 868bbf1&#10;- Update 0.5.1-dev+3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
