@@ -24,14 +24,13 @@ public class MemoryTypes {
         for (int i = 0; i < DeviceManager.memoryProperties.memoryTypeCount(); ++i) {
             VkMemoryType memoryType = DeviceManager.memoryProperties.memoryTypes(i);
             VkMemoryHeap heap = DeviceManager.memoryProperties.memoryHeaps(memoryType.heapIndex());
+            int propertyFlags = memoryType.propertyFlags();
 
-            //GPU only Memory
-            if (memoryType.propertyFlags() == VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) {
+            if (propertyFlags == VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) {
                 GPU_MEM = new DeviceLocalMemory(memoryType, heap);
-
             }
 
-            if (memoryType.propertyFlags() == (VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_CACHED_BIT)) {
+            if (propertyFlags == (VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)) {
                 HOST_MEM = new HostLocalCachedMemory(memoryType, heap);
             }
         }

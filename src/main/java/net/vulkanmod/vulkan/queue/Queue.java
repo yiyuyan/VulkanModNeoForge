@@ -26,7 +26,12 @@ public abstract class Queue {
     private final VkQueue queue;
 
     public synchronized CommandPool.CommandBuffer beginCommands() {
-        return this.commandPool.beginCommands();
+        try (MemoryStack stack = stackPush()) {
+            CommandPool.CommandBuffer commandBuffer = this.commandPool.getCommandBuffer(stack);
+            commandBuffer.begin(stack);
+
+            return commandBuffer;
+        }
     }
 
     Queue(MemoryStack stack, int familyIndex) {
@@ -43,11 +48,15 @@ public abstract class Queue {
     }
 
     public synchronized long submitCommands(CommandPool.CommandBuffer commandBuffer) {
-        return this.commandPool.submitCommands(commandBuffer, queue);
+        try (MemoryStack stack = stackPush()) {
+            return commandBuffer.submitCommands(stack, queue, false);
+        }
     }
 
     public synchronized long submitCommands(CommandPool.CommandBuffer commandBuffer, long timelineSemaphore, long signalValue) {
-        return this.commandPool.submitCommands(commandBuffer, queue, timelineSemaphore, signalValue);
+        try (MemoryStack stack = stackPush()) {
+            return commandBuffer.submitCommands(stack, queue, timelineSemaphore, signalValue);
+        }
     }
 
     public VkQueue queue() {
@@ -61,6 +70,10 @@ public abstract class Queue {
 
     public void waitIdle() {
         vkQueueWaitIdle(queue);
+    }
+
+    public CommandPool getCommandPool() {
+        return commandPool;
     }
 
     public enum Family {
@@ -80,7 +93,6 @@ public abstract class Queue {
     }
 
     public static QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device) {
-
         QueueFamilyIndices indices = new QueueFamilyIndices();
 
         try (MemoryStack stack = stackPush()) {
@@ -127,9 +139,6 @@ public abstract class Queue {
             }
 
             if (indices.presentFamily == -1) {
-                // Some drivers will not show present support even if some queue supports it
-                // Use compute queue as fallback
-
                 indices.presentFamily = indices.computeFamily;
                 Initializer.LOGGER.warn("Using compute queue as present fallback");
             }

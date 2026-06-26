@@ -5,20 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Add clouds shader&#10;Update 0.5.0-dev+10&#10;Sync aebc01d">
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/update/GameRendererM.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/update/MLightTexture.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/texture/ImageUploadHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/cn.ksmcbrigade.vulkan.vulkanmod.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/cn.ksmcbrigade.vulkan.vulkanmod.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/vulkanmod.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/vulkanmod.test.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/sky/CloudRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/sky/CloudRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/VRenderSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/VRenderSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/SPIRVUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/SPIRVUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Uniforms.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Uniforms.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/clouds/clouds.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/clouds/clouds.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/clouds/clouds.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/clouds/clouds.vsh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain.vsh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain_earlyZ/terrain_earlyZ.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain_earlyZ/terrain_earlyZ.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_clouds/rendertype_clouds.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_clouds/rendertype_clouds.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/MinecraftMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/MinecraftMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/MSpriteContents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/update/MSpriteContents.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/MTextureManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/update/MTextureManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/texture/SpriteUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/texture/SpriteUpdateUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Renderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/MemoryTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/MemoryTypes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/queue/CommandPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/queue/CommandPool.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/queue/GraphicsQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/queue/GraphicsQueue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/queue/Queue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/queue/Queue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/ImageUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/ImageUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/VulkanImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/VulkanImage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,8 +92,8 @@
 }</component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
-    "url": "https://github.com/yiyuyan/VulkanModNeoForge",
-    "accountId": "f37d0627-33b9-4e35-b549-98de8081b46c"
+    "url": "https://github.com/yiyuyan/VulkanModNeoForge.git",
+    "accountId": "95d0aeb2-6140-42a1-9473-0d844eb59a50"
   }
 }]]></component>
   <component name="ProblemsViewState">
@@ -125,7 +132,8 @@
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.2",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -278,8 +286,8 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Gradle.VulkanModNeoForge [clean build runClient]" />
       <item itemvalue="Gradle.VulkanModNeoForge [build]" />
+      <item itemvalue="Gradle.VulkanModNeoForge [clean build runClient]" />
       <item itemvalue="Gradle.VulkanModNeoForge [clean runClient]" />
       <item itemvalue="Gradle.VulkanModNeoForge [clean]" />
       <item itemvalue="Gradle.VulkanModNeoForge [runClient]" />
@@ -312,6 +320,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
+      <workItem from="1782437909229" duration="4304000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <option name="closed" value="true" />

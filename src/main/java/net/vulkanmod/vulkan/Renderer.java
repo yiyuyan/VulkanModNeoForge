@@ -10,6 +10,7 @@ import net.vulkanmod.render.PipelineManager;
 import net.vulkanmod.render.chunk.WorldRenderer;
 import net.vulkanmod.render.chunk.buffer.UploadManager;
 import net.vulkanmod.render.profiling.Profiler;
+import net.vulkanmod.render.texture.ImageUploadHelper;
 import net.vulkanmod.vulkan.device.DeviceManager;
 import net.vulkanmod.vulkan.framebuffer.Framebuffer;
 import net.vulkanmod.vulkan.framebuffer.RenderPass;
@@ -279,6 +280,10 @@ public class Renderer {
 
         mainPass.end(currentCmdBuffer);
 
+        ImageUploadHelper.INSTANCE.submitCommands();
+        Synchronization.INSTANCE.waitFences();
+        Vulkan.getStagingBuffer().reset();
+
         submitFrame();
         recordingCmds = false;
 
@@ -437,8 +442,6 @@ public class Renderer {
         lastReset = currentFrame;
 
         drawer.resetBuffers(currentFrame);
-
-        Vulkan.getStagingBuffer().reset();
 
         WorldRenderer.getInstance().uploadSections();
         UploadManager.INSTANCE.submitUploads();

@@ -15,23 +15,21 @@ import static org.lwjgl.vulkan.VK10.*;
 
 public abstract class ImageUtil {
 
-    public static void copyBufferToImageCmd(VkCommandBuffer commandBuffer, long buffer, long image, int mipLevel, int width, int height, int xOffset, int yOffset, int bufferOffset, int bufferRowLength, int bufferImageHeight) {
+    public static void copyBufferToImageCmd(MemoryStack stack, VkCommandBuffer commandBuffer, long buffer, long image,
+                                            int mipLevel, int width, int height, int xOffset, int yOffset,
+                                            int bufferOffset, int bufferRowLenght, int bufferImageHeight) {
+        VkBufferImageCopy.Buffer region = VkBufferImageCopy.calloc(1, stack);
+        region.bufferOffset(bufferOffset);
+        region.bufferRowLength(bufferRowLenght);   // Tightly packed
+        region.bufferImageHeight(bufferImageHeight);  // Tightly packed
+        region.imageSubresource().aspectMask(VK_IMAGE_ASPECT_COLOR_BIT);
+        region.imageSubresource().mipLevel(mipLevel);
+        region.imageSubresource().baseArrayLayer(0);
+        region.imageSubresource().layerCount(1);
+        region.imageOffset().set(xOffset, yOffset, 0);
+        region.imageExtent(VkExtent3D.calloc(stack).set(width, height, 1));
 
-        try (MemoryStack stack = stackPush()) {
-
-            VkBufferImageCopy.Buffer region = VkBufferImageCopy.calloc(1, stack);
-            region.bufferOffset(bufferOffset);
-            region.bufferRowLength(bufferRowLength);   // Tightly packed
-            region.bufferImageHeight(bufferImageHeight);  // Tightly packed
-            region.imageSubresource().aspectMask(VK_IMAGE_ASPECT_COLOR_BIT);
-            region.imageSubresource().mipLevel(mipLevel);
-            region.imageSubresource().baseArrayLayer(0);
-            region.imageSubresource().layerCount(1);
-            region.imageOffset().set(xOffset, yOffset, 0);
-            region.imageExtent(VkExtent3D.calloc(stack).set(width, height, 1));
-
-            vkCmdCopyBufferToImage(commandBuffer, buffer, image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, region);
-        }
+        vkCmdCopyBufferToImage(commandBuffer, buffer, image, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, region);
     }
 
     public static void downloadTexture(VulkanImage image, long ptr) {
@@ -64,12 +62,14 @@ public abstract class ImageUtil {
         }
     }
 
-    public static void copyImageToBuffer(VkCommandBuffer commandBuffer, long buffer, long image, int mipLevel, int width, int height, int xOffset, int yOffset, int bufferOffset, int bufferRowLength, int bufferImageHeight) {
+    public static void copyImageToBuffer(VkCommandBuffer commandBuffer, long buffer, long image, int mipLevel,
+                                         int width, int height, int xOffset, int yOffset, int bufferOffset,
+                                         int bufferRowLenght, int bufferImageHeight) {
         try (MemoryStack stack = stackPush()) {
 
             VkBufferImageCopy.Buffer region = VkBufferImageCopy.calloc(1, stack);
             region.bufferOffset(bufferOffset);
-            region.bufferRowLength(bufferRowLength);   // Tightly packed
+            region.bufferRowLength(bufferRowLenght);   // Tightly packed
             region.bufferImageHeight(bufferImageHeight);  // Tightly packed
             region.imageSubresource().aspectMask(VK_IMAGE_ASPECT_COLOR_BIT);
             region.imageSubresource().mipLevel(mipLevel);

@@ -1,9 +1,9 @@
 package net.vulkanmod.vulkan.texture;
 
 import com.mojang.blaze3d.platform.NativeImage;
-import net.vulkanmod.vulkan.Synchronization;
+import net.vulkanmod.render.texture.ImageUploadHelper;
+import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.Vulkan;
-import net.vulkanmod.vulkan.device.DeviceManager;
 import net.vulkanmod.vulkan.memory.MemoryManager;
 import net.vulkanmod.vulkan.memory.StagingBuffer;
 import net.vulkanmod.vulkan.queue.CommandPool;
@@ -194,26 +194,18 @@ public class VulkanImage {
     public void uploadSubTextureAsync(int mipLevel, int width, int height, int xOffset, int yOffset, int unpackSkipRows, int unpackSkipPixels, int unpackRowLength, ByteBuffer buffer) {
         long imageSize = buffer.limit();
 
-        CommandPool.CommandBuffer commandBuffer = DeviceManager.getGraphicsQueue().getCommandBuffer();
+        CommandPool.CommandBuffer commandBuffer = ImageUploadHelper.INSTANCE.getOrStartCommandBuffer();
+        try (MemoryStack stack = stackPush()) {
+            transferDstLayout(stack, commandBuffer.getHandle());
 
-        if (this.currentLayout != VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL) {
-            try (MemoryStack stack = stackPush()) {
-                transferDstLayout(stack, commandBuffer.getHandle());
-            }
+            StagingBuffer stagingBuffer = Vulkan.getStagingBuffer();
+            stagingBuffer.align(this.formatSize);
+
+            stagingBuffer.copyBuffer((int) imageSize, buffer);
+
+            ImageUtil.copyBufferToImageCmd(stack, commandBuffer.getHandle(), stagingBuffer.getId(), id, mipLevel, width, height, xOffset, yOffset,
+                                           (int) (stagingBuffer.getOffset() + (unpackRowLength * unpackSkipRows + unpackSkipPixels) * this.formatSize), unpackRowLength, height);
         }
-
-        StagingBuffer stagingBuffer = Vulkan.getStagingBuffer();
-        stagingBuffer.align(this.formatSize);
-
-        stagingBuffer.copyBuffer((int) imageSize, buffer);
-
-        ImageUtil.copyBufferToImageCmd(commandBuffer.getHandle(), stagingBuffer.getId(), id, mipLevel, width, height, xOffset, yOffset,
-                (int) (stagingBuffer.getOffset() + (unpackRowLength * unpackSkipRows + unpackSkipPixels) * this.formatSize), unpackRowLength, height);
-
-        long fence = DeviceManager.getGraphicsQueue().endIfNeeded(commandBuffer);
-        if (fence != VK_NULL_HANDLE)
-//            Synchronization.INSTANCE.addFence(fence);
-            Synchronization.INSTANCE.addCommandBuffer(commandBuffer);
     }
 
     private void transferDstLayout(MemoryStack stack, VkCommandBuffer commandBuffer) {
@@ -224,12 +216,23 @@ public class VulkanImage {
         if (this.currentLayout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL)
             return;
 
-        CommandPool.CommandBuffer commandBuffer = DeviceManager.getGraphicsQueue().getCommandBuffer();
         try (MemoryStack stack = MemoryStack.stackPush()) {
-            readOnlyLayout(stack, commandBuffer.getHandle());
+            if (Renderer.getInstance().getBoundRenderPass() != null) {
+                CommandPool.CommandBuffer commandBuffer = ImageUploadHelper.INSTANCE.getOrStartCommandBuffer();
+                VkCommandBuffer vkCommandBuffer = commandBuffer.getHandle();
+
+                readOnlyLayout(stack, vkCommandBuffer);
+            }
+            else {
+                VkCommandBuffer cmdBuf = Renderer.getCommandBuffer();
+                if (cmdBuf != null && Renderer.isRecording()) {
+                    readOnlyLayout(stack, cmdBuf);
+                } else {
+                    CommandPool.CommandBuffer commandBuffer = ImageUploadHelper.INSTANCE.getOrStartCommandBuffer();
+                    readOnlyLayout(stack, commandBuffer.getHandle());
+                }
+            }
         }
-        DeviceManager.getGraphicsQueue().submitCommands(commandBuffer);
-        Synchronization.INSTANCE.addCommandBuffer(commandBuffer);
     }
 
     public void readOnlyLayout(MemoryStack stack, VkCommandBuffer commandBuffer) {

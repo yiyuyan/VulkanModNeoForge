@@ -1,16 +1,14 @@
 package net.vulkanmod.mixin.render;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.systems.TimerQuery;
-import net.minecraft.Util;
 import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.main.GameConfig;
 import net.vulkanmod.Initializer;
-import net.vulkanmod.render.texture.SpriteUtil;
+import net.vulkanmod.render.texture.SpriteUpdateUtil;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.Vulkan;
 import org.objectweb.asm.Opcodes;
@@ -43,11 +41,10 @@ public class MinecraftMixin {
     }
 
     @Inject(method = "runTick", at = @At(value = "HEAD"))
-    private void resetBuffers(boolean bl, CallbackInfo ci) {
+    private void preFrameOps(boolean bl, CallbackInfo ci) {
         Renderer.getInstance().preInitFrame();
     }
 
-    //Main target (framebuffer) ops
     @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;clear(IZ)V"))
     private void beginRender(int i, boolean bl) {
         RenderSystem.clear(i, bl);
@@ -80,7 +77,8 @@ public class MinecraftMixin {
 
     @Inject(method = "getFramerateLimit", at = @At("HEAD"), cancellable = true)
     private void limitWhenMinimized(CallbackInfoReturnable<Integer> cir) {
-        if(this.noRender) cir.setReturnValue(10);
+        if (this.noRender)
+            cir.setReturnValue(10);
     }
 
     @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/TimerQuery;getInstance()Ljava/util/Optional;"))
@@ -88,11 +86,12 @@ public class MinecraftMixin {
         return Optional.empty();
     }
 
-    @Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;tick()V")
-    )
-    private void redirectResourceTick(boolean bl, CallbackInfo ci, @Local(name = "i") int i, @Local(name = "j") int j) {
+    @Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;tick()V"),
+            locals = LocalCapture.CAPTURE_FAILHARD)
+    private void redirectResourceTick(boolean bl, CallbackInfo ci, Runnable runnable, int i, int j) {
         int n = Math.min(10, i) - 1;
-        SpriteUtil.setDoUpload(j == n);
+        boolean doUpload = j == n;
+        SpriteUpdateUtil.setDoUpload(doUpload);
     }
 
     @Inject(method = "close", at = @At(value = "HEAD"))
@@ -104,12 +103,6 @@ public class MinecraftMixin {
     @Inject(method = "close", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/VirtualScreen;close()V"))
     public void close2(CallbackInfo ci) {
         Vulkan.cleanUp();
-        Util.shutdownExecutors();
-    }
-
-    @Redirect(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;emergencySave()V"))
-    private void skipEmergencySave(Minecraft instance) {
-
     }
 
     @Inject(method = "resizeDisplay", at = @At("HEAD"))
@@ -117,8 +110,7 @@ public class MinecraftMixin {
         Renderer.scheduleSwapChainUpdate();
     }
 
-    //Fixes crash when minimizing window before setScreen is called
     @Redirect(method = "setScreen", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;noRender:Z", opcode = Opcodes.PUTFIELD))
-    private void keepVar(Minecraft instance, boolean value) { }
+    private void keepVar(Minecraft instance, boolean value) {}
 
 }
