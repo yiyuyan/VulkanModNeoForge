@@ -8,6 +8,7 @@ import net.vulkanmod.config.Config;
 import net.vulkanmod.config.gui.OptionBlock;
 import net.vulkanmod.config.video.VideoModeManager;
 import net.vulkanmod.config.video.VideoModeSet;
+import net.vulkanmod.config.video.WindowMode;
 import net.vulkanmod.render.chunk.build.light.LightMode;
 import net.vulkanmod.render.vertex.TerrainRenderType;
 import net.vulkanmod.vulkan.Renderer;
@@ -77,19 +78,18 @@ public abstract class Options {
                 new OptionBlock("", new Option<?>[]{
                         resolutionOption,
                         RefreshRate,
-                        new SwitchOption(Component.translatable("options.fullscreen"),
+                        new CyclingOption<>(Component.translatable("vulkanmod.options.windowMode"),
+                                WindowMode.values(),
                                 value -> {
-                                    minecraftOptions.fullscreen().set(value);
-//                            window.toggleFullScreen();
+                                    boolean exclusiveFullscreen = value == WindowMode.EXCLUSIVE_FULLSCREEN;
+                                    minecraftOptions.fullscreen()
+                                            .set(exclusiveFullscreen);
+
+                                    config.windowMode = value.mode;
                                     fullscreenDirty = true;
                                 },
-                                () -> minecraftOptions.fullscreen().get()),
-                        new SwitchOption(Component.translatable("vulkanmod.options.windowedFullscreen"),
-                                value -> {
-                                    config.windowedFullscreen = value;
-                                    fullscreenDirty = true;
-                                },
-                                () -> config.windowedFullscreen),
+                                () -> WindowMode.fromValue(config.windowMode))
+                                .setTranslator(value -> Component.translatable(WindowMode.getComponentName(value))),
                         new RangeOption(Component.translatable("options.framerateLimit"),
                                 10, 260, 10,
                                 value -> Component.nullToEmpty(value == 260 ?
