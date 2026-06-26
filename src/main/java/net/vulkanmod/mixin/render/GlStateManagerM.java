@@ -254,6 +254,8 @@ public class GlStateManagerM {
     @Overwrite(remap = false)
     public static void _pixelStore(int pname, int param) {
         //Used during upload to set copy offsets
+        RenderSystem.assertOnRenderThreadOrInit();
+        GlTexture.pixelStoreI(pname, param);
     }
 
     /**

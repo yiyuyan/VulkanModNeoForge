@@ -4,12 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Move end frame injection&#10;- Refactor&#10;- Sync b96e46d&#10;- Update 0.5.2-dev+4">
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Improve gl texture compatibility&#10;- Add gl method overwrites&#10;- Sync 4319366&#10;- Update 0.5.2-dev+5">
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlTexture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlTexture.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/gl/GL11M.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/gl/GL11M.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlStateManagerM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlStateManagerM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/update/MSpriteContents.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/update/MSpriteContents.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/texture/SpriteUpdateUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/texture/SpriteUpdateUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Renderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/VTextureSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/VTextureSelector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/accesstransformer.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/accesstransformer.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/vulkanmod.accesswidener" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/vulkanmod.accesswidener" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -304,15 +310,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="16412000" />
-    </task>
-    <task id="LOCAL-00023" summary="More languages support.">
-      <option name="closed" value="true" />
-      <created>1781945483026</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1781945483026</updated>
+      <workItem from="1782437909229" duration="16890000" />
     </task>
     <task id="LOCAL-00024" summary="update ver">
       <option name="closed" value="true" />
@@ -698,7 +696,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782455225485</updated>
     </task>
-    <option name="localTasksCounter" value="72" />
+    <task id="LOCAL-00072" summary="Improve gl texture compatibility&#10;- Add gl method overwrites&#10;- Sync 4319366&#10;- Update 0.5.2-dev+5">
+      <option name="closed" value="true" />
+      <created>1782455639675</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1782455639675</updated>
+    </task>
+    <option name="localTasksCounter" value="73" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -719,7 +725,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Fix profiler result missing entries" />
     <MESSAGE value="Fix profiler result missing entries&#10;Add shader namespace check&#10;Fix out of bounds error&#10;Sync:&#10;52dd96f, abee6c8, 51fa204" />
     <MESSAGE value="Add clouds shader&#10;Update 0.5.0-dev+10&#10;Sync aebc01d" />
     <MESSAGE value="Minimize upload and layout transition command buffers used per frame&#10;- Refactor CommandPool class&#10;- Update 0.5.0-dev+12&#10;- Sync 31ef3de" />
@@ -744,7 +749,8 @@
     <MESSAGE value="Refactor CircularIntList&#10;- Sync 6ee4b39&#10;- Update 0.5.2-dev+3" />
     <MESSAGE value="Fix wrong sampler binding&#10;- Sync 1799d82" />
     <MESSAGE value="Move end frame injection&#10;- Refactor&#10;- Sync b96e46d&#10;- Update 0.5.2-dev+4" />
-    <option name="LAST_COMMIT_MESSAGE" value="Move end frame injection&#10;- Refactor&#10;- Sync b96e46d&#10;- Update 0.5.2-dev+4" />
+    <MESSAGE value="Improve gl texture compatibility&#10;- Add gl method overwrites&#10;- Sync 4319366&#10;- Update 0.5.2-dev+5" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve gl texture compatibility&#10;- Add gl method overwrites&#10;- Sync 4319366&#10;- Update 0.5.2-dev+5" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

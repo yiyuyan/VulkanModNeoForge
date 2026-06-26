@@ -137,7 +137,9 @@ public class GlTexture {
         ByteBuffer src;
         // TODO: hardcoded format size
         int formatSize = 4;
-        src = MemoryUtil.memByteBuffer(pixels, width * height * formatSize);
+        int rowLength = unpackRowLength != 0 ? unpackRowLength : width;
+        int offset = (unpackSkipRows * rowLength + unpackSkipPixels) * formatSize;
+        src = MemoryUtil.memByteBuffer(pixels + offset, (rowLength * height - unpackSkipPixels) * formatSize);
         return src;
     }
 
@@ -338,7 +340,7 @@ public class GlTexture {
             src = pixels;
         }
 
-        this.vulkanImage.uploadSubTextureAsync(level, width, height, xOffset, yOffset, unpackSkipRows, unpackSkipPixels, unpackRowLength, src);
+        this.vulkanImage.uploadSubTextureAsync(level, width, height, xOffset, yOffset, 0, 0, unpackRowLength, src);
 
         if (src != pixels) {
             MemoryUtil.memFree(src);

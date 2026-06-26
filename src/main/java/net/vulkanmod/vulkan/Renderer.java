@@ -285,9 +285,7 @@ public class Renderer {
 
         mainPass.end(currentCmdBuffer);
 
-        ImageUploadHelper.INSTANCE.submitCommands();
-        Synchronization.INSTANCE.waitFences();
-        Vulkan.getStagingBuffer().reset();
+        waitFences();
 
         submitFrame();
         recordingCmds = false;
@@ -380,7 +378,7 @@ public class Renderer {
 
             vkResetFences(device, inFlightFences.get(currentFrame));
 
-            Synchronization.INSTANCE.waitFences();
+            waitFences();
 
             if ((vkResult = vkQueueSubmit(DeviceManager.getGraphicsQueue().queue(), submitInfo, inFlightFences.get(currentFrame))) != VK_SUCCESS) {
                 vkResetFences(device, inFlightFences.get(currentFrame));
@@ -442,7 +440,7 @@ public class Renderer {
         // runTick might be called recursively,
         // this check forces sync to avoid upload corruption
         if (lastReset == currentFrame) {
-            Synchronization.INSTANCE.waitFences();
+            waitFences();
         }
         lastReset = currentFrame;
 
@@ -458,6 +456,12 @@ public class Renderer {
 
     public void removeUsedPipeline(Pipeline pipeline) {
         usedPipelines.remove(pipeline);
+    }
+
+    private void waitFences() {
+        ImageUploadHelper.INSTANCE.submitCommands();
+        Synchronization.INSTANCE.waitFences();
+        Vulkan.getStagingBuffer().reset();
     }
 
     private void resetDescriptors() {
@@ -491,7 +495,7 @@ public class Renderer {
 
     @SuppressWarnings("UnreachableCode")
     private void recreateSwapChain() {
-        Synchronization.INSTANCE.waitFences();
+        waitFences();
         Vulkan.waitIdle();
 
         swapChain = Vulkan.getSwapChain();
