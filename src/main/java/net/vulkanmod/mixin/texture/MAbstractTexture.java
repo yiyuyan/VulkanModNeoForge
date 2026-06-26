@@ -7,6 +7,7 @@ import net.vulkanmod.vulkan.texture.VulkanImage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(AbstractTexture.class)
 public abstract class MAbstractTexture {
@@ -32,18 +33,17 @@ public abstract class MAbstractTexture {
      */
     @Overwrite
     public void setFilter(boolean blur, boolean mipmap) {
-        if (blur != this.blur || mipmap != this.mipmap) {
-            this.blur = blur;
-            this.mipmap = mipmap;
+        this.blur = blur;
+        this.mipmap = mipmap;
 
-            GlTexture glTexture = GlTexture.getTexture(this.id);
-            VulkanImage vulkanImage = glTexture.getVulkanImage();
+        GlTexture glTexture = GlTexture.getTexture(this.id);
+        VulkanImage vulkanImage = glTexture.getVulkanImage();
 
-            if (vulkanImage != null)
-                vulkanImage.updateTextureSampler(this.blur, false, this.mipmap);
-        }
+        if (vulkanImage != null)
+            vulkanImage.updateTextureSampler(this.blur, false, this.mipmap);
     }
 
+    @Unique
     private void bindTexture() {
         GlTexture.bindTexture(this.id);
     }

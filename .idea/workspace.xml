@@ -4,20 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Improve mod compatibility&#10;- Update rendering mixins&#10;- Add ChunkOffset uniform&#10;- Sync 318d5ca&#10;- Update 0.5.2-dev+11">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Add flush batched cmds&#10;- Sync 5441949">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/image/MNativeImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/image/MNativeImage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/AbstractBlockRenderContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/AbstractBlockRenderContext.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/BlockRenderContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/BlockRenderContext.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/ItemRenderContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/ItemRenderContext.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/CustomVertexFormat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/CustomVertexFormat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/VertexBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/VertexBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/GraphicsPipeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/GraphicsPipeline.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain.vsh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_leash/rendertype_leash.fsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_leash/rendertype_leash.fsh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_leash/rendertype_leash.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_leash/rendertype_leash.vsh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -312,23 +300,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="21106000" />
-    </task>
-    <task id="LOCAL-00032" summary="UUse sorted index buffer on immediate rendering if needed&#10;Sync 5921d83">
-      <option name="closed" value="true" />
-      <created>1782216123161</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1782216123161</updated>
-    </task>
-    <task id="LOCAL-00033" summary="Refactor skip allocation mixin to prevent null pointer exception&#10;Remove RenderBuffersM.java&#10;Add SectionBufferBuilderPoolM.java&#10;Update 0.4.9-dev+5&#10;Sync 863eaeb">
-      <option name="closed" value="true" />
-      <created>1782216288160</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1782216288160</updated>
+      <workItem from="1782437909229" duration="22333000" />
     </task>
     <task id="LOCAL-00034" summary="Update 0.5.0-dev+1">
       <option name="closed" value="true" />
@@ -706,7 +678,23 @@
       <option name="project" value="LOCAL" />
       <updated>1782459329607</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="Use 16 bytes vertex format for terrain&#10;- Fix rendertype_leash bug&#10;- Update texture sampler on upload&#10;- Fix: apply correct light data on quad shading&#10;- Fix: apply quad transform if needed&#10;- Sync b35e7a3&#10;- Sync e317a24&#10;- Sync e42a5da&#10;- Sync abbdcc8&#10;- Sync 5d2315d&#10;- Update 0.5.4-dev+1">
+      <option name="closed" value="true" />
+      <created>1782460372932</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1782460372932</updated>
+    </task>
+    <task id="LOCAL-00082" summary="Add flush batched cmds&#10;- Sync 5441949">
+      <option name="closed" value="true" />
+      <created>1782460563347</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1782460563347</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -727,8 +715,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Use non cached memory type&#10;- Sync 1bbd0ac" />
-    <MESSAGE value="Use level renderer light values to improve compatibility&#10;- Update 0.5.1-dev+2&#10;- Sync 349de86" />
     <MESSAGE value="Set bound framebuffer on begin rendering&#10;- Fixes null pointer exception&#10;- Sync 1139f7d" />
     <MESSAGE value="Reset blend function before drawing&#10;- Improve mixin compatibility&#10;- Sync 4c47fb6&#10;- Sync 868bbf1&#10;- Update 0.5.1-dev+3" />
     <MESSAGE value="fix: Set directExit default to true" />
@@ -752,7 +738,9 @@
     <MESSAGE value="Fix early return on queue selection&#10;- Add src upload offset check&#10;- Sync 857607f&#10;- Sync acc0699&#10;- Update 0.5.2-dev+9" />
     <MESSAGE value="Fix early return on queue selection&#10;- Add src upload offset check&#10;- Fix polygon offset swapped parameters&#10;- Sync 857607f&#10;- Sync 78cc6f1&#10;- Update 0.5.2-dev+10" />
     <MESSAGE value="Improve mod compatibility&#10;- Update rendering mixins&#10;- Add ChunkOffset uniform&#10;- Sync 318d5ca&#10;- Update 0.5.2-dev+11" />
-    <option name="LAST_COMMIT_MESSAGE" value="Improve mod compatibility&#10;- Update rendering mixins&#10;- Add ChunkOffset uniform&#10;- Sync 318d5ca&#10;- Update 0.5.2-dev+11" />
+    <MESSAGE value="Use 16 bytes vertex format for terrain&#10;- Fix rendertype_leash bug&#10;- Update texture sampler on upload&#10;- Fix: apply correct light data on quad shading&#10;- Fix: apply quad transform if needed&#10;- Sync b35e7a3&#10;- Sync e317a24&#10;- Sync e42a5da&#10;- Sync abbdcc8&#10;- Sync 5d2315d&#10;- Update 0.5.4-dev+1" />
+    <MESSAGE value="Add flush batched cmds&#10;- Sync 5441949" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add flush batched cmds&#10;- Sync 5441949" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
