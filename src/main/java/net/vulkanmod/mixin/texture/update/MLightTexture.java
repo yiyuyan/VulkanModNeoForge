@@ -56,8 +56,8 @@ public class MLightTexture {
      * @reason
      */
     @SuppressWarnings("UnreachableCode")
-    @Overwrite
-    public void updateLightTexture(float partialTicks) {
+    @Inject(method = "updateLightTexture", at = @At("HEAD"), cancellable = true)
+    public void updateLightTexture(float partialTicks, CallbackInfo ci) {
         if (this.updateLightTexture) {
             this.updateLightTexture = false;
 
@@ -167,6 +167,8 @@ public class MLightTexture {
                 this.minecraft.getProfiler().pop();
             }
         }
+
+        ci.cancel();
     }
 
     @Unique

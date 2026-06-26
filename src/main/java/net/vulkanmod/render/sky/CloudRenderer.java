@@ -134,6 +134,7 @@ public class CloudRenderer {
 
         GraphicsPipeline pipeline = PipelineManager.getCloudsPipeline();
         RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
 
         boolean fastClouds = this.prevCloudsType == CloudStatus.FAST;
