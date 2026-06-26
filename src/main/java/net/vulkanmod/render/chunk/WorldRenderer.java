@@ -247,7 +247,7 @@ public class WorldRenderer {
             this.syncSingleplayerViewDistance();
             this.renderDistance = this.minecraft.options.getEffectiveRenderDistance();
             if (this.sectionGrid != null) {
-                this.sectionGrid.releaseAllBuffers();
+                this.sectionGrid.freeAllBuffers();
             }
             this.taskDispatcher.clearBatchQueue();
             synchronized (this.globalBlockEntities) {
@@ -305,7 +305,7 @@ public class WorldRenderer {
             this.allChanged();
         } else {
             if (this.sectionGrid != null) {
-                this.sectionGrid.releaseAllBuffers();
+                this.sectionGrid.freeAllBuffers();
                 this.sectionGrid = null;
             }
             this.taskDispatcher.stopThreads();

@@ -51,7 +51,7 @@ public class AreaBuffer {
         return buffer;
     }
 
-    public Segment upload(ByteBuffer byteBuffer, int oldOffset, DrawBuffers.DrawParameters drawParameters) {
+    public Segment upload(ByteBuffer byteBuffer, int oldOffset, long paramsPtr) {
         // Free old segment
         if (oldOffset != -1) {
             // Need to delay segment freeing since it might be still used by prev frames in flight
@@ -83,7 +83,7 @@ public class AreaBuffer {
         segment.free = false;
         this.usedSegments.put(segment.offset, segment);
 
-        segment.drawParameters = drawParameters;
+        segment.paramsPtr = paramsPtr;
 
         Buffer dst = this.buffer;
         UploadManager.INSTANCE.recordUpload(dst, segment.offset, size, byteBuffer);
@@ -196,7 +196,7 @@ public class AreaBuffer {
         this.used -= segment.size;
 
         segment.free = true;
-        segment.drawParameters = null;
+        segment.paramsPtr = -1;
 
         Segment next = segment.next;
         if (next != null && next.isFree()) {
@@ -223,13 +223,11 @@ public class AreaBuffer {
     }
 
     private void updateDrawParams(Segment segment) {
-        DrawBuffers.DrawParameters params = segment.drawParameters;
-
         int elementOffset = segment.offset / elementSize;
         if (this.usage == Usage.VERTEX.usage) {
-            params.vertexOffset = elementOffset;
+            DrawParametersBuffer.setVertexOffset(segment.paramsPtr, elementOffset);
         } else {
-            params.firstIndex = elementOffset;
+            DrawParametersBuffer.setFirstIndex(segment.paramsPtr, elementOffset);
         }
     }
 
@@ -320,7 +318,7 @@ public class AreaBuffer {
     public static class Segment {
         int offset, size;
         boolean free = true;
-        DrawBuffers.DrawParameters drawParameters;
+        long paramsPtr;
 
         Segment next, prev;
 

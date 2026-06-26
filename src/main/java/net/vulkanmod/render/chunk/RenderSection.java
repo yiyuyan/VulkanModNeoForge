@@ -6,7 +6,9 @@ import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.vulkanmod.render.chunk.buffer.AreaBuffer;
 import net.vulkanmod.render.chunk.buffer.DrawBuffers;
+import net.vulkanmod.render.chunk.buffer.DrawParametersBuffer;
 import net.vulkanmod.render.chunk.build.RenderRegion;
 import net.vulkanmod.render.chunk.build.RenderRegionBuilder;
 import net.vulkanmod.render.chunk.build.task.TaskDispatcher;
@@ -30,6 +32,7 @@ public class RenderSection {
     public byte frustumIndex;
     public short lastFrame = -1;
     private short lastFrame2 = -1;
+    public short inAreaIndex;
 
     public byte adjDirs;
     public RenderSection
@@ -50,8 +53,6 @@ public class RenderSection {
 
     private float lastSortX = Float.NaN, lastSortY, lastSortZ;
 
-    private final DrawBuffers.DrawParameters[] drawParametersArray;
-
     public byte mainDir;
     public byte directions;
     public byte sourceDirs;
@@ -62,12 +63,6 @@ public class RenderSection {
         this.xOffset = x;
         this.yOffset = y;
         this.zOffset = z;
-
-        final int size = TerrainRenderType.VALUES.length * QuadFacing.COUNT;
-        this.drawParametersArray = new DrawBuffers.DrawParameters[size];
-        for (int i = 0; i < size; ++i) {
-            this.drawParametersArray[i] = new DrawBuffers.DrawParameters();
-        }
     }
 
     public void setOrigin(int x, int y, int z) {
@@ -77,21 +72,41 @@ public class RenderSection {
         this.zOffset = z;
     }
 
-    public DrawBuffers.DrawParameters getDrawParameters(TerrainRenderType renderType, int facing) {
-        return drawParametersArray[renderType.ordinal() * QuadFacing.COUNT + facing];
-    }
-
     public void resetDrawParameters(TerrainRenderType renderType) {
-        if (this.chunkArea == null) return;
+        if (this.chunkArea == null)
+            return;
+
+        DrawBuffers drawBuffers = this.chunkArea.getDrawBuffers();
+        int metaKey = (this.inAreaIndex << 4) | renderType.ordinal();
+        drawBuffers.removeMetaRegistration(metaKey);
+
         for (int i = 0; i < QuadFacing.COUNT; ++i) {
-            drawParametersArray[renderType.ordinal() * QuadFacing.COUNT + i].reset(this.chunkArea, renderType);
+            long ptr = DrawParametersBuffer.getParamsPtr(drawBuffers.getDrawParamsPtr(), this.inAreaIndex, renderType.ordinal(), i);
+
+            AreaBuffer areaBuffer = drawBuffers.getAreaBuffer(renderType);
+            int vertexOffset = DrawParametersBuffer.getVertexOffset(ptr);
+            if (areaBuffer != null && vertexOffset != -1) {
+                int segmentOffset = vertexOffset * DrawBuffers.VERTEX_SIZE;
+                areaBuffer.setSegmentFree(segmentOffset);
+            }
+
+            DrawParametersBuffer.resetParameters(ptr);
         }
     }
 
     private void resetDrawParameters() {
-        if (this.chunkArea == null) return;
-        for (TerrainRenderType r : TerrainRenderType.VALUES) {
-            resetDrawParameters(r);
+        if (this.chunkArea == null)
+            return;
+
+        DrawBuffers drawBuffers = this.chunkArea.getDrawBuffers();
+        long basePtr = drawBuffers.getDrawParamsPtr();
+        for (TerrainRenderType renderType : TerrainRenderType.VALUES) {
+            int metaKey = (this.inAreaIndex << 4) | renderType.ordinal();
+            drawBuffers.removeMetaRegistration(metaKey);
+            for (QuadFacing facing : QuadFacing.VALUES) {
+                long ptr = DrawParametersBuffer.getParamsPtr(basePtr, this.inAreaIndex, renderType.ordinal(), facing.ordinal());
+                DrawParametersBuffer.resetParameters(ptr);
+            }
         }
     }
 
@@ -254,6 +269,11 @@ public class RenderSection {
         if (!this.isCompiled()) return 0b111111;
         return (byte) (this.visibility >> (Util.getOppositeDirIdx(this.mainDir) << 3));
     }
+
+    public long getVisibility() {
+        return visibility;
+    }
+
     public boolean isCompletelyEmpty() { return this.completelyEmpty; }
     public boolean containsBlockEntities() { return this.containsBlockEntities; }
 
@@ -294,6 +314,10 @@ public class RenderSection {
         return alreadySet;
     }
     public short getLastFrame() { return this.lastFrame; }
+
+    public short getLastFrame2() {
+        return this.lastFrame2;
+    }
 
     static class CompileStatus {
         CompiledSection compiledSection = CompiledSection.UNCOMPILED;
