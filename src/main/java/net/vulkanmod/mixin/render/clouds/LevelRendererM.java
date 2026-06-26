@@ -42,7 +42,7 @@ public abstract class LevelRendererM {
     @Inject(method = "allChanged", at = @At("RETURN"))
     private void onAllChanged(CallbackInfo ci) {
         if (this.cloudRenderer != null) {
-            this.cloudRenderer.reset();
+            this.cloudRenderer.resetBuffer();
         }
     }
 

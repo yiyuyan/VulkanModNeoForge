@@ -102,10 +102,19 @@ public class CloudRenderer {
                 this.cloudBuffer.close();
             }
 
-            this.cloudBuffer = new VBO(VertexBuffer.Usage.STATIC);
+            this.resetBuffer();
 
             MeshData cloudsMesh = this.buildClouds(Tesselator.getInstance(), centerCellX, centerCellZ, centerY);
+            if (cloudsMesh == null) {
+                return;
+            }
+
+            this.cloudBuffer = new VBO(VertexBuffer.Usage.STATIC);
             this.cloudBuffer.upload(cloudsMesh);
+        }
+
+        if (this.cloudBuffer == null) {
+            return;
         }
 
         FogRenderer.levelFogColor();
@@ -151,7 +160,7 @@ public class CloudRenderer {
         poseStack.popPose();
     }
 
-    public void reset() {
+    public void resetBuffer() {
         if (this.cloudBuffer != null) {
             this.cloudBuffer.close();
             this.cloudBuffer = null;
@@ -246,7 +255,7 @@ public class CloudRenderer {
             }
         }
 
-        return bufferBuilder.buildOrThrow();
+        return bufferBuilder.build();
     }
 
     private static void putVertex(BufferBuilder bufferBuilder, float x, float y, float z, int color) {
