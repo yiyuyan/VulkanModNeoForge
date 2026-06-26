@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Refactor window mode option&#10;- Sync d8f2073&#10;- Update 0.5.2-dev+2">
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Fix wrong sampler binding&#10;- Sync 1799d82">
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frame/MinecraftMixin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frame/RenderSystemMixin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/ChunkAreaManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/ChunkAreaManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/SectionGrid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/SectionGrid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/util/CircularIntList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/util/CircularIntList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/MinecraftMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/MinecraftMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/RenderSystemMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/RenderSystemMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -304,23 +306,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="15595000" />
-    </task>
-    <task id="LOCAL-00020" summary="UPDATE ASSETS">
-      <option name="closed" value="true" />
-      <created>1781941198469</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1781941198469</updated>
-    </task>
-    <task id="LOCAL-00021" summary="UPDATED">
-      <option name="closed" value="true" />
-      <created>1781941314100</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1781941314100</updated>
+      <workItem from="1782437909229" duration="15987000" />
     </task>
     <task id="LOCAL-00022" summary="fix DeviceManager and Device">
       <option name="closed" value="true" />
@@ -698,7 +684,23 @@
       <option name="project" value="LOCAL" />
       <updated>1782453819247</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="Refactor CircularIntList&#10;- Sync 6ee4b39&#10;- Update 0.5.2-dev+3">
+      <option name="closed" value="true" />
+      <created>1782454785567</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1782454785567</updated>
+    </task>
+    <task id="LOCAL-00070" summary="Fix wrong sampler binding&#10;- Sync 1799d82">
+      <option name="closed" value="true" />
+      <created>1782454933393</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1782454933393</updated>
+    </task>
+    <option name="localTasksCounter" value="71" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -719,8 +721,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Use custom color resolver if requested&#10;- Implement BlockColorRegistry for fast look up&#10;- Refactor&#10;- Update 0.5.0-dev+8&#10;- Sync b56a22d" />
-    <MESSAGE value="Refactored pipeline builder and creation&#10;- Update 0.5.0-dev+9" />
     <MESSAGE value="Refactor: remove unused interface" />
     <MESSAGE value="Fix profiler result missing entries" />
     <MESSAGE value="Fix profiler result missing entries&#10;Add shader namespace check&#10;Fix out of bounds error&#10;Sync:&#10;52dd96f, abee6c8, 51fa204" />
@@ -744,7 +744,9 @@
     <MESSAGE value="Restart render pass if terminated early&#10;- Remove reloadShaders injection&#10;- Sync 66bd4a4&#10;- Sync ab6c7d1&#10;- Update 0.5.1-dev+8" />
     <MESSAGE value="Implement data cache for biome data&#10;- Sync 1c189cf&#10;- Update 0.5.2-dev+1" />
     <MESSAGE value="Refactor window mode option&#10;- Sync d8f2073&#10;- Update 0.5.2-dev+2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor window mode option&#10;- Sync d8f2073&#10;- Update 0.5.2-dev+2" />
+    <MESSAGE value="Refactor CircularIntList&#10;- Sync 6ee4b39&#10;- Update 0.5.2-dev+3" />
+    <MESSAGE value="Fix wrong sampler binding&#10;- Sync 1799d82" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix wrong sampler binding&#10;- Sync 1799d82" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
