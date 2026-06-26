@@ -4,8 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Use uint32 index buffer type if required&#10;- Refactor buffer&#10;- Sync 93ef2a6&#10;- Update 0.5.2-dev+7">
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/gui/GuiRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/gui/GuiRenderer.java" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Implement flush method&#10;- Refactor&#10;- Sync a42450b">
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/matrix/PoseAccessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/particle/SingleQuadParticleM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/particle/SingleQuadParticleM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/BufferBuilderM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/BufferBuilderM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/VertexConsumerM.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/util/MathUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/util/MathUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -300,15 +307,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="18132000" />
-    </task>
-    <task id="LOCAL-00027" summary="fix VulkanModDiscover">
-      <option name="closed" value="true" />
-      <created>1782047336146</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1782047336146</updated>
+      <workItem from="1782437909229" duration="18741000" />
     </task>
     <task id="LOCAL-00028" summary="fix VulkanModDiscover and PipelineManager">
       <option name="closed" value="true" />
@@ -694,7 +693,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782457230706</updated>
     </task>
-    <option name="localTasksCounter" value="76" />
+    <task id="LOCAL-00076" summary="Implement flush method&#10;- Refactor&#10;- Sync a42450b">
+      <option name="closed" value="true" />
+      <created>1782457635135</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1782457635135</updated>
+    </task>
+    <option name="localTasksCounter" value="77" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -715,7 +722,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Use raw memory for section draw parameters&#10;- Update 0.5.0-dev+13&#10;- Sync 0a9168f" />
     <MESSAGE value="Use optimal swapchain image count&#10;- Sync 34b8e0a" />
     <MESSAGE value="Fix incorrect entity shaders&#10;- Sync 8da1470" />
     <MESSAGE value="Use fixed size staging buffer&#10;- Refactor classes&#10;- Add missing resources' clean up&#10;- Track allocated image memory&#10;- Update 0.5.0-dev+14&#10;- Sync 3ac10f3" />
@@ -740,7 +746,8 @@
     <MESSAGE value="Fix image upload sync bugs&#10;- Add method overwrite&#10;- Fix: buffer size&#10;- Sync 211ada8&#10;- Sync 16e8cda&#10;- Sync 5231929&#10;- Update 0.5.2-dev+6" />
     <MESSAGE value="Fix polygon mode mixin using face as mode&#10;- Sync 93ef2a6" />
     <MESSAGE value="Use uint32 index buffer type if required&#10;- Refactor buffer&#10;- Sync 93ef2a6&#10;- Update 0.5.2-dev+7" />
-    <option name="LAST_COMMIT_MESSAGE" value="Use uint32 index buffer type if required&#10;- Refactor buffer&#10;- Sync 93ef2a6&#10;- Update 0.5.2-dev+7" />
+    <MESSAGE value="Implement flush method&#10;- Refactor&#10;- Sync a42450b" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement flush method&#10;- Refactor&#10;- Sync a42450b" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

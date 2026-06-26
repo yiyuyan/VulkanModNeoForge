@@ -28,6 +28,7 @@
     "debug.KeyboardHandlerM",
     "debug.crash_report.SystemReportM",
     "matrix.Matrix4fM",
+    "matrix.PoseAccessor",
     "profiling.GuiMixin",
     "profiling.KeyboardHandlerM",
     "profiling.LevelRendererMixin",
@@ -62,7 +63,7 @@
     "render.vertex.FaceBakeryM",
     "render.vertex.IndexTypeMixin",
     "render.vertex.VertexBufferM",
-    "render.vertex.VertexConsumerM",
+
     "render.vertex.VertexFormatMixin",
     "screen.OptionsScreenM",
     "screen.ScreenM",
