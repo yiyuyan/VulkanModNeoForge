@@ -9,6 +9,7 @@ import net.vulkanmod.config.gui.OptionBlock;
 import net.vulkanmod.config.video.VideoModeManager;
 import net.vulkanmod.config.video.VideoModeSet;
 import net.vulkanmod.config.video.WindowMode;
+import net.vulkanmod.render.chunk.WorldRenderer;
 import net.vulkanmod.render.chunk.build.light.LightMode;
 import net.vulkanmod.render.vertex.TerrainRenderType;
 import net.vulkanmod.vulkan.Renderer;
@@ -284,6 +285,19 @@ public abstract class Options {
     public static OptionBlock[] getOtherOpts() {
         return new OptionBlock[]{
                 new OptionBlock("", new Option[]{
+                        new RangeOption(Component.translatable("vulkanmod.options.builderThreads"),
+                                0, (Runtime.getRuntime().availableProcessors() - 1), 1,
+                                value -> {
+                                    config.builderThreads = value;
+                                    WorldRenderer.getInstance().getTaskDispatcher().createThreads(value);
+                                },
+                                () -> config.builderThreads)
+                                .setTranslator(value -> {
+                            if (value == 0)
+                                return Component.translatable("vulkanmod.options.builderThreads.auto");
+                            else
+                                return Component.nullToEmpty(String.valueOf(value));
+                        }),
                         new RangeOption(Component.translatable("vulkanmod.options.frameQueue"),
                                 2, 5, 1,
                                 value -> {

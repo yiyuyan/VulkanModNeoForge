@@ -41,6 +41,9 @@
   "vulkanmod.options.windowMode.windowed": "Windowed",
   "vulkanmod.options.windowMode.windowedFullscreen": "Windowed Fullscreen",
 
+  "vulkanmod.options.builderThreads": "Chunk Builder Threads",
+  "vulkanmod.options.builderThreads.auto": "Auto",
+
   "vulkanmod.options.occlusionCulling": "Occlusion Culling",
   "vulkanmod.options.backfaceCulling": "Backface Culling",
   "vulkanmod.options.backfaceCulling.tooltip": "Culls not visible block faces on the CPU improving GPU performance. To prevent increased CPU overhead enable Indirect Draw."

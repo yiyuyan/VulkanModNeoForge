@@ -11,7 +11,7 @@ layout(location = 4) in vec3 Normal;
 
 layout(binding = 0) uniform UniformBufferObject {
     mat4 MVP;
-    vec3 ChunkOffset;
+    vec3 ModelOffset;
 };
 
 layout(binding = 3) uniform sampler2D Sampler2;
@@ -21,7 +21,7 @@ layout(location = 1) out vec4 vertexColor;
 layout(location = 2) out vec2 texCoord0;
 
 void main() {
-    vec3 pos = Position + ChunkOffset;
+    vec3 pos = Position + ModelOffset;
     gl_Position = MVP * vec4(pos, 1.0);
 
     vertexDistance = fog_distance(pos, 0);

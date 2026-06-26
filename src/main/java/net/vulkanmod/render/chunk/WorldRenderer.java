@@ -242,7 +242,7 @@ public class WorldRenderer {
         if (this.level != null) {
             this.level.clearTintCaches();
             this.renderRegionCache.clear();
-            this.taskDispatcher.createThreads();
+            this.taskDispatcher.createThreads(Initializer.CONFIG.builderThreads);
             this.graphNeedsUpdate = true;
             this.syncSingleplayerViewDistance();
             this.renderDistance = this.minecraft.options.getEffectiveRenderDistance();

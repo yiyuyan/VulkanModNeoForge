@@ -16,6 +16,7 @@ import java.util.Collections;
 public class Config {
 
     public int frameQueueSize = 2;
+    public int builderThreads = 0;
     public VideoModeSet.VideoMode videoMode = VideoModeManager.getFirstAvailable().getVideoMode();
     public int windowMode = 0;
 

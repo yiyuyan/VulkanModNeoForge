@@ -51,6 +51,11 @@ public class TaskDispatcher {
             }
         }
 
+        // Auto select thread count
+        if (n == 0) {
+            n = Math.max((Runtime.getRuntime().availableProcessors() - 1) / 2, 1);
+        }
+
         this.threads = new Thread[n];
         this.resources = new BuilderResources[n];
 

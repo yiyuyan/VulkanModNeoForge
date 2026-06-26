@@ -14,14 +14,16 @@ import java.util.Arrays;
 
 public class TintCache {
     private static final int SECTION_WIDTH = 16;
+    private static final int BOUNDARY_WIDTH = 16;
+    private static final int LAYER_COUNT = SECTION_WIDTH + (BOUNDARY_WIDTH * 2);
 
     private final Reference2ReferenceOpenHashMap<ColorResolver, Layer[]> layers;
 
     private BiomeData biomeData;
     private int blendRadius, totalWidth;
     private int secX, secY, secZ;
-    private int minX, minZ;
-    private int maxX, maxZ;
+    private int minX, minY, minZ;
+    private int maxX, maxY, maxZ;
 
     private int dataSize;
     private int[] temp;
@@ -46,8 +48,11 @@ public class TintCache {
 
         this.minX = (secX << 4) - blendRadius;
         this.minZ = (secZ << 4) - blendRadius;
-        this.maxX = (secX << 4) + 16 + blendRadius;
-        this.maxZ = (secZ << 4) + 16 + blendRadius;
+        this.maxX = (secX << 4) + 15 + blendRadius;
+        this.maxZ = (secZ << 4) + 15 + blendRadius;
+
+        this.minY = (secY << 4) - 2;
+        this.maxY = this.minY + 15 + 4;
 
         int size = totalWidth * totalWidth;
 
@@ -72,7 +77,7 @@ public class TintCache {
     }
 
     public int getColor(BlockPos blockPos, ColorResolver colorResolver) {
-        int relY = blockPos.getY() & 15;
+        int relY = blockPos.getY() - this.minY;
 
         if (!this.layers.containsKey(colorResolver)) {
             addResolver(colorResolver);
@@ -86,9 +91,10 @@ public class TintCache {
 
         int[] values = layer.getValues();
 
-        int relX = blockPos.getX() & 15;
-        int relZ = blockPos.getZ() & 15;
-        int idx = this.totalWidth * (relZ + this.blendRadius) + (relX + this.blendRadius);
+        int relX = blockPos.getX() - this.minX;
+        int relZ = blockPos.getZ() - this.minZ;
+
+        int idx = this.totalWidth * (relZ) + (relX);
         return values[idx];
     }
 
@@ -103,19 +109,21 @@ public class TintCache {
     }
 
     private Layer[] allocateLayers() {
-        Layer[] layers = new Layer[SECTION_WIDTH];
+        Layer[] layers = new Layer[LAYER_COUNT];
 
-        Arrays.fill(layers, new Layer());
+        for (int i = 0; i < LAYER_COUNT; i++) {
+            layers[i] = new Layer();
+        }
         return layers;
     }
 
     private void calculateLayer(Layer layer, ColorResolver colorResolver, int y) {
-        int absY = (secY << 4) + y;
+        int absY = minY + y;
 
         int[] values = layer.values;
 
-        for (int absZ = minZ; absZ < maxZ; absZ++) {
-            for (int absX = minX; absX < maxX; absX++) {
+        for (int absZ = minZ; absZ <= maxZ; absZ++) {
+            for (int absX = minX; absX <= maxX; absX++) {
                 Biome biome = this.biomeData.getBiome(absX, absY, absZ);
 
                 final int idx = (absX - minX) + (absZ - minZ) * totalWidth;
