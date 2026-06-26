@@ -4,32 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Fix polygon mode mixin using face as mode&#10;- Sync 93ef2a6">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/VBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/VBO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/AreaBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/AreaBuffer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/DrawBuffers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/DrawBuffers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/UploadManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/UploadManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Drawer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Drawer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Vulkan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Vulkan.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/AutoIndexBuffer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/Buffer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/IndexBuffer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/IndirectBuffer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/MemoryManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/MemoryManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/MemoryType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/MemoryType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/MemoryTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/MemoryTypes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/StagingBuffer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/UniformBuffer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/VertexBuffer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/ComputePipeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/ComputePipeline.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/ImageComputePipeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/ImageComputePipeline.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/descriptor/UBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/descriptor/UBO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/VulkanImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/VulkanImage.java" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Use uint32 index buffer type if required&#10;- Refactor buffer&#10;- Sync 93ef2a6&#10;- Update 0.5.2-dev+7">
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/gui/GuiRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/gui/GuiRenderer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -324,15 +300,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="17829000" />
-    </task>
-    <task id="LOCAL-00026" summary="fix log">
-      <option name="closed" value="true" />
-      <created>1782046503546</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1782046503546</updated>
+      <workItem from="1782437909229" duration="18132000" />
     </task>
     <task id="LOCAL-00027" summary="fix VulkanModDiscover">
       <option name="closed" value="true" />
@@ -718,7 +686,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782456387803</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="Use uint32 index buffer type if required&#10;- Refactor buffer&#10;- Sync 93ef2a6&#10;- Update 0.5.2-dev+7">
+      <option name="closed" value="true" />
+      <created>1782457230706</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1782457230706</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -739,7 +715,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Minimize upload and layout transition command buffers used per frame&#10;- Refactor CommandPool class&#10;- Update 0.5.0-dev+12&#10;- Sync 31ef3de" />
     <MESSAGE value="Use raw memory for section draw parameters&#10;- Update 0.5.0-dev+13&#10;- Sync 0a9168f" />
     <MESSAGE value="Use optimal swapchain image count&#10;- Sync 34b8e0a" />
     <MESSAGE value="Fix incorrect entity shaders&#10;- Sync 8da1470" />
@@ -764,7 +739,8 @@
     <MESSAGE value="Improve gl texture compatibility&#10;- Add gl method overwrites&#10;- Sync 4319366&#10;- Update 0.5.2-dev+5" />
     <MESSAGE value="Fix image upload sync bugs&#10;- Add method overwrite&#10;- Fix: buffer size&#10;- Sync 211ada8&#10;- Sync 16e8cda&#10;- Sync 5231929&#10;- Update 0.5.2-dev+6" />
     <MESSAGE value="Fix polygon mode mixin using face as mode&#10;- Sync 93ef2a6" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix polygon mode mixin using face as mode&#10;- Sync 93ef2a6" />
+    <MESSAGE value="Use uint32 index buffer type if required&#10;- Refactor buffer&#10;- Sync 93ef2a6&#10;- Update 0.5.2-dev+7" />
+    <option name="LAST_COMMIT_MESSAGE" value="Use uint32 index buffer type if required&#10;- Refactor buffer&#10;- Sync 93ef2a6&#10;- Update 0.5.2-dev+7" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
