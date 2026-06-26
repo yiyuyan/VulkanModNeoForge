@@ -4,15 +4,16 @@ import com.google.gson.JsonObject;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.shaders.Program;
+import com.mojang.blaze3d.shaders.ProgramManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import net.vulkanmod.Initializer;
+import net.vulkanmod.gl.GlProgram;
 import net.vulkanmod.interfaces.ShaderMixed;
 import net.vulkanmod.render.shader.ShaderLoadUtil;
 import net.vulkanmod.vulkan.Renderer;
@@ -65,6 +66,9 @@ public class ShaderInstanceM implements ShaderMixed {
     @Shadow @Final private List<String> samplerNames;
 
     @Shadow @Final private List<com.mojang.blaze3d.shaders.Uniform> uniforms;
+    @Shadow @Final private VertexFormat vertexFormat;
+    @Shadow @Final private int programId;
+    @Shadow private static int lastProgramId;
 
     @Unique private String vsPath;
     @Unique private String fsName;
@@ -83,18 +87,12 @@ public class ShaderInstanceM implements ShaderMixed {
 
         if (config == null) {
             createLegacyShader(resourceProvider, format);
-            return;
+        } else {
+            createPipeline(configName, format, config);
         }
 
-        Pipeline.Builder builder = new Pipeline.Builder(format, configName);
-        builder.setUniformSupplierGetter(info -> this.getUniformSupplier(info.name));
-
-        builder.parseBindings(config);
-
-        ShaderLoadUtil.loadShaders(builder, config, configName, "core");
-
-        GraphicsPipeline pipeline = builder.createGraphicsPipeline();
-        this.pipeline = pipeline;
+        GlProgram program = GlProgram.getProgram(this.programId);
+        program.bindPipeline(this.pipeline);
     }
 
     @Redirect(method = "<init>(Lnet/minecraft/server/packs/resources/ResourceProvider;Lnet/minecraft/resources/ResourceLocation;Lcom/mojang/blaze3d/vertex/VertexFormat;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ShaderInstance;getOrCreate(Lnet/minecraft/server/packs/resources/ResourceProvider;Lcom/mojang/blaze3d/shaders/Program$Type;Ljava/lang/String;)Lcom/mojang/blaze3d/shaders/Program;"))
@@ -159,6 +157,11 @@ public class ShaderInstanceM implements ShaderMixed {
                 uniform.upload();
             }
 
+        }
+
+        if (this.programId != lastProgramId) {
+            ProgramManager.glUseProgram(this.programId);
+            lastProgramId = this.programId;
         }
 
         bindPipeline();
@@ -306,6 +309,20 @@ public class ShaderInstanceM implements ShaderMixed {
         this.pipeline = graphicsPipeline;
     }
 
+    @Unique
+    private void createPipeline(String configName, VertexFormat format, JsonObject config) {
+        Pipeline.Builder builder = new Pipeline.Builder(format, configName);
+        builder.setUniformSupplierGetter(info -> this.getUniformSupplier(info.name));
+
+        builder.parseBindings(config);
+
+        ShaderLoadUtil.loadShaders(builder, config, configName, "core");
+
+        GraphicsPipeline pipeline = builder.createGraphicsPipeline();
+        this.pipeline = pipeline;
+    }
+
+    @Unique
     private void createLegacyShader(ResourceProvider resourceProvider, VertexFormat format) {
         try {
             String vertPath = this.vsPath + ".vsh";

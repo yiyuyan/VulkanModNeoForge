@@ -3,10 +3,7 @@ package net.vulkanmod.mixin.render;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.neoforged.neoforge.client.GlStateBackup;
-import net.vulkanmod.gl.GlBuffer;
-import net.vulkanmod.gl.GlFramebuffer;
-import net.vulkanmod.gl.GlRenderbuffer;
-import net.vulkanmod.gl.GlTexture;
+import net.vulkanmod.gl.*;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.VRenderSystem;
 import org.jetbrains.annotations.Nullable;
@@ -307,7 +304,9 @@ public class GlStateManagerM {
      * @author
      */
     @Overwrite(remap = false)
-    public static void _clearDepth(double d) {}
+    public static void _clearDepth(double d) {
+        // TODO
+    }
 
     /**
      * @author
@@ -322,7 +321,19 @@ public class GlStateManagerM {
      * @author
      */
     @Overwrite(remap = false)
-    public static void _glUseProgram(int i) {}
+    public static int glCreateProgram() {
+        RenderSystem.assertOnRenderThread();
+        return GlProgram.genProgramId();
+    }
+
+    /**
+     * @author
+     */
+    @Overwrite(remap = false)
+    public static void _glUseProgram(int i) {
+        RenderSystem.assertOnRenderThread();
+        GlProgram.glUseProgram(i);
+    }
 
     /**
      * @author

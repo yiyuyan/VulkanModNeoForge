@@ -2,12 +2,11 @@ package net.vulkanmod.mixin.compatibility;
 
 import com.mojang.blaze3d.shaders.Shader;
 import com.mojang.blaze3d.shaders.Uniform;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.vulkanmod.gl.GlProgram;
 import net.vulkanmod.interfaces.ShaderMixed;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.shader.Pipeline;
-import net.vulkanmod.vulkan.texture.VTextureSelector;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -45,15 +44,19 @@ public class UniformM {
         Renderer renderer = Renderer.getInstance();
         Pipeline boundPipeline = renderer.getBoundPipeline();
 
-        if (this.parent instanceof ShaderInstance) {
-            Pipeline pipeline = ShaderMixed.of((ShaderInstance) this.parent).getPipeline();
+        ci.cancel();
 
-            // Update descriptors only if the pipeline has already been bound
-            if (boundPipeline == pipeline)
-                renderer.uploadAndBindUBOs(boundPipeline);
+        GlProgram program = GlProgram.getBoundProgram();
+
+        if (program == null) {
+            return;
         }
 
-        ci.cancel();
+        // Update descriptors only if the pipeline has already been bound
+        Pipeline pipeline = program.getPipeline();
+        if (boundPipeline == pipeline) {
+            renderer.uploadAndBindUBOs(boundPipeline);
+        }
     }
 
     @Inject(method = "uploadInteger", at = @At("HEAD"), cancellable = true)

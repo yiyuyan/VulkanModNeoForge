@@ -4,8 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Add flush batched cmds&#10;- Sync 5441949">
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Fix: apply filtering state on reload&#10;- Sync 320e32f">
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlProgram.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/UniformM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/UniformM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlProgramManagerMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlProgramManagerMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlStateManagerM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlStateManagerM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/ShaderInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/ShaderInstanceM.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -300,15 +307,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="22333000" />
-    </task>
-    <task id="LOCAL-00034" summary="Update 0.5.0-dev+1">
-      <option name="closed" value="true" />
-      <created>1782216352482</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1782216352482</updated>
+      <workItem from="1782437909229" duration="22802000" />
     </task>
     <task id="LOCAL-00035" summary="Implement IndexBuffer resize&#10;Update 0.5.0-dev+2&#10;Sync a290169">
       <option name="closed" value="true" />
@@ -694,7 +693,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782460563347</updated>
     </task>
-    <option name="localTasksCounter" value="83" />
+    <task id="LOCAL-00083" summary="Fix: apply filtering state on reload&#10;- Sync 320e32f">
+      <option name="closed" value="true" />
+      <created>1782462117666</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1782462117666</updated>
+    </task>
+    <option name="localTasksCounter" value="84" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -715,7 +722,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Set bound framebuffer on begin rendering&#10;- Fixes null pointer exception&#10;- Sync 1139f7d" />
     <MESSAGE value="Reset blend function before drawing&#10;- Improve mixin compatibility&#10;- Sync 4c47fb6&#10;- Sync 868bbf1&#10;- Update 0.5.1-dev+3" />
     <MESSAGE value="fix: Set directExit default to true" />
     <MESSAGE value="Improve framebuffer compatibility&#10;- Implement blit method&#10;- Update 0.5.1-dev+4&#10;- Sync 3f37e93" />
@@ -740,7 +746,8 @@
     <MESSAGE value="Improve mod compatibility&#10;- Update rendering mixins&#10;- Add ChunkOffset uniform&#10;- Sync 318d5ca&#10;- Update 0.5.2-dev+11" />
     <MESSAGE value="Use 16 bytes vertex format for terrain&#10;- Fix rendertype_leash bug&#10;- Update texture sampler on upload&#10;- Fix: apply correct light data on quad shading&#10;- Fix: apply quad transform if needed&#10;- Sync b35e7a3&#10;- Sync e317a24&#10;- Sync e42a5da&#10;- Sync abbdcc8&#10;- Sync 5d2315d&#10;- Update 0.5.4-dev+1" />
     <MESSAGE value="Add flush batched cmds&#10;- Sync 5441949" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add flush batched cmds&#10;- Sync 5441949" />
+    <MESSAGE value="Fix: apply filtering state on reload&#10;- Sync 320e32f" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: apply filtering state on reload&#10;- Sync 320e32f" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

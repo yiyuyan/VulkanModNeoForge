@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import net.vulkanmod.Initializer;
+import net.vulkanmod.gl.GlProgram;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.shader.GraphicsPipeline;
 import net.vulkanmod.vulkan.shader.Pipeline;
@@ -129,6 +130,8 @@ public class EffectInstanceM {
 
             this.pipeline = builder.createGraphicsPipeline();
 
+            GlProgram program = GlProgram.getProgram(this.programId);
+            program.bindPipeline(this.pipeline);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -184,6 +187,8 @@ public class EffectInstanceM {
     public void apply() {
         this.dirty = false;
         this.blend.apply();
+
+        ProgramManager.glUseProgram(this.programId);
 
         Renderer renderer = Renderer.getInstance();
 
