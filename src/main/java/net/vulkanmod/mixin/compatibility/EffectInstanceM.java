@@ -18,7 +18,7 @@ import net.vulkanmod.vulkan.shader.GraphicsPipeline;
 import net.vulkanmod.vulkan.shader.Pipeline;
 import net.vulkanmod.vulkan.shader.layout.Uniform;
 import net.vulkanmod.vulkan.shader.descriptor.UBO;
-import net.vulkanmod.vulkan.shader.parser.GlslConverter;
+import net.vulkanmod.vulkan.shader.converter.GlslConverter;
 import net.vulkanmod.vulkan.util.MappedBuffer;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL30;

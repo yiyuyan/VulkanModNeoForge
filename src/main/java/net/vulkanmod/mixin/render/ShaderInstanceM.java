@@ -1,12 +1,14 @@
 package net.vulkanmod.mixin.render;
 
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.shaders.Program;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceProvider;
@@ -17,15 +19,12 @@ import net.vulkanmod.vulkan.shader.GraphicsPipeline;
 import net.vulkanmod.vulkan.shader.Pipeline;
 import net.vulkanmod.vulkan.shader.descriptor.UBO;
 import net.vulkanmod.vulkan.shader.layout.Uniform;
-import net.vulkanmod.vulkan.shader.parser.GlslConverter;
+import net.vulkanmod.vulkan.shader.converter.GlslConverter;
 import net.vulkanmod.vulkan.util.MappedBuffer;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.system.MemoryUtil;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -35,6 +34,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -57,11 +57,15 @@ public class ShaderInstanceM implements ShaderMixed {
     @Shadow @Final @Nullable public com.mojang.blaze3d.shaders.Uniform GAME_TIME;
     @Shadow @Final @Nullable public com.mojang.blaze3d.shaders.Uniform SCREEN_SIZE;
 
-    private String vsPath;
-    private String fsName;
+    @Shadow @Final private Map<String, Object> samplerMap;
+    @Shadow @Final private List<Integer> samplerLocations;
+    @Shadow @Final private List<String> samplerNames;
 
-    private GraphicsPipeline pipeline;
-    boolean doUniformUpdate = false;
+    @Unique private String vsPath;
+    @Unique private String fsName;
+
+    @Unique private GraphicsPipeline pipeline;
+    @Unique boolean doUniformUpdate = false;
 
     public GraphicsPipeline getPipeline() {
         return pipeline;
@@ -126,6 +130,27 @@ public class ShaderInstanceM implements ShaderMixed {
         if (!this.doUniformUpdate)
             return;
 
+        for (int j = 0; j < this.samplerLocations.size(); ++j) {
+            String string = this.samplerNames.get(j);
+            if (this.samplerMap.get(string) != null) {
+                RenderSystem.activeTexture(33984 + j);
+                Object object = this.samplerMap.get(string);
+                int texId = -1;
+                if (object instanceof RenderTarget) {
+                    texId = ((RenderTarget)object).getColorTextureId();
+                } else if (object instanceof AbstractTexture) {
+                    texId = ((AbstractTexture)object).getId();
+                } else if (object instanceof Integer) {
+                    texId = (Integer)object;
+                }
+
+                if (texId != -1) {
+                    RenderSystem.bindTexture(texId);
+                    RenderSystem.setShaderTexture(j, texId);
+                }
+            }
+        }
+
         if (this.MODEL_VIEW_MATRIX != null) {
             this.MODEL_VIEW_MATRIX.set(RenderSystem.getModelViewMatrix());
         }
@@ -186,15 +211,16 @@ public class ShaderInstanceM implements ShaderMixed {
         for (Uniform vUniform : ubo.getUniforms()) {
             com.mojang.blaze3d.shaders.Uniform uniform = this.uniformMap.get(vUniform.getName());
 
-            if (uniform == null) {
-                Initializer.LOGGER.error(String.format("Error: field %s not present in uniform map", vUniform.getName()));
-                continue;
-            }
-
             Supplier<MappedBuffer> supplier;
             ByteBuffer byteBuffer;
 
-            if (uniform.getType() <= 3) {
+            if (uniform == null) {
+                Initializer.LOGGER.error(String.format("Error: field %s not present in uniform map", vUniform.getName()));
+
+                int size = vUniform.getSize();
+                byteBuffer = MemoryUtil.memAlloc(size * 4);
+            }
+            else if (uniform.getType() <= 3) {
                 byteBuffer = MemoryUtil.memByteBuffer(uniform.getIntBuffer());
             } else if (uniform.getType() <= 10) {
                 byteBuffer = MemoryUtil.memByteBuffer(uniform.getFloatBuffer());
