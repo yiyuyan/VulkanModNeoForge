@@ -10,7 +10,7 @@ import net.vulkanmod.render.vertex.TerrainRenderType;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.device.DeviceManager;
 import net.vulkanmod.vulkan.memory.MemoryTypes;
-import net.vulkanmod.vulkan.memory.StorageBuffer;
+import net.vulkanmod.vulkan.memory.buffer.StorageBuffer;
 import net.vulkanmod.vulkan.shader.ImageComputePipeline;
 import net.vulkanmod.vulkan.texture.VulkanImage;
 import org.joml.Matrix4f;

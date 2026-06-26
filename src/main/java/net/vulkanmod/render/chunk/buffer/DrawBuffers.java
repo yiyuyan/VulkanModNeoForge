@@ -12,7 +12,7 @@ import net.vulkanmod.render.chunk.util.StaticQueue;
 import net.vulkanmod.render.vertex.CustomVertexFormat;
 import net.vulkanmod.render.vertex.TerrainRenderType;
 import net.vulkanmod.vulkan.Renderer;
-import net.vulkanmod.vulkan.memory.IndirectBuffer;
+import net.vulkanmod.vulkan.memory.buffer.IndirectBuffer;
 import net.vulkanmod.vulkan.shader.Pipeline;
 import org.joml.Vector3i;
 import org.lwjgl.system.MemoryStack;
@@ -84,6 +84,7 @@ public class DrawBuffers {
             int indexCount = 0;
 
             var faceBuffer = vertexBuffers[i];
+            int vertexCount = 0;
 
             if (faceBuffer != null) {
                 AreaBuffer.Segment segment = this.getAreaBufferOrAlloc(renderType).upload(faceBuffer, vertexOffset, paramPtr);
@@ -92,7 +93,8 @@ public class DrawBuffers {
                 int baseInstance = encodeSectionOffset(section.xOffset(), section.yOffset(), section.zOffset());
                 DrawParametersBuffer.setBaseInstance(paramPtr, baseInstance);
 
-                indexCount = faceBuffer.limit() / VERTEX_SIZE * 6 / 4;
+                vertexCount = faceBuffer.limit() / VERTEX_SIZE;
+                indexCount = vertexCount * 6 / 4;
             }
 
             if (i == QuadFacing.UNDEFINED.ordinal() && !buffer.autoIndices) {
@@ -103,6 +105,8 @@ public class DrawBuffers {
                 int oldOffset = DrawParametersBuffer.getIndexCount(paramPtr) > 0 ? DrawParametersBuffer.getFirstIndex(paramPtr) : -1;
                 AreaBuffer.Segment segment = this.indexBuffer.upload(buffer.getIndexBuffer(), oldOffset, paramPtr);
                 firstIndex = segment.offset / INDEX_SIZE;
+            } else {
+                Renderer.getDrawer().getQuadsIndexBuffer().checkCapacity(vertexCount);
             }
 
             DrawParametersBuffer.setIndexCount(paramPtr, indexCount);

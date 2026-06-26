@@ -1,8 +1,10 @@
-package net.vulkanmod.vulkan.memory;
+package net.vulkanmod.vulkan.memory.buffer;
 
 import net.vulkanmod.render.chunk.buffer.UploadManager;
 import net.vulkanmod.vulkan.Vulkan;
 import net.vulkanmod.vulkan.device.DeviceManager;
+import net.vulkanmod.vulkan.memory.MemoryManager;
+import net.vulkanmod.vulkan.memory.MemoryType;
 import net.vulkanmod.vulkan.queue.CommandPool;
 import net.vulkanmod.vulkan.queue.TransferQueue;
 
@@ -34,7 +36,7 @@ public class IndirectBuffer extends Buffer {
             StagingBuffer stagingBuffer = Vulkan.getStagingBuffer();
             stagingBuffer.copyBuffer(size, byteBuffer);
 
-            TransferQueue.uploadBufferCmd(commandBuffer.getHandle(), stagingBuffer.id, stagingBuffer.offset, this.getId(), this.getUsedBytes(), size);
+            TransferQueue.uploadBufferCmd(commandBuffer.getHandle(), stagingBuffer.getId(), stagingBuffer.getOffset(), this.getId(), this.getUsedBytes(), size);
         }
 
         offset = usedBytes;
@@ -52,8 +54,6 @@ public class IndirectBuffer extends Buffer {
         if (commandBuffer == null)
             return;
 
-        // Route through UploadManager so the graphics queue's timeline wait covers
-        // indirect draw commands (DRAW_INDIRECT stage) as well as vertex/index reads.
         UploadManager.INSTANCE.submitTracked(commandBuffer);
         commandBuffer = null;
     }

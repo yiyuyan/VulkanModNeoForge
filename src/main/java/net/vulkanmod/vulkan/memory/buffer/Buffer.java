@@ -1,6 +1,12 @@
-package net.vulkanmod.vulkan.memory;
+package net.vulkanmod.vulkan.memory.buffer;
+
+import net.vulkanmod.vulkan.memory.MemoryManager;
+import net.vulkanmod.vulkan.memory.MemoryType;
 
 public abstract class Buffer {
+    public final MemoryType type;
+    public final int usage;
+
     protected long id;
     protected long allocation;
 
@@ -8,15 +14,11 @@ public abstract class Buffer {
     protected long usedBytes;
     protected long offset;
 
-    protected MemoryType type;
-    protected int usage;
     protected long data;
 
     protected Buffer(int usage, MemoryType type) {
-        //TODO: check usage
         this.usage = usage;
         this.type = type;
-
     }
 
     protected void createBuffer(long bufferSize) {
@@ -47,11 +49,11 @@ public abstract class Buffer {
 
     public long getBufferSize() { return bufferSize; }
 
-    protected void setBufferSize(long size) { this.bufferSize = size; }
+    public void setBufferSize(long size) { this.bufferSize = size; }
 
-    protected void setId(long id) { this.id = id; }
+    public void setId(long id) { this.id = id; }
 
-    protected void setAllocation(long allocation) {this.allocation = allocation; }
+    public void setAllocation(long allocation) {this.allocation = allocation; }
 
     /** Mapped host pointer — valid for host-mappable memory types only. */
     public long getDataPtr() {

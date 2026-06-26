@@ -2,6 +2,8 @@ package net.vulkanmod.vulkan.memory;
 
 import net.vulkanmod.vulkan.Vulkan;
 import net.vulkanmod.vulkan.device.DeviceManager;
+import net.vulkanmod.vulkan.memory.buffer.Buffer;
+import net.vulkanmod.vulkan.memory.buffer.StagingBuffer;
 import net.vulkanmod.vulkan.util.VUtil;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.system.MemoryStack;
@@ -67,22 +69,22 @@ public class MemoryTypes {
         }
 
         @Override
-        void createBuffer(Buffer buffer, long size) {
+        public void createBuffer(Buffer buffer, long size) {
             MemoryManager.getInstance().createBuffer(buffer, size,
                     VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT | buffer.usage,
                     VK_MEMORY_HEAP_DEVICE_LOCAL_BIT);
         }
 
         @Override
-        void copyToBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
+        public void copyToBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
             StagingBuffer stagingBuffer = Vulkan.getStagingBuffer();
             stagingBuffer.copyBuffer(bufferSize, byteBuffer);
 
-            DeviceManager.getTransferQueue().copyBufferCmd(stagingBuffer.id, stagingBuffer.offset, buffer.getId(), buffer.getUsedBytes(), bufferSize);
+            DeviceManager.getTransferQueue().copyBufferCmd(stagingBuffer.getId(), stagingBuffer.getOffset(), buffer.getId(), buffer.getUsedBytes(), bufferSize);
         }
 
         @Override
-        void copyFromBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
+        public void copyFromBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
             try (MemoryStack stack = MemoryStack.stackPush()) {
                 LongBuffer pStaging = stack.mallocLong(1);
                 PointerBuffer pAlloc = stack.pointers(0L);
@@ -102,15 +104,15 @@ public class MemoryTypes {
         }
 
         public long copyBuffer(Buffer src, Buffer dst) {
-            if (dst.bufferSize < src.bufferSize) {
+            if (dst.getBufferSize() < src.getBufferSize()) {
                 throw new IllegalArgumentException("dst size is less than src size.");
             }
 
-            return DeviceManager.getTransferQueue().copyBufferCmd(src.getId(), 0, dst.getId(), 0, src.bufferSize);
+            return DeviceManager.getTransferQueue().copyBufferCmd(src.getId(), 0, dst.getId(), 0, src.getBufferSize());
         }
 
         @Override
-        boolean mappable() {
+        public boolean mappable() {
             return false;
         }
     }
@@ -122,17 +124,17 @@ public class MemoryTypes {
         }
 
         @Override
-        void copyToBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
-            nmemcpy(buffer.data + buffer.getUsedBytes(), MemoryUtil.memAddress(byteBuffer), bufferSize);
+        public void copyToBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
+            nmemcpy(buffer.getDataPtr() + buffer.getUsedBytes(), MemoryUtil.memAddress(byteBuffer), bufferSize);
         }
 
         @Override
-        void copyFromBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
-            nmemcpy(MemoryUtil.memAddress(byteBuffer), buffer.data, bufferSize);
+        public void copyFromBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
+            nmemcpy(MemoryUtil.memAddress(byteBuffer), buffer.getDataPtr(), bufferSize);
         }
 
         @Override
-        boolean mappable() {
+        public boolean mappable() {
             return true;
         }
     }
@@ -144,7 +146,7 @@ public class MemoryTypes {
         }
 
         @Override
-        void createBuffer(Buffer buffer, long size) {
+        public void createBuffer(Buffer buffer, long size) {
 
             MemoryManager.getInstance().createBuffer(buffer, size,
                     VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT | buffer.usage,
@@ -152,11 +154,11 @@ public class MemoryTypes {
         }
 
         void copyToBuffer(Buffer buffer, long dstOffset, long bufferSize, ByteBuffer byteBuffer) {
-            nmemcpy(buffer.data + dstOffset, MemoryUtil.memAddress(byteBuffer), bufferSize);
+            nmemcpy(buffer.getDataPtr() + dstOffset, MemoryUtil.memAddress(byteBuffer), bufferSize);
         }
 
         void copyBuffer(Buffer src, Buffer dst) {
-            nmemcpy(dst.data, src.data, src.bufferSize);
+            nmemcpy(dst.getDataPtr(), src.getDataPtr(), src.getBufferSize());
 
 //            copyBufferCmd(src.getId(), 0, dst.getId(), 0, src.bufferSize);
         }
@@ -169,7 +171,7 @@ public class MemoryTypes {
         }
 
         @Override
-        void createBuffer(Buffer buffer, long size) {
+        public void createBuffer(Buffer buffer, long size) {
             MemoryManager.getInstance().createBuffer(buffer, size,
                     VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT | buffer.usage,
                     VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
@@ -183,7 +185,7 @@ public class MemoryTypes {
         }
 
         @Override
-        void createBuffer(Buffer buffer, long size) {
+        public void createBuffer(Buffer buffer, long size) {
             MemoryManager.getInstance().createBuffer(buffer, size,
                     VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT | buffer.usage,
                     VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);

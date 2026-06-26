@@ -1,7 +1,7 @@
 package net.vulkanmod.vulkan.shader;
 
 import net.vulkanmod.vulkan.Vulkan;
-import net.vulkanmod.vulkan.memory.Buffer;
+import net.vulkanmod.vulkan.memory.buffer.Buffer;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.vulkan.*;
 

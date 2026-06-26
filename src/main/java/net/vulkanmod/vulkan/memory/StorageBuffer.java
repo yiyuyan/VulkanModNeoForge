@@ -1,4 +1,6 @@
-package net.vulkanmod.vulkan.memory;
+package net.vulkanmod.vulkan.memory.buffer;
+
+import net.vulkanmod.vulkan.memory.MemoryType;
 
 public class StorageBuffer extends Buffer {
 

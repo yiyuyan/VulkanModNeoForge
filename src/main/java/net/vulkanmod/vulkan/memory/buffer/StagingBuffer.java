@@ -1,7 +1,9 @@
-package net.vulkanmod.vulkan.memory;
+package net.vulkanmod.vulkan.memory.buffer;
 
 import net.vulkanmod.Initializer;
 import net.vulkanmod.render.chunk.util.Util;
+import net.vulkanmod.vulkan.memory.MemoryManager;
+import net.vulkanmod.vulkan.memory.MemoryTypes;
 import net.vulkanmod.vulkan.util.VUtil;
 import org.lwjgl.system.MemoryUtil;
 
@@ -30,8 +32,6 @@ public class StagingBuffer extends Buffer {
 
         offset = usedBytes;
         usedBytes += size;
-
-        //createVertexBuffer(vertexSize, vertexCount, byteBuffer);
     }
 
     public void align(int alignment) {

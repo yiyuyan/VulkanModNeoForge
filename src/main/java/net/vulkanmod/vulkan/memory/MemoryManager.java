@@ -6,6 +6,7 @@ import net.vulkanmod.Initializer;
 import net.vulkanmod.render.chunk.buffer.AreaBuffer;
 import net.vulkanmod.vulkan.Vulkan;
 import net.vulkanmod.vulkan.device.DeviceManager;
+import net.vulkanmod.vulkan.memory.buffer.Buffer;
 import net.vulkanmod.vulkan.texture.VulkanImage;
 import net.vulkanmod.vulkan.util.VkResult;
 import org.apache.commons.lang3.Validate;
@@ -126,7 +127,6 @@ public class MemoryManager {
     public synchronized void createBuffer(Buffer buffer, long size, int usage, int properties) {
 
         try (MemoryStack stack = stackPush()) {
-            buffer.setBufferSize(size);
 
             LongBuffer pBuffer = stack.mallocLong(1);
             PointerBuffer pAllocation = stack.pointers(VK_NULL_HANDLE);
@@ -135,6 +135,7 @@ public class MemoryManager {
 
             buffer.setId(pBuffer.get(0));
             buffer.setAllocation(pAllocation.get(0));
+            buffer.setBufferSize(size);
 
             if ((properties & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT) > 0) {
                 deviceMemory += size;
