@@ -4,22 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Refactor:&#10;- Rename gl emulation classes&#10;- Refactor SwapChain color attachment interface&#10;- Sync df460ba&#10;- Update 0.5.4-dev+6">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/VkGlTexture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/VkGlTexture.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlStateManagerM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlStateManagerM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/MTextureUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/MTextureUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/image/MNativeImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/image/MNativeImage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/VRenderSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/VRenderSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Vulkan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Vulkan.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/framebuffer/SwapChain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/framebuffer/SwapChain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/pass/DefaultMainPass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/pass/DefaultMainPass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/pass/MainPass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/pass/MainPass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/PipelineState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/PipelineState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/VulkanImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/VulkanImage.java" afterDir="false" />
-    </list>
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Fix missed global block entities set update&#10;- Refactor&#10;- Sync bd4db35" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -313,23 +298,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="28897000" />
-    </task>
-    <task id="LOCAL-00041" summary="Use normal to calculate quad facing&#10;Update 0.5.0-dev+6&#10;Sync 0ef9f9a">
-      <option name="closed" value="true" />
-      <created>1782273194407</created>
-      <option name="number" value="00041" />
-      <option name="presentableId" value="LOCAL-00041" />
-      <option name="project" value="LOCAL" />
-      <updated>1782273194408</updated>
-    </task>
-    <task id="LOCAL-00042" summary="Add missing normal vector copy&#10;Sync ca9cf7b">
-      <option name="closed" value="true" />
-      <created>1782273370727</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1782273370727</updated>
+      <workItem from="1782437909229" duration="29248000" />
     </task>
     <task id="LOCAL-00043" summary="Improve glsl conversion&#10;Improve compatibility&#10;Add image format info&#10;Sync 4ec5d6a,eedfa54,5c8bbfe">
       <option name="closed" value="true" />
@@ -707,7 +676,23 @@
       <option name="project" value="LOCAL" />
       <updated>1782466001642</updated>
     </task>
-    <option name="localTasksCounter" value="90" />
+    <task id="LOCAL-00090" summary="- Refactor downloadTexture&#10;- Add image debug label&#10;- Fix upload size&#10;- Refactor render state mixins&#10;- Add blend op state&#10;- Sync 153879d&#10;- Sync 6c854fa&#10;- Sync 81b5668&#10;- Sync e2a1fc2&#10;- Update 0.5.4-dev+7">
+      <option name="closed" value="true" />
+      <created>1782468748318</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1782468748319</updated>
+    </task>
+    <task id="LOCAL-00091" summary="Fix missed global block entities set update&#10;- Refactor&#10;- Sync bd4db35">
+      <option name="closed" value="true" />
+      <created>1782468962845</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1782468962845</updated>
+    </task>
+    <option name="localTasksCounter" value="92" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -728,8 +713,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Improve shader compatibility&#10;- shader uniforms and samplers" />
-    <MESSAGE value="Restart render pass if terminated early&#10;- Remove reloadShaders injection&#10;- Sync 66bd4a4&#10;- Sync ab6c7d1&#10;- Update 0.5.1-dev+8" />
     <MESSAGE value="Implement data cache for biome data&#10;- Sync 1c189cf&#10;- Update 0.5.2-dev+1" />
     <MESSAGE value="Refactor window mode option&#10;- Sync d8f2073&#10;- Update 0.5.2-dev+2" />
     <MESSAGE value="Refactor CircularIntList&#10;- Sync 6ee4b39&#10;- Update 0.5.2-dev+3" />
@@ -753,7 +736,9 @@
     <MESSAGE value="Refactor VRenderSystem&#10;- Sync ed80bc4&#10;- Update 0.5.4-dev+4" />
     <MESSAGE value="Refactor:&#10;- Buffer classes&#10;- Memory copy&#10;- Update d0f4715&#10;- Update 0.5.4-dev+5" />
     <MESSAGE value="Refactor:&#10;- Rename gl emulation classes&#10;- Refactor SwapChain color attachment interface&#10;- Sync df460ba&#10;- Update 0.5.4-dev+6" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor:&#10;- Rename gl emulation classes&#10;- Refactor SwapChain color attachment interface&#10;- Sync df460ba&#10;- Update 0.5.4-dev+6" />
+    <MESSAGE value="- Refactor downloadTexture&#10;- Add image debug label&#10;- Fix upload size&#10;- Refactor render state mixins&#10;- Add blend op state&#10;- Sync 153879d&#10;- Sync 6c854fa&#10;- Sync 81b5668&#10;- Sync e2a1fc2&#10;- Update 0.5.4-dev+7" />
+    <MESSAGE value="Fix missed global block entities set update&#10;- Refactor&#10;- Sync bd4db35" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix missed global block entities set update&#10;- Refactor&#10;- Sync bd4db35" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
