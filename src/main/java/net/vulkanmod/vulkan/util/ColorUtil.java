@@ -48,6 +48,15 @@ public class ColorUtil {
             return (color & 0x00FFFFFF) | newA << 24;
         }
 
+        public static int multiplyRGB(int color, float m) {
+            final int alpha = ((color >>> 24) & 0xFF);
+            final int red = (int) (((color >>> 16) & 0xFF) * m);
+            final int green = (int) (((color >>> 8) & 0xFF) * m);
+            final int blue = (int) ((color & 0xFF) * m);
+
+            return (alpha << 24) | (red << 16) | (green << 8) | blue;
+        }
+
         public static int toRGBA(int color) {
             return (color & 0xFF00FF00) | ((color >> 16) & 0xFF) | ((color << 16) & 0xFF0000);
         }

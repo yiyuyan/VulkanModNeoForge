@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Fix missed global block entities set update&#10;- Refactor&#10;- Sync bd4db35" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Fix beacon beam rendering bug&#10;- Sync 91bf9e8">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/sky/CloudRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/sky/CloudRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/util/ColorUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/util/ColorUtil.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -298,15 +303,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="29248000" />
-    </task>
-    <task id="LOCAL-00043" summary="Improve glsl conversion&#10;Improve compatibility&#10;Add image format info&#10;Sync 4ec5d6a,eedfa54,5c8bbfe">
-      <option name="closed" value="true" />
-      <created>1782273799125</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1782273799125</updated>
+      <workItem from="1782437909229" duration="29666000" />
     </task>
     <task id="LOCAL-00044" summary="Use custom color resolver if requested&#10;- Implement BlockColorRegistry for fast look up&#10;- Refactor&#10;- Update 0.5.0-dev+8&#10;- Sync b56a22d">
       <option name="closed" value="true" />
@@ -692,7 +689,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782468962845</updated>
     </task>
-    <option name="localTasksCounter" value="92" />
+    <task id="LOCAL-00092" summary="Fix beacon beam rendering bug&#10;- Sync 91bf9e8">
+      <option name="closed" value="true" />
+      <created>1782469136333</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1782469136333</updated>
+    </task>
+    <option name="localTasksCounter" value="93" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -713,7 +718,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Implement data cache for biome data&#10;- Sync 1c189cf&#10;- Update 0.5.2-dev+1" />
     <MESSAGE value="Refactor window mode option&#10;- Sync d8f2073&#10;- Update 0.5.2-dev+2" />
     <MESSAGE value="Refactor CircularIntList&#10;- Sync 6ee4b39&#10;- Update 0.5.2-dev+3" />
     <MESSAGE value="Fix wrong sampler binding&#10;- Sync 1799d82" />
@@ -738,7 +742,8 @@
     <MESSAGE value="Refactor:&#10;- Rename gl emulation classes&#10;- Refactor SwapChain color attachment interface&#10;- Sync df460ba&#10;- Update 0.5.4-dev+6" />
     <MESSAGE value="- Refactor downloadTexture&#10;- Add image debug label&#10;- Fix upload size&#10;- Refactor render state mixins&#10;- Add blend op state&#10;- Sync 153879d&#10;- Sync 6c854fa&#10;- Sync 81b5668&#10;- Sync e2a1fc2&#10;- Update 0.5.4-dev+7" />
     <MESSAGE value="Fix missed global block entities set update&#10;- Refactor&#10;- Sync bd4db35" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix missed global block entities set update&#10;- Refactor&#10;- Sync bd4db35" />
+    <MESSAGE value="Fix beacon beam rendering bug&#10;- Sync 91bf9e8" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix beacon beam rendering bug&#10;- Sync 91bf9e8" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

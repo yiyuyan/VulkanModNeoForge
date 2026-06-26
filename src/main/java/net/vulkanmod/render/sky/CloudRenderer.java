@@ -170,10 +170,10 @@ public class CloudRenderer {
 
     private MeshData buildClouds(Tesselator tesselator, int centerCellX, int centerCellZ, double cloudY) {
 
-        final int upFaceColor = ColorUtil.RGBA.pack(1.0f, 1.0f, 1.0f, 1.0f);
-        final int xDirColor = ColorUtil.RGBA.pack(0.9f, 0.9f, 0.9f, 1.0f);
-        final int downFaceColor = ColorUtil.RGBA.pack(0.7f, 0.7f, 0.7f, 1.0f);
-        final int zDirColor = ColorUtil.RGBA.pack(0.8f, 0.8f, 0.8f, 1.0f);
+        final float upFaceBrightness = 1.0f;
+        final float xDirBrightness = 0.9f;
+        final float downFaceBrightness = 0.7f;
+        final float zDirBrightness = 0.8f;
 
         BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
@@ -186,50 +186,57 @@ public class CloudRenderer {
                 for (int cellZ = -renderDistance; cellZ < renderDistance; ++cellZ) {
                     int cellIdx = this.cloudGrid.getWrappedIdx(centerCellX + cellX, centerCellZ + cellZ);
                     byte renderFaces = this.cloudGrid.renderFaces[cellIdx];
+                    int baseColor = this.cloudGrid.pixels[cellIdx];
 
                     float x = cellX * CELL_WIDTH;
                     float z = cellZ * CELL_WIDTH;
 
                     if ((renderFaces & DIR_POS_Y_BIT) != 0 && cloudY <= 0.0f) {
-                        putVertex(bufferBuilder, x + CELL_WIDTH, CELL_HEIGHT, z + CELL_WIDTH, upFaceColor);
-                        putVertex(bufferBuilder, x + CELL_WIDTH, CELL_HEIGHT, z + 0.0f, upFaceColor);
-                        putVertex(bufferBuilder, x + 0.0f, CELL_HEIGHT, z + 0.0f, upFaceColor);
-                        putVertex(bufferBuilder, x + 0.0f, CELL_HEIGHT, z + CELL_WIDTH, upFaceColor);
+                        final int color = ColorUtil.ARGB.multiplyRGB(baseColor, upFaceBrightness);
+                        putVertex(bufferBuilder, x + CELL_WIDTH, CELL_HEIGHT, z + CELL_WIDTH, color);
+                        putVertex(bufferBuilder, x + CELL_WIDTH, CELL_HEIGHT, z +       0.0f, color);
+                        putVertex(bufferBuilder, x +       0.0f, CELL_HEIGHT, z +       0.0f, color);
+                        putVertex(bufferBuilder, x +       0.0f, CELL_HEIGHT, z + CELL_WIDTH, color);
                     }
 
                     if ((renderFaces & DIR_NEG_Y_BIT) != 0 && cloudY >= -CELL_HEIGHT) {
-                        putVertex(bufferBuilder, x + 0.0f, 0.0f, z + CELL_WIDTH, downFaceColor);
-                        putVertex(bufferBuilder, x + 0.0f, 0.0f, z + 0.0f, downFaceColor);
-                        putVertex(bufferBuilder, x + CELL_WIDTH, 0.0f, z + 0.0f, downFaceColor);
-                        putVertex(bufferBuilder, x + CELL_WIDTH, 0.0f, z + CELL_WIDTH, downFaceColor);
+                        final int color = ColorUtil.ARGB.multiplyRGB(baseColor, downFaceBrightness);
+                        putVertex(bufferBuilder, x +       0.0f, 0.0f, z + CELL_WIDTH, color);
+                        putVertex(bufferBuilder, x +       0.0f, 0.0f, z +       0.0f, color);
+                        putVertex(bufferBuilder, x + CELL_WIDTH, 0.0f, z +       0.0f, color);
+                        putVertex(bufferBuilder, x + CELL_WIDTH, 0.0f, z + CELL_WIDTH, color);
                     }
 
                     if ((renderFaces & DIR_POS_X_BIT) != 0 && (x < 1.0f || insideClouds)) {
-                        putVertex(bufferBuilder, x + CELL_WIDTH, CELL_HEIGHT, z + CELL_WIDTH, xDirColor);
-                        putVertex(bufferBuilder, x + CELL_WIDTH, 0.0f, z + CELL_WIDTH, xDirColor);
-                        putVertex(bufferBuilder, x + CELL_WIDTH, 0.0f, z + 0.0f, xDirColor);
-                        putVertex(bufferBuilder, x + CELL_WIDTH, CELL_HEIGHT, z + 0.0f, xDirColor);
+                        final int color = ColorUtil.ARGB.multiplyRGB(baseColor, xDirBrightness);
+                        putVertex(bufferBuilder, x + CELL_WIDTH, CELL_HEIGHT, z + CELL_WIDTH, color);
+                        putVertex(bufferBuilder, x + CELL_WIDTH,     0.0f, z + CELL_WIDTH, color);
+                        putVertex(bufferBuilder, x + CELL_WIDTH,     0.0f, z +       0.0f, color);
+                        putVertex(bufferBuilder, x + CELL_WIDTH, CELL_HEIGHT, z +       0.0f, color);
                     }
 
                     if ((renderFaces & DIR_NEG_X_BIT) != 0 && (x > -1.0f || insideClouds)) {
-                        putVertex(bufferBuilder, x + 0.0f, CELL_HEIGHT, z + 0.0f, xDirColor);
-                        putVertex(bufferBuilder, x + 0.0f, 0.0f, z + 0.0f, xDirColor);
-                        putVertex(bufferBuilder, x + 0.0f, 0.0f, z + CELL_WIDTH, xDirColor);
-                        putVertex(bufferBuilder, x + 0.0f, CELL_HEIGHT, z + CELL_WIDTH, xDirColor);
+                        final int color = ColorUtil.ARGB.multiplyRGB(baseColor, xDirBrightness);
+                        putVertex(bufferBuilder, x + 0.0f, CELL_HEIGHT, z + 0.0f, color);
+                        putVertex(bufferBuilder, x + 0.0f, 0.0f, z + 0.0f, color);
+                        putVertex(bufferBuilder, x + 0.0f, 0.0f, z + CELL_WIDTH, color);
+                        putVertex(bufferBuilder, x + 0.0f, CELL_HEIGHT, z + CELL_WIDTH, color);
                     }
 
                     if ((renderFaces & DIR_POS_Z_BIT) != 0 && (z < 1.0f || insideClouds)) {
-                        putVertex(bufferBuilder, x + 0.0f, CELL_HEIGHT, z + CELL_WIDTH, zDirColor);
-                        putVertex(bufferBuilder, x + 0.0f, 0.0f, z + CELL_WIDTH, zDirColor);
-                        putVertex(bufferBuilder, x + CELL_WIDTH, 0.0f, z + CELL_WIDTH, zDirColor);
-                        putVertex(bufferBuilder, x + CELL_WIDTH, CELL_HEIGHT, z + CELL_WIDTH, zDirColor);
+                        final int color = ColorUtil.ARGB.multiplyRGB(baseColor, zDirBrightness);
+                        putVertex(bufferBuilder, x +       0.0f, CELL_HEIGHT, z + CELL_WIDTH, color);
+                        putVertex(bufferBuilder, x +       0.0f,     0.0f, z + CELL_WIDTH, color);
+                        putVertex(bufferBuilder, x + CELL_WIDTH,     0.0f, z + CELL_WIDTH, color);
+                        putVertex(bufferBuilder, x + CELL_WIDTH, CELL_HEIGHT, z + CELL_WIDTH, color);
                     }
 
                     if ((renderFaces & DIR_NEG_Z_BIT) != 0 && (z > -1.0f || insideClouds)) {
-                        putVertex(bufferBuilder, x + CELL_WIDTH, CELL_HEIGHT, z + 0.0f, zDirColor);
-                        putVertex(bufferBuilder, x + CELL_WIDTH, 0.0f, z + 0.0f, zDirColor);
-                        putVertex(bufferBuilder, x + 0.0f, 0.0f, z + 0.0f, zDirColor);
-                        putVertex(bufferBuilder, x + 0.0f, CELL_HEIGHT, z + 0.0f, zDirColor);
+                        final int color = ColorUtil.ARGB.multiplyRGB(baseColor, zDirBrightness);
+                        putVertex(bufferBuilder, x + CELL_WIDTH, CELL_HEIGHT, z + 0.0f, color);
+                        putVertex(bufferBuilder, x + CELL_WIDTH,     0.0f, z + 0.0f, color);
+                        putVertex(bufferBuilder, x +       0.0f,     0.0f, z + 0.0f, color);
+                        putVertex(bufferBuilder, x +       0.0f, CELL_HEIGHT, z + 0.0f, color);
                     }
 
                 }
@@ -241,15 +248,17 @@ public class CloudRenderer {
                 for (int cellZ = -renderDistance; cellZ < renderDistance; ++cellZ) {
                     int cellIdx = this.cloudGrid.getWrappedIdx(centerCellX + cellX, centerCellZ + cellZ);
                     byte renderFaces = this.cloudGrid.renderFaces[cellIdx];
+                    int baseColor = this.cloudGrid.pixels[cellIdx];
 
                     float x = cellX * CELL_WIDTH;
                     float z = cellZ * CELL_WIDTH;
 
                     if ((renderFaces & DIR_NEG_Y_BIT) != 0) {
-                        putVertex(bufferBuilder, x + 0.0f, 0.0f, z + CELL_WIDTH, upFaceColor);
-                        putVertex(bufferBuilder, x + 0.0f, 0.0f, z + 0.0f, upFaceColor);
-                        putVertex(bufferBuilder, x + CELL_WIDTH, 0.0f, z + 0.0f, upFaceColor);
-                        putVertex(bufferBuilder, x + CELL_WIDTH, 0.0f, z + CELL_WIDTH, upFaceColor);
+                        final int color = ColorUtil.ARGB.multiplyRGB(baseColor, upFaceBrightness);
+                        putVertex(bufferBuilder, x +       0.0f, 0.0f, z + CELL_WIDTH, color);
+                        putVertex(bufferBuilder, x +       0.0f, 0.0f, z +       0.0f, color);
+                        putVertex(bufferBuilder, x + CELL_WIDTH, 0.0f, z +       0.0f, color);
+                        putVertex(bufferBuilder, x + CELL_WIDTH, 0.0f, z + CELL_WIDTH, color);
                     }
 
                 }
