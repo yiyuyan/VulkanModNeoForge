@@ -16,6 +16,15 @@ public class GL30M {
      * @reason
      */
     @Overwrite(remap = false)
+    public static void glBlitFramebuffer(@NativeType("GLint") int srcX0, @NativeType("GLint") int srcY0, @NativeType("GLint") int srcX1, @NativeType("GLint") int srcY1, @NativeType("GLint") int dstX0, @NativeType("GLint") int dstY0, @NativeType("GLint") int dstX1, @NativeType("GLint") int dstY1, @NativeType("GLbitfield") int mask, @NativeType("GLenum") int filter) {
+        GlFramebuffer.glBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
+    }
+
+    /**
+     * @author
+     * @reason
+     */
+    @Overwrite(remap = false)
     public static void glGenerateMipmap(@NativeType("GLenum") int target) {
         GlTexture.generateMipmap(target);
     }

@@ -1,5 +1,6 @@
 package net.vulkanmod.vulkan.texture;
 
+import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.device.DeviceManager;
 import net.vulkanmod.vulkan.memory.MemoryManager;
 import net.vulkanmod.vulkan.queue.CommandPool;
@@ -187,6 +188,44 @@ public abstract class ImageUtil {
             long fence = DeviceManager.getGraphicsQueue().submitCommands(commandBuffer);
 
             vkWaitForFences(DeviceManager.vkDevice, fence, true, VUtil.UINT64_MAX);
+        }
+    }
+
+    public static void blitFramebuffer(VulkanImage dstImage, int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1) {
+        try (MemoryStack stack = stackPush()) {
+
+            VkCommandBuffer commandBuffer = Renderer.getCommandBuffer();
+
+            Renderer.getInstance().endRenderPass(commandBuffer);
+
+            dstImage.transitionImageLayout(stack, commandBuffer, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+
+            // TODO: hardcoded srcImage
+            VulkanImage srcImage = Renderer.getInstance().getSwapChain().getColorAttachment();
+
+            srcImage.transitionImageLayout(stack, commandBuffer, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
+
+            VkImageBlit.Buffer blit = VkImageBlit.calloc(1, stack);
+            blit.srcOffsets(0, VkOffset3D.calloc(stack).set(0, 0, 0));
+            blit.srcOffsets(1, VkOffset3D.calloc(stack).set(srcImage.width, srcImage.height, 1));
+            blit.srcSubresource()
+                    .aspectMask(VK_IMAGE_ASPECT_COLOR_BIT)
+                    .mipLevel(0)
+                    .baseArrayLayer(0)
+                    .layerCount(1);
+
+            blit.dstOffsets(0, VkOffset3D.calloc(stack).set(0, 0, 0));
+            blit.dstOffsets(1, VkOffset3D.calloc(stack).set(dstImage.width, dstImage.height, 1));
+            blit.dstSubresource().aspectMask(VK_IMAGE_ASPECT_COLOR_BIT).mipLevel(0).baseArrayLayer(0)
+                    .layerCount(1);
+
+            vkCmdBlitImage(commandBuffer, srcImage.getId(), VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+                    dstImage.getId(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, blit, VK_FILTER_LINEAR);
+
+            dstImage.transitionImageLayout(stack, commandBuffer, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+
+            Renderer.getInstance().getMainPass().rebindMainTarget();
+
         }
     }
 }
