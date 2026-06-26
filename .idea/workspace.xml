@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Use fixed size staging buffer&#10;- Refactor classes&#10;- Add missing resources' clean up&#10;- Track allocated image memory&#10;- Update 0.5.0-dev+14&#10;- Sync 3ac10f3">
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/clouds/LevelRendererM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/clouds/LevelRendererM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/sky/CloudRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/sky/CloudRenderer.java" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Fix crash when clouds mesh is empty&#10;- Update 0.5.1-dev+1&#10;- Sync 3cfe478">
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/MemoryTypes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/memory/MemoryTypes.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -302,15 +300,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="7477000" />
-    </task>
-    <task id="LOCAL-00006" summary="update">
-      <option name="closed" value="true" />
-      <created>1777855781304</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1777855781304</updated>
+      <workItem from="1782437909229" duration="7796000" />
     </task>
     <task id="LOCAL-00007" summary="update 0.4.8-dev+1&#10;clean codes">
       <option name="closed" value="true" />
@@ -696,7 +686,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782446030964</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="Fix crash when clouds mesh is empty&#10;- Update 0.5.1-dev+1&#10;- Sync 3cfe478">
+      <option name="closed" value="true" />
+      <created>1782446464612</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1782446464612</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -717,7 +715,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Use VertexBuffer usage to determine memory type&#10;Update 0.4.9-dev+3&#10;Sync 845e86b" />
     <MESSAGE value="Use VertexBuffer usage to Improve clouds rendering&#10;Update 0.4.9-dev+4&#10;Sync 41c3d58" />
     <MESSAGE value="UUse sorted index buffer on immediate rendering if needed&#10;Sync 5921d83" />
     <MESSAGE value="Refactor skip allocation mixin to prevent null pointer exception&#10;Remove RenderBuffersM.java&#10;Add SectionBufferBuilderPoolM.java&#10;Update 0.4.9-dev+5&#10;Sync 863eaeb" />
@@ -742,7 +739,8 @@
     <MESSAGE value="Use optimal swapchain image count&#10;- Sync 34b8e0a" />
     <MESSAGE value="Fix incorrect entity shaders&#10;- Sync 8da1470" />
     <MESSAGE value="Use fixed size staging buffer&#10;- Refactor classes&#10;- Add missing resources' clean up&#10;- Track allocated image memory&#10;- Update 0.5.0-dev+14&#10;- Sync 3ac10f3" />
-    <option name="LAST_COMMIT_MESSAGE" value="Use fixed size staging buffer&#10;- Refactor classes&#10;- Add missing resources' clean up&#10;- Track allocated image memory&#10;- Update 0.5.0-dev+14&#10;- Sync 3ac10f3" />
+    <MESSAGE value="Fix crash when clouds mesh is empty&#10;- Update 0.5.1-dev+1&#10;- Sync 3cfe478" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix crash when clouds mesh is empty&#10;- Update 0.5.1-dev+1&#10;- Sync 3cfe478" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
