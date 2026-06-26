@@ -89,6 +89,10 @@ public abstract class VRenderSystem {
         Vulkan.initVulkan(window);
     }
 
+    public static void blendOp(int op) {
+        PipelineState.blendInfo.setBlendOp(op);
+    }
+
     public static MappedBuffer getScreenSize() {
         updateScreenSize();
         return screenSize;

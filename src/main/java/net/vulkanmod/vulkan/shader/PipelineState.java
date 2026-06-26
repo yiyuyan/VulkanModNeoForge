@@ -69,7 +69,8 @@ public class PipelineState {
     int colorMask_i;
     int logicOp_i;
 
-    public PipelineState(int assemblyRasterState, int blendState, int depthState, int logicOp, int colorMask, RenderPass renderPass) {
+    public PipelineState(int assemblyRasterState, int blendState, int depthState, int logicOp, int colorMask,
+                         RenderPass renderPass) {
         this.renderPass = renderPass;
 
         this.assemblyRasterState = assemblyRasterState;
@@ -79,7 +80,8 @@ public class PipelineState {
         this.logicOp_i = logicOp;
     }
 
-    private boolean checkEquals(int assemblyRasterState, int blendState, int depthState, int logicOp, int colorMask, RenderPass renderPass) {
+     private boolean checkEquals(int assemblyRasterState, int blendState, int depthState, int logicOp, int colorMask,
+                                RenderPass renderPass) {
         return (blendState == this.blendState_i) && (depthState == this.depthState_i)
                 && renderPass == this.renderPass && logicOp == this.logicOp_i
                 && (assemblyRasterState == this.assemblyRasterState)
@@ -118,7 +120,8 @@ public class PipelineState {
         public int dstAlphaFactor;
         public int blendOp;
 
-        public BlendInfo(boolean enabled, int srcRgbFactor, int dstRgbFactor, int srcAlphaFactor, int dstAlphaFactor, int blendOp) {
+        public BlendInfo(boolean enabled, int srcRgbFactor, int dstRgbFactor, int srcAlphaFactor, int dstAlphaFactor,
+                         int blendOp) {
             this.enabled = enabled;
             this.srcRgbFactor = srcRgbFactor;
             this.dstRgbFactor = dstRgbFactor;
@@ -134,7 +137,8 @@ public class PipelineState {
             this.dstAlphaFactor = glToVulkanBlendFactor(destFactor.value);
         }
 
-        public void setBlendFuncSeparate(GlStateManager.SourceFactor srcRgb, GlStateManager.DestFactor dstRgb, GlStateManager.SourceFactor srcAlpha, GlStateManager.DestFactor dstAlpha) {
+       public void setBlendFuncSeparate(GlStateManager.SourceFactor srcRgb, GlStateManager.DestFactor dstRgb,
+                                         GlStateManager.SourceFactor srcAlpha, GlStateManager.DestFactor dstAlpha) {
             this.srcRgbFactor = glToVulkanBlendFactor(srcRgb.value);
             this.srcAlphaFactor = glToVulkanBlendFactor(srcAlpha.value);
             this.dstRgbFactor = glToVulkanBlendFactor(dstRgb.value);

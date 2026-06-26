@@ -145,6 +145,15 @@ public class GlStateManagerM {
      * @author
      */
     @Overwrite(remap = false)
+    public static void _blendEquation(int i) {
+        RenderSystem.assertOnRenderThread();
+        VRenderSystem.blendOp(i);
+    }
+
+    /**
+     * @author
+     */
+    @Overwrite(remap = false)
     public static void _disableScissorTest() {
         Renderer.resetScissor();
     }
@@ -504,4 +513,23 @@ public class GlStateManagerM {
      */
     @Overwrite(remap = false)
     public static void _disableVertexAttribArray(int i) {}
+
+    /**
+     * @author
+     */
+    @Overwrite(remap = false)
+    public static void glDeleteProgram(int i) {
+        RenderSystem.assertOnRenderThread();
+//        GL20.glDeleteProgram(i);
+    }
+
+    /**
+     * @author
+     */
+    @Overwrite(remap = false)
+    public static int _glGenVertexArrays() {
+        RenderSystem.assertOnRenderThreadOrInit();
+        // TODO
+        return 0;
+    }
 }

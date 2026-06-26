@@ -328,6 +328,7 @@ public class VkGlTexture {
         }
         else {
             this.vulkanImage = new VulkanImage.Builder(width, height)
+                    .setName(String.format("GlTexture %d", this.id))
                     .setMipLevels(maxLevel + 1)
                     .setFormat(vkFormat)
                     .addUsage(VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT)

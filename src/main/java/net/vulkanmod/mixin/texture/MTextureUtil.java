@@ -11,6 +11,10 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Unique;
+
+import static org.lwjgl.vulkan.VK10.VK_FORMAT_R8G8B8A8_UNORM;
+import static org.lwjgl.vulkan.VK10.VK_FORMAT_R8_UNORM;
 
 @Mixin(TextureUtil.class)
 public class MTextureUtil {
@@ -46,8 +50,9 @@ public class MTextureUtil {
                 image.free();
 
             image = new VulkanImage.Builder(width, height)
+                    .setName(String.format("Texture %d", id))
                     .setMipLevels(mipLevels + 1)
-                    .setFormat(internalGlFormat)
+                    .setFormat(convertFormat(internalGlFormat))
                     .setLinearFiltering(false)
                     .setClamp(false)
                     .createVulkanImage();
@@ -55,5 +60,14 @@ public class MTextureUtil {
             glTexture.setVulkanImage(image);
             VTextureSelector.bindTexture(image);
         }
+    }
+
+    @Unique
+    private static int convertFormat(NativeImage.InternalGlFormat format) {
+        return switch (format) {
+            case RGBA -> VK_FORMAT_R8G8B8A8_UNORM;
+            case RED -> VK_FORMAT_R8_UNORM;
+            default -> throw new IllegalArgumentException(String.format("Unxepcted format: %s", format));
+        };
     }
 }

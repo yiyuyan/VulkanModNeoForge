@@ -4,32 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Refactor:&#10;- Buffer classes&#10;- Memory copy&#10;- Update d0f4715&#10;- Update 0.5.4-dev+5">
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Refactor:&#10;- Rename gl emulation classes&#10;- Refactor SwapChain color attachment interface&#10;- Sync df460ba&#10;- Update 0.5.4-dev+6">
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/VkGlBuffer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlFramebuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/VkGlFramebuffer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlProgram.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/VkGlProgram.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlRenderbuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/VkGlRenderbuffer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlTexture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/VkGlTexture.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/UniformM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/UniformM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/gl/GL11M.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/gl/GL11M.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/gl/GL15M.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/gl/GL15M.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/gl/GL30M.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/gl/GL30M.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/VkGlTexture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/VkGlTexture.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlStateManagerM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlStateManagerM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/RenderSystemMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/RenderSystemMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/ShaderInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/ShaderInstanceM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/target/MainTargetMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/target/MainTargetMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/target/RenderTargetMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/target/RenderTargetMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/MAbstractTexture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/MAbstractTexture.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/MTextureUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/MTextureUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/update/MLightTexture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/update/MLightTexture.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/util/ScreenshotRecorderM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/util/ScreenshotRecorderM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Renderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/image/MNativeImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/image/MNativeImage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/VRenderSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/VRenderSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Vulkan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Vulkan.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/framebuffer/SwapChain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/framebuffer/SwapChain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/VTextureSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/VTextureSelector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/pass/DefaultMainPass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/pass/DefaultMainPass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/pass/MainPass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/pass/MainPass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/PipelineState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/PipelineState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/VulkanImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/VulkanImage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -324,15 +313,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="25987000" />
-    </task>
-    <task id="LOCAL-00040" summary="Fix VulkanModRenderer&#10;Fuck you,NeoForge!&#10;Fuck you,Fabric!">
-      <option name="closed" value="true" />
-      <created>1782233585389</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1782233585389</updated>
+      <workItem from="1782437909229" duration="28897000" />
     </task>
     <task id="LOCAL-00041" summary="Use normal to calculate quad facing&#10;Update 0.5.0-dev+6&#10;Sync 0ef9f9a">
       <option name="closed" value="true" />
@@ -718,7 +699,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782465350159</updated>
     </task>
-    <option name="localTasksCounter" value="89" />
+    <task id="LOCAL-00089" summary="Refactor:&#10;- Rename gl emulation classes&#10;- Refactor SwapChain color attachment interface&#10;- Sync df460ba&#10;- Update 0.5.4-dev+6">
+      <option name="closed" value="true" />
+      <created>1782466001642</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1782466001642</updated>
+    </task>
+    <option name="localTasksCounter" value="90" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -739,7 +728,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Improve shader compatibility&#10;- shader uniforms and samplers&#10;- Sync ac508a7&#10;- Update 0.5.1-dev+7" />
     <MESSAGE value="Improve shader compatibility&#10;- shader uniforms and samplers" />
     <MESSAGE value="Restart render pass if terminated early&#10;- Remove reloadShaders injection&#10;- Sync 66bd4a4&#10;- Sync ab6c7d1&#10;- Update 0.5.1-dev+8" />
     <MESSAGE value="Implement data cache for biome data&#10;- Sync 1c189cf&#10;- Update 0.5.2-dev+1" />
@@ -764,7 +752,8 @@
     <MESSAGE value="Fix FAPI fluid rendering implementation&#10;Remove mixin that didn't allow vanilla fluid rendering invocation&#10;- Sync fd3568c&#10;- Sync b8eb72e&#10;- Update 0.5.4-dev+3" />
     <MESSAGE value="Refactor VRenderSystem&#10;- Sync ed80bc4&#10;- Update 0.5.4-dev+4" />
     <MESSAGE value="Refactor:&#10;- Buffer classes&#10;- Memory copy&#10;- Update d0f4715&#10;- Update 0.5.4-dev+5" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor:&#10;- Buffer classes&#10;- Memory copy&#10;- Update d0f4715&#10;- Update 0.5.4-dev+5" />
+    <MESSAGE value="Refactor:&#10;- Rename gl emulation classes&#10;- Refactor SwapChain color attachment interface&#10;- Sync df460ba&#10;- Update 0.5.4-dev+6" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor:&#10;- Rename gl emulation classes&#10;- Refactor SwapChain color attachment interface&#10;- Sync df460ba&#10;- Update 0.5.4-dev+6" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

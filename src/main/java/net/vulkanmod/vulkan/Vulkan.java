@@ -40,8 +40,7 @@ import static net.vulkanmod.vulkan.util.VUtil.asPointerBuffer;
 import static org.lwjgl.glfw.GLFWVulkan.*;
 import static org.lwjgl.system.Checks.CHECKS;
 import static org.lwjgl.system.Checks.check;
-import static org.lwjgl.system.MemoryStack.stackGet;
-import static org.lwjgl.system.MemoryStack.stackPush;
+import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 import static org.lwjgl.util.vma.Vma.vmaCreateAllocator;
 import static org.lwjgl.util.vma.Vma.vmaDestroyAllocator;
@@ -337,6 +336,17 @@ public class Vulkan {
             check(surface, 1);
         }
         return nglfwCreateWindowSurface(instance.address(), window, memAddressSafe(allocator), memAddress(surface));
+    }
+
+    public static void setDebugLabel(MemoryStack stack, int objectType, long handle, String label) {
+        if (ENABLE_VALIDATION_LAYERS) {
+            VkDebugUtilsObjectNameInfoEXT nameInfo = VkDebugUtilsObjectNameInfoEXT.calloc(stack);
+            nameInfo.sType$Default();
+            nameInfo.objectType(objectType);
+            nameInfo.objectHandle(handle);
+            nameInfo.pObjectName(stackUTF8(label));
+            EXTDebugUtils.vkSetDebugUtilsObjectNameEXT(Vulkan.getVkDevice(), nameInfo);
+        }
     }
 
     private static void createSurface(long handle) {

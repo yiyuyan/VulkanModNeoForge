@@ -121,4 +121,9 @@ public class DefaultMainPass implements MainPass {
         SwapChain swapChain = Renderer.getInstance().getSwapChain();
         return swapChain.getColorAttachmentGlId();
     }
+
+    @Override
+    public VulkanImage getColorAttachment() {
+        return Renderer.getInstance().getSwapChain().getColorAttachment();
+    }
 }

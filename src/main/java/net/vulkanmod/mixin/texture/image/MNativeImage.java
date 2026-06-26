@@ -8,6 +8,7 @@ import net.vulkanmod.vulkan.texture.VTextureSelector;
 import net.vulkanmod.vulkan.texture.VulkanImage;
 import net.vulkanmod.vulkan.util.ColorUtil;
 import org.lwjgl.system.MemoryUtil;
+import org.lwjgl.vulkan.VK10;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -88,11 +89,15 @@ public abstract class MNativeImage {
                 throw new IllegalArgumentException(String.format(Locale.ROOT, "getPixelRGBA only works on RGBA images; have %s", this.format));
             }
 
+            var colorAttachment = ( Renderer.getInstance()
+                                                         .getMainPass()
+                                                         .getColorAttachment());
+            boolean isBGRAFormat = (colorAttachment.format == VK10.VK_FORMAT_B8G8R8A8_UNORM);
+
             for (long l = 0; l < this.width * this.height * 4L; l+=4) {
                 int v =  MemoryUtil.memGetInt(this.pixels + l);
 
-                //TODO
-                if(Renderer.getInstance().getSwapChain().isBGRAformat)
+                if (isBGRAFormat)
                     v = ColorUtil.BGRAtoRGBA(v);
 
                 v = v | 255 << this.format.alphaOffset();
