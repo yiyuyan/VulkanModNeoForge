@@ -627,10 +627,10 @@ public class Renderer {
         vkCmdSetLineWidth(commandBuffer, 1.0F);
     }
 
-    public static void setDepthBias(float units, float factor) {
+    public static void setDepthBias(float constant, float slope) {
         VkCommandBuffer commandBuffer = INSTANCE.currentCmdBuffer;
 
-        vkCmdSetDepthBias(commandBuffer, units, 0.0f, factor);
+        vkCmdSetDepthBias(commandBuffer, constant, 0.0f, slope);
     }
 
     public static void clearAttachments(int v) {

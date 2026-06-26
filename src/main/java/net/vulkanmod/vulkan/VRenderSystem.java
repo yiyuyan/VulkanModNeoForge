@@ -81,8 +81,9 @@ public abstract class VRenderSystem {
 
     public static float alphaCutout = 0.0f;
 
-    private static float depthBiasUnits = 0.0f;
-    private static float depthBiasFactor = 0.0f;
+    private static boolean depthBiasEnabled = false;
+    private static float depthBiasConstant = 0.0f;
+    private static float depthBiasSlope = 0.0f;
 
     public static void initRenderer() {
         Vulkan.initVulkan(window);
@@ -254,16 +255,8 @@ public abstract class VRenderSystem {
         PipelineState.blendInfo.enabled = false;
     }
 
-    public static void blendFunc(GlStateManager.SourceFactor sourceFactor, GlStateManager.DestFactor destFactor) {
-        PipelineState.blendInfo.setBlendFunction(sourceFactor, destFactor);
-    }
-
     public static void blendFunc(int srcFactor, int dstFactor) {
         PipelineState.blendInfo.setBlendFunction(srcFactor, dstFactor);
-    }
-
-    public static void blendFuncSeparate(GlStateManager.SourceFactor p_69417_, GlStateManager.DestFactor p_69418_, GlStateManager.SourceFactor p_69419_, GlStateManager.DestFactor p_69420_) {
-        PipelineState.blendInfo.setBlendFuncSeparate(p_69417_, p_69418_, p_69419_, p_69420_);
     }
 
     public static void blendFuncSeparate(int srcFactorRGB, int dstFactorRGB, int srcFactorAlpha, int dstFactorAlpha) {
@@ -282,22 +275,30 @@ public abstract class VRenderSystem {
         logicOp = false;
     }
 
-    public static void logicOp(GlStateManager.LogicOp logicOp) {
-        logicOpFun = logicOp.value;
+    public static void logicOp(int glLogicOp) {
+        logicOpFun = glLogicOp;
     }
 
-    public static void polygonOffset(float factor, float units) {
-        depthBiasUnits = units;
-        depthBiasFactor = factor;
+    public static void polygonOffset(float slope, float biasConstant) {
+        if (depthBiasConstant != biasConstant || depthBiasSlope != slope) {
+            depthBiasConstant = biasConstant;
+            depthBiasSlope = slope;
 
-        Renderer.setDepthBias(depthBiasUnits, depthBiasFactor);
+            Renderer.setDepthBias(depthBiasConstant, depthBiasSlope);
+        }
     }
 
     public static void enablePolygonOffset() {
-        Renderer.setDepthBias(depthBiasUnits, depthBiasFactor);
+        if (!depthBiasEnabled) {
+            Renderer.setDepthBias(depthBiasConstant, depthBiasSlope);
+            depthBiasEnabled = true;
+        }
     }
 
     public static void disablePolygonOffset() {
-        Renderer.setDepthBias(0.0F, 0.0F);
+        if (depthBiasEnabled) {
+            Renderer.setDepthBias(0.0F, 0.0F);
+            depthBiasEnabled = false;
+        }
     }
 }

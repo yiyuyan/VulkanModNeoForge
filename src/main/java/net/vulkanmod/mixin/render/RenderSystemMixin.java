@@ -83,7 +83,7 @@ public abstract class RenderSystemMixin {
     @Overwrite
     public static void logicOp(GlStateManager.LogicOp op) {
         assertOnRenderThread();
-        VRenderSystem.logicOp(op);
+        VRenderSystem.logicOp(op.value);
     }
 
     /**
@@ -229,7 +229,7 @@ public abstract class RenderSystemMixin {
      */
     @Overwrite(remap = false)
     public static void blendFunc(GlStateManager.SourceFactor sourceFactor, GlStateManager.DestFactor destFactor) {
-        VRenderSystem.blendFunc(sourceFactor, destFactor);
+        VRenderSystem.blendFunc(sourceFactor.value, destFactor.value);
     }
 
     /**
@@ -244,8 +244,8 @@ public abstract class RenderSystemMixin {
      * @author
      */
     @Overwrite(remap = false)
-    public static void blendFuncSeparate(GlStateManager.SourceFactor p_69417_, GlStateManager.DestFactor p_69418_, GlStateManager.SourceFactor p_69419_, GlStateManager.DestFactor p_69420_) {
-        VRenderSystem.blendFuncSeparate(p_69417_, p_69418_, p_69419_, p_69420_);
+    public static void blendFuncSeparate(GlStateManager.SourceFactor sourceFactor, GlStateManager.DestFactor destFactor, GlStateManager.SourceFactor sourceFactor1, GlStateManager.DestFactor destFactor1) {
+        VRenderSystem.blendFuncSeparate(sourceFactor.value, destFactor.value, sourceFactor1.value, destFactor1.value);
     }
 
     /**
