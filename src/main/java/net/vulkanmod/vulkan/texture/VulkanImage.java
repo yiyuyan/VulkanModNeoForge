@@ -206,8 +206,14 @@ public class VulkanImage {
 
             stagingBuffer.copyBuffer(imageSize, buffer);
 
+            int uploadOffset = (unpackRowLength * unpackSkipRows + unpackSkipPixels) * this.formatSize;
+
+            if (uploadOffset > imageSize) {
+                throw new java.nio.BufferOverflowException();
+            }
+
             ImageUtil.copyBufferToImageCmd(stack, commandBuffer.getHandle(), stagingBuffer.getId(), id, mipLevel, width, height, xOffset, yOffset,
-                                           (int) (stagingBuffer.getOffset() + (unpackRowLength * unpackSkipRows + unpackSkipPixels) * this.formatSize), unpackRowLength, height);
+                                           (int) (stagingBuffer.getOffset() + uploadOffset), unpackRowLength, height);
         }
     }
 
