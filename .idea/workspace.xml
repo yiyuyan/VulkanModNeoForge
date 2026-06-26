@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Minimize upload and layout transition command buffers used per frame&#10;- Refactor CommandPool class&#10;- Update 0.5.0-dev+12&#10;- Sync 31ef3de">
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/DrawParametersBuffer.java" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Use optimal swapchain image count&#10;- Sync 34b8e0a">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/ChunkArea.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/ChunkArea.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/ChunkAreaManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/ChunkAreaManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/RenderSection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/RenderSection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/SectionGrid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/SectionGrid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/AreaBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/AreaBuffer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/DrawBuffers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/buffer/DrawBuffers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/entity/entity.fsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/entity/entity.fsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/entity/entity.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/entity/entity.vsh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -309,23 +302,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="5774000" />
-    </task>
-    <task id="LOCAL-00002" summary="init">
-      <option name="closed" value="true" />
-      <created>1758196703622</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1758196703622</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Update VulkanModCore and fix SPIRVUtils">
-      <option name="closed" value="true" />
-      <created>1777803423809</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1777803423809</updated>
+      <workItem from="1782437909229" duration="6378000" />
     </task>
     <task id="LOCAL-00004" summary="update">
       <option name="closed" value="true" />
@@ -703,7 +680,23 @@
       <option name="project" value="LOCAL" />
       <updated>1782442661086</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="Use raw memory for section draw parameters&#10;- Update 0.5.0-dev+13&#10;- Sync 0a9168f">
+      <option name="closed" value="true" />
+      <created>1782444105254</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1782444105254</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Use optimal swapchain image count&#10;- Sync 34b8e0a">
+      <option name="closed" value="true" />
+      <created>1782444264735</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1782444264736</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -724,8 +717,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="fix log" />
-    <MESSAGE value="fix VulkanModDiscover" />
     <MESSAGE value="fix VulkanModDiscover and PipelineManager" />
     <MESSAGE value="Implement CPU backface culling&#10;Update 0.4.9-dev+2&#10;Sync e76ded5" />
     <MESSAGE value="Use VertexBuffer usage to determine memory type&#10;Update 0.4.9-dev+3&#10;Sync 845e86b" />
@@ -749,7 +740,9 @@
     <MESSAGE value="Fix profiler result missing entries&#10;Add shader namespace check&#10;Fix out of bounds error&#10;Sync:&#10;52dd96f, abee6c8, 51fa204" />
     <MESSAGE value="Add clouds shader&#10;Update 0.5.0-dev+10&#10;Sync aebc01d" />
     <MESSAGE value="Minimize upload and layout transition command buffers used per frame&#10;- Refactor CommandPool class&#10;- Update 0.5.0-dev+12&#10;- Sync 31ef3de" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minimize upload and layout transition command buffers used per frame&#10;- Refactor CommandPool class&#10;- Update 0.5.0-dev+12&#10;- Sync 31ef3de" />
+    <MESSAGE value="Use raw memory for section draw parameters&#10;- Update 0.5.0-dev+13&#10;- Sync 0a9168f" />
+    <MESSAGE value="Use optimal swapchain image count&#10;- Sync 34b8e0a" />
+    <option name="LAST_COMMIT_MESSAGE" value="Use optimal swapchain image count&#10;- Sync 34b8e0a" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
