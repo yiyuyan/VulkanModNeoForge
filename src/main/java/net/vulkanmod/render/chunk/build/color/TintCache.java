@@ -8,6 +8,7 @@ import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.vulkanmod.render.chunk.WorldRenderer;
+import net.vulkanmod.render.chunk.build.biome.BiomeData;
 
 import java.util.Arrays;
 
@@ -16,6 +17,7 @@ public class TintCache {
 
     private final Reference2ReferenceOpenHashMap<ColorResolver, Layer[]> layers;
 
+    private BiomeData biomeData;
     private int blendRadius, totalWidth;
     private int secX, secY, secZ;
     private int minX, minZ;
@@ -33,7 +35,8 @@ public class TintCache {
         this.layers.put(BiomeColors.WATER_COLOR_RESOLVER, allocateLayers());
     }
 
-    public void init(int blendRadius, int secX, int secY, int secZ) {
+    public void init(BiomeData biomeData, int blendRadius, int secX, int secY, int secZ) {
+        this.biomeData = biomeData;
         this.blendRadius = Minecraft.getInstance().options.biomeBlendRadius().get();
         this.totalWidth = (blendRadius * 2) + 16;
 
@@ -107,17 +110,13 @@ public class TintCache {
     }
 
     private void calculateLayer(Layer layer, ColorResolver colorResolver, int y) {
-        Level level = WorldRenderer.getLevel();
-
-        BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();
         int absY = (secY << 4) + y;
 
         int[] values = layer.values;
 
         for (int absZ = minZ; absZ < maxZ; absZ++) {
             for (int absX = minX; absX < maxX; absX++) {
-                blockPos.set(absX, absY, absZ);
-                Biome biome = level.getBiome(blockPos).value();
+                Biome biome = this.biomeData.getBiome(absX, absY, absZ);
 
                 final int idx = (absX - minX) + (absZ - minZ) * totalWidth;
                 values[idx] = colorResolver.getColor(biome, absX, absZ);

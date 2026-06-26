@@ -39,6 +39,7 @@
     "render.RenderSystemMixin",
     "render.RenderTypeM",
     "render.ShaderInstanceM",
+    "render.biome.BiomeManagerM",
     "render.block.BakedQuadM",
     "render.clouds.LevelRendererM",
     "render.color.BlockColorsM",
@@ -85,8 +86,6 @@
     "window.WindowMixin"
   ],
   "mixins": [
-
-
   ],
   "injectors": {
     "defaultRequire": 1
