@@ -4,14 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="fix: Set directExit default to true">
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Improve framebuffer compatibility&#10;- Implement blit method&#10;- Update 0.5.1-dev+4&#10;- Sync 3f37e93">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlFramebuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlFramebuffer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/gl/GL30M.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/gl/GL30M.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/target/MainTargetMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/target/MainTargetMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/target/RenderTargetMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/target/RenderTargetMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/ImageUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/ImageUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlTexture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlTexture.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/gl/GL11M.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/gl/GL11M.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/neoforged/GuiGraphicsMixin.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/neoforged/ItemDecoratorHandlerMixin.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/neoforged/MonsterRoomHooksMixin.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -306,15 +307,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="10763000" />
-    </task>
-    <task id="LOCAL-00012" summary="update ChunkStatusMap&#10;Fuck NeoForge!">
-      <option name="closed" value="true" />
-      <created>1781411052335</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1781411052335</updated>
+      <workItem from="1782437909229" duration="11526000" />
     </task>
     <task id="LOCAL-00013" summary="update build.gralde and workflows/build.yml">
       <option name="closed" value="true" />
@@ -700,7 +693,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782447968506</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="Improve framebuffer compatibility&#10;- Implement blit method&#10;- Update 0.5.1-dev+4&#10;- Sync 3f37e93">
+      <option name="closed" value="true" />
+      <created>1782450103997</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1782450103997</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -721,7 +722,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Add backface culling setting's translatable components&#10;Sync a7ffe3d" />
     <MESSAGE value="Fix biome blending not applied in some cases&#10;Update 0.5.0-dev+3" />
     <MESSAGE value="Update 0.5.0-dev+4&#10;Forgified Fabric API is in need.&#10;Update Fabric API dependencies&#10;Please DONOT USE THIS VERSION,IT IS UNSTABLE" />
     <MESSAGE value="Implement Fabric Rendering API&#10;Update 0.5.0-dev+5&#10;Sync 5774bf3&#10;Fuck you,NeoForge!&#10;Fuck you,Fabric!" />
@@ -746,7 +746,8 @@
     <MESSAGE value="Set bound framebuffer on begin rendering&#10;- Fixes null pointer exception&#10;- Sync 1139f7d" />
     <MESSAGE value="Reset blend function before drawing&#10;- Improve mixin compatibility&#10;- Sync 4c47fb6&#10;- Sync 868bbf1&#10;- Update 0.5.1-dev+3" />
     <MESSAGE value="fix: Set directExit default to true" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: Set directExit default to true" />
+    <MESSAGE value="Improve framebuffer compatibility&#10;- Implement blit method&#10;- Update 0.5.1-dev+4&#10;- Sync 3f37e93" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve framebuffer compatibility&#10;- Implement blit method&#10;- Update 0.5.1-dev+4&#10;- Sync 3f37e93" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

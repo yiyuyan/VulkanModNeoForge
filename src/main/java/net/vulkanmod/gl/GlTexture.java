@@ -164,6 +164,9 @@ public class GlTexture {
         if (target != GL11.GL_TEXTURE_2D)
             throw new UnsupportedOperationException("target != GL_TEXTURE_2D not supported");
 
+        if (boundTexture == null)
+            return;
+
         switch (pName) {
             case GL30.GL_TEXTURE_MAX_LEVEL -> boundTexture.setMaxLevel(param);
             case GL30.GL_TEXTURE_MAX_LOD -> boundTexture.setMaxLod(param);

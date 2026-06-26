@@ -28,7 +28,6 @@
     "debug.KeyboardHandlerM",
     "debug.crash_report.SystemReportM",
     "matrix.Matrix4fM",
-    "neoforged.GuiGraphicsMixin",
     "profiling.GuiMixin",
     "profiling.KeyboardHandlerM",
     "profiling.LevelRendererMixin",
@@ -86,8 +85,8 @@
     "window.WindowMixin"
   ],
   "mixins": [
-    "neoforged.ItemDecoratorHandlerMixin",
-    "neoforged.MonsterRoomHooksMixin"
+
+
   ],
   "injectors": {
     "defaultRequire": 1

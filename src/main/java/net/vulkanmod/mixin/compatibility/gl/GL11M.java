@@ -1,6 +1,7 @@
 package net.vulkanmod.mixin.compatibility.gl;
 
 import net.vulkanmod.gl.GlTexture;
+import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.VRenderSystem;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL11C;
@@ -24,6 +25,7 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glScissor(@NativeType("GLint") int x, @NativeType("GLint") int y, @NativeType("GLsizei") int width, @NativeType("GLsizei") int height) {
+        Renderer.setScissor(x, y, width, height);
     }
 
     /**
@@ -61,7 +63,7 @@ public class GL11M {
     @NativeType("GLboolean")
     @Overwrite(remap = false)
     public static boolean glIsEnabled(@NativeType("GLenum") int cap) {
-        return false;
+        return true;
     }
 
     /**
