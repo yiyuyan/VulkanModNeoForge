@@ -40,6 +40,7 @@ public class GlFramebuffer {
         VRenderSystem.disableCull();
 
         boundId = glFramebuffer.id;
+        boundFramebuffer = glFramebuffer;
     }
 
     public static int genFramebufferId() {
@@ -106,6 +107,9 @@ public class GlFramebuffer {
         if (level != 0) {
             throw new UnsupportedOperationException();
         }
+
+        if (boundFramebuffer == null)
+            System.nanoTime();
 
         boundFramebuffer.setAttachmentTexture(attachment, texture);
     }
