@@ -3,8 +3,8 @@ package net.vulkanmod.mixin.render.target;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.vulkanmod.gl.GlFramebuffer;
-import net.vulkanmod.gl.GlTexture;
+import net.vulkanmod.gl.VkGlFramebuffer;
+import net.vulkanmod.gl.VkGlTexture;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.framebuffer.Framebuffer;
 import net.vulkanmod.vulkan.texture.VTextureSelector;
@@ -53,8 +53,8 @@ public abstract class RenderTargetMixin {
             return;
 
         // If the framebuffer is not bound postpone clear
-        GlFramebuffer glFramebuffer = GlFramebuffer.getFramebuffer(this.frameBufferId);
-        if(!bound || GlFramebuffer.getBoundFramebuffer() != glFramebuffer) {
+        VkGlFramebuffer glFramebuffer = VkGlFramebuffer.getFramebuffer(this.frameBufferId);
+        if(!bound || VkGlFramebuffer.getBoundFramebuffer() != glFramebuffer) {
             needClear = true;
             return;
         }
@@ -79,10 +79,10 @@ public abstract class RenderTargetMixin {
 
         applyClear();
 
-        GlTexture.bindTexture(this.colorTextureId);
+        VkGlTexture.bindTexture(this.colorTextureId);
 
         try (MemoryStack stack = MemoryStack.stackPush()) {
-            GlTexture.getBoundTexture().getVulkanImage()
+            VkGlTexture.getBoundTexture().getVulkanImage()
                     .readOnlyLayout(stack, Renderer.getCommandBuffer());
         }
     }
@@ -93,7 +93,7 @@ public abstract class RenderTargetMixin {
     @Overwrite
     public void unbindRead() {
         RenderSystem.assertOnRenderThreadOrInit();
-        GlTexture.bindTexture(0);
+        VkGlTexture.bindTexture(0);
     }
 
     /**
@@ -103,7 +103,7 @@ public abstract class RenderTargetMixin {
     private void _bindWrite(boolean bl) {
         RenderSystem.assertOnRenderThreadOrInit();
 
-        GlFramebuffer.bindFramebuffer(GL30.GL_FRAMEBUFFER, this.frameBufferId);
+        VkGlFramebuffer.bindFramebuffer(GL30.GL_FRAMEBUFFER, this.frameBufferId);
         if (bl) {
             GlStateManager._viewport(0, 0, this.viewWidth, this.viewHeight);
         }
@@ -133,7 +133,7 @@ public abstract class RenderTargetMixin {
     private void _blitToScreen(int width, int height, boolean disableBlend, CallbackInfo ci) {
         // If the target needs clear it means it has not been used, thus we can skip blit
         if (!this.needClear) {
-            Framebuffer framebuffer = GlFramebuffer.getFramebuffer(this.frameBufferId).getFramebuffer();
+            Framebuffer framebuffer = VkGlFramebuffer.getFramebuffer(this.frameBufferId).getFramebuffer();
             VTextureSelector.bindTexture(0, framebuffer.getColorAttachment());
 
             DrawUtil.blitToScreen();
@@ -150,12 +150,12 @@ public abstract class RenderTargetMixin {
     @Unique
     private void applyClear() {
         if (this.needClear) {
-            GlFramebuffer currentFramebuffer = GlFramebuffer.getBoundFramebuffer();
+            VkGlFramebuffer currentFramebuffer = VkGlFramebuffer.getBoundFramebuffer();
 
             this._bindWrite(false);
 
             if (currentFramebuffer != null) {
-                GlFramebuffer.beginRendering(currentFramebuffer);
+                VkGlFramebuffer.beginRendering(currentFramebuffer);
             }
         }
     }

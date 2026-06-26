@@ -3,23 +3,23 @@ package net.vulkanmod.gl;
 import it.unimi.dsi.fastutil.ints.Int2ReferenceOpenHashMap;
 import net.vulkanmod.vulkan.shader.Pipeline;
 
-public class GlProgram {
+public class VkGlProgram {
     private static int ID_COUNTER = 1;
-    private static final Int2ReferenceOpenHashMap<GlProgram> map = new Int2ReferenceOpenHashMap<>();
+    private static final Int2ReferenceOpenHashMap<VkGlProgram> map = new Int2ReferenceOpenHashMap<>();
     private static int boundProgramId = 0;
-    private static GlProgram boundProgram;
+    private static VkGlProgram boundProgram;
 
-    public static GlProgram getBoundProgram() {
+    public static VkGlProgram getBoundProgram() {
         return boundProgram;
     }
 
-    public static GlProgram getProgram(int id) {
+    public static VkGlProgram getProgram(int id) {
         return map.get(id);
     }
 
     public static int genProgramId() {
         int id = ID_COUNTER;
-        map.put(id, new GlProgram(id));
+        map.put(id, new VkGlProgram(id));
         ID_COUNTER++;
         return id;
     }
@@ -41,7 +41,7 @@ public class GlProgram {
     int id;
     Pipeline pipeline;
 
-    GlProgram(int i) {
+    VkGlProgram(int i) {
         this.id = i;
     }
 

@@ -3,7 +3,7 @@ package net.vulkanmod.mixin.render;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexSorting;
-import net.vulkanmod.gl.GlTexture;
+import net.vulkanmod.gl.VkGlTexture;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.VRenderSystem;
 import org.jetbrains.annotations.Nullable;
@@ -91,7 +91,7 @@ public abstract class RenderSystemMixin {
      */
     @Overwrite(remap = false)
     public static void activeTexture(int texture) {
-        GlTexture.activeTexture(texture);
+        VkGlTexture.activeTexture(texture);
     }
 
     /**
@@ -446,6 +446,6 @@ public abstract class RenderSystemMixin {
      */
     @Overwrite(remap = false)
     public static void texParameter(int target, int pname, int param) {
-        GlTexture.texParameteri(target, pname, param);
+        VkGlTexture.texParameteri(target, pname, param);
     }
 }

@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.vulkanmod.gl.GlTexture;
+import net.vulkanmod.gl.VkGlTexture;
 import net.vulkanmod.mixin.texture.image.NativeImageAccessor;
 import net.vulkanmod.render.texture.ImageUploadHelper;
 import net.vulkanmod.vulkan.queue.CommandPool;
@@ -159,7 +159,7 @@ public class MLightTexture {
                 this.lightTexture.upload();
 
                 try (MemoryStack stack = MemoryStack.stackPush()) {
-                    GlTexture.getTexture(this.lightTexture.getId()).getVulkanImage().readOnlyLayout(stack, commandBuffer.getHandle());
+                    VkGlTexture.getTexture(this.lightTexture.getId()).getVulkanImage().readOnlyLayout(stack, commandBuffer.getHandle());
                 }
 
                 ImageUploadHelper.INSTANCE.submitCommands();

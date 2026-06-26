@@ -2,7 +2,7 @@ package net.vulkanmod.mixin.texture;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.texture.AbstractTexture;
-import net.vulkanmod.gl.GlTexture;
+import net.vulkanmod.gl.VkGlTexture;
 import net.vulkanmod.vulkan.texture.VulkanImage;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -36,7 +36,7 @@ public abstract class MAbstractTexture {
         this.blur = blur;
         this.mipmap = mipmap;
 
-        GlTexture glTexture = GlTexture.getTexture(this.id);
+        VkGlTexture glTexture = VkGlTexture.getTexture(this.id);
         VulkanImage vulkanImage = glTexture.getVulkanImage();
 
         if (vulkanImage != null)
@@ -45,6 +45,6 @@ public abstract class MAbstractTexture {
 
     @Unique
     private void bindTexture() {
-        GlTexture.bindTexture(this.id);
+        VkGlTexture.bindTexture(this.id);
     }
 }

@@ -9,25 +9,25 @@ import java.nio.IntBuffer;
 
 // TODO: This class is only used to emulate a CPU buffer for texture copying purposes
 //  any other use is not supported
-public class GlBuffer {
+public class VkGlBuffer {
     private static int ID_COUNTER = 1;
-    private static final Int2ReferenceOpenHashMap<GlBuffer> map = new Int2ReferenceOpenHashMap<>();
+    private static final Int2ReferenceOpenHashMap<VkGlBuffer> map = new Int2ReferenceOpenHashMap<>();
     private static int boundId = 0;
-    private static GlBuffer boundBuffer;
+    private static VkGlBuffer boundBuffer;
 
-    private static GlBuffer pixelPackBufferBound;
-    private static GlBuffer pixelUnpackBufferBound;
+    private static VkGlBuffer pixelPackBufferBound;
+    private static VkGlBuffer pixelUnpackBufferBound;
 
     public static int glGenBuffers() {
         int id = ID_COUNTER;
-        map.put(id, new GlBuffer(id));
+        map.put(id, new VkGlBuffer(id));
         ID_COUNTER++;
         return id;
     }
 
     public static void glBindBuffer(int target, int buffer) {
         boundId = buffer;
-        GlBuffer glBuffer = map.get(buffer);
+        VkGlBuffer glBuffer = map.get(buffer);
 
         if (buffer > 0 && glBuffer == null)
             throw new NullPointerException("bound texture is null");
@@ -52,7 +52,7 @@ public class GlBuffer {
     }
 
     public static void glBufferData(int target, long size, int usage) {
-        GlBuffer buffer = switch (target) {
+        VkGlBuffer buffer = switch (target) {
             case GL32.GL_PIXEL_PACK_BUFFER -> pixelPackBufferBound;
             case GL32.GL_PIXEL_UNPACK_BUFFER -> pixelUnpackBufferBound;
             default -> throw new IllegalStateException("Unexpected value: " + target);
@@ -62,7 +62,7 @@ public class GlBuffer {
     }
 
     public static ByteBuffer glMapBuffer(int target, int access) {
-        GlBuffer buffer = switch (target) {
+        VkGlBuffer buffer = switch (target) {
             case GL32.GL_PIXEL_PACK_BUFFER -> pixelPackBufferBound;
             case GL32.GL_PIXEL_UNPACK_BUFFER -> pixelUnpackBufferBound;
             default -> throw new IllegalStateException("Unexpected value: " + target);
@@ -90,11 +90,11 @@ public class GlBuffer {
             buffer.freeData();
     }
 
-    public static GlBuffer getPixelUnpackBufferBound() {
+    public static VkGlBuffer getPixelUnpackBufferBound() {
         return pixelUnpackBufferBound;
     }
 
-    public static GlBuffer getPixelPackBufferBound() {
+    public static VkGlBuffer getPixelPackBufferBound() {
         return pixelPackBufferBound;
     }
 
@@ -108,7 +108,7 @@ public class GlBuffer {
 
     ByteBuffer data;
 
-    public GlBuffer(int id) {
+    public VkGlBuffer(int id) {
         this.id = id;
     }
 

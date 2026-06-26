@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.client.Minecraft;
 import net.vulkanmod.Initializer;
-import net.vulkanmod.gl.GlFramebuffer;
+import net.vulkanmod.gl.VkGlFramebuffer;
 import net.vulkanmod.mixin.window.WindowAccessor;
 import net.vulkanmod.render.PipelineManager;
 import net.vulkanmod.render.chunk.WorldRenderer;
@@ -410,7 +410,7 @@ public class Renderer {
         this.boundRenderPass = null;
         this.boundFramebuffer = null;
 
-        GlFramebuffer.resetBoundFramebuffer();
+        VkGlFramebuffer.resetBoundFramebuffer();
     }
 
     public boolean beginRendering(RenderPass renderPass, Framebuffer framebuffer) {

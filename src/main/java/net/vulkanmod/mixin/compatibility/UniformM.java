@@ -2,9 +2,7 @@ package net.vulkanmod.mixin.compatibility;
 
 import com.mojang.blaze3d.shaders.Shader;
 import com.mojang.blaze3d.shaders.Uniform;
-import net.minecraft.client.renderer.ShaderInstance;
-import net.vulkanmod.gl.GlProgram;
-import net.vulkanmod.interfaces.ShaderMixed;
+import net.vulkanmod.gl.VkGlProgram;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.shader.Pipeline;
 import org.spongepowered.asm.mixin.Final;
@@ -46,7 +44,7 @@ public class UniformM {
 
         ci.cancel();
 
-        GlProgram program = GlProgram.getBoundProgram();
+        VkGlProgram program = VkGlProgram.getBoundProgram();
 
         if (program == null) {
             return;

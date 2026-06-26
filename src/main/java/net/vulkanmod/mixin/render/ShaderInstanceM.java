@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import net.vulkanmod.Initializer;
-import net.vulkanmod.gl.GlProgram;
+import net.vulkanmod.gl.VkGlProgram;
 import net.vulkanmod.interfaces.ShaderMixed;
 import net.vulkanmod.render.shader.ShaderLoadUtil;
 import net.vulkanmod.vulkan.Renderer;
@@ -91,7 +91,7 @@ public class ShaderInstanceM implements ShaderMixed {
             createPipeline(configName, format, config);
         }
 
-        GlProgram program = GlProgram.getProgram(this.programId);
+        VkGlProgram program = VkGlProgram.getProgram(this.programId);
         program.bindPipeline(this.pipeline);
     }
 

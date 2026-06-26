@@ -1,8 +1,6 @@
 package net.vulkanmod.gl;
 
-import com.mojang.blaze3d.pipeline.RenderTarget;
 import it.unimi.dsi.fastutil.ints.Int2ReferenceOpenHashMap;
-import net.minecraft.client.Minecraft;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.VRenderSystem;
 import net.vulkanmod.vulkan.framebuffer.Framebuffer;
@@ -15,18 +13,18 @@ import org.lwjgl.opengl.GL30;
 import static org.lwjgl.vulkan.VK11.VK_ATTACHMENT_LOAD_OP_LOAD;
 import static org.lwjgl.vulkan.VK11.VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
-public class GlFramebuffer {
+public class VkGlFramebuffer {
     private static int idCounter = 1;
 
-    private static final Int2ReferenceOpenHashMap<GlFramebuffer> map = new Int2ReferenceOpenHashMap<>();
-    private static GlFramebuffer boundFramebuffer;
-    private static GlFramebuffer readFramebuffer;
+    private static final Int2ReferenceOpenHashMap<VkGlFramebuffer> map = new Int2ReferenceOpenHashMap<>();
+    private static VkGlFramebuffer boundFramebuffer;
+    private static VkGlFramebuffer readFramebuffer;
 
     public static void resetBoundFramebuffer() {
         boundFramebuffer = null;
     }
 
-    public static void beginRendering(GlFramebuffer glFramebuffer) {
+    public static void beginRendering(VkGlFramebuffer glFramebuffer) {
         boolean begunRendering = glFramebuffer.beginRendering();
 
         if (begunRendering) {
@@ -46,7 +44,7 @@ public class GlFramebuffer {
 
     public static int genFramebufferId() {
         int id = idCounter;
-        map.put(id, new GlFramebuffer(id));
+        map.put(id, new VkGlFramebuffer(id));
         idCounter++;
         return id;
     }
@@ -54,24 +52,26 @@ public class GlFramebuffer {
     public static void bindFramebuffer(int target, int id) {
 
         if (id == 0) {
-            Renderer.getInstance().endRenderPass();
+            Renderer.getInstance()
+                    .endRenderPass();
 
             if (Renderer.isRecording()) {
-                RenderTarget renderTarget = Minecraft.getInstance().getMainRenderTarget();
-                renderTarget.bindWrite(true);
+                Renderer.getInstance()
+                        .getMainPass()
+                        .rebindMainTarget();
             }
 
             boundFramebuffer = null;
             return;
         }
 
-        GlFramebuffer glFramebuffer = map.get(id);
+        VkGlFramebuffer glFramebuffer = map.get(id);
 
         if (glFramebuffer == null)
             throw new NullPointerException("No Framebuffer with ID: %d ".formatted(id));
 
         switch (target) {
-            case GL30.GL_DRAW_FRAMEBUFFER , GL30.GL_FRAMEBUFFER -> {
+            case GL30.GL_DRAW_FRAMEBUFFER, GL30.GL_FRAMEBUFFER -> {
                 if (glFramebuffer.framebuffer != null) {
                     beginRendering(glFramebuffer);
                 }
@@ -130,22 +130,22 @@ public class GlFramebuffer {
         return GL30.GL_FRAMEBUFFER_COMPLETE;
     }
 
-    public static GlFramebuffer getBoundFramebuffer() {
+    public static VkGlFramebuffer getBoundFramebuffer() {
         return boundFramebuffer;
     }
 
-    public static GlFramebuffer getFramebuffer(int id) {
+    public static VkGlFramebuffer getFramebuffer(int id) {
         return map.get(id);
     }
 
-    private final int id;
+    public final int id;
     Framebuffer framebuffer;
     RenderPass renderPass;
 
     VulkanImage colorAttachment;
     VulkanImage depthAttachment;
 
-    GlFramebuffer(int i) {
+    VkGlFramebuffer(int i) {
         this.id = i;
     }
 
@@ -154,7 +154,7 @@ public class GlFramebuffer {
     }
 
     void setAttachmentTexture(int attachment, int texture) {
-        GlTexture glTexture = GlTexture.getTexture(texture);
+        VkGlTexture glTexture = VkGlTexture.getTexture(texture);
 
         if (glTexture == null)
             throw new NullPointerException(String.format("Texture %d is null", texture));
@@ -171,7 +171,7 @@ public class GlFramebuffer {
     }
 
     void setAttachmentRenderbuffer(int attachment, int texture) {
-        GlRenderbuffer renderbuffer = GlRenderbuffer.getRenderbuffer(texture);
+        VkGlRenderbuffer renderbuffer = VkGlRenderbuffer.getRenderbuffer(texture);
 
         if (renderbuffer == null)
             throw new NullPointerException(String.format("Texture %d is null", texture));
@@ -222,7 +222,7 @@ public class GlFramebuffer {
 
         this.renderPass = builder.build();
 
-        GlFramebuffer.beginRendering(this);
+        VkGlFramebuffer.beginRendering(this);
     }
 
     public Framebuffer getFramebuffer() {

@@ -3,7 +3,7 @@ package net.vulkanmod.mixin.util;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.Screenshot;
-import net.vulkanmod.gl.GlTexture;
+import net.vulkanmod.gl.VkGlTexture;
 import net.vulkanmod.vulkan.Renderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -20,7 +20,7 @@ public class ScreenshotRecorderM {
         int height = target.height;
 
         NativeImage nativeimage = new NativeImage(width, height, false);
-        GlTexture.bindTexture(target.getColorTextureId());
+        VkGlTexture.bindTexture(target.getColorTextureId());
 
         // Need to submit and wait cmds if screenshot was requested
         // before the end of the frame
