@@ -56,6 +56,11 @@ public class MinecraftMixin {
         Renderer.getInstance().endFrame();
     }
 
+    @Inject(method = "disconnect(Lnet/minecraft/client/gui/screens/Screen;Z)V", at = @At(value = "RETURN"))
+    private void beginRender2(CallbackInfo ci) {
+        Renderer.getInstance().beginFrame();
+    }
+
     @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/pipeline/RenderTarget;bindWrite(Z)V"))
     private void redirectMainTarget1(RenderTarget instance, boolean bl) {
         Renderer.getInstance().getMainPass().mainTargetBindWrite();

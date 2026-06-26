@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Improve set viewport compatibility&#10;- Sync 1ad99e0&#10;- Update 0.5.1-dev+6">
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Improve shader compatibility&#10;- shader uniforms and samplers">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/ShaderInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/ShaderInstanceM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/parser/CodeParser.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/parser/GlslConverter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/parser/InputOutputParser.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/parser/UniformParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GameRendererMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GameRendererMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/MinecraftMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/MinecraftMixin.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -306,23 +303,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="12762000" />
-    </task>
-    <task id="LOCAL-00015" summary="UPDATE">
-      <option name="closed" value="true" />
-      <created>1781940454442</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1781940454442</updated>
-    </task>
-    <task id="LOCAL-00016" summary="UPDATE">
-      <option name="closed" value="true" />
-      <created>1781940650091</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1781940650091</updated>
+      <workItem from="1782437909229" duration="13339000" />
     </task>
     <task id="LOCAL-00017" summary="UPDATE">
       <option name="closed" value="true" />
@@ -700,7 +681,23 @@
       <option name="project" value="LOCAL" />
       <updated>1782451650585</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="Improve shader compatibility&#10;- shader uniforms and samplers&#10;- Sync ac508a7&#10;- Update 0.5.1-dev+7">
+      <option name="closed" value="true" />
+      <created>1782452073784</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1782452073784</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Improve shader compatibility&#10;- shader uniforms and samplers">
+      <option name="closed" value="true" />
+      <created>1782452143157</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1782452143157</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -721,8 +718,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Implement Fabric Rendering API&#10;Update 0.5.0-dev+5&#10;Sync 5774bf3&#10;Fuck you,NeoForge!&#10;Fuck you,Fabric!" />
-    <MESSAGE value="Fix VulkanModRenderer&#10;Fuck you,NeoForge!&#10;Fuck you,Fabric!" />
     <MESSAGE value="Use normal to calculate quad facing&#10;Update 0.5.0-dev+6&#10;Sync 0ef9f9a" />
     <MESSAGE value="Add missing normal vector copy&#10;Sync ca9cf7b" />
     <MESSAGE value="Improve glsl conversion&#10;Improve compatibility&#10;Add image format info&#10;Sync 4ec5d6a,eedfa54,5c8bbfe" />
@@ -746,7 +741,9 @@
     <MESSAGE value="Improve framebuffer compatibility&#10;- Implement blit method&#10;- Update 0.5.1-dev+4&#10;- Sync 3f37e93" />
     <MESSAGE value="Fix crash on setting texture parameter&#10;- Implement missing methods&#10;- Update 0.5.1-dev+5&#10;- Sync 20dcc21&#10;- Sync 8b41398&#10;- Remove neoforged mixins" />
     <MESSAGE value="Improve set viewport compatibility&#10;- Sync 1ad99e0&#10;- Update 0.5.1-dev+6" />
-    <option name="LAST_COMMIT_MESSAGE" value="Improve set viewport compatibility&#10;- Sync 1ad99e0&#10;- Update 0.5.1-dev+6" />
+    <MESSAGE value="Improve shader compatibility&#10;- shader uniforms and samplers&#10;- Sync ac508a7&#10;- Update 0.5.1-dev+7" />
+    <MESSAGE value="Improve shader compatibility&#10;- shader uniforms and samplers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve shader compatibility&#10;- shader uniforms and samplers" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
