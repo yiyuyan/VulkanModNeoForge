@@ -33,6 +33,15 @@ public class GL11M {
      * @reason
      */
     @Overwrite(remap = false)
+    public static void glViewport(@NativeType("GLint") int x, @NativeType("GLint") int y, @NativeType("GLsizei") int w, @NativeType("GLsizei") int h) {
+        Renderer.setViewport(x, y, w, h);
+    }
+
+    /**
+     * @author
+     * @reason
+     */
+    @Overwrite(remap = false)
     public static void glBindTexture(@NativeType("GLenum") int target, @NativeType("GLuint") int texture) {
         GlTexture.bindTexture(texture);
     }

@@ -133,7 +133,7 @@ public class Framebuffer {
         Renderer.getInstance().setBoundRenderPass(renderPass);
         Renderer.getInstance().setBoundFramebuffer(this);
 
-        Renderer.setViewport(0, 0, this.width, this.height);
+        Renderer.setViewportState(0, 0, this.width, this.height);
         Renderer.setScissor(0, 0, this.width, this.height);
     }
 

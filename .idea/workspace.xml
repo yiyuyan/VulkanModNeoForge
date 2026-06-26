@@ -4,15 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Improve framebuffer compatibility&#10;- Implement blit method&#10;- Update 0.5.1-dev+4&#10;- Sync 3f37e93">
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Fix crash on setting texture parameter&#10;- Implement missing methods&#10;- Update 0.5.1-dev+5&#10;- Sync 20dcc21&#10;- Sync 8b41398&#10;- Remove neoforged mixins">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlTexture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlTexture.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/gl/GL11M.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/gl/GL11M.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/neoforged/GuiGraphicsMixin.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/neoforged/ItemDecoratorHandlerMixin.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/neoforged/MonsterRoomHooksMixin.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlStateManagerM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlStateManagerM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/RenderSystemMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/RenderSystemMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Renderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/framebuffer/Framebuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/framebuffer/Framebuffer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -307,15 +305,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="11526000" />
-    </task>
-    <task id="LOCAL-00013" summary="update build.gralde and workflows/build.yml">
-      <option name="closed" value="true" />
-      <created>1781607134475</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1781607134475</updated>
+      <workItem from="1782437909229" duration="12361000" />
     </task>
     <task id="LOCAL-00014" summary="fix build.yml">
       <option name="closed" value="true" />
@@ -701,7 +691,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782450103997</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="Fix crash on setting texture parameter&#10;- Implement missing methods&#10;- Update 0.5.1-dev+5&#10;- Sync 20dcc21&#10;- Sync 8b41398&#10;- Remove neoforged mixins">
+      <option name="closed" value="true" />
+      <created>1782450739616</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1782450739616</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -722,7 +720,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Fix biome blending not applied in some cases&#10;Update 0.5.0-dev+3" />
     <MESSAGE value="Update 0.5.0-dev+4&#10;Forgified Fabric API is in need.&#10;Update Fabric API dependencies&#10;Please DONOT USE THIS VERSION,IT IS UNSTABLE" />
     <MESSAGE value="Implement Fabric Rendering API&#10;Update 0.5.0-dev+5&#10;Sync 5774bf3&#10;Fuck you,NeoForge!&#10;Fuck you,Fabric!" />
     <MESSAGE value="Fix VulkanModRenderer&#10;Fuck you,NeoForge!&#10;Fuck you,Fabric!" />
@@ -747,7 +744,8 @@
     <MESSAGE value="Reset blend function before drawing&#10;- Improve mixin compatibility&#10;- Sync 4c47fb6&#10;- Sync 868bbf1&#10;- Update 0.5.1-dev+3" />
     <MESSAGE value="fix: Set directExit default to true" />
     <MESSAGE value="Improve framebuffer compatibility&#10;- Implement blit method&#10;- Update 0.5.1-dev+4&#10;- Sync 3f37e93" />
-    <option name="LAST_COMMIT_MESSAGE" value="Improve framebuffer compatibility&#10;- Implement blit method&#10;- Update 0.5.1-dev+4&#10;- Sync 3f37e93" />
+    <MESSAGE value="Fix crash on setting texture parameter&#10;- Implement missing methods&#10;- Update 0.5.1-dev+5&#10;- Sync 20dcc21&#10;- Sync 8b41398&#10;- Remove neoforged mixins" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix crash on setting texture parameter&#10;- Implement missing methods&#10;- Update 0.5.1-dev+5&#10;- Sync 20dcc21&#10;- Sync 8b41398&#10;- Remove neoforged mixins" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

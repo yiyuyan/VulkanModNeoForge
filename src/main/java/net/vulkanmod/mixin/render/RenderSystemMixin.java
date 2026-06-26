@@ -44,6 +44,8 @@ public abstract class RenderSystemMixin {
     public static void assertOnRenderThread() {
     }
 
+
+
     /**
      * @author
      */
@@ -141,14 +143,6 @@ public abstract class RenderSystemMixin {
 
     @Redirect(method = "flipFrame", at = @At(value = "INVOKE", target = "Lorg/lwjgl/glfw/GLFW;glfwSwapBuffers(J)V"), remap = false)
     private static void removeSwapBuffers(long window) {
-    }
-
-    /**
-     * @author
-     */
-    @Overwrite(remap = false)
-    public static void viewport(int x, int y, int width, int height) {
-        Renderer.setViewport(x, y, width, height);
     }
 
     /**

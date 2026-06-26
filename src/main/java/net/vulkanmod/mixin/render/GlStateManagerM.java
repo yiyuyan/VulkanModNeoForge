@@ -177,8 +177,8 @@ public class GlStateManagerM {
     /**
      * @author
      */
-    @Overwrite(remap = false)
-    public static void _viewport(int x, int y, int width, int height) {
+    @Redirect(method = "_viewport", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glViewport(IIII)V"), remap = false)
+    private static void _viewport(int x, int y, int width, int height) {
         Renderer.setViewport(x, y, width, height);
     }
 
