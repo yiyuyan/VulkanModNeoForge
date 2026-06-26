@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Fix: apply filtering state on reload&#10;- Sync 320e32f">
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlProgram.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/UniformM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/UniformM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlProgramManagerMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlProgramManagerMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlStateManagerM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlStateManagerM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/ShaderInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/ShaderInstanceM.java" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Improve program and uniform compatibility&#10;- Sync 3a0d4b8&#10;- Update 0.5.4-dev+2">
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frapi/fluid/FluidRenderingImplMixin.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/renderer/FluidRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/renderer/FluidRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -307,15 +302,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="22802000" />
-    </task>
-    <task id="LOCAL-00035" summary="Implement IndexBuffer resize&#10;Update 0.5.0-dev+2&#10;Sync a290169">
-      <option name="closed" value="true" />
-      <created>1782216682409</created>
-      <option name="number" value="00035" />
-      <option name="presentableId" value="LOCAL-00035" />
-      <option name="project" value="LOCAL" />
-      <updated>1782216682409</updated>
+      <workItem from="1782437909229" duration="23190000" />
     </task>
     <task id="LOCAL-00036" summary="Add backface culling setting's translatable components&#10;Sync a7ffe3d">
       <option name="closed" value="true" />
@@ -701,7 +688,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782462117666</updated>
     </task>
-    <option name="localTasksCounter" value="84" />
+    <task id="LOCAL-00084" summary="Improve program and uniform compatibility&#10;- Sync 3a0d4b8&#10;- Update 0.5.4-dev+2">
+      <option name="closed" value="true" />
+      <created>1782462562566</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1782462562566</updated>
+    </task>
+    <option name="localTasksCounter" value="85" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -722,7 +717,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Reset blend function before drawing&#10;- Improve mixin compatibility&#10;- Sync 4c47fb6&#10;- Sync 868bbf1&#10;- Update 0.5.1-dev+3" />
     <MESSAGE value="fix: Set directExit default to true" />
     <MESSAGE value="Improve framebuffer compatibility&#10;- Implement blit method&#10;- Update 0.5.1-dev+4&#10;- Sync 3f37e93" />
     <MESSAGE value="Fix crash on setting texture parameter&#10;- Implement missing methods&#10;- Update 0.5.1-dev+5&#10;- Sync 20dcc21&#10;- Sync 8b41398&#10;- Remove neoforged mixins" />
@@ -747,7 +741,8 @@
     <MESSAGE value="Use 16 bytes vertex format for terrain&#10;- Fix rendertype_leash bug&#10;- Update texture sampler on upload&#10;- Fix: apply correct light data on quad shading&#10;- Fix: apply quad transform if needed&#10;- Sync b35e7a3&#10;- Sync e317a24&#10;- Sync e42a5da&#10;- Sync abbdcc8&#10;- Sync 5d2315d&#10;- Update 0.5.4-dev+1" />
     <MESSAGE value="Add flush batched cmds&#10;- Sync 5441949" />
     <MESSAGE value="Fix: apply filtering state on reload&#10;- Sync 320e32f" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix: apply filtering state on reload&#10;- Sync 320e32f" />
+    <MESSAGE value="Improve program and uniform compatibility&#10;- Sync 3a0d4b8&#10;- Update 0.5.4-dev+2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improve program and uniform compatibility&#10;- Sync 3a0d4b8&#10;- Update 0.5.4-dev+2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
