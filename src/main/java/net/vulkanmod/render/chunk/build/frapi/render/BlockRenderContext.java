@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2016, 2017, 2018, 2019 FabricMC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package net.vulkanmod.render.chunk.build.frapi.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -63,33 +47,26 @@ public class BlockRenderContext extends AbstractBlockRenderContext {
     }
 
 	public void render(BlockAndTintGetter blockView, BakedModel model, BlockState state, BlockPos pos, PoseStack matrixStack, VertexConsumer buffer, boolean cull, RandomSource random, long seed, int overlay) {
-		try {
-			Vec3 offset = state.getOffset(blockView, pos);
-			matrixStack.translate(offset.x, offset.y, offset.z);
+		Vec3 offset = state.getOffset(blockView, pos);
+		matrixStack.translate(offset.x, offset.y, offset.z);
 
-			this.blockPos = pos;
-			this.vertexConsumer = buffer;
-			this.matrix = matrixStack.last().pose();
-			this.normalMatrix = matrixStack.last().normal();
-			this.overlay = overlay;
+		this.blockPos = pos;
+		this.vertexConsumer = buffer;
+		this.matrix = matrixStack.last().pose();
+		this.normalMatrix = matrixStack.last().normal();
+		this.overlay = overlay;
 
-			this.random = random;
-			this.seed = seed;
+		this.random = random;
+		this.seed = seed;
 
-			this.lightDataCache.reset(blockView, pos);
+		this.lightDataCache.reset(blockView, pos);
 
-			this.prepareForWorld(blockView, cull);
-			this.prepareForBlock(state, pos, model.useAmbientOcclusion());
+		this.prepareForWorld(blockView, cull);
+		this.prepareForBlock(state, pos, model.useAmbientOcclusion());
 
-			((FabricBakedModel)model).emitBlockQuads(blockView, state, pos, this.randomSupplier, this);
-		} catch (Throwable throwable) {
-			CrashReport crashReport = CrashReport.forThrowable(throwable, "Tessellating block model - Indigo Renderer");
-			CrashReportCategory crashReportSection = crashReport.addCategory("Block model being tessellated");
-			CrashReportCategory.populateBlockDetails(crashReportSection, blockView, pos, state);
-			throw new ReportedException(crashReport);
-		} finally {
-			this.vertexConsumer = null;
-		}
+		((FabricBakedModel)model).emitBlockQuads(blockView, state, pos, this.randomSupplier, this);
+
+		this.vertexConsumer = null;
 	}
 
 	protected void endRenderQuad(MutableQuadViewImpl quad) {
@@ -104,7 +81,13 @@ public class BlockRenderContext extends AbstractBlockRenderContext {
 
 		colorizeQuad(quad, colorIndex);
 		shadeQuad(quad, lightPipeline, emissive, vanillaShade);
+		copyLightData(quad);
         bufferQuad(quad, vertexConsumer);
 	}
 
+	private void copyLightData(MutableQuadViewImpl quad) {
+		for (int i = 0; i < 4; i++) {
+			quad.lightmap(i, this.quadLightData.lm[i]);
+		}
+	}
 }

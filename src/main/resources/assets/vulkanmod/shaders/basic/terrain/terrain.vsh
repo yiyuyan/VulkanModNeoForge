@@ -22,8 +22,8 @@ layout (location = 2) out vec2 texCoord0;
 
 #ifdef COMPRESSED_VERTEX
     layout (location = 0) in ivec4 Position;
-    layout (location = 1) in vec4 Color;
-    layout (location = 2) in uvec2 UV0;
+    layout (location = 1) in uvec2 UV0;
+    layout (location = 2) in uint PackedColor;
 #else
     layout (location = 0) in vec3 Position;
     layout (location = 1) in vec4 Color;
@@ -51,6 +51,8 @@ void main() {
     gl_Position = MVP * pos;
 
     vertexDistance = fog_distance(pos.xyz, 0);
+    const vec4 Color = unpackUnorm4x8(PackedColor);
     vertexColor = Color * sample_lightmap2(Sampler2, Position.a);
+
     texCoord0 = UV0 * UV_INV;
 }

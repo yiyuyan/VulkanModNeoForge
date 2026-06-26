@@ -69,7 +69,7 @@ public interface VertexBuilder {
     }
 
     class CompressedVertexBuilder implements VertexBuilder {
-        private static final int VERTEX_SIZE = 20;
+        private static final int VERTEX_SIZE = 16;
 
         public static final float POS_CONV_MUL = 2048.0f;
         public static final float POS_OFFSET = -4.0f;
@@ -89,10 +89,10 @@ public interface VertexBuilder {
             final short l = (short) (((light >>> 8) & 0xFF00) | (light & 0xFF));
             MemoryUtil.memPutShort(ptr + 6, l);
 
-            MemoryUtil.memPutInt(ptr + 8, color);
+            MemoryUtil.memPutShort(ptr + 8, (short) (u * UV_CONV_MUL));
+            MemoryUtil.memPutShort(ptr + 10, (short) (v * UV_CONV_MUL));
 
-            MemoryUtil.memPutShort(ptr + 12, (short) (u * UV_CONV_MUL));
-            MemoryUtil.memPutShort(ptr + 14, (short) (v * UV_CONV_MUL));
+            MemoryUtil.memPutInt(ptr + 12, color);
         }
 
         @Override
@@ -108,13 +108,13 @@ public interface VertexBuilder {
 
         @Override
         public void color(long ptr, int color) {
-            MemoryUtil.memPutInt(ptr + 8, color);
+            MemoryUtil.memPutInt(ptr + 12, color);
         }
 
         @Override
         public void uv(long ptr, float u, float v) {
-            MemoryUtil.memPutShort(ptr + 12, (short) (u * UV_CONV_MUL));
-            MemoryUtil.memPutShort(ptr + 14, (short) (v * UV_CONV_MUL));
+            MemoryUtil.memPutShort(ptr + 8, (short) (u * UV_CONV_MUL));
+            MemoryUtil.memPutShort(ptr + 10, (short) (v * UV_CONV_MUL));
         }
 
         @Override

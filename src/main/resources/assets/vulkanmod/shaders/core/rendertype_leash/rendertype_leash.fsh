@@ -7,7 +7,7 @@ layout(binding = 1) uniform UBO{
     float FogEnd;
 };
 
-layout(location = 0) in vec4 vertexColor;
+layout(location = 0) flat in vec4 vertexColor;
 layout(location = 1) in float vertexDistance;
 
 layout(location = 0) out vec4 fragColor;

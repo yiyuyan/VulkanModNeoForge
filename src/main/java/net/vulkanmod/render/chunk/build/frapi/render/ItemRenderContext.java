@@ -152,16 +152,34 @@ public class ItemRenderContext extends AbstractRenderContext {
 	}
 
 	public void emitItemQuads(BakedModel model, @Nullable BlockState state, Supplier<RandomSource> randomSupplier) {
-		for (int i = 0; i <= ModelHelper.NULL_FACE_ID; i++) {
-			final Direction cullFace = ModelHelper.faceFromIndex(i);
-			final List<BakedQuad> quads = model.getQuads(state, cullFace, randomSupplier.get());
-			final int count = quads.size();
+		if (!this.hasTransform()) {
+			for (int i = 0; i <= ModelHelper.NULL_FACE_ID; i++) {
+				final Direction cullFace = ModelHelper.faceFromIndex(i);
+				final List<BakedQuad> quads = model.getQuads(state, cullFace, randomSupplier.get());
+				final int count = quads.size();
 
-			for (int j = 0; j < count; j++) {
-				final BakedQuad q = quads.get(j);
-				editorQuad.fromVanilla(q, STANDARD_MATERIAL, cullFace);
+				//noinspection ForLoopReplaceableByForEach
+				for (int j = 0; j < count; j++) {
+					final BakedQuad q = quads.get(j);
+					editorQuad.fromVanilla(q, STANDARD_MATERIAL, cullFace);
 
-				endRenderQuad(editorQuad);
+					endRenderQuad(editorQuad);
+				}
+			}
+		}
+		else {
+			for (int i = 0; i <= ModelHelper.NULL_FACE_ID; i++) {
+				final Direction cullFace = ModelHelper.faceFromIndex(i);
+				final List<BakedQuad> quads = model.getQuads(state, cullFace, randomSupplier.get());
+				final int count = quads.size();
+
+				//noinspection ForLoopReplaceableByForEach
+				for (int j = 0; j < count; j++) {
+					final BakedQuad q = quads.get(j);
+					editorQuad.fromVanilla(q, STANDARD_MATERIAL, cullFace);
+
+					this.renderQuad(editorQuad);
+				}
 			}
 		}
 	}
