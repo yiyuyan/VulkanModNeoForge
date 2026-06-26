@@ -389,7 +389,6 @@ public class WorldRenderer {
 
         this.minecraft.getProfiler().pop();
         renderType.clearRenderState();
-        VRenderSystem.applyMVP(RenderSystem.getModelViewMatrix(), RenderSystem.getProjectionMatrix());
 
         if (terrainRenderType == TerrainRenderType.CUTOUT
                 && this.gpuCuller != null && Initializer.CONFIG.occlusionCulling) {

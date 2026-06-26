@@ -3,19 +3,17 @@ package net.vulkanmod.mixin.render;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.MeshData;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.vulkanmod.interfaces.ShaderMixed;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.VRenderSystem;
-import net.vulkanmod.vulkan.shader.GraphicsPipeline;
-
 import net.vulkanmod.vulkan.shader.Pipeline;
-import net.vulkanmod.vulkan.texture.VTextureSelector;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 @Mixin(BufferUploader.class)
-public class BufferUploaderM {
+public abstract class BufferUploaderM {
 
     /**
      * @author
@@ -32,8 +30,6 @@ public class BufferUploaderM {
 
         MeshData.DrawState parameters = meshData.drawState();
 
-        Renderer renderer = Renderer.getInstance();
-
         if (parameters.vertexCount() > 0) {
             ShaderInstance shaderInstance = RenderSystem.getShader();
 
@@ -43,19 +39,13 @@ public class BufferUploaderM {
                 return;
             }
 
+            VRenderSystem.setPrimitiveTopologyGL(parameters.mode().asGLMode);
+
             // Used to update legacy shader uniforms
             // TODO it would be faster to allocate a buffer from stack and set all values
+            shaderInstance.setDefaultUniforms(VertexFormat.Mode.QUADS, RenderSystem.getModelViewMatrix(),
+                                              RenderSystem.getProjectionMatrix(), Minecraft.getInstance().getWindow());
             shaderInstance.apply();
-
-            GraphicsPipeline pipeline = ((ShaderMixed)(shaderInstance)).getPipeline();
-
-            if (pipeline == null)
-                throw new NullPointerException("Shader %s has no initialized pipeline".formatted(shaderInstance.getName()));
-
-            VRenderSystem.setPrimitiveTopologyGL(parameters.mode().asGLMode);
-            renderer.bindGraphicsPipeline(pipeline);
-            VTextureSelector.bindShaderTextures(pipeline);
-            renderer.uploadAndBindUBOs(pipeline);
 
             Renderer.getDrawer().draw(meshData.vertexBuffer(), meshData.indexBuffer(), parameters.mode(), parameters.format(), parameters.vertexCount());
         }

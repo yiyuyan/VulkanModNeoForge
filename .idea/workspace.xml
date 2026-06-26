@@ -4,13 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Fix early return on queue selection&#10;- Add src upload offset check&#10;- Sync 857607f&#10;- Sync acc0699&#10;- Update 0.5.2-dev+9">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Fix early return on queue selection&#10;- Add src upload offset check&#10;- Fix polygon offset swapped parameters&#10;- Sync 857607f&#10;- Sync 78cc6f1&#10;- Update 0.5.2-dev+10">
       <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlTexture.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/gl/GlTexture.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/gl/GL11M.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/gl/GL11M.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/RenderSystemMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/RenderSystemMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/VRenderSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/VRenderSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/UniformM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/UniformM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/BufferUploaderM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/BufferUploaderM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/ShaderInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/ShaderInstanceM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/VBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/VBO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_cutout/rendertype_cutout.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_cutout/rendertype_cutout.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_cutout/rendertype_cutout.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_cutout/rendertype_cutout.vsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_cutout_mipped/rendertype_cutout_mipped.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_cutout_mipped/rendertype_cutout_mipped.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_cutout_mipped/rendertype_cutout_mipped.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_cutout_mipped/rendertype_cutout_mipped.vsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_solid/rendertype_solid.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_solid/rendertype_solid.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_solid/rendertype_solid.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_solid/rendertype_solid.vsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_translucent/rendertype_translucent.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_translucent/rendertype_translucent.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_translucent/rendertype_translucent.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_translucent/rendertype_translucent.vsh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_tripwire/rendertype_tripwire.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_tripwire/rendertype_tripwire.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_tripwire/rendertype_tripwire.vsh" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/assets/vulkanmod/shaders/core/rendertype_tripwire/rendertype_tripwire.vsh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -305,15 +315,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
-      <workItem from="1782437909229" duration="19624000" />
-    </task>
-    <task id="LOCAL-00030" summary="Use VertexBuffer usage to determine memory type&#10;Update 0.4.9-dev+3&#10;Sync 845e86b">
-      <option name="closed" value="true" />
-      <created>1782215611353</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1782215611353</updated>
+      <workItem from="1782437909229" duration="19952000" />
     </task>
     <task id="LOCAL-00031" summary="Use VertexBuffer usage to Improve clouds rendering&#10;Update 0.4.9-dev+4&#10;Sync 41c3d58">
       <option name="closed" value="true" />
@@ -699,7 +701,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782458446684</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="Fix early return on queue selection&#10;- Add src upload offset check&#10;- Fix polygon offset swapped parameters&#10;- Sync 857607f&#10;- Sync 78cc6f1&#10;- Update 0.5.2-dev+10">
+      <option name="closed" value="true" />
+      <created>1782458880251</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1782458880251</updated>
+    </task>
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -720,7 +730,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Use fixed size staging buffer&#10;- Refactor classes&#10;- Add missing resources' clean up&#10;- Track allocated image memory&#10;- Update 0.5.0-dev+14&#10;- Sync 3ac10f3" />
     <MESSAGE value="Fix crash when clouds mesh is empty&#10;- Update 0.5.1-dev+1&#10;- Sync 3cfe478" />
     <MESSAGE value="Use non cached memory type&#10;- Sync 1bbd0ac" />
     <MESSAGE value="Use level renderer light values to improve compatibility&#10;- Update 0.5.1-dev+2&#10;- Sync 349de86" />
@@ -745,7 +754,8 @@
     <MESSAGE value="Implement flush method&#10;- Refactor&#10;- Sync a42450b" />
     <MESSAGE value="Improve quad writing performance&#10;- Fix: normalize normal vector if needed&#10;- Sync 0506db2&#10;- Update 0.5.2-dev+8" />
     <MESSAGE value="Fix early return on queue selection&#10;- Add src upload offset check&#10;- Sync 857607f&#10;- Sync acc0699&#10;- Update 0.5.2-dev+9" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix early return on queue selection&#10;- Add src upload offset check&#10;- Sync 857607f&#10;- Sync acc0699&#10;- Update 0.5.2-dev+9" />
+    <MESSAGE value="Fix early return on queue selection&#10;- Add src upload offset check&#10;- Fix polygon offset swapped parameters&#10;- Sync 857607f&#10;- Sync 78cc6f1&#10;- Update 0.5.2-dev+10" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix early return on queue selection&#10;- Add src upload offset check&#10;- Fix polygon offset swapped parameters&#10;- Sync 857607f&#10;- Sync 78cc6f1&#10;- Update 0.5.2-dev+10" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
