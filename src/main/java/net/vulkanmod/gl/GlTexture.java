@@ -110,6 +110,28 @@ public class GlTexture {
         return false;
     }
 
+    public static int getTexParameteri(int target, int pName) {
+        if (target != GL11.GL_TEXTURE_2D)
+            throw new UnsupportedOperationException("target != GL_TEXTURE_2D not supported");
+
+        if (boundTexture == null)
+            return -1;
+
+        return switch (pName) {
+            case GL11.GL_TEXTURE_INTERNAL_FORMAT -> GlUtil.getGlFormat(boundTexture.vulkanImage.format);
+            case GL11.GL_TEXTURE_WIDTH -> boundTexture.vulkanImage.width;
+            case GL11.GL_TEXTURE_HEIGHT -> boundTexture.vulkanImage.height;
+
+            case GL30.GL_TEXTURE_MAX_LEVEL -> boundTexture.maxLevel;
+            case GL30.GL_TEXTURE_MAX_LOD -> boundTexture.maxLod;
+
+            case GL11.GL_TEXTURE_MAG_FILTER -> boundTexture.magFilter;
+            case GL11.GL_TEXTURE_MIN_FILTER -> boundTexture.minFilter;
+
+            default -> -1;
+        };
+    }
+
     public static void texSubImage2D(int target, int level, int xOffset, int yOffset, int width, int height, int format, int type, long pixels) {
         if (width == 0 || height == 0)
             return;

@@ -81,7 +81,8 @@ public abstract class VRenderSystem {
 
     public static float alphaCutout = 0.0f;
 
-    private static final float[] depthBias = new float[2];
+    private static float depthBiasUnits = 0.0f;
+    private static float depthBiasFactor = 0.0f;
 
     public static void initRenderer() {
         Vulkan.initVulkan(window);
@@ -285,13 +286,15 @@ public abstract class VRenderSystem {
         logicOpFun = logicOp.value;
     }
 
-    public static void polygonOffset(float v, float v1) {
-        depthBias[0] = v;
-        depthBias[1] = v1;
+    public static void polygonOffset(float factor, float units) {
+        depthBiasUnits = units;
+        depthBiasFactor = factor;
+
+        Renderer.setDepthBias(depthBiasUnits, depthBiasFactor);
     }
 
     public static void enablePolygonOffset() {
-        Renderer.setDepthBias(depthBias[0], depthBias[1]);
+        Renderer.setDepthBias(depthBiasUnits, depthBiasFactor);
     }
 
     public static void disablePolygonOffset() {

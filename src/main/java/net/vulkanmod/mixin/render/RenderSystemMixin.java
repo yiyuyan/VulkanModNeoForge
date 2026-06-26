@@ -305,9 +305,9 @@ public abstract class RenderSystemMixin {
      * @author
      */
     @Overwrite(remap = false)
-    public static void polygonOffset(float p_69864_, float p_69865_) {
+    public static void polygonOffset(float factor, float units) {
         assertOnRenderThread();
-        VRenderSystem.polygonOffset(p_69864_, p_69865_);
+        VRenderSystem.polygonOffset(factor, units);
     }
 
     /**
