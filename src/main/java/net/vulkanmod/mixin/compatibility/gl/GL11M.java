@@ -4,15 +4,14 @@ import net.vulkanmod.gl.VkGlTexture;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.VRenderSystem;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL11C;
 import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.system.NativeType;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
 
 import org.jetbrains.annotations.Nullable;
+
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
@@ -25,7 +24,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static int glGetTexParameteri(@NativeType("GLenum") int target, @NativeType("GLenum") int pname) {
-        return VkGlTexture.getTexParameteri(target, pname);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlTexture", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("getTexParameteri", int.class, int.class);
+            method.setAccessible(true);
+            return (int) method.invoke(null, target, pname);
+        }
+        catch (Throwable e) {
+            return VkGlTexture.getTexParameteri(target, pname);
+        }
     }
 
     /**
@@ -34,7 +41,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glPixelStorei(@NativeType("GLenum") int pname, @NativeType("GLint") int param) {
-        VkGlTexture.pixelStoreI(pname, param);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlTexture", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("pixelStoreI", int.class, int.class);
+            method.setAccessible(true);
+            method.invoke(null, pname, param);
+        }
+        catch (Throwable e) {
+            VkGlTexture.pixelStoreI(pname, param);
+        }
     }
 
     /**
@@ -52,7 +67,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glPolygonOffset(@NativeType("GLfloat") float factor, @NativeType("GLfloat") float units) {
-        VRenderSystem.polygonOffset(factor, units);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.vulkan.VRenderSystem", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("polygonOffset", float.class, float.class);
+            method.setAccessible(true);
+            method.invoke(null, factor, units);
+        }
+        catch (Throwable e) {
+            VRenderSystem.polygonOffset(factor, units);
+        }
     }
 
     /**
@@ -61,7 +84,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glScissor(@NativeType("GLint") int x, @NativeType("GLint") int y, @NativeType("GLsizei") int width, @NativeType("GLsizei") int height) {
-        Renderer.setScissor(x, y, width, height);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.vulkan.Renderer", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("setScissor", int.class, int.class, int.class, int.class);
+            method.setAccessible(true);
+            method.invoke(null, x, y, width, height);
+        }
+        catch (Throwable e) {
+            Renderer.setScissor(x, y, width, height);
+        }
     }
 
     /**
@@ -70,7 +101,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glViewport(@NativeType("GLint") int x, @NativeType("GLint") int y, @NativeType("GLsizei") int w, @NativeType("GLsizei") int h) {
-        Renderer.setViewport(x, y, w, h);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.vulkan.Renderer", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("setViewport", int.class, int.class, int.class, int.class);
+            method.setAccessible(true);
+            method.invoke(null, x, y, w, h);
+        }
+        catch (Throwable e) {
+            Renderer.setViewport(x, y, w, h);
+        }
     }
 
     /**
@@ -79,7 +118,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glBindTexture(@NativeType("GLenum") int target, @NativeType("GLuint") int texture) {
-        VkGlTexture.bindTexture(texture);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlTexture", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("bindTexture", int.class);
+            method.setAccessible(true);
+            method.invoke(null, texture);
+        }
+        catch (Throwable e) {
+            VkGlTexture.bindTexture(texture);
+        }
     }
 
     /**
@@ -88,7 +135,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glLineWidth(@NativeType("GLfloat") float width) {
-        VRenderSystem.setLineWidth(width);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.vulkan.VRenderSystem", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("setLineWidth", float.class);
+            method.setAccessible(true);
+            method.invoke(null, width);
+        }
+        catch (Throwable e) {
+            VRenderSystem.setLineWidth(width);
+        }
     }
 
     /**
@@ -98,7 +153,15 @@ public class GL11M {
     @NativeType("void")
     @Overwrite(remap = false)
     public static int glGenTextures() {
-        return VkGlTexture.genTextureId();
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlTexture", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("genTextureId");
+            method.setAccessible(true);
+            return (int) method.invoke(null);
+        }
+        catch (Throwable e) {
+            return VkGlTexture.genTextureId();
+        }
     }
 
     /**
@@ -117,7 +180,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glClear(@NativeType("GLbitfield") int mask) {
-        VRenderSystem.clear(mask);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.vulkan.VRenderSystem", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("clear", int.class);
+            method.setAccessible(true);
+            method.invoke(null, mask);
+        }
+        catch (Throwable e) {
+            VRenderSystem.clear(mask);
+        }
     }
 
     /**
@@ -136,7 +207,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glClearColor(@NativeType("GLfloat") float red, @NativeType("GLfloat") float green, @NativeType("GLfloat") float blue, @NativeType("GLfloat") float alpha) {
-        VRenderSystem.setClearColor(red, green, blue, alpha);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.vulkan.VRenderSystem", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("setClearColor", float.class, float.class, float.class, float.class);
+            method.setAccessible(true);
+            method.invoke(null, red, green, blue, alpha);
+        }
+        catch (Throwable e) {
+            VRenderSystem.setClearColor(red, green, blue, alpha);
+        }
     }
 
     /**
@@ -145,7 +224,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glDepthMask(@NativeType("GLboolean") boolean flag) {
-        VRenderSystem.depthMask(flag);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.vulkan.VRenderSystem", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("depthMask", boolean.class);
+            method.setAccessible(true);
+            method.invoke(null, flag);
+        }
+        catch (Throwable e) {
+            VRenderSystem.depthMask(flag);
+        }
     }
 
     /**
@@ -164,7 +251,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type, @Nullable ByteBuffer pixels) {
-        VkGlTexture.texImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlTexture", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("texImage2D", int.class, int.class, int.class, int.class, int.class, int.class, int.class, int.class, ByteBuffer.class);
+            method.setAccessible(true);
+            method.invoke(null, target, level, internalformat, width, height, border, format, type, pixels);
+        }
+        catch (Throwable e) {
+            VkGlTexture.texImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+        }
     }
 
     /**
@@ -173,7 +268,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glTexImage2D(@NativeType("GLenum") int target, @NativeType("GLint") int level, @NativeType("GLint") int internalformat, @NativeType("GLsizei") int width, @NativeType("GLsizei") int height, @NativeType("GLint") int border, @NativeType("GLenum") int format, @NativeType("GLenum") int type, @NativeType("void const *") long pixels) {
-        VkGlTexture.texImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlTexture", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("texImage2D", int.class, int.class, int.class, int.class, int.class, int.class, int.class, int.class, long.class);
+            method.setAccessible(true);
+            method.invoke(null, target, level, internalformat, width, height, border, format, type, pixels);
+        }
+        catch (Throwable e) {
+            VkGlTexture.texImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+        }
     }
 
     /**
@@ -182,7 +285,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glTexSubImage2D(int target, int level, int xOffset, int yOffset, int width, int height, int format, int type, long pixels) {
-        VkGlTexture.texSubImage2D(target, level, xOffset, yOffset, width, height, format, type, pixels);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlTexture", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("texSubImage2D", int.class, int.class, int.class, int.class, int.class, int.class, int.class, int.class, long.class);
+            method.setAccessible(true);
+            method.invoke(null, target, level, xOffset, yOffset, width, height, format, type, pixels);
+        }
+        catch (Throwable e) {
+            VkGlTexture.texSubImage2D(target, level, xOffset, yOffset, width, height, format, type, pixels);
+        }
     }
 
     /**
@@ -191,7 +302,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glTexSubImage2D(int target, int level, int xOffset, int yOffset, int width, int height, int format, int type, @Nullable ByteBuffer pixels) {
-        VkGlTexture.texSubImage2D(target, level, xOffset, yOffset, width, height, format, type, pixels);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlTexture", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("texSubImage2D", int.class, int.class, int.class, int.class, int.class, int.class, int.class, int.class, ByteBuffer.class);
+            method.setAccessible(true);
+            method.invoke(null, target, level, xOffset, yOffset, width, height, format, type, pixels);
+        }
+        catch (Throwable e) {
+            VkGlTexture.texSubImage2D(target, level, xOffset, yOffset, width, height, format, type, pixels);
+        }
     }
 
     /**
@@ -200,7 +319,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glTexSubImage2D(int target, int level, int xOffset, int yOffset, int width, int height, int format, int type, @Nullable IntBuffer pixels) {
-        VkGlTexture.texSubImage2D(target, level, xOffset, yOffset, width, height, format, type, MemoryUtil.memByteBuffer(pixels));
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlTexture", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("texSubImage2D", int.class, int.class, int.class, int.class, int.class, int.class, int.class, int.class, IntBuffer.class);
+            method.setAccessible(true);
+            method.invoke(null, target, level, xOffset, yOffset, width, height, format, type, pixels);
+        }
+        catch (Throwable e) {
+            VkGlTexture.texSubImage2D(target, level, xOffset, yOffset, width, height, format, type, MemoryUtil.memByteBuffer(pixels));
+        }
     }
 
     /**
@@ -209,7 +336,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glTexParameteri(@NativeType("GLenum") int target, @NativeType("GLenum") int pname, @NativeType("GLint") int param) {
-        VkGlTexture.texParameteri(target, pname, param);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlTexture", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("texParameteri", int.class, int.class, int.class);
+            method.setAccessible(true);
+            method.invoke(null, target, pname, param);
+        }
+        catch (Throwable e) {
+            VkGlTexture.texParameteri(target, pname, param);
+        }
     }
 
     /**
@@ -227,7 +362,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static int glGetTexLevelParameteri(@NativeType("GLenum") int target, @NativeType("GLint") int level, @NativeType("GLenum") int pname) {
-        return VkGlTexture.getTexLevelParameter(target, level, pname);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlTexture", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("getTexLevelParameter", int.class, int.class, int.class);
+            method.setAccessible(true);
+            return (int) method.invoke(null, target, level, pname);
+        }
+        catch (Throwable e) {
+            return VkGlTexture.getTexLevelParameter(target, level, pname);
+        }
     }
 
     /**
@@ -269,7 +412,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glDeleteTextures(@NativeType("GLuint const *") int texture) {
-        VkGlTexture.glDeleteTextures(texture);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlTexture", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("glDeleteTextures", int.class);
+            method.setAccessible(true);
+            method.invoke(null, texture);
+        }
+        catch (Throwable e) {
+            VkGlTexture.glDeleteTextures(texture);
+        }
     }
 
     /**
@@ -278,7 +429,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glDeleteTextures(@NativeType("GLuint const *") IntBuffer textures) {
-        VkGlTexture.glDeleteTextures(textures);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlTexture", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("glDeleteTextures", IntBuffer.class);
+            method.setAccessible(true);
+            method.invoke(null, textures);
+        }
+        catch (Throwable e) {
+            VkGlTexture.glDeleteTextures(textures);
+        }
     }
 
     /**
@@ -287,7 +446,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glGetTexImage(@NativeType("GLenum") int tex, @NativeType("GLint") int level, @NativeType("GLenum") int format, @NativeType("GLenum") int type, @NativeType("void *") long pixels) {
-        VkGlTexture.getTexImage(tex, level, format, type, pixels);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlTexture", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("getTexImage", int.class, int.class, int.class, int.class, long.class);
+            method.setAccessible(true);
+            method.invoke(null, tex, level, format, type, pixels);
+        }
+        catch (Throwable e) {
+            VkGlTexture.getTexImage(tex, level, format, type, pixels);
+        }
     }
 
     /**
@@ -296,7 +463,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glGetTexImage(@NativeType("GLenum") int tex, @NativeType("GLint") int level, @NativeType("GLenum") int format, @NativeType("GLenum") int type, @NativeType("void *") ByteBuffer pixels) {
-        VkGlTexture.getTexImage(tex, level, format, type, MemoryUtil.memAddress(pixels));
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlTexture", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("getTexImage", int.class, int.class, int.class, int.class, long.class);
+            method.setAccessible(true);
+            method.invoke(null, tex, level, format, type, MemoryUtil.memAddress(pixels));
+        }
+        catch (Throwable e) {
+            VkGlTexture.getTexImage(tex, level, format, type, MemoryUtil.memAddress(pixels));
+        }
     }
 
     /**
@@ -305,7 +480,15 @@ public class GL11M {
      */
     @Overwrite(remap = false)
     public static void glGetTexImage(@NativeType("GLenum") int tex, @NativeType("GLint") int level, @NativeType("GLenum") int format, @NativeType("GLenum") int type, @NativeType("void *") IntBuffer pixels) {
-        VkGlTexture.getTexImage(tex, level, format, type, MemoryUtil.memAddress(pixels));
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlTexture", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("getTexImage", int.class, int.class, int.class, int.class, long.class);
+            method.setAccessible(true);
+            method.invoke(null, tex, level, format, type, MemoryUtil.memAddress(pixels));
+        }
+        catch (Throwable e) {
+            VkGlTexture.getTexImage(tex, level, format, type, MemoryUtil.memAddress(pixels));
+        }
     }
 
     /**

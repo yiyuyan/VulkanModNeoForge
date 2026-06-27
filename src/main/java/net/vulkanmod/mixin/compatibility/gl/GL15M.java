@@ -7,6 +7,7 @@ import org.lwjgl.system.NativeType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
@@ -19,7 +20,15 @@ public class GL15M {
     @Overwrite(remap = false)
     @NativeType("void")
     public static int glGenBuffers() {
-        return VkGlBuffer.glGenBuffers();
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlBuffer", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("glGenBuffers");
+            method.setAccessible(true);
+            return (int) method.invoke(null);
+        }
+        catch (Throwable e) {
+            return VkGlBuffer.glGenBuffers();
+        }
     }
 
     /**
@@ -27,7 +36,15 @@ public class GL15M {
      */
     @Overwrite(remap = false)
     public static void glBindBuffer(@NativeType("GLenum") int target, @NativeType("GLuint") int buffer) {
-        VkGlBuffer.glBindBuffer(target, buffer);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlBuffer", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("glBindBuffer", int.class, int.class);
+            method.setAccessible(true);
+            method.invoke(null, target, buffer);
+        }
+        catch (Throwable e) {
+            VkGlBuffer.glBindBuffer(target, buffer);
+        }
     }
 
     /**
@@ -35,7 +52,15 @@ public class GL15M {
      */
     @Overwrite(remap = false)
     public static void glBufferData(@NativeType("GLenum") int target, @NativeType("void const *") ByteBuffer data, @NativeType("GLenum") int usage) {
-        VkGlBuffer.glBufferData(target, data, usage);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlBuffer", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("glBufferData", int.class, ByteBuffer.class, int.class);
+            method.setAccessible(true);
+            method.invoke(null, target, data, usage);
+        }
+        catch (Throwable e) {
+            VkGlBuffer.glBufferData(target, data, usage);
+        }
     }
 
     /**
@@ -43,7 +68,15 @@ public class GL15M {
      */
     @Overwrite(remap = false)
     public static void glBufferData(int i, long l, int j) {
-        VkGlBuffer.glBufferData(i, l, j);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlBuffer", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("glBufferData", int.class, long.class, int.class);
+            method.setAccessible(true);
+            method.invoke(null, i, l, j);
+        }
+        catch (Throwable e) {
+            VkGlBuffer.glBufferData(i, l, j);
+        }
     }
 
     /**
@@ -52,7 +85,15 @@ public class GL15M {
     @Overwrite(remap = false)
     @NativeType("void *")
     public static ByteBuffer glMapBuffer(@NativeType("GLenum") int target, @NativeType("GLenum") int access) {
-        return VkGlBuffer.glMapBuffer(target, access);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlBuffer", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("glMapBuffer", int.class, int.class);
+            method.setAccessible(true);
+            return (ByteBuffer) method.invoke(null, target, access);
+        }
+        catch (Throwable e) {
+            return VkGlBuffer.glMapBuffer(target, access);
+        }
     }
 
     /**
@@ -62,7 +103,15 @@ public class GL15M {
     @Nullable
     @NativeType("void *")
     public static ByteBuffer glMapBuffer(@NativeType("GLenum") int target, @NativeType("GLenum") int access, long length, @Nullable ByteBuffer old_buffer) {
-        return VkGlBuffer.glMapBuffer(target, access);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlBuffer", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("glMapBuffer", int.class, int.class);
+            method.setAccessible(true);
+            return (ByteBuffer) method.invoke(null, target, access);
+        }
+        catch (Throwable e) {
+            return VkGlBuffer.glMapBuffer(target, access);
+        }
     }
 
     /**
@@ -71,7 +120,15 @@ public class GL15M {
     @Overwrite(remap = false)
     @NativeType("GLboolean")
     public static boolean glUnmapBuffer(@NativeType("GLenum") int target) {
-        return VkGlBuffer.glUnmapBuffer(target);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlBuffer", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("glUnmapBuffer", int.class);
+            method.setAccessible(true);
+            return (boolean) method.invoke(null, target);
+        }
+        catch (Throwable e) {
+            return VkGlBuffer.glUnmapBuffer(target);
+        }
     }
 
     /**
@@ -79,7 +136,15 @@ public class GL15M {
      */
     @Overwrite(remap = false)
     public static void glDeleteBuffers(int i) {
-        VkGlBuffer.glDeleteBuffers(i);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlBuffer", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("glDeleteBuffers", int.class);
+            method.setAccessible(true);
+            method.invoke(null, i);
+        }
+        catch (Throwable e) {
+            VkGlBuffer.glDeleteBuffers(i);
+        }
     }
 
     /**
@@ -87,6 +152,14 @@ public class GL15M {
      */
     @Overwrite(remap = false)
     public static void glDeleteBuffers(@NativeType("GLuint const *") IntBuffer buffers) {
-        VkGlBuffer.glDeleteBuffers(buffers);
+        try {
+            Class<?> clazz = Class.forName("net.vulkanmod.gl.VkGlBuffer", false, Thread.currentThread().getContextClassLoader());
+            Method method = clazz.getMethod("glDeleteBuffers", IntBuffer.class);
+            method.setAccessible(true);
+            method.invoke(null, buffers);
+        }
+        catch (Throwable e) {
+            VkGlBuffer.glDeleteBuffers(buffers);
+        }
     }
 }
