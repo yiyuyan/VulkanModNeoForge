@@ -141,5 +141,15 @@
       <option name="name" value="Sinytra" />
       <option name="url" value="https://maven.su5ed.dev/releases" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven13" />
+      <option name="name" value="maven13" />
+      <option name="url" value="https://github.com/yiyuyan/SimpleMavenRepo/blob/master/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven13" />
+      <option name="name" value="maven13" />
+      <option name="url" value="https://raw.githubusercontent.com/yiyuyan/SimpleMavenRepo/master/" />
+    </remote-repository>
   </component>
 </project>
