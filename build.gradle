@@ -45,6 +45,9 @@ repositories {
         name = "Sinytra"
         url = uri("https://maven.su5ed.dev/releases")
     }
+    maven {
+        url = "https://raw.githubusercontent.com/yiyuyan/SimpleMavenRepo/master/"
+    }
 }
 
 loom {
@@ -101,7 +104,7 @@ dependencies {
     runtimeOnly("org.sinytra:forgified-fabric-loader:$versionForgifiedFabricLoader:full")
 
     //fabric api
-    modImplementation files("libs/NeoFabricRenderApis-V-0.106.1-mc1.21.3.jar")
+    include(modImplementation("cn.ksmcbrigade.frapi:vkn_ffapi:0.106.1-mc1.21.3"))
 }
 
 processResources {
