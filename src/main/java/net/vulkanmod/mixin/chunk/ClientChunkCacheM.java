@@ -26,7 +26,7 @@ public class ClientChunkCacheM {
     }
 
     @Inject(method = "drop", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/multiplayer/ClientChunkCache$Storage;replace(ILnet/minecraft/world/level/chunk/LevelChunk;Lnet/minecraft/world/level/chunk/LevelChunk;)Lnet/minecraft/world/level/chunk/LevelChunk;"))
+            target = "Lnet/minecraft/client/multiplayer/ClientChunkCache$Storage;drop(ILnet/minecraft/world/level/chunk/LevelChunk;)V"))
     private void resetChunkStatus(ChunkPos chunkPos, CallbackInfo ci) {
         ChunkStatusMap.INSTANCE.resetChunkStatus(chunkPos.x, chunkPos.z, ChunkStatusMap.DATA_READY);
     }

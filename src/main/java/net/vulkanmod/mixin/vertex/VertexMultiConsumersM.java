@@ -123,7 +123,7 @@ public class VertexMultiConsumersM {
             position.set(x, y , z, 1.0f);
 
             this.normalInversePose.transform(normal);
-            Direction direction = Direction.getNearest(normal.x(), normal.y(), normal.z());
+            Direction direction = Direction.getApproximateNearest(normal.x(), normal.y(), normal.z());
             this.cameraInversePose.transform(position);
             position.rotateY(3.1415927F);
             position.rotateX(-1.5707964F);

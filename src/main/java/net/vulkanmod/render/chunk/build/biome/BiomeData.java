@@ -32,8 +32,8 @@ public class BiomeData {
 
     public void getBiomeData(Level level, LevelChunkSection chunkSection, int secX, int secY, int secZ) {
         Biome defaultValue = level.registryAccess()
-                .registryOrThrow(Registries.BIOME)
-                .getHolderOrThrow(Biomes.PLAINS)
+                .lookupOrThrow(Registries.BIOME)
+                .getOrThrow(Biomes.PLAINS)
                 .value();
 
         int baseIdx = getRelativeSectionIdx(secX, secY, secZ);

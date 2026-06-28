@@ -1,9 +1,12 @@
 package net.vulkanmod.mixin.render.vertex;
 
+import com.mojang.blaze3d.buffers.BufferType;
+import com.mojang.blaze3d.buffers.BufferUsage;
+import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.VertexBuffer;
-import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.CompiledShaderProgram;
 import net.vulkanmod.render.VBO;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,14 +22,14 @@ public class VertexBufferM {
     private VBO vbo;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void constructor(VertexBuffer.Usage usage, CallbackInfo ci) {
+    private void constructor(BufferUsage usage, CallbackInfo ci) {
         vbo = new VBO(usage);
     }
 
-    @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/GlStateManager;_glGenBuffers()I"))
-    private int doNothing() {
-        return 0;
-    }
+//    @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/buffers/GpuBuffer;<init>(Lcom/mojang/blaze3d/buffers/BufferType;Lcom/mojang/blaze3d/buffers/BufferUsage;I)V"))
+//    private void doNothing(GpuBuffer instance, BufferType bufferType, BufferUsage bufferUsage, int i) {
+//        instance = null;
+//    }
 
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/GlStateManager;_glGenVertexArrays()I"))
     private int doNothing2() {
@@ -65,7 +68,7 @@ public class VertexBufferM {
      * @author
      */
     @Overwrite
-    public void drawWithShader(Matrix4f viewMatrix, Matrix4f projectionMatrix, ShaderInstance shader) {
+    public void drawWithShader(Matrix4f viewMatrix, Matrix4f projectionMatrix, CompiledShaderProgram shader) {
         vbo.drawWithShader(viewMatrix, projectionMatrix, shader);
     }
 

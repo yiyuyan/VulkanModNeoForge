@@ -14,15 +14,15 @@ import java.nio.ByteBuffer;
 
 import static org.lwjgl.vulkan.VK10.*;
 
-public class VkGlRenderbuffer {
+public class GlRenderbuffer {
     private static int ID_COUNTER = 1;
-    private static final Int2ReferenceOpenHashMap<VkGlRenderbuffer> map = new Int2ReferenceOpenHashMap<>();
+    private static final Int2ReferenceOpenHashMap<GlRenderbuffer> map = new Int2ReferenceOpenHashMap<>();
     private static int boundId = 0;
-    private static VkGlRenderbuffer bound;
+    private static GlRenderbuffer bound;
 
     public static int genId() {
         int id = ID_COUNTER;
-        map.put(id, new VkGlRenderbuffer(id));
+        map.put(id, new GlRenderbuffer(id));
         ID_COUNTER++;
         return id;
     }
@@ -43,12 +43,12 @@ public class VkGlRenderbuffer {
     }
 
     public static void deleteRenderbuffer(int i) {
-        VkGlRenderbuffer r = map.remove(i);
+        GlRenderbuffer r = map.remove(i);
         if (r != null && r.vulkanImage != null)
             MemoryManager.getInstance().addToFreeable(r.vulkanImage);
     }
 
-    public static VkGlRenderbuffer getRenderbuffer(int id) {
+    public static GlRenderbuffer getRenderbuffer(int id) {
         return map.get(id);
     }
 
@@ -102,12 +102,12 @@ public class VkGlRenderbuffer {
     }
 
     public static void setVulkanImage(int id, VulkanImage vulkanImage) {
-        VkGlRenderbuffer texture = map.get(id);
+        GlRenderbuffer texture = map.get(id);
 
         texture.vulkanImage = vulkanImage;
     }
 
-    public static VkGlRenderbuffer getBound() {
+    public static GlRenderbuffer getBound() {
         return bound;
     }
 
@@ -120,7 +120,7 @@ public class VkGlRenderbuffer {
     int maxLod = 0;
     int minFilter, magFilter = GL11.GL_LINEAR;
 
-    public VkGlRenderbuffer(int id) {
+    public GlRenderbuffer(int id) {
         this.id = id;
     }
 

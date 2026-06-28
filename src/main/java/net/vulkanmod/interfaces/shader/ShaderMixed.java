@@ -1,6 +1,6 @@
-package net.vulkanmod.interfaces;
+package net.vulkanmod.interfaces.shader;
 
-import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.CompiledShaderProgram;
 import net.vulkanmod.vulkan.shader.GraphicsPipeline;
 import net.vulkanmod.vulkan.shader.descriptor.UBO;
 import net.vulkanmod.vulkan.util.MappedBuffer;
@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 public interface ShaderMixed {
 
-    static ShaderMixed of(ShaderInstance compiledShaderProgram) {
+    static ShaderMixed of(CompiledShaderProgram compiledShaderProgram) {
         return (ShaderMixed) compiledShaderProgram;
     }
 
@@ -21,5 +21,5 @@ public interface ShaderMixed {
 
     Supplier<MappedBuffer> getUniformSupplier(String name);
 
-    void setDoUniformsUpdate();
+    void setUniformsUpdate();
 }

@@ -3,6 +3,7 @@ package net.vulkanmod.vulkan.shader;
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import net.vulkanmod.vulkan.VRenderSystem;
+import net.vulkanmod.vulkan.shader.layout.Uniform;
 import net.vulkanmod.vulkan.util.MappedBuffer;
 
 import java.util.function.Supplier;
@@ -28,11 +29,11 @@ public class Uniforms {
 
         //Vec1i
         vec1i_uniformMap.put("EndPortalLayers", () -> 15);
-        vec1i_uniformMap.put("FogShape", () -> RenderSystem.getShaderFogShape().getIndex());
+        vec1i_uniformMap.put("FogShape", () -> RenderSystem.getShaderFog().shape().getIndex());
 
         //Vec1
-        vec1f_uniformMap.put("FogStart", RenderSystem::getShaderFogStart);
-        vec1f_uniformMap.put("FogEnd", RenderSystem::getShaderFogEnd);
+        vec1f_uniformMap.put("FogStart", () -> RenderSystem.getShaderFog().start());
+        vec1f_uniformMap.put("FogEnd", () -> RenderSystem.getShaderFog().end());
         vec1f_uniformMap.put("LineWidth", RenderSystem::getShaderLineWidth);
         vec1f_uniformMap.put("GameTime", RenderSystem::getShaderGameTime);
         vec1f_uniformMap.put("GlintAlpha", RenderSystem::getShaderGlintAlpha);

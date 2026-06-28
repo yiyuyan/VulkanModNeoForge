@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.vulkanmod.config.gui.GuiRenderer;
@@ -133,7 +134,7 @@ public class CyclingOptionWidget extends OptionWidget<CyclingOption<?>> {
 
             Matrix4f matrix4f = matrices.last().pose();
 
-            RenderSystem.setShader(GameRenderer::getPositionShader);
+            RenderSystem.setShader(CoreShaders.POSITION);
             RenderSystem.enableBlend();
 
             if(this.isHovered(mouseX, mouseY) && this.active)
@@ -160,7 +161,7 @@ public class CyclingOptionWidget extends OptionWidget<CyclingOption<?>> {
             BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
 
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShader(CoreShaders.POSITION);
         }
 
         enum Direction {

@@ -104,7 +104,7 @@ public class BuildTask extends ChunkTask {
                     blockPos.set(section.xOffset() + x, section.yOffset() + y, section.zOffset() + z);
 
                     BlockState blockState = this.region.getBlockState(blockPos);
-                    if (blockState.isSolidRender(this.region, blockPos)) {
+                    if (blockState.isSolidRender()) {
                         visGraph.setOpaque(blockPos);
                     }
 

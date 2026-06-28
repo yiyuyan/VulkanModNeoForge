@@ -20,14 +20,14 @@ public class LevelRendererMixin {
     // renderSectionLayer/ParticleEngine#render by ordinal inside renderLevel, which
     // NeoForge coremods can shift or remove. require = 0 keeps a moved/absent target
     // from throwing a MixinTransformerError and crashing the game during init.
-    @Inject(require = 0, method ="renderClouds", at = @At("HEAD"))
-    private void pushProfiler(PoseStack poseStack, Matrix4f matrix4f, Matrix4f matrix4f2, float f, double d, double e, double g, CallbackInfo ci) {
+    @Inject(require = 0, method = "addCloudsPass", at = @At("HEAD"))
+    private void pushProfiler(CallbackInfo ci) {
         Profiler profiler = Profiler.getMainProfiler();
         profiler.push("Clouds");
     }
 
-    @Inject(require = 0, method = "renderClouds", at = @At("RETURN"))
-    private void popProfiler(PoseStack poseStack, Matrix4f matrix4f, Matrix4f matrix4f2, float f, double d, double e, double g, CallbackInfo ci) {
+    @Inject(require = 0, method = "addCloudsPass", at = @At("RETURN"))
+    private void popProfiler(CallbackInfo ci) {
         Profiler profiler = Profiler.getMainProfiler();
         profiler.pop();
     }

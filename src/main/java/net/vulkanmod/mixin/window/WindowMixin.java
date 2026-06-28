@@ -1,5 +1,6 @@
 package net.vulkanmod.mixin.window;
 
+import com.mojang.blaze3d.TracyFrameCapture;
 import com.mojang.blaze3d.platform.*;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.vulkanmod.Initializer;
@@ -12,6 +13,7 @@ import net.vulkanmod.config.video.WindowMode;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.VRenderSystem;
 import net.vulkanmod.vulkan.Vulkan;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GLCapabilities;
 import org.slf4j.Logger;
@@ -32,8 +34,6 @@ public abstract class WindowMixin {
 
     @Shadow private boolean vsync;
 
-    @Shadow protected abstract void updateFullscreen(boolean bl);
-
     @Shadow private boolean fullscreen;
 
     @Shadow @Final private static Logger LOGGER;
@@ -53,6 +53,8 @@ public abstract class WindowMixin {
     @Shadow public abstract int getWidth();
 
     @Shadow public abstract int getHeight();
+
+    @Shadow protected abstract void updateFullscreen(boolean bl, @Nullable TracyFrameCapture tracyFrameCapture);
 
     @Redirect(method = "<init>", at = @At(value = "INVOKE", target = "Lorg/lwjgl/glfw/GLFW;glfwWindowHint(II)V"))
     private void redirect(int hint, int value) { }
@@ -110,12 +112,17 @@ public abstract class WindowMixin {
      * @author
      */
     @Overwrite
-    public void updateDisplay() {
-        RenderSystem.flipFrame(this.window);
+    public void updateDisplay(@Nullable TracyFrameCapture tracyFrameCapture) {
+        RenderSystem.flipFrame(this.window, tracyFrameCapture);
+
+//        if (this.fullscreen != this.actuallyFullscreen) {
+//            this.actuallyFullscreen = this.fullscreen;
+//            this.updateFullscreen(this.vsync, tracyFrameCapture);
+//        }
 
         if (Options.fullscreenDirty) {
             Options.fullscreenDirty = false;
-            this.updateFullscreen(this.vsync);
+            this.updateFullscreen(this.vsync, tracyFrameCapture);
         }
     }
 

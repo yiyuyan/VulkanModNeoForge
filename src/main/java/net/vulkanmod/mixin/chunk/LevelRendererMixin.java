@@ -50,12 +50,12 @@ public abstract class LevelRendererMixin {
         this.worldRenderer.allChanged();
     }
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;checkPoseStack(Lcom/mojang/blaze3d/vertex/PoseStack;)V", ordinal = 1, shift = At.Shift.BEFORE))
-    private void renderBlockEntities(DeltaTracker deltaTracker, boolean bl, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci) {
+    @Inject(method = "renderBlockEntities", at = @At(value = "RETURN"))
+    private void renderBlockEntities(PoseStack poseStack, MultiBufferSource.BufferSource bufferSource, MultiBufferSource.BufferSource bufferSource2, Camera camera, float partialTicks, CallbackInfo ci) {
         Vec3 pos = camera.getPosition();
-        PoseStack poseStack = new PoseStack();
+//        PoseStack poseStack = new PoseStack();
 
-        this.worldRenderer.renderBlockEntities(poseStack, pos.x(), pos.y(), pos.z(), this.destructionProgress, deltaTracker.getGameTimeDeltaPartialTick(false));
+        this.worldRenderer.renderBlockEntities(poseStack, pos.x(), pos.y(), pos.z(), this.destructionProgress, partialTicks);
     }
 
     /**
@@ -130,9 +130,6 @@ public abstract class LevelRendererMixin {
         return this.worldRenderer.getVisibleSectionsCount();
     }
 
-    @Redirect(method = "renderWorldBorder", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;getDepthFar()F"))
-    private float getRenderDistanceZFar(GameRenderer instance) {
-        return instance.getRenderDistance() * 4F;
-    }
+
 
 }

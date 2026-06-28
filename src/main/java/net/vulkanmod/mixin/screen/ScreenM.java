@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ScreenM {
 
     @Inject(method = "renderBlurredBackground", at = @At("RETURN"))
-    private void clearDepth(float f, CallbackInfo ci) {
+    private void clearDepth(CallbackInfo ci) {
         // Workaround to fix hardcoded z value on PostPass blit shader,
         // that conflicts with Vulkan depth range [0.0, 1.0]
         Renderer.clearAttachments(256);

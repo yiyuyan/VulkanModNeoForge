@@ -3,8 +3,14 @@ package net.vulkanmod.mixin.render.target;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.vulkanmod.gl.VkGlFramebuffer;
-import net.vulkanmod.gl.VkGlTexture;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.client.renderer.CompiledShaderProgram;
+import net.minecraft.client.renderer.CoreShaders;
+import net.vulkanmod.gl.GlFramebuffer;
+import net.vulkanmod.gl.GlTexture;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.framebuffer.Framebuffer;
 import net.vulkanmod.vulkan.texture.VTextureSelector;
@@ -16,6 +22,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Objects;
 
 @Mixin(RenderTarget.class)
 public abstract class RenderTargetMixin {
@@ -37,8 +45,8 @@ public abstract class RenderTargetMixin {
     @Unique
     boolean bound = false;
 
-    @Inject(method = "_resize",at = @At("HEAD"),cancellable = true)
-    private void resize(int i, int j, boolean bl, CallbackInfo ci){
+    @Inject(method = "resize",at = @At("HEAD"),cancellable = true)
+    private void resize(int i, int j, CallbackInfo ci){
 
     }
 
@@ -46,15 +54,15 @@ public abstract class RenderTargetMixin {
      * @author
      */
     @Overwrite
-    public void clear(boolean getError) {
+    public void clear() {
         RenderSystem.assertOnRenderThreadOrInit();
 
         if(!Renderer.isRecording())
             return;
 
         // If the framebuffer is not bound postpone clear
-        VkGlFramebuffer glFramebuffer = VkGlFramebuffer.getFramebuffer(this.frameBufferId);
-        if(!bound || VkGlFramebuffer.getBoundFramebuffer() != glFramebuffer) {
+        GlFramebuffer glFramebuffer = GlFramebuffer.getFramebuffer(this.frameBufferId);
+        if (!bound || GlFramebuffer.getBoundFramebuffer() != glFramebuffer) {
             needClear = true;
             return;
         }
@@ -66,7 +74,7 @@ public abstract class RenderTargetMixin {
             i |= 256;
         }
 
-        GlStateManager._clear(i, getError);
+        GlStateManager._clear(i);
         needClear = false;
     }
 
@@ -79,10 +87,10 @@ public abstract class RenderTargetMixin {
 
         applyClear();
 
-        VkGlTexture.bindTexture(this.colorTextureId);
+        GlTexture.bindTexture(this.colorTextureId);
 
         try (MemoryStack stack = MemoryStack.stackPush()) {
-            VkGlTexture.getBoundTexture().getVulkanImage()
+            GlTexture.getBoundTexture().getVulkanImage()
                     .readOnlyLayout(stack, Renderer.getCommandBuffer());
         }
     }
@@ -93,24 +101,24 @@ public abstract class RenderTargetMixin {
     @Overwrite
     public void unbindRead() {
         RenderSystem.assertOnRenderThreadOrInit();
-        VkGlTexture.bindTexture(0);
+        GlTexture.bindTexture(0);
     }
 
     /**
      * @author
      */
     @Overwrite
-    private void _bindWrite(boolean bl) {
+    public void bindWrite(boolean bl) {
         RenderSystem.assertOnRenderThreadOrInit();
 
-        VkGlFramebuffer.bindFramebuffer(GL30.GL_FRAMEBUFFER, this.frameBufferId);
+        GlFramebuffer.bindFramebuffer(GL30.GL_FRAMEBUFFER, this.frameBufferId);
         if (bl) {
             GlStateManager._viewport(0, 0, this.viewWidth, this.viewHeight);
         }
 
         this.bound = true;
         if (needClear)
-            clear(false);
+            clear();
     }
 
     /**
@@ -129,17 +137,54 @@ public abstract class RenderTargetMixin {
         }
     }
 
-    @Inject(method = "_blitToScreen", at = @At("HEAD"), cancellable = true)
-    private void _blitToScreen(int width, int height, boolean disableBlend, CallbackInfo ci) {
+    @Inject(method = "blitToScreen", at = @At("HEAD"), cancellable = true)
+    private void blitToScreen(int width, int height, CallbackInfo ci) {
         // If the target needs clear it means it has not been used, thus we can skip blit
         if (!this.needClear) {
-            Framebuffer framebuffer = VkGlFramebuffer.getFramebuffer(this.frameBufferId).getFramebuffer();
+            Framebuffer framebuffer = GlFramebuffer.getFramebuffer(this.frameBufferId).getFramebuffer();
             VTextureSelector.bindTexture(0, framebuffer.getColorAttachment());
 
             DrawUtil.blitToScreen();
         }
 
         ci.cancel();
+    }
+
+    /**
+     * @author
+     * @reason
+     */
+    @Overwrite
+    public void blitAndBlendToScreen(int i, int j) {
+        RenderSystem.assertOnRenderThread();
+
+        if (this.needClear) {
+            return;
+        }
+
+        GlStateManager._colorMask(true, true, true, false);
+        GlStateManager._disableDepthTest();
+        GlStateManager._depthMask(false);
+        GlStateManager._viewport(0, 0, i, j);
+
+        CompiledShaderProgram compiledShaderProgram = Objects.requireNonNull(
+                RenderSystem.setShader(CoreShaders.BLIT_SCREEN), "Blit shader not loaded"
+        );
+
+        int prevTexture = RenderSystem.getShaderTexture(0);
+        RenderSystem.setShaderTexture(0, this.colorTextureId);
+
+//        compiledShaderProgram.bindSampler("InSampler", this.colorTextureId);
+        BufferBuilder bufferBuilder = RenderSystem.renderThreadTesselator().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLIT_SCREEN);
+        bufferBuilder.addVertex(0.0F, 0.0F, 0.0F);
+        bufferBuilder.addVertex(1.0F, 0.0F, 0.0F);
+        bufferBuilder.addVertex(1.0F, 1.0F, 0.0F);
+        bufferBuilder.addVertex(0.0F, 1.0F, 0.0F);
+        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
+
+        RenderSystem.setShaderTexture(0, prevTexture);
+        GlStateManager._depthMask(true);
+        GlStateManager._colorMask(true, true, true, true);
     }
 
     @Inject(method = "getColorTextureId", at = @At("HEAD"))
@@ -150,12 +195,12 @@ public abstract class RenderTargetMixin {
     @Unique
     private void applyClear() {
         if (this.needClear) {
-            VkGlFramebuffer currentFramebuffer = VkGlFramebuffer.getBoundFramebuffer();
+            GlFramebuffer currentFramebuffer = GlFramebuffer.getBoundFramebuffer();
 
-            this._bindWrite(false);
+            this.bindWrite(false);
 
             if (currentFramebuffer != null) {
-                VkGlFramebuffer.beginRendering(currentFramebuffer);
+                GlFramebuffer.beginRendering(currentFramebuffer);
             }
         }
     }

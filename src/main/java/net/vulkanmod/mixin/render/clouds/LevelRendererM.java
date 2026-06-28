@@ -1,10 +1,14 @@
 package net.vulkanmod.mixin.render.clouds;
 
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.framegraph.FrameGraphBuilder;
+import com.mojang.blaze3d.framegraph.FramePass;
+import com.mojang.blaze3d.pipeline.RenderTarget;
+import com.mojang.blaze3d.resource.ResourceHandle;
+import net.minecraft.client.CloudStatus;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.phys.Vec3;
 import net.vulkanmod.render.profiling.Profiler;
 import net.vulkanmod.render.sky.CloudRenderer;
 import org.jetbrains.annotations.Nullable;
@@ -19,23 +23,43 @@ public abstract class LevelRendererM {
 
     @Shadow private int ticks;
     @Shadow private @Nullable ClientLevel level;
-    @Shadow @Final protected static ResourceLocation CLOUDS_LOCATION;
+    @Shadow @Final private LevelTargetBundle targets;
 
-    @Unique
-    private CloudRenderer cloudRenderer;
+    @Unique private CloudRenderer cloudRenderer;
 
     /**
      * @author
      * @reason
      */
-    @Inject(method = "renderClouds",at = @At("HEAD"),cancellable = true)
-    public void renderClouds(PoseStack poseStack, Matrix4f modelView, Matrix4f projection, float partialTicks, double camX, double camY, double camZ,CallbackInfo ci) {
+    @Inject(method = "addCloudsPass", at = @At("HEAD"), cancellable = true)
+    public void addCloudsPass(FrameGraphBuilder frameGraphBuilder, Matrix4f modelView, Matrix4f projection, CloudStatus cloudStatus, Vec3 camPos, float partialTicks, int i, float g, CallbackInfo ci) {
         if (this.cloudRenderer == null) {
             this.cloudRenderer = new CloudRenderer();
         }
 
-        this.cloudRenderer.renderClouds(this.level, poseStack, modelView, projection, this.ticks, partialTicks, camX, camY, camZ);
-        Profiler.getMainProfiler().pop();
+        FramePass framePass = frameGraphBuilder.addPass("clouds");
+        if (this.targets.clouds != null) {
+            this.targets.clouds = framePass.readsAndWrites(this.targets.clouds);
+        } else {
+            this.targets.main = framePass.readsAndWrites(this.targets.main);
+        }
+
+        ResourceHandle<RenderTarget> resourceHandle = this.targets.clouds;
+        framePass.executes(() -> {
+            Profiler profiler = Profiler.getMainProfiler();
+            profiler.push("Clouds");
+
+            if (resourceHandle != null) {
+                resourceHandle.get().setClearColor(0.0F, 0.0F, 0.0F, 0.0F);
+                resourceHandle.get().clear();
+            }
+
+            this.cloudRenderer.renderClouds(this.level, modelView, projection, this.ticks, partialTicks,
+                                            camPos.x(), camPos.y(), camPos.z());
+
+            profiler.pop();
+        });
+
         ci.cancel();
     }
 

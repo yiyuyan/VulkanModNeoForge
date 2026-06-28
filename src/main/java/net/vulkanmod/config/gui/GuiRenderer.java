@@ -6,9 +6,9 @@ import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.FormattedCharSequence;
 import org.joml.Matrix4f;
 
@@ -55,19 +55,14 @@ public abstract class GuiRenderer {
     public static void fill(float x0, float y0, float x1, float y1, float z, int color) {
         Matrix4f matrix4f = pose.last().pose();
 
-        float a = (float) FastColor.ARGB32.alpha(color) / 255.0F;
-        float r = (float) FastColor.ARGB32.red(color) / 255.0F;
-        float g = (float) FastColor.ARGB32.green(color) / 255.0F;
-        float b = (float) FastColor.ARGB32.blue(color) / 255.0F;
-
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        RenderSystem.setShader(CoreShaders.POSITION_COLOR);
 
         setupBufferBuilder();
 
-        bufferBuilder.addVertex(matrix4f, x0, y0, z).setColor(r, g, b, a);
-        bufferBuilder.addVertex(matrix4f, x0, y1, z).setColor(r, g, b, a);
-        bufferBuilder.addVertex(matrix4f, x1, y1, z).setColor(r, g, b, a);
-        bufferBuilder.addVertex(matrix4f, x1, y0, z).setColor(r, g, b, a);
+        bufferBuilder.addVertex(matrix4f, x0, y0, z).setColor(color);
+        bufferBuilder.addVertex(matrix4f, x0, y1, z).setColor(color);
+        bufferBuilder.addVertex(matrix4f, x1, y1, z).setColor(color);
+        bufferBuilder.addVertex(matrix4f, x1, y0, z).setColor(color);
 
         submitIfNeeded();
     }
@@ -77,23 +72,18 @@ public abstract class GuiRenderer {
     }
 
     public static void fillGradient(float x0, float y0, float x1, float y1, float z, int color1, int color2) {
-        float a1 = (float) FastColor.ARGB32.alpha(color1) / 255.0F;
-        float r1 = (float) FastColor.ARGB32.red(color1) / 255.0F;
-        float g1 = (float) FastColor.ARGB32.green(color1) / 255.0F;
-        float b1 = (float) FastColor.ARGB32.blue(color1) / 255.0F;
-        float a2 = (float) FastColor.ARGB32.alpha(color2) / 255.0F;
-        float r2 = (float) FastColor.ARGB32.red(color2) / 255.0F;
-        float g2 = (float) FastColor.ARGB32.green(color2) / 255.0F;
-        float b2 = (float) FastColor.ARGB32.blue(color2) / 255.0F;
-
         Matrix4f matrix4f = pose.last().pose();
 
+        RenderSystem.setShader(CoreShaders.POSITION_COLOR);
+
+        if (!batching)
+            bufferBuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         setupBufferBuilder();
 
-        bufferBuilder.addVertex(matrix4f, x0, y0, z).setColor(r1, g1, b1, a1);
-        bufferBuilder.addVertex(matrix4f, x0, y1, z).setColor(r2, g2, b2, a2);
-        bufferBuilder.addVertex(matrix4f, x1, y1, z).setColor(r2, g2, b2, a2);
-        bufferBuilder.addVertex(matrix4f, x1, y0, z).setColor(r1, g1, b1, a1);
+        bufferBuilder.addVertex(matrix4f, x0, y0, z).setColor(color1);
+        bufferBuilder.addVertex(matrix4f, x0, y1, z).setColor(color2);
+        bufferBuilder.addVertex(matrix4f, x1, y1, z).setColor(color2);
+        bufferBuilder.addVertex(matrix4f, x1, y0, z).setColor(color1);
 
         submitIfNeeded();
     }
@@ -147,16 +137,8 @@ public abstract class GuiRenderer {
     }
 
     public static void endBatch() {
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        MeshData meshData = bufferBuilder.build();
-
-        if (meshData != null) {
-            BufferUploader.drawWithShader(meshData);
-            meshData.close();
-        }
-
+        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
         batching = false;
-        drawing = false;
     }
 
     public static void flush() {
@@ -176,7 +158,6 @@ public abstract class GuiRenderer {
 
     private static void submitIfNeeded() {
         if (!batching) {
-            RenderSystem.setShader(GameRenderer::getPositionColorShader);
             BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
             drawing = false;
         }

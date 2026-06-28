@@ -88,9 +88,9 @@ public abstract class LightDataAccess {
         if (this.subBlockLighting)
             op = state.canOcclude();
         else
-            op = state.isViewBlocking(region, pos) && state.getLightBlock(region, pos) != 0;
+            op = state.isViewBlocking(region, pos) && state.getLightBlock() != 0;
 
-        boolean fo = state.isSolidRender(region, pos);
+        boolean fo = state.isSolidRender();
         boolean fc = state.isCollisionShapeFullBlock(region, pos);
 
         int lu = state.getLightEmission();
@@ -217,8 +217,7 @@ public abstract class LightDataAccess {
     public static int getEmissiveLightmap(int word) {
         if (unpackEM(word)) {
             return LightTexture.FULL_BRIGHT;
-        }
-        else {
+        } else {
             return getLightmap(word);
         }
     }

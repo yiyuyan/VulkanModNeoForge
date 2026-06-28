@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.vulkanmod.gl.VkGlTexture;
+import net.vulkanmod.gl.GlTexture;
 import net.vulkanmod.vulkan.texture.VTextureSelector;
 import net.vulkanmod.vulkan.texture.VulkanImage;
 import org.lwjgl.opengl.GL11;
@@ -25,7 +25,7 @@ public class MTextureUtil {
     @Overwrite(remap = false)
     public static int generateTextureId() {
         RenderSystem.assertOnRenderThreadOrInit();
-        return VkGlTexture.genTextureId();
+        return GlTexture.genTextureId();
     }
 
     /**
@@ -34,8 +34,8 @@ public class MTextureUtil {
     @Overwrite(remap = false)
     public static void prepareImage(NativeImage.InternalGlFormat internalGlFormat, int id, int mipLevels, int width, int height) {
         RenderSystem.assertOnRenderThreadOrInit();
-        VkGlTexture.bindTexture(id);
-        VkGlTexture glTexture = VkGlTexture.getBoundTexture();
+        GlTexture.bindTexture(id);
+        GlTexture glTexture = GlTexture.getBoundTexture();
         VulkanImage image = glTexture.getVulkanImage();
 
         if (mipLevels > 0) {

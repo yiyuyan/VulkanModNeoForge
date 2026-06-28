@@ -1,22 +1,17 @@
 package net.vulkanmod.mixin.compatibility;
 
-import com.mojang.blaze3d.shaders.Shader;
 import com.mojang.blaze3d.shaders.Uniform;
-import net.vulkanmod.gl.VkGlProgram;
+import net.vulkanmod.gl.GlProgram;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.shader.Pipeline;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Uniform.class)
 public class UniformM {
-
-    @Shadow @Final private Shader parent;
 
     /**
      * @author
@@ -28,15 +23,6 @@ public class UniformM {
         return 1;
     }
 
-    /**
-     * @author
-     * @reason
-     */
-    @Overwrite
-    public static int glGetAttribLocation(int i, CharSequence charSequence) {
-        return 0;
-    }
-
     @Inject(method = "upload", at = @At("HEAD"), cancellable = true)
     public void redirectUpload(CallbackInfo ci) {
         Renderer renderer = Renderer.getInstance();
@@ -44,7 +30,7 @@ public class UniformM {
 
         ci.cancel();
 
-        VkGlProgram program = VkGlProgram.getBoundProgram();
+        GlProgram program = GlProgram.getBoundProgram();
 
         if (program == null) {
             return;

@@ -1,8 +1,10 @@
 package net.vulkanmod.render.util;
 
+import com.mojang.blaze3d.ProjectionType;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.vulkanmod.vulkan.Renderer;
+import net.vulkanmod.vulkan.VRenderSystem;
 import net.vulkanmod.vulkan.shader.GraphicsPipeline;
 import net.vulkanmod.vulkan.shader.Pipeline;
 import net.vulkanmod.vulkan.texture.VTextureSelector;
@@ -51,15 +53,14 @@ public class DrawUtil {
 
         VTextureSelector.bindTexture(attachment);
 
-        // OpenGL-convention ortho; the depth->Vulkan [0,1] correction is applied
-        // centrally in RenderSystem.setProjectionMatrix (was: ...,true here).
-        Matrix4f matrix4f = new Matrix4f().setOrtho(0.0F, 1.0F, 0.0F, 1.0F, 0.0F, 1.0F);
-        RenderSystem.setProjectionMatrix(matrix4f, VertexSorting.DISTANCE_TO_ORIGIN);
-        Matrix4fStack posestack = RenderSystem.getModelViewStack();
-        posestack.pushMatrix();
-        posestack.identity();
-        RenderSystem.applyModelViewMatrix();
-        posestack.popMatrix();
+        Matrix4f projection = new Matrix4f().setOrtho(0.0F, 1.0F, 0.0F, 1.0F, 0.0F, 1.0F, true);
+        Matrix4fStack poseStack = RenderSystem.getModelViewStack();
+        poseStack.pushMatrix();
+        poseStack.identity();
+
+        VRenderSystem.applyMVP(poseStack, projection);
+
+        poseStack.popMatrix();
 
         Renderer.getInstance().uploadAndBindUBOs(pipeline);
 

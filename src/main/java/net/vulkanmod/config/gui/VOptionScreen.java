@@ -6,6 +6,7 @@ import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -231,7 +232,7 @@ public class VOptionScreen extends Screen {
             this.renderPanorama(guiGraphics, f);
         }
 
-        this.renderBlurredBackground(f);
+        this.renderBlurredBackground();
         this.renderMenuBackground(guiGraphics);
 
     }
@@ -247,7 +248,7 @@ public class VOptionScreen extends Screen {
 
         int size = minecraft.font.lineHeight * 4;
 
-        guiGraphics.blit(ICON, 30, 4, 0f, 0f, size, size, size, size);
+        guiGraphics.blit(RenderType::guiTextured, ICON, 30, 4, 0f, 0f, size, size, size, size);
 
         VOptionList currentList = this.optionPages.get(this.currentListIdx).getOptionList();
         currentList.updateState(mouseX, mouseY);

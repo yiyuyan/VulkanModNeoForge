@@ -30,7 +30,9 @@ public class VKNConfig {
 
     public static boolean hideVulkanLibs = true;
 
-    public static boolean hideForgifiedFabricAPIs = true;
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
+    public static boolean hideForgifiedFabricAPIs = false;
 
     static {
         File configFile = FMLPaths.CONFIGDIR.get().resolve("vkn-boot-config.json").toFile();

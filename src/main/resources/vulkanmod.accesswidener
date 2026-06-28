@@ -16,6 +16,13 @@ accessible field net/minecraft/client/renderer/texture/SpriteContents$FrameInfo 
 accessible class com/mojang/blaze3d/platform/GlStateManager$TextureState
 accessible field com/mojang/blaze3d/platform/GlStateManager$TextureState binding I
 
-#1.20
-accessible field com/mojang/blaze3d/systems/RenderSystem vertexSorting Lcom/mojang/blaze3d/vertex/VertexSorting;
 accessible field net/minecraft/client/renderer/RenderStateShard name Ljava/lang/String;
+
+#1.21.3 shader inner classes
+accessible class net/minecraft/client/renderer/ShaderManager$CompilationCache
+accessible class net/minecraft/client/renderer/ShaderManager$ShaderCompilationKey
+accessible class net/minecraft/client/renderer/ShaderManager$ShaderSourceKey
+accessible method net/minecraft/client/renderer/ShaderManager$ShaderCompilationKey <init> (Lnet/minecraft/resources/ResourceLocation;Lcom/mojang/blaze3d/shaders/CompiledShader$Type;Lnet/minecraft/client/renderer/ShaderDefines;)V
+accessible method net/minecraft/client/renderer/ShaderManager$ShaderSourceKey <init> (Lnet/minecraft/resources/ResourceLocation;Lcom/mojang/blaze3d/shaders/CompiledShader$Type;)V
+accessible field net/minecraft/client/renderer/ShaderManager$CompilationCache programs Ljava/util/Map;
+

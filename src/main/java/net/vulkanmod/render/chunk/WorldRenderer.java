@@ -20,6 +20,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.BlockDestructionProgress;
 import net.minecraft.util.Mth;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.util.profiling.Zone;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
@@ -133,6 +135,9 @@ public class WorldRenderer {
     public void setupRenderer(Camera camera, Frustum frustum, boolean isCapturedFrustum, boolean spectator) {
         Profiler profiler = Profiler.getMainProfiler();
         profiler.push("Setup_Renderer");
+
+        ProfilerFiller mcProfiler = net.minecraft.util.profiling.Profiler.get();
+
         benchCallback();
 
         this.cameraPos = camera.getPosition();
@@ -140,7 +145,7 @@ public class WorldRenderer {
             this.allChanged();
         }
 
-        this.level.getProfiler().push("camera");
+        mcProfiler.push("camera");
         float cameraX = (float) cameraPos.x();
         float cameraY = (float) cameraPos.y();
         float cameraZ = (float) cameraPos.z();
@@ -160,9 +165,8 @@ public class WorldRenderer {
         double entityDistanceScaling = this.minecraft.options.entityDistanceScaling().get();
         Entity.setViewScale(Mth.clamp((double) this.renderDistance / 8.0D, 1.0D, 2.5D) * entityDistanceScaling);
 
-        this.level.getProfiler().popPush("cull");
-        this.minecraft.getProfiler().popPush("culling");
-        this.minecraft.getProfiler().popPush("update");
+        mcProfiler.popPush("cull");
+        mcProfiler.popPush("update");
 
         boolean cameraMoved = false;
         float d_xRot = Math.abs(camera.getXRot() - this.lastCamRotX);
@@ -187,7 +191,7 @@ public class WorldRenderer {
         this.indirectBuffers[Renderer.getCurrentFrame()].reset();
 
         if (this.gpuCuller != null && this.sectionGraph.getFrustum() != null) {
-            this.minecraft.getProfiler().push("gpu_cull");
+            mcProfiler.push("gpu_cull");
             Renderer renderer = Renderer.getInstance();
             var prevRenderPass = renderer.getBoundRenderPass();
             var prevFramebuffer = renderer.getBoundFramebuffer();
@@ -210,15 +214,16 @@ public class WorldRenderer {
             if (prevFramebuffer != null) {
                 renderer.beginRendering(prevRenderPass, prevFramebuffer);
             }
-            this.minecraft.getProfiler().pop();
+            mcProfiler.pop();
         }
 
-        this.minecraft.getProfiler().pop();
+        mcProfiler.pop();
         profiler.pop();
     }
 
     public void uploadSections() {
-        this.minecraft.getProfiler().push("upload");
+        ProfilerFiller mcProfiler = net.minecraft.util.profiling.Profiler.get();
+        mcProfiler.push("upload");
         Profiler profiler = Profiler.getMainProfiler();
         profiler.push("Uploads");
         try {
@@ -229,7 +234,7 @@ public class WorldRenderer {
             this.graphNeedsUpdate = true;
         }
         profiler.pop();
-        this.minecraft.getProfiler().pop();
+        mcProfiler.pop();
     }
 
     public boolean isSectionCompiled(BlockPos blockPos) {
@@ -321,8 +326,8 @@ public class WorldRenderer {
         renderType.setupRenderState();
         this.sortTranslucentSections(camX, camY, camZ);
 
-        this.minecraft.getProfiler().push("filterempty");
-        this.minecraft.getProfiler().popPush(() -> "render_" + renderType);
+        ProfilerFiller mcProfiler = net.minecraft.util.profiling.Profiler.get();
+        Zone zone = mcProfiler.zone(() -> "render_" + renderType);
 
         final boolean isTranslucent = terrainRenderType == TerrainRenderType.TRANSLUCENT;
         final boolean indirectDraw = Initializer.CONFIG.indirectDraw;
@@ -386,12 +391,12 @@ public class WorldRenderer {
             renderer.pushConstants(pipeline);
         }
 
-        this.minecraft.getProfiler().pop();
+        zone.close();
         renderType.clearRenderState();
 
         if (terrainRenderType == TerrainRenderType.CUTOUT
                 && this.gpuCuller != null && Initializer.CONFIG.occlusionCulling) {
-            this.minecraft.getProfiler().push("hiz_build");
+            mcProfiler.push("hiz_build");
             VulkanImage depth = Renderer.getInstance().getSwapChain().getDepthAttachment();
             var cmd = Renderer.getCommandBuffer();
             renderer.endRenderPass();
@@ -411,12 +416,13 @@ public class WorldRenderer {
                 this.hiZCamZ = hzf.getCamZ();
                 this.hiZMatrixValid = true;
             }
-            this.minecraft.getProfiler().pop();
+            mcProfiler.pop();
         }
     }
 
     private void sortTranslucentSections(double camX, double camY, double camZ) {
-        this.minecraft.getProfiler().push("translucent_sort");
+        ProfilerFiller mcProfiler = net.minecraft.util.profiling.Profiler.get();
+        mcProfiler.push("translucent_sort");
         double d0 = camX - this.xTransparentOld;
         double d1 = camY - this.yTransparentOld;
         double d2 = camZ - this.zTransparentOld;
@@ -430,7 +436,7 @@ public class WorldRenderer {
                 queue.get(i).resortTransparency(this.taskDispatcher);
             }
         }
-        this.minecraft.getProfiler().pop();
+        mcProfiler.pop();
     }
 
     public void renderBlockEntities(PoseStack poseStack, double camX, double camY, double camZ,

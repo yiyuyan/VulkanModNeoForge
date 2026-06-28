@@ -2,7 +2,7 @@ package net.vulkanmod.vulkan.framebuffer;
 
 import it.unimi.dsi.fastutil.longs.Long2ReferenceOpenHashMap;
 import net.vulkanmod.Initializer;
-import net.vulkanmod.gl.VkGlTexture;
+import net.vulkanmod.gl.GlTexture;
 import net.vulkanmod.render.util.MathUtil;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.Vulkan;
@@ -168,9 +168,9 @@ public class SwapChain extends Framebuffer {
         this.glIds = new int[this.swapChainImages.size()];
 
         for (int i = 0; i < this.swapChainImages.size(); i++) {
-            int id = VkGlTexture.genTextureId();
+            int id = GlTexture.genTextureId();
             this.glIds[i] = id;
-            VkGlTexture.bindIdToImage(id, this.swapChainImages.get(i));
+            GlTexture.bindIdToImage(id, this.swapChainImages.get(i));
         }
     }
 

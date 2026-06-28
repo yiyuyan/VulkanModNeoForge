@@ -1,5 +1,6 @@
 package net.vulkanmod.mixin.render.entity;
 
+import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -23,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.List;
 import java.util.Map;
 
 @Mixin(LevelRenderer.class)
@@ -39,7 +41,7 @@ public class LevelRendererM {
                     target = "Lnet/minecraft/client/renderer/LevelRenderer;setupRender(Lnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/culling/Frustum;ZZ)V",
                     shift = At.Shift.AFTER)
     )
-    private void clearMap(DeltaTracker deltaTracker, boolean bl, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci) {
+    private void clearMap(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean bl, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci) {
         for (var bufferSource : this.bufferSourceMap.keySet()) {
             var entityMap = this.bufferSourceMap.get(bufferSource);
             entityMap.clear();
@@ -58,8 +60,7 @@ public class LevelRendererM {
             double h = Mth.lerp(partialTicks, entity.xOld, entity.getX());
             double i = Mth.lerp(partialTicks, entity.yOld, entity.getY());
             double j = Mth.lerp(partialTicks, entity.zOld, entity.getZ());
-            float k = Mth.lerp(partialTicks, entity.yRotO, entity.getYRot());
-            this.entityRenderDispatcher.render(entity, h - d, i - e, j - f, k, partialTicks, poseStack, multiBufferSource, this.entityRenderDispatcher.getPackedLightCoords(entity, partialTicks));
+            this.entityRenderDispatcher.render(entity, h - d, i - e, j - f, partialTicks, poseStack, multiBufferSource, this.entityRenderDispatcher.getPackedLightCoords(entity, partialTicks));
             return;
         }
 
@@ -70,18 +71,15 @@ public class LevelRendererM {
         list.add(entity);
     }
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endLastBatch()V",
-            shift = At.Shift.AFTER, ordinal = 0)
-    )
-    private void renderEntities(DeltaTracker deltaTracker, boolean bl, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci) {
+    @Inject(method = "renderEntities", at = @At("RETURN"))
+    private void renderEntities(PoseStack poseStack, MultiBufferSource.BufferSource bufferSource1, Camera camera, DeltaTracker deltaTracker, List<Entity> entityList, CallbackInfo ci) {
         if (!Initializer.CONFIG.entityCulling)
             return;
 
         Vec3 cameraPos = WorldRenderer.getCameraPos();
         TickRateManager tickRateManager = this.minecraft.level.tickRateManager();
 
-        PoseStack poseStack = new PoseStack();
+//        PoseStack poseStack = new PoseStack();
 
         for (var bufferSource : this.bufferSourceMap.keySet()) {
             var entityMap = this.bufferSourceMap.get(bufferSource);
@@ -93,8 +91,7 @@ public class LevelRendererM {
                     double h = Mth.lerp(partialTicks, entity.xOld, entity.getX());
                     double i = Mth.lerp(partialTicks, entity.yOld, entity.getY());
                     double j = Mth.lerp(partialTicks, entity.zOld, entity.getZ());
-                    float k = Mth.lerp(partialTicks, entity.yRotO, entity.getYRot());
-                    this.entityRenderDispatcher.render(entity, h - cameraPos.x, i - cameraPos.y, j - cameraPos.z, k, partialTicks, poseStack, bufferSource, this.entityRenderDispatcher.getPackedLightCoords(entity, partialTicks));
+                    this.entityRenderDispatcher.render(entity, h - cameraPos.x, i - cameraPos.y, j - cameraPos.z, partialTicks, poseStack, bufferSource, this.entityRenderDispatcher.getPackedLightCoords(entity, partialTicks));
                 }
             }
         }

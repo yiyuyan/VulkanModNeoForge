@@ -82,8 +82,6 @@ public class ItemRenderContext extends AbstractRenderContext {
 		}
 	};
 
-	private final BakedModelConsumerImpl vanillaModelConsumer = new BakedModelConsumerImpl();
-
 	private ItemStack itemStack;
 	private ItemDisplayContext transformMode;
 	private PoseStack matrixStack;
@@ -119,11 +117,6 @@ public class ItemRenderContext extends AbstractRenderContext {
 	@Override
 	public ItemDisplayContext itemTransformationMode() {
 		return transformMode;
-	}
-
-	@Override
-	public BakedModelConsumer bakedModelConsumer() {
-		return vanillaModelConsumer;
 	}
 
 	public void renderModel(ItemStack itemStack, ItemDisplayContext transformMode, boolean invert, PoseStack matrixStack, MultiBufferSource vertexConsumerProvider, int lightmap, int overlay, BakedModel model) {
@@ -252,7 +245,7 @@ public class ItemRenderContext extends AbstractRenderContext {
 
 	/**
 	 * Caches custom blend mode / vertex consumers and mimics the logic
-	 * in {@code RenderLayers.getEntityBlockLayer}. Layers other than
+	 * in {@code RenderLayers.getItemLayer}. Layers other than
 	 * translucent are mapped to cutout.
 	 */
 	private VertexConsumer getVertexConsumer(BlendMode blendMode, TriState glintMode) {
@@ -274,13 +267,13 @@ public class ItemRenderContext extends AbstractRenderContext {
 		if (translucent) {
 			if (glint) {
 				if (translucentGlintVertexConsumer == null) {
-					translucentGlintVertexConsumer = createTranslucentVertexConsumer(true);
+					translucentGlintVertexConsumer = createVertexConsumer(Sheets.translucentItemSheet(), true);
 				}
 
 				return translucentGlintVertexConsumer;
 			} else {
 				if (translucentVertexConsumer == null) {
-					translucentVertexConsumer = createTranslucentVertexConsumer(false);
+					translucentVertexConsumer = createVertexConsumer(Sheets.translucentItemSheet(), false);
 				}
 
 				return translucentVertexConsumer;
@@ -288,13 +281,13 @@ public class ItemRenderContext extends AbstractRenderContext {
 		} else {
 			if (glint) {
 				if (cutoutGlintVertexConsumer == null) {
-					cutoutGlintVertexConsumer = createCutoutVertexConsumer(true);
+					cutoutGlintVertexConsumer = createVertexConsumer(Sheets.cutoutBlockSheet(), true);
 				}
 
 				return cutoutGlintVertexConsumer;
 			} else {
 				if (cutoutVertexConsumer == null) {
-					cutoutVertexConsumer = createCutoutVertexConsumer(false);
+					cutoutVertexConsumer = createVertexConsumer(Sheets.cutoutBlockSheet(), false);
 				}
 
 				return cutoutVertexConsumer;
@@ -302,51 +295,22 @@ public class ItemRenderContext extends AbstractRenderContext {
 		}
 	}
 
-	private VertexConsumer createTranslucentVertexConsumer(boolean glint) {
-		if (glint && isGlintDynamicDisplay) {
-			return createDynamicDisplayGlintVertexConsumer(Minecraft.useShaderTransparency() && !isTranslucentDirect ? Sheets.translucentItemSheet() : Sheets.translucentCullBlockSheet());
-		}
+	private VertexConsumer createVertexConsumer(RenderType layer, boolean glint) {
+		if (isGlintDynamicDisplay && glint) {
+			if (dynamicDisplayGlintEntry == null) {
+				dynamicDisplayGlintEntry = matrixStack.last().copy();
 
-		if (isTranslucentDirect) {
-			return ItemRenderer.getFoilBufferDirect(vertexConsumerProvider, Sheets.translucentCullBlockSheet(), true, glint);
-		} else if (Minecraft.useShaderTransparency()) {
-			return ItemRenderer.getFoilBuffer(vertexConsumerProvider, Sheets.translucentItemSheet(), true, glint);
-		} else {
-			return ItemRenderer.getFoilBuffer(vertexConsumerProvider, Sheets.translucentCullBlockSheet(), true, glint);
-		}
-	}
-
-	private VertexConsumer createCutoutVertexConsumer(boolean glint) {
-		if (glint && isGlintDynamicDisplay) {
-			return createDynamicDisplayGlintVertexConsumer(Sheets.cutoutBlockSheet());
-		}
-
-		return ItemRenderer.getFoilBufferDirect(vertexConsumerProvider, Sheets.cutoutBlockSheet(), true, glint);
-	}
-
-	private VertexConsumer createDynamicDisplayGlintVertexConsumer(RenderType layer) {
-		if (dynamicDisplayGlintEntry == null) {
-			dynamicDisplayGlintEntry = matrixStack.last().copy();
-
-			if (transformMode == ItemDisplayContext.GUI) {
-				MatrixUtil.mulComponentWise(dynamicDisplayGlintEntry.pose(), 0.5F);
-			} else if (transformMode.firstPerson()) {
-				MatrixUtil.mulComponentWise(dynamicDisplayGlintEntry.pose(), 0.75F);
+				if (transformMode == ItemDisplayContext.GUI) {
+					MatrixUtil.mulComponentWise(dynamicDisplayGlintEntry.pose(), 0.5F);
+				} else if (transformMode.firstPerson()) {
+					MatrixUtil.mulComponentWise(dynamicDisplayGlintEntry.pose(), 0.75F);
+				}
 			}
+
+			return ItemRenderer.getCompassFoilBuffer(vertexConsumerProvider, layer, dynamicDisplayGlintEntry);
 		}
 
-		return ItemRenderer.getCompassFoilBuffer(vertexConsumerProvider, layer, dynamicDisplayGlintEntry);
+		return ItemRenderer.getFoilBuffer(vertexConsumerProvider, layer, true, glint);
 	}
 
-	private class BakedModelConsumerImpl implements BakedModelConsumer {
-		@Override
-		public void accept(BakedModel model) {
-			accept(model, null);
-		}
-
-		@Override
-		public void accept(BakedModel model, @Nullable BlockState state) {
-			VanillaModelEncoder.emitItemQuads(model, state, randomSupplier, ItemRenderContext.this);
-		}
-	}
 }

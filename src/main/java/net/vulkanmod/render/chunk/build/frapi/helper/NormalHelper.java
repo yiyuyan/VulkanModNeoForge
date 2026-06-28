@@ -107,7 +107,7 @@ public abstract class NormalHelper {
 		final Direction nominalFace = q.nominalFace();
 
 		if (nominalFace != null && GeometryHelper.isQuadParallelToFace(nominalFace, q)) {
-			Vec3i vec = nominalFace.getNormal();
+			Vec3i vec = nominalFace.getUnitVec3i();
 			saveTo.set(vec.getX(), vec.getY(), vec.getZ());
 			return;
 		}
@@ -184,7 +184,7 @@ public abstract class NormalHelper {
 	}
 
 	public static int packedNormalFromDirection(Direction direction) {
-		Vec3i normal = direction.getNormal();
+		Vec3i normal = direction.getUnitVec3i();
 
 		return I32_SNorm.packNormal(normal.getX(), normal.getY(), normal.getZ());
 	}

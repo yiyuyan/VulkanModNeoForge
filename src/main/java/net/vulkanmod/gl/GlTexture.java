@@ -16,11 +16,11 @@ import java.nio.IntBuffer;
 
 import static org.lwjgl.vulkan.VK10.*;
 
-public class VkGlTexture {
+public class GlTexture {
     private static int ID_COUNTER = 1;
-    private static final Int2ReferenceOpenHashMap<VkGlTexture> map = new Int2ReferenceOpenHashMap<>();
+    private static final Int2ReferenceOpenHashMap<GlTexture> map = new Int2ReferenceOpenHashMap<>();
     private static int boundTextureId = 0;
-    private static VkGlTexture boundTexture;
+    private static GlTexture boundTexture;
     private static int activeTexture = 0;
 
     private static int unpackRowLength;
@@ -28,13 +28,13 @@ public class VkGlTexture {
     private static int unpackSkipPixels;
 
     public static void bindIdToImage(int id, VulkanImage vulkanImage) {
-        VkGlTexture texture = map.get(id);
+        GlTexture texture = map.get(id);
         texture.vulkanImage = vulkanImage;
     }
 
     public static int genTextureId() {
         int id = ID_COUNTER;
-        map.put(id, new VkGlTexture(id));
+        map.put(id, new GlTexture(id));
         ID_COUNTER++;
         return id;
     }
@@ -61,13 +61,13 @@ public class VkGlTexture {
     }
 
     public static void glDeleteTextures(int i) {
-        VkGlTexture glTexture = map.remove(i);
+        GlTexture glTexture = map.remove(i);
         VulkanImage image = glTexture != null ? glTexture.vulkanImage : null;
         if (image != null)
             MemoryManager.getInstance().addToFreeable(image);
     }
 
-    public static VkGlTexture getTexture(int id) {
+    public static GlTexture getTexture(int id) {
         if (id == 0)
             return null;
 
@@ -138,7 +138,7 @@ public class VkGlTexture {
 
         ByteBuffer src;
 
-        VkGlBuffer glBuffer = VkGlBuffer.getPixelUnpackBufferBound();
+        GlBuffer glBuffer = GlBuffer.getPixelUnpackBufferBound();
         if (glBuffer != null) {
 
             glBuffer.data.position((int) pixels);
@@ -171,7 +171,7 @@ public class VkGlTexture {
 
         ByteBuffer src;
 
-        VkGlBuffer glBuffer = VkGlBuffer.getPixelUnpackBufferBound();
+        GlBuffer glBuffer = GlBuffer.getPixelUnpackBufferBound();
         if (glBuffer != null) {
             if (pixels != null) {
                 throw new IllegalStateException("Trying to use pixel buffer when there is a Pixel Unpack Buffer bound.");
@@ -246,7 +246,7 @@ public class VkGlTexture {
     public static void getTexImage(int tex, int level, int format, int type, long pixels) {
         VulkanImage image = boundTexture.vulkanImage;
 
-        VkGlBuffer buffer = VkGlBuffer.getPixelPackBufferBound();
+        GlBuffer buffer = GlBuffer.getPixelPackBufferBound();
         long ptr;
         if (buffer != null) {
             buffer.data.position((int) pixels);
@@ -261,12 +261,12 @@ public class VkGlTexture {
     }
 
     public static void setVulkanImage(int id, VulkanImage vulkanImage) {
-        VkGlTexture texture = map.get(id);
+        GlTexture texture = map.get(id);
 
         texture.vulkanImage = vulkanImage;
     }
 
-    public static VkGlTexture getBoundTexture() {
+    public static GlTexture getBoundTexture() {
         return boundTexture;
     }
 
@@ -283,7 +283,7 @@ public class VkGlTexture {
 
     boolean clamp = true;
 
-    public VkGlTexture(int id) {
+    public GlTexture(int id) {
         this.id = id;
     }
 

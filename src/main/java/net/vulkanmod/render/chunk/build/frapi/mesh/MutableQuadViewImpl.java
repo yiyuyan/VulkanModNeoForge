@@ -16,6 +16,7 @@
 
 package net.vulkanmod.render.chunk.build.frapi.mesh;
 
+import net.minecraft.client.renderer.LightTexture;
 import net.vulkanmod.render.chunk.build.frapi.VulkanModRenderer;
 import net.vulkanmod.render.model.quad.ModelQuadView;
 import org.jetbrains.annotations.Nullable;
@@ -208,8 +209,16 @@ public abstract class MutableQuadViewImpl extends QuadViewImpl implements QuadEm
 		data[baseIndex + HEADER_BITS] = EncodingFormat.geometryFlags(data[baseIndex + HEADER_BITS], quadView.getFlags());
 
 		this.facing = quadView.getQuadFacing();
-
 		this.isGeometryInvalid = false;
+
+		int lightEmission = quad.getLightEmission();
+
+		if (lightEmission > 0) {
+			for (int i = 0; i < 4; i++) {
+				lightmap(i, LightTexture.lightCoordsWithEmission(lightmap(i), lightEmission));
+			}
+		}
+
 		return this;
 	}
 

@@ -193,8 +193,8 @@ public class RenderRegion implements BlockAndTintGetter, RenderAttachedBlockView
         return tintCache.getColor(blockPos, colorResolver);
     }
 
-    public int getMinBuildHeight() {
-        return this.level.getMinBuildHeight();
+    public int getMinY() {
+        return this.level.getMinY();
     }
 
     public int getHeight() {

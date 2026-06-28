@@ -3,6 +3,7 @@ package net.vulkanmod.config.option;
 import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.*;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ParticleStatus;
 import net.vulkanmod.Initializer;
 import net.vulkanmod.config.Config;
 import net.vulkanmod.config.gui.OptionBlock;
@@ -98,7 +99,7 @@ public abstract class Options {
                                         String.valueOf(value)),
                                 value -> {
                                     minecraftOptions.framerateLimit().set(value);
-                                    window.setFramerateLimit(value);
+                                    minecraft.getFramerateLimitTracker().setFramerateLimit(value);
                                 },
                                 () -> minecraftOptions.framerateLimit().get()),
                         new SwitchOption(Component.translatable("options.vsync"),
@@ -107,6 +108,11 @@ public abstract class Options {
                                     window.updateVsync(value);
                                 },
                                 () -> minecraftOptions.enableVsync().get()),
+                        new CyclingOption<>(Component.translatable("options.inactivityFpsLimit"),
+                                InactivityFpsLimit.values(),
+                                value -> minecraftOptions.inactivityFpsLimit().set(value),
+                                () -> minecraftOptions.inactivityFpsLimit().get())
+                                .setTranslator(inactivityFpsLimit -> Component.translatable(inactivityFpsLimit.getKey())),
                 }),
                 new OptionBlock("", new Option<?>[]{
                         new RangeOption(Component.translatable("options.guiScale"),

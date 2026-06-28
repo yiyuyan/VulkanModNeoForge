@@ -63,7 +63,7 @@ public abstract class AbstractBlockRenderContext extends AbstractRenderContext {
 
 	protected BlockAndTintGetter renderRegion;
 
-	protected final Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> occlusionCache = new Object2ByteLinkedOpenHashMap<>(2048, 0.25F) {
+	protected final Object2ByteLinkedOpenHashMap<ShapePairKey> occlusionCache = new Object2ByteLinkedOpenHashMap<>(2048, 0.25F) {
 		protected void rehash(int i) {
 		}
 	};
@@ -109,12 +109,6 @@ public abstract class AbstractBlockRenderContext extends AbstractRenderContext {
 	@Override
 	public ItemDisplayContext itemTransformationMode() {
 		throw new IllegalStateException("itemTransformationMode() can only be called on an item render context.");
-	}
-
-	@SuppressWarnings("removal")
-	@Override
-	public BakedModelConsumer bakedModelConsumer() {
-		return null;
 	}
 
 	public void prepareForWorld(BlockAndTintGetter blockView, boolean enableCulling) {
@@ -170,12 +164,12 @@ public abstract class AbstractBlockRenderContext extends AbstractRenderContext {
 		}
 
 		if (adjBlockState.canOcclude()) {
-			VoxelShape shape = blockState.getFaceOcclusionShape(blockGetter, blockPos, face);
+			VoxelShape shape = blockState.getFaceOcclusionShape(face);
 
 			if (shape.isEmpty())
 				return true;
 
-			VoxelShape adjShape = adjBlockState.getFaceOcclusionShape(blockGetter, adjPos, face.getOpposite());
+			VoxelShape adjShape = adjBlockState.getFaceOcclusionShape(face.getOpposite());
 
 			if (adjShape.isEmpty())
 				return true;
@@ -184,7 +178,7 @@ public abstract class AbstractBlockRenderContext extends AbstractRenderContext {
 				return false;
 			}
 
-			Block.BlockStatePairKey blockStatePairKey = new Block.BlockStatePairKey(blockState, adjBlockState, face);
+			ShapePairKey blockStatePairKey = new ShapePairKey(shape, adjShape);
 
 			byte b = occlusionCache.getAndMoveToFirst(blockStatePairKey);
 			if (b != 127) {
@@ -245,11 +239,13 @@ public abstract class AbstractBlockRenderContext extends AbstractRenderContext {
 		if (emissive) {
 			for (int i = 0; i < 4; i++) {
 				quad.color(i, ColorHelper.multiplyRGB(quad.color(i), data.br[i]));
+//				quad.lightmap(i, LightTexture.FULL_BRIGHT);
 				data.lm[i] = LightTexture.FULL_BRIGHT;
 			}
 		} else {
 			for (int i = 0; i < 4; i++) {
 				quad.color(i, ColorHelper.multiplyRGB(quad.color(i), data.br[i]));
+//				quad.lightmap(i, ColorHelper.maxBrightness(quad.lightmap(i), data.lm[i]));
 				data.lm[i] = ColorHelper.maxBrightness(quad.lightmap(i), data.lm[i]);
 			}
 		}
@@ -298,6 +294,21 @@ public abstract class AbstractBlockRenderContext extends AbstractRenderContext {
 			}
 		}
 
+	}
+
+	// TODO move elsewhere
+	record ShapePairKey(VoxelShape first, VoxelShape second) {
+		public boolean equals(Object object) {
+			if (object instanceof ShapePairKey shapePairKey && this.first == shapePairKey.first && this.second == shapePairKey.second) {
+				return true;
+			}
+
+			return false;
+		}
+
+		public int hashCode() {
+			return System.identityHashCode(this.first) * 31 + System.identityHashCode(this.second);
+		}
 	}
 
 }

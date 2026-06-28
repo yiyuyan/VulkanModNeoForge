@@ -1,12 +1,12 @@
 package net.vulkanmod.render.sky;
 
+import com.mojang.blaze3d.buffers.BufferUsage;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.CloudStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -57,7 +57,7 @@ public class CloudRenderer {
         this.cloudGrid = createCloudGrid(TEXTURE_LOCATION);
     }
 
-    public void renderClouds(ClientLevel level, PoseStack poseStack, Matrix4f modelView, Matrix4f projection, float ticks, float partialTicks, double camX, double camY, double camZ) {
+    public void renderClouds(ClientLevel level, Matrix4f modelView, Matrix4f projection, float ticks, float partialTicks, double camX, double camY, double camZ) {
         float cloudHeight = level.effects().getCloudHeight();
 
         if (Float.isNaN(cloudHeight)) {
@@ -109,7 +109,7 @@ public class CloudRenderer {
                 return;
             }
 
-            this.cloudBuffer = new VBO(VertexBuffer.Usage.STATIC);
+            this.cloudBuffer = new VBO(BufferUsage.STATIC_WRITE);
             this.cloudBuffer.upload(cloudsMesh);
         }
 
@@ -117,19 +117,15 @@ public class CloudRenderer {
             return;
         }
 
-        FogRenderer.levelFogColor();
-
         float xTranslation = (float) (centerX - (centerCellX * CELL_WIDTH));
         float yTranslation = (float) (centerY);
         float zTranslation = (float) (centerZ - (centerCellZ * CELL_WIDTH));
 
-        poseStack.pushPose();
-        poseStack.mulPose(modelView);
-        poseStack.translate(-xTranslation, yTranslation, -zTranslation);
+        Matrix4f matrix4f = new Matrix4f(modelView).translate(-xTranslation, yTranslation, -zTranslation);
 
         VRenderSystem.setModelOffset(-xTranslation, 0, -zTranslation);
 
-        Vec3 cloudColor = level.getCloudColor(partialTicks);
+        Vec3 cloudColor = Vec3.fromRGB24(level.getCloudColor(partialTicks));
         RenderSystem.setShaderColor((float) cloudColor.x, (float) cloudColor.y, (float) cloudColor.z, 0.8f);
 
         GraphicsPipeline pipeline = PipelineManager.getCloudsPipeline();
@@ -147,18 +143,16 @@ public class CloudRenderer {
 
         if (!fastClouds) {
             RenderSystem.colorMask(false, false, false, false);
-            this.cloudBuffer.drawWithShader(poseStack.last().pose(), projection, pipeline);
+            this.cloudBuffer.drawWithShader(matrix4f, projection, pipeline);
 
             RenderSystem.colorMask(true, true, true, true);
         }
 
-        this.cloudBuffer.drawWithShader(poseStack.last().pose(), projection, pipeline);
+        this.cloudBuffer.drawWithShader(matrix4f, projection, pipeline);
 
         RenderSystem.enableCull();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         VRenderSystem.setModelOffset(0.0f, 0.0f, 0.0f);
-
-        poseStack.popPose();
     }
 
     public void resetBuffer() {
@@ -285,7 +279,7 @@ public class CloudRenderer {
                 int height = image.getHeight();
                 Validate.isTrue(width == height, "Image width and height must be the same");
 
-                int[] pixels = image.getPixelsRGBA();
+                int[] pixels = image.getPixelsABGR();
 
                 return new CloudGrid(pixels, width);
             }

@@ -49,16 +49,16 @@ public abstract class ModelPartM {
                 cubeModel.transformVertices(matrix4f);
 
                 for (ModelPart.Polygon polygon : polygons) {
-                    matrix3f.transform(this.normal.set(polygon.normal));
+                    matrix3f.transform(this.normal.set(polygon.normal()));
                     this.normal.normalize();
 
                     int packedNormal = I32_SNorm.packNormal(normal.x(), normal.y(), normal.z());
 
-                    ModelPart.Vertex[] vertices = polygon.vertices;
+                    ModelPart.Vertex[] vertices = polygon.vertices();
 
                     for (ModelPart.Vertex vertex : vertices) {
-                        Vector3f pos = vertex.pos;
-                        vertexBuilder.vertex(pos.x(), pos.y(), pos.z(), color, vertex.u, vertex.v, overlay, light, packedNormal);
+                        Vector3f pos = vertex.pos();
+                        vertexBuilder.vertex(pos.x(), pos.y(), pos.z(), color, vertex.u(), vertex.v(), overlay, light, packedNormal);
                     }
                 }
             }
@@ -73,14 +73,14 @@ public abstract class ModelPartM {
                 cubeModel.transformVertices(matrix4f);
 
                 for (ModelPart.Polygon polygon : polygons) {
-                    matrix3f.transform(this.normal.set(polygon.normal));
+                    matrix3f.transform(this.normal.set(polygon.normal()));
                     this.normal.normalize();
 
-                    ModelPart.Vertex[] vertices = polygon.vertices;
+                    ModelPart.Vertex[] vertices = polygon.vertices();
 
                     for (ModelPart.Vertex vertex : vertices) {
-                        Vector3f pos = vertex.pos;
-                        vertexConsumer.addVertex(pos.x(), pos.y(), pos.z(), color, vertex.u, vertex.v, overlay, light,
+                        Vector3f pos = vertex.pos();
+                        vertexConsumer.addVertex(pos.x(), pos.y(), pos.z(), color, vertex.u(), vertex.v(), overlay, light,
                                               normal.x(), normal.y(), normal.z());
                     }
                 }

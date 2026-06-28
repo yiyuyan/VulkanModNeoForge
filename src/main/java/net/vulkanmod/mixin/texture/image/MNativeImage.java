@@ -38,12 +38,6 @@ public abstract class MNativeImage {
 
     @Shadow public abstract int getHeight();
 
-    @Shadow public abstract void setPixelRGBA(int i, int j, int k);
-
-    @Shadow public abstract int getPixelRGBA(int i, int j);
-
-    @Shadow protected abstract void checkAllocated();
-
     private ByteBuffer buffer;
 
     @Inject(method = "<init>(Lcom/mojang/blaze3d/platform/NativeImage$Format;IIZ)V", at = @At("RETURN"))

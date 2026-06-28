@@ -1,9 +1,11 @@
 package net.vulkanmod.mixin.render;
 
+import com.mojang.blaze3d.ProjectionType;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexSorting;
-import net.vulkanmod.gl.VkGlTexture;
+import net.minecraft.client.renderer.FogParameters;
+import net.vulkanmod.gl.GlTexture;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.VRenderSystem;
 import org.jetbrains.annotations.Nullable;
@@ -25,21 +27,22 @@ public abstract class RenderSystemMixin {
     @Shadow private static Matrix4f projectionMatrix;
     @Shadow private static Matrix4f savedProjectionMatrix;
     @Shadow @Final private static Matrix4fStack modelViewStack;
-    @Shadow private static Matrix4f modelViewMatrix;
     @Shadow private static Matrix4f textureMatrix;
 
     @Shadow @Final private static float[] shaderColor;
     @Shadow @Final private static Vector3f[] shaderLightDirections;
-    @Shadow @Final private static float[] shaderFogColor;
 
     @Shadow private static @Nullable Thread renderThread;
-
-    @Shadow public static VertexSorting vertexSorting;
-    @Shadow private static VertexSorting savedVertexSorting;
 
     @Shadow
     public static void assertOnRenderThread() {
     }
+
+    @Shadow private static ProjectionType projectionType;
+
+    @Shadow private static ProjectionType savedProjectionType;
+
+    @Shadow private static FogParameters shaderFog;
 
 
 
@@ -91,20 +94,8 @@ public abstract class RenderSystemMixin {
      */
     @Overwrite(remap = false)
     public static void activeTexture(int texture) {
-        VkGlTexture.activeTexture(texture);
+        GlTexture.activeTexture(texture);
     }
-
-    /**
-     * @author
-     */
-    @Overwrite(remap = false)
-    public static void glGenBuffers(Consumer<Integer> consumer) {}
-
-    /**
-     * @author
-     */
-    @Overwrite(remap = false)
-    public static void glGenVertexArrays(Consumer<Integer> consumer) {}
 
     /**
      * @author
@@ -118,7 +109,7 @@ public abstract class RenderSystemMixin {
      * @author
      */
     @Overwrite(remap = false)
-    public static void clear(int mask, boolean getError) {
+    public static void clear(int mask) {
         VRenderSystem.clear(mask);
     }
 
@@ -244,8 +235,8 @@ public abstract class RenderSystemMixin {
      * @author
      */
     @Overwrite(remap = false)
-    public static void blendFuncSeparate(GlStateManager.SourceFactor sourceFactor, GlStateManager.DestFactor destFactor, GlStateManager.SourceFactor sourceFactor1, GlStateManager.DestFactor destFactor1) {
-        VRenderSystem.blendFuncSeparate(sourceFactor.value, destFactor.value, sourceFactor1.value, destFactor1.value);
+    public static void blendFuncSeparate(GlStateManager.SourceFactor p_69417_, GlStateManager.DestFactor p_69418_, GlStateManager.SourceFactor p_69419_, GlStateManager.DestFactor p_69420_) {
+        VRenderSystem.blendFuncSeparate(p_69417_.value, p_69418_.value, p_69419_.value, p_69420_.value);
     }
 
     /**
@@ -331,7 +322,7 @@ public abstract class RenderSystemMixin {
      * @author
      */
     @Overwrite(remap = false)
-    private static void _setShaderColor(float r, float g, float b, float a) {
+    public static void setShaderColor(float r, float g, float b, float a) {
         shaderColor[0] = r;
         shaderColor[1] = g;
         shaderColor[2] = b;
@@ -344,37 +335,24 @@ public abstract class RenderSystemMixin {
      * @author
      */
     @Overwrite(remap = false)
-    public static void setShaderFogColor(float f, float g, float h, float i) {
-        shaderFogColor[0] = f;
-        shaderFogColor[1] = g;
-        shaderFogColor[2] = h;
-        shaderFogColor[3] = i;
+    public static void setShaderFog(FogParameters fogParameters) {
+        assertOnRenderThread();
+        shaderFog = fogParameters;
 
-        VRenderSystem.setShaderFogColor(f, g, h, i);
+        VRenderSystem.setShaderFogColor(fogParameters.red(), fogParameters.green(), fogParameters.blue(), fogParameters.alpha());
     }
 
     /**
      * @author
      */
     @Overwrite(remap = false)
-    public static void setProjectionMatrix(Matrix4f projectionMatrix, VertexSorting vertexSorting) {
+    public static void setProjectionMatrix(Matrix4f projectionMatrix, ProjectionType projectionType) {
         Matrix4f matrix4f = new Matrix4f(projectionMatrix);
-        if (!isOnRenderThread()) {
-            recordRenderCall(() -> {
-                RenderSystemMixin.projectionMatrix = matrix4f;
-                RenderSystem.vertexSorting = vertexSorting;
+        RenderSystemMixin.projectionMatrix = matrix4f;
+        RenderSystemMixin.projectionType = projectionType;
 
-                VRenderSystem.applyProjectionMatrix(matrix4f);
-                VRenderSystem.calculateMVP();
-            });
-        } else {
-            RenderSystemMixin.projectionMatrix = matrix4f;
-            RenderSystem.vertexSorting = vertexSorting;
-
-            VRenderSystem.applyProjectionMatrix(matrix4f);
-            VRenderSystem.calculateMVP();
-        }
-
+        VRenderSystem.applyProjectionMatrix(matrix4f);
+        VRenderSystem.calculateMVP();
     }
 
     /**
@@ -411,31 +389,9 @@ public abstract class RenderSystemMixin {
      * @author
      */
     @Overwrite(remap = false)
-    public static void applyModelViewMatrix() {
-        Matrix4f matrix4f = new Matrix4f(modelViewStack);
-        if (!isOnRenderThread()) {
-            recordRenderCall(() -> {
-                modelViewMatrix = matrix4f;
-                //Vulkan
-                VRenderSystem.applyModelViewMatrix(matrix4f);
-                VRenderSystem.calculateMVP();
-            });
-        } else {
-            modelViewMatrix = matrix4f;
-
-            VRenderSystem.applyModelViewMatrix(matrix4f);
-            VRenderSystem.calculateMVP();
-        }
-
-    }
-
-    /**
-     * @author
-     */
-    @Overwrite(remap = false)
-    private static void _restoreProjectionMatrix() {
+    public static void restoreProjectionMatrix() {
         projectionMatrix = savedProjectionMatrix;
-        vertexSorting = savedVertexSorting;
+        projectionType = savedProjectionType;
 
         VRenderSystem.applyProjectionMatrix(projectionMatrix);
         VRenderSystem.calculateMVP();
@@ -446,6 +402,6 @@ public abstract class RenderSystemMixin {
      */
     @Overwrite(remap = false)
     public static void texParameter(int target, int pname, int param) {
-        VkGlTexture.texParameteri(target, pname, param);
+        GlTexture.texParameteri(target, pname, param);
     }
 }
