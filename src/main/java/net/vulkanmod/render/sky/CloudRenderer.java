@@ -22,7 +22,7 @@ import org.joml.Matrix4f;
 import java.io.IOException;
 
 public class CloudRenderer {
-    private static final ResourceLocation TEXTURE_LOCATION = ResourceLocation.withDefaultNamespace("textures/environment/clouds.png");
+    private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation("minecraft", "textures/environment/clouds.png");
 
     private static final int DIR_NEG_Y_BIT = 1 << 0;
     private static final int DIR_POS_Y_BIT = 1 << 1;
@@ -104,7 +104,7 @@ public class CloudRenderer {
 
             this.resetBuffer();
 
-            MeshData cloudsMesh = this.buildClouds(Tesselator.getInstance(), centerCellX, centerCellZ, centerY);
+            BufferBuilder.RenderedBuffer cloudsMesh = this.buildClouds(Tesselator.getInstance(), centerCellX, centerCellZ, centerY);
             if (cloudsMesh == null) {
                 return;
             }
@@ -168,7 +168,7 @@ public class CloudRenderer {
         }
     }
 
-    private MeshData buildClouds(Tesselator tesselator, int centerCellX, int centerCellZ, double cloudY) {
+    private BufferBuilder.RenderedBuffer buildClouds(Tesselator tesselator, int centerCellX, int centerCellZ, double cloudY) {
 
         final float upFaceBrightness = 1.0f;
         final float xDirBrightness = 0.9f;
@@ -276,7 +276,7 @@ public class CloudRenderer {
         ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
 
         try {
-            Resource resource = resourceManager.getResourceOrThrow(textureLocation);
+            Resource resource = resourceManager.getResource(textureLocation).orElseThrow();
 
             try (var inputStream = resource.open()) {
                 NativeImage image = NativeImage.read(inputStream);

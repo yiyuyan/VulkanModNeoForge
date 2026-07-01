@@ -8,7 +8,7 @@ import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.VRenderSystem;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import org.joml.Matrix4fStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,7 +24,7 @@ public abstract class RenderSystemMixin {
 
     @Shadow private static Matrix4f projectionMatrix;
     @Shadow private static Matrix4f savedProjectionMatrix;
-    @Shadow @Final private static Matrix4fStack modelViewStack;
+    @Shadow @Final private static PoseStack modelViewStack;
     @Shadow private static Matrix4f modelViewMatrix;
     @Shadow private static Matrix4f textureMatrix;
 
@@ -412,7 +412,7 @@ public abstract class RenderSystemMixin {
      */
     @Overwrite(remap = false)
     public static void applyModelViewMatrix() {
-        Matrix4f matrix4f = new Matrix4f(modelViewStack);
+        Matrix4f matrix4f = new Matrix4f(modelViewStack.last().pose());
         if (!isOnRenderThread()) {
             recordRenderCall(() -> {
                 modelViewMatrix = matrix4f;

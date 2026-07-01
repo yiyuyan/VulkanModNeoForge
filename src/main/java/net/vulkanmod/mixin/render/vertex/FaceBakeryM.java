@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.block.model.BlockFaceUV;
 import net.minecraft.client.renderer.block.model.FaceBakery;
 import net.minecraft.core.BlockMath;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
@@ -39,8 +40,8 @@ public class FaceBakeryM {
      * @author
      */
     @Overwrite
-    public static BlockFaceUV recomputeUVs(BlockFaceUV blockFaceUV, Direction direction, Transformation transformation) {
-        Matrix4f matrix4f = BlockMath.getUVLockTransform(transformation, direction).getMatrix();
+    public static BlockFaceUV recomputeUVs(BlockFaceUV blockFaceUV, Direction direction, Transformation transformation, ResourceLocation resourceLocation) {
+        Matrix4f matrix4f = BlockMath.getUVLockTransform(transformation, direction,() -> "Unable to resolve UVLock for model: " + resourceLocation).getMatrix();
         float f = blockFaceUV.getU(blockFaceUV.getReverseIndex(0));
         float g = blockFaceUV.getV(blockFaceUV.getReverseIndex(0));
         Vector4f vector4f = matrix4f.transform(new Vector4f(f * DIV, g * DIV, 0.0F, 1.0F));

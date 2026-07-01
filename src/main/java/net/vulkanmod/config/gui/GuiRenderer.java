@@ -148,7 +148,7 @@ public abstract class GuiRenderer {
 
     public static void endBatch() {
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        MeshData meshData = bufferBuilder.build();
+        BufferBuilder.RenderedBuffer meshData = bufferBuilder.build();
 
         if (meshData != null) {
             BufferUploader.drawWithShader(meshData);
@@ -177,7 +177,7 @@ public abstract class GuiRenderer {
     private static void submitIfNeeded() {
         if (!batching) {
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
-            BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
+            BufferUploader.drawWithShader(bufferBuilder.build());
             drawing = false;
         }
     }

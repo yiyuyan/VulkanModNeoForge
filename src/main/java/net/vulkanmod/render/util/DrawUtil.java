@@ -8,7 +8,6 @@ import net.vulkanmod.vulkan.shader.Pipeline;
 import net.vulkanmod.vulkan.texture.VTextureSelector;
 import net.vulkanmod.vulkan.texture.VulkanImage;
 import org.joml.Matrix4f;
-import org.joml.Matrix4fStack;
 
 public class DrawUtil {
 
@@ -25,7 +24,7 @@ public class DrawUtil {
         bufferBuilder.addVertex(x1, y1, z).setUv(1.0F, 0.0F);
         bufferBuilder.addVertex(x0, y1, z).setUv(0.0F, 0.0F);
 
-        MeshData meshData = bufferBuilder.buildOrThrow();
+        BufferBuilder.RenderedBuffer meshData = bufferBuilder.build();
 
         Renderer.getDrawer().draw(meshData.vertexBuffer(), VertexFormat.Mode.QUADS, meshData.drawState().format(), meshData.drawState().vertexCount());
 
@@ -39,7 +38,7 @@ public class DrawUtil {
         bufferBuilder.addVertex(x1, y1, 0.0f).setUv(1.0F, 0.0F);
         bufferBuilder.addVertex(x0, y1, 0.0f).setUv(0.0F, 0.0F);
 
-        MeshData meshData = bufferBuilder.buildOrThrow();
+        BufferBuilder.RenderedBuffer meshData = bufferBuilder.build();
 
         Renderer.getDrawer().draw(meshData.vertexBuffer(), VertexFormat.Mode.QUADS, meshData.drawState().format(), meshData.drawState().vertexCount());
 
@@ -55,11 +54,11 @@ public class DrawUtil {
         // centrally in RenderSystem.setProjectionMatrix (was: ...,true here).
         Matrix4f matrix4f = new Matrix4f().setOrtho(0.0F, 1.0F, 0.0F, 1.0F, 0.0F, 1.0F);
         RenderSystem.setProjectionMatrix(matrix4f, VertexSorting.DISTANCE_TO_ORIGIN);
-        Matrix4fStack posestack = RenderSystem.getModelViewStack();
-        posestack.pushMatrix();
-        posestack.identity();
+        PoseStack posestack = RenderSystem.getModelViewStack();
+        posestack.pushPose();
+        posestack.last().pose().identity();
         RenderSystem.applyModelViewMatrix();
-        posestack.popMatrix();
+        posestack.popPose();
 
         Renderer.getInstance().uploadAndBindUBOs(pipeline);
 

@@ -7,6 +7,7 @@ import com.mojang.blaze3d.shaders.Program;
 import com.mojang.blaze3d.shaders.ProgramManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -139,11 +140,11 @@ public class ShaderInstanceM implements ShaderMixed {
                     Object object = this.samplerMap.get(string);
                     int texId = -1;
                     if (object instanceof RenderTarget) {
-                        texId = ((RenderTarget)object).getColorTextureId();
+                        texId = ((RenderTarget) object).getColorTextureId();
                     } else if (object instanceof AbstractTexture) {
-                        texId = ((AbstractTexture)object).getId();
+                        texId = ((AbstractTexture) object).getId();
                     } else if (object instanceof Integer) {
-                        texId = (Integer)object;
+                        texId = (Integer) object;
                     }
 
                     if (texId != -1) {
@@ -152,6 +153,58 @@ public class ShaderInstanceM implements ShaderMixed {
                     }
                 }
             }
+
+
+            if (this.MODEL_VIEW_MATRIX != null) {
+                this.MODEL_VIEW_MATRIX.set(RenderSystem.getModelViewMatrix());
+            }
+
+            if (this.PROJECTION_MATRIX != null) {
+                this.PROJECTION_MATRIX.set(RenderSystem.getProjectionMatrix());
+            }
+
+            if (this.COLOR_MODULATOR != null) {
+                this.COLOR_MODULATOR.set(RenderSystem.getShaderColor());
+            }
+
+            if (this.GLINT_ALPHA != null) {
+                this.GLINT_ALPHA.set(RenderSystem.getShaderGlintAlpha());
+            }
+
+            if (this.FOG_START != null) {
+                this.FOG_START.set(RenderSystem.getShaderFogStart());
+            }
+
+            if (this.FOG_END != null) {
+                this.FOG_END.set(RenderSystem.getShaderFogEnd());
+            }
+
+            if (this.FOG_COLOR != null) {
+                this.FOG_COLOR.set(RenderSystem.getShaderFogColor());
+            }
+
+            if (this.FOG_SHAPE != null) {
+                this.FOG_SHAPE.set(RenderSystem.getShaderFogShape().getIndex());
+            }
+
+            if (this.TEXTURE_MATRIX != null) {
+                this.TEXTURE_MATRIX.set(RenderSystem.getTextureMatrix());
+            }
+
+            if (this.GAME_TIME != null) {
+                this.GAME_TIME.set(RenderSystem.getShaderGameTime());
+            }
+
+            if (this.SCREEN_SIZE != null) {
+                Window window = Minecraft.getInstance().getWindow();
+                this.SCREEN_SIZE.set((float)window.getWidth(), (float)window.getHeight());
+            }
+
+            if (this.LINE_WIDTH != null) {
+                this.LINE_WIDTH.set(RenderSystem.getShaderLineWidth());
+            }
+
+            RenderSystem.setupShaderLights((ShaderInstance) (Object) this);
 
             for (com.mojang.blaze3d.shaders.Uniform uniform : this.uniforms) {
                 uniform.upload();
@@ -165,65 +218,6 @@ public class ShaderInstanceM implements ShaderMixed {
         }
 
         bindPipeline();
-    }
-
-    /**
-     * @author
-     */
-    @Overwrite
-    public void setDefaultUniforms(VertexFormat.Mode mode, Matrix4f modelView, Matrix4f projection, Window window) {
-        if (!this.doUniformUpdate)
-            return;
-
-        if (this.MODEL_VIEW_MATRIX != null) {
-            this.MODEL_VIEW_MATRIX.set(modelView);
-        }
-
-        if (this.PROJECTION_MATRIX != null) {
-            this.PROJECTION_MATRIX.set(projection);
-        }
-
-        if (this.COLOR_MODULATOR != null) {
-            this.COLOR_MODULATOR.set(RenderSystem.getShaderColor());
-        }
-
-        if (this.GLINT_ALPHA != null) {
-            this.GLINT_ALPHA.set(RenderSystem.getShaderGlintAlpha());
-        }
-
-        if (this.FOG_START != null) {
-            this.FOG_START.set(RenderSystem.getShaderFogStart());
-        }
-
-        if (this.FOG_END != null) {
-            this.FOG_END.set(RenderSystem.getShaderFogEnd());
-        }
-
-        if (this.FOG_COLOR != null) {
-            this.FOG_COLOR.set(RenderSystem.getShaderFogColor());
-        }
-
-        if (this.FOG_SHAPE != null) {
-            this.FOG_SHAPE.set(RenderSystem.getShaderFogShape().getIndex());
-        }
-
-        if (this.TEXTURE_MATRIX != null) {
-            this.TEXTURE_MATRIX.set(RenderSystem.getTextureMatrix());
-        }
-
-        if (this.GAME_TIME != null) {
-            this.GAME_TIME.set(RenderSystem.getShaderGameTime());
-        }
-
-        if (this.SCREEN_SIZE != null) {
-            this.SCREEN_SIZE.set((float)window.getWidth(), (float)window.getHeight());
-        }
-
-        if (this.LINE_WIDTH != null && (mode == VertexFormat.Mode.LINES || mode == VertexFormat.Mode.LINE_STRIP)) {
-            this.LINE_WIDTH.set(RenderSystem.getShaderLineWidth());
-        }
-
-        RenderSystem.setupShaderLights((ShaderInstance) (Object) this);
     }
 
     /**
@@ -326,12 +320,12 @@ public class ShaderInstanceM implements ShaderMixed {
     private void createLegacyShader(ResourceProvider resourceProvider, VertexFormat format) {
         try {
             String vertPath = this.vsPath + ".vsh";
-            Resource resource = resourceProvider.getResourceOrThrow(ResourceLocation.tryParse(vertPath));
+            Resource resource = resourceProvider.getResource(ResourceLocation.tryParse(vertPath)).orElseThrow();
             InputStream inputStream = resource.open();
             String vshSrc = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
 
             String fragPath = this.fsName + ".fsh";
-            resource = resourceProvider.getResourceOrThrow(ResourceLocation.tryParse(fragPath));
+            resource = resourceProvider.getResource(ResourceLocation.tryParse(fragPath)).orElseThrow();
             inputStream = resource.open();
             String fshSrc = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
 

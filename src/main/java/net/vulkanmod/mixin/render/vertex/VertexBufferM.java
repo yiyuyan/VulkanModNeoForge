@@ -1,7 +1,6 @@
 package net.vulkanmod.mixin.render.vertex;
 
-import com.mojang.blaze3d.vertex.ByteBufferBuilder;
-import com.mojang.blaze3d.vertex.MeshData;
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.VertexBuffer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.vulkanmod.render.VBO;
@@ -49,17 +48,16 @@ public class VertexBufferM {
      * @author
      */
     @Overwrite
-    public void upload(MeshData meshData) {
+    public void upload(BufferBuilder.RenderedBuffer meshData) {
         vbo.upload(meshData);
     }
 
     /**
      * @author
-     */
     @Overwrite
     public void uploadIndexBuffer(ByteBufferBuilder.Result result) {
         vbo.uploadIndexBuffer(result.byteBuffer());
-    }
+    }*/
 
     /**
      * @author

@@ -1,8 +1,8 @@
 package net.vulkanmod.mixin.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -25,10 +25,10 @@ public abstract class BufferUploaderM {
      * @author
      */
     @Overwrite
-    public static void drawWithShader(MeshData meshData) {
+    public static void drawWithShader(BufferBuilder.RenderedBuffer meshData) {
         RenderSystem.assertOnRenderThread();
 
-        MeshData.DrawState parameters = meshData.drawState();
+        BufferBuilder.DrawState parameters = meshData.drawState();
 
         if (parameters.vertexCount() > 0) {
             ShaderInstance shaderInstance = RenderSystem.getShader();
@@ -57,8 +57,8 @@ public abstract class BufferUploaderM {
      * @author
      */
     @Overwrite
-    public static void draw(MeshData meshData) {
-        MeshData.DrawState parameters = meshData.drawState();
+    public static void draw(BufferBuilder.RenderedBuffer meshData) {
+        BufferBuilder.DrawState parameters = meshData.drawState();
 
         if (parameters.vertexCount() > 0) {
             Renderer renderer = Renderer.getInstance();

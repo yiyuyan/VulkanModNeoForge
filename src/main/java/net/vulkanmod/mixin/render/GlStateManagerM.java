@@ -2,7 +2,6 @@ package net.vulkanmod.mixin.render;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.neoforged.neoforge.client.GlStateBackup;
 import net.vulkanmod.gl.*;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.VRenderSystem;
@@ -66,12 +65,8 @@ public class GlStateManagerM {
     }
 
     //NEO FORGE ONLY METHOD(S)
-    /**
-     * @author KSmc_brigade
-     * @reason fit
-     */
-    @Overwrite
-    public static void _restoreGlState(GlStateBackup state) {}
+
+
 
     // ------- NEO FORGE END --------
 

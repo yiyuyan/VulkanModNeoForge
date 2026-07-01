@@ -29,7 +29,7 @@ public class MinecraftMixin {
         Renderer.getInstance().beginFrame();
     }
 
-    @Inject(method = "disconnect(Lnet/minecraft/client/gui/screens/Screen;Z)V", at = @At(value = "RETURN"))
+    @Inject(method = "clearLevel()V", at = @At(value = "RETURN"))
     private void beginRender2(CallbackInfo ci) {
         Renderer.getInstance().beginFrame();
     }

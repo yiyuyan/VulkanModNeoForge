@@ -86,7 +86,7 @@ public class PostPassM {
         bufferBuilder.addVertex(g, 0.0f, 500.0f);
         bufferBuilder.addVertex(g, h, 500.0f);
         bufferBuilder.addVertex(0.0f, h, 500.0f);
-        BufferUploader.draw(bufferBuilder.buildOrThrow());
+        BufferUploader.draw(bufferBuilder.build());
         RenderSystem.depthFunc(515);
 
         this.effect.clear();

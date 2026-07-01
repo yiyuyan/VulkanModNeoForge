@@ -22,7 +22,7 @@ import java.util.List;
 
 public class VOptionScreen extends Screen {
     public final static int RED = ColorUtil.ARGB.pack(0.3f, 0.0f, 0.0f, 0.8f);
-    final ResourceLocation ICON = ResourceLocation.fromNamespaceAndPath("vulkanmod", "vlogo_transparent.png");
+    final ResourceLocation ICON = new ResourceLocation("vulkanmod", "vlogo_transparent.png");
 
     private final Screen parent;
 
@@ -231,7 +231,6 @@ public class VOptionScreen extends Screen {
             this.renderPanorama(guiGraphics, f);
         }
 
-        this.renderBlurredBackground(f);
         this.renderMenuBackground(guiGraphics);
 
     }

@@ -11,8 +11,8 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceProvider;
-import net.vulkanmod.Initializer;
 import net.vulkanmod.gl.VkGlProgram;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.shader.GraphicsPipeline;
@@ -69,15 +69,13 @@ public class EffectInstanceM {
                     target = "Lnet/minecraft/client/renderer/EffectInstance;updateLocations()V",
                     shift = At.Shift.AFTER)
     )
-    private void inj(ResourceProvider arg, String string,
-                     CallbackInfo ci,
-                     @Local(name = "s") String s, @Local(name = "s1") String s1) {
+    private void inj(ResourceManager arg, String string, CallbackInfo ci, @Local(name = "s") String s, @Local(name = "s1") String s1) {
         createShaders(arg, s, s1);
     }
 
     @Redirect(method = "<init>", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/renderer/EffectInstance;getOrCreate(Lnet/minecraft/server/packs/resources/ResourceProvider;Lcom/mojang/blaze3d/shaders/Program$Type;Ljava/lang/String;)Lcom/mojang/blaze3d/shaders/EffectProgram;"))
-    private EffectProgram redirectShader(ResourceProvider resourceProvider, Program.Type type, String string) {
+            target = "Lnet/minecraft/client/renderer/EffectInstance;getOrCreate(Lnet/minecraft/server/packs/resources/ResourceManager;Lcom/mojang/blaze3d/shaders/Program$Type;Ljava/lang/String;)Lcom/mojang/blaze3d/shaders/EffectProgram;"))
+    private EffectProgram redirectShader(ResourceManager arg, Program.Type arg2, String string) {
         return null;
     }
 
@@ -105,14 +103,14 @@ public class EffectInstanceM {
 
         try {
             String[] vshPathInfo = this.decompose(vertexShader, ':');
-            ResourceLocation vshLocation = ResourceLocation.fromNamespaceAndPath(vshPathInfo[0], "shaders/program/" + vshPathInfo[1] + ".vsh");
-            Resource resource = resourceManager.getResourceOrThrow(vshLocation);
+            ResourceLocation vshLocation = new ResourceLocation(vshPathInfo[0], "shaders/program/" + vshPathInfo[1] + ".vsh");
+            Resource resource = resourceManager.getResource(vshLocation).orElseThrow();
             InputStream inputStream = resource.open();
             String vshSrc = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
 
             String[] fshPathInfo = this.decompose(fragShader, ':');
-            ResourceLocation fshLocation = ResourceLocation.fromNamespaceAndPath(fshPathInfo[0], "shaders/program/" + fshPathInfo[1] + ".fsh");
-            resource = resourceManager.getResourceOrThrow(fshLocation);
+            ResourceLocation fshLocation = new ResourceLocation(fshPathInfo[0], "shaders/program/" + fshPathInfo[1] + ".fsh");
+            resource = resourceManager.getResource(fshLocation).orElseThrow();
             inputStream = resource.open();
             String fshSrc = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
 

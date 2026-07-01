@@ -1,15 +1,17 @@
 package net.vulkanmod.mixin.render.clouds;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.vulkanmod.render.profiling.Profiler;
 import net.vulkanmod.render.sky.CloudRenderer;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -19,7 +21,6 @@ public abstract class LevelRendererM {
 
     @Shadow private int ticks;
     @Shadow private @Nullable ClientLevel level;
-    @Shadow @Final protected static ResourceLocation CLOUDS_LOCATION;
 
     @Unique
     private CloudRenderer cloudRenderer;
@@ -29,11 +30,13 @@ public abstract class LevelRendererM {
      * @reason
      */
     @Inject(method = "renderClouds",at = @At("HEAD"),cancellable = true)
-    public void renderClouds(PoseStack poseStack, Matrix4f modelView, Matrix4f projection, float partialTicks, double camX, double camY, double camZ,CallbackInfo ci) {
+    public void renderClouds(PoseStack poseStack, Matrix4f matrix4f, float partialTicks, double camX, double camY, double camZ, CallbackInfo ci) {
         if (this.cloudRenderer == null) {
             this.cloudRenderer = new CloudRenderer();
         }
 
+        Matrix4f modelView = RenderSystem.getModelViewMatrix();
+        Matrix4f projection = RenderSystem.getProjectionMatrix();
         this.cloudRenderer.renderClouds(this.level, poseStack, modelView, projection, this.ticks, partialTicks, camX, camY, camZ);
         Profiler.getMainProfiler().pop();
         ci.cancel();

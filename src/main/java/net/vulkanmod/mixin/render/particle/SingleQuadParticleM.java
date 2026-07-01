@@ -37,8 +37,6 @@ public abstract class SingleQuadParticleM extends Particle {
 
     @Shadow public abstract float getQuadSize(float f);
 
-    @Shadow public abstract SingleQuadParticle.FacingCameraMode getFacingCameraMode();
-
     protected SingleQuadParticleM(ClientLevel clientLevel, double d, double e, double f, double g, double h, double i) {
         super(clientLevel, d, e, f, g, h, i);
         this.quadSize = 0.1F * (this.random.nextFloat() * 0.5F + 0.5F) * 2.0F;
@@ -63,7 +61,8 @@ public abstract class SingleQuadParticleM extends Particle {
         float offsetZ = (float) (lz - vec3.z());
 
         quaternionf.identity();
-        this.getFacingCameraMode().setRotation(quaternionf, camera, f);
+        quaternionf.set(camera.rotation());
+        //this.getFacingCameraMode().setRotation(quaternionf, camera, f);
         if (this.roll != 0.0F) {
             quaternionf.rotateZ(Mth.lerp(f, this.oRoll, this.roll));
         }

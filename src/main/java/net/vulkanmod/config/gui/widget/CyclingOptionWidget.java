@@ -157,7 +157,7 @@ public class CyclingOptionWidget extends OptionWidget<CyclingOption<?>> {
                 bufferBuilder.addVertex(matrix4f, xC - w, yC + h, 0);
             }
 
-            BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
+            BufferUploader.drawWithShader(bufferBuilder.build());
 
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
