@@ -4,7 +4,7 @@ import com.sun.tools.attach.VirtualMachine;
 import cpw.mods.modlauncher.Launcher;
 import cpw.mods.modlauncher.ModuleLayerHandler;
 import cpw.mods.modlauncher.api.NamedPath;
-import net.neoforged.fml.loading.ModDirTransformerDiscoverer;
+import net.minecraftforge.fml.loading.ModDirTransformerDiscoverer;
 import org.jetbrains.annotations.NotNull;
 import sun.misc.Unsafe;
 

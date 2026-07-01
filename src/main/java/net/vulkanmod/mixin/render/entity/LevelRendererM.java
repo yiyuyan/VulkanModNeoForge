@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.Camera;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -12,7 +11,6 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.util.Mth;
-import net.minecraft.world.TickRateManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.vulkanmod.Initializer;
@@ -39,7 +37,7 @@ public class LevelRendererM {
                     target = "Lnet/minecraft/client/renderer/LevelRenderer;setupRender(Lnet/minecraft/client/Camera;Lnet/minecraft/client/renderer/culling/Frustum;ZZ)V",
                     shift = At.Shift.AFTER)
     )
-    private void clearMap(DeltaTracker deltaTracker, boolean bl, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci) {
+    private void clearMap(PoseStack arg, float g, long l, boolean bl, Camera arg2, GameRenderer arg3, LightTexture arg4, Matrix4f matrix4f2, CallbackInfo ci) {
         for (var bufferSource : this.bufferSourceMap.keySet()) {
             var entityMap = this.bufferSourceMap.get(bufferSource);
             entityMap.clear();
@@ -74,12 +72,11 @@ public class LevelRendererM {
             target = "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endLastBatch()V",
             shift = At.Shift.AFTER, ordinal = 0)
     )
-    private void renderEntities(DeltaTracker deltaTracker, boolean bl, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci) {
+    private void renderEntities(PoseStack arg, float g, long l, boolean bl, Camera arg2, GameRenderer arg3, LightTexture arg4, Matrix4f matrix4f2, CallbackInfo ci) {
         if (!Initializer.CONFIG.entityCulling)
             return;
 
         Vec3 cameraPos = WorldRenderer.getCameraPos();
-        TickRateManager tickRateManager = this.minecraft.level.tickRateManager();
 
         PoseStack poseStack = new PoseStack();
 
@@ -88,7 +85,7 @@ public class LevelRendererM {
 
             for (var list : entityMap.values()) {
                 for (Entity entity : list) {
-                    float partialTicks = deltaTracker.getGameTimeDeltaPartialTick(!tickRateManager.isEntityFrozen(entity));
+                    float partialTicks = g;
 
                     double h = Mth.lerp(partialTicks, entity.xOld, entity.getX());
                     double i = Mth.lerp(partialTicks, entity.yOld, entity.getY());

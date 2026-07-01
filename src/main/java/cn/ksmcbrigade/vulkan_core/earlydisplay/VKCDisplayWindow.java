@@ -1,6 +1,7 @@
 package cn.ksmcbrigade.vulkan_core.earlydisplay;
 
-import net.neoforged.fml.earlydisplay.DisplayWindow;
+
+import net.minecraftforge.fml.earlydisplay.DisplayWindow;
 import org.jetbrains.annotations.Nullable;
 
 public class VKCDisplayWindow extends DisplayWindow {

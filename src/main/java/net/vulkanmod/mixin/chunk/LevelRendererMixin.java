@@ -3,7 +3,6 @@ package net.vulkanmod.mixin.chunk;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import net.minecraft.client.Camera;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.*;
@@ -51,11 +50,11 @@ public abstract class LevelRendererMixin {
     }
 
     @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;checkPoseStack(Lcom/mojang/blaze3d/vertex/PoseStack;)V", ordinal = 1, shift = At.Shift.BEFORE))
-    private void renderBlockEntities(DeltaTracker deltaTracker, boolean bl, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f matrix4f, Matrix4f matrix4f2, CallbackInfo ci) {
+    private void renderBlockEntities(PoseStack arg, float g, long l, boolean bl, Camera camera, GameRenderer arg3, LightTexture arg4, Matrix4f matrix4f2, CallbackInfo ci) {
         Vec3 pos = camera.getPosition();
         PoseStack poseStack = new PoseStack();
 
-        this.worldRenderer.renderBlockEntities(poseStack, pos.x(), pos.y(), pos.z(), this.destructionProgress, deltaTracker.getGameTimeDeltaPartialTick(false));
+        this.worldRenderer.renderBlockEntities(poseStack, pos.x(), pos.y(), pos.z(), this.destructionProgress, g);
     }
 
     /**
@@ -72,7 +71,7 @@ public abstract class LevelRendererMixin {
      * @reason
      */
     @Overwrite
-    public boolean isSectionCompiled(BlockPos blockPos) {
+    public boolean isChunkCompiled(BlockPos blockPos) {
         return this.worldRenderer.isSectionCompiled(blockPos);
     }
 
@@ -81,18 +80,17 @@ public abstract class LevelRendererMixin {
      * @reason
      */
     @Overwrite
-    private void renderSectionLayer(RenderType renderType, double camX, double camY, double camZ, Matrix4f modelView, Matrix4f projectionMatrix) {
-        this.worldRenderer.renderSectionLayer(renderType, camX, camY, camZ, modelView, projectionMatrix);
+    private void renderChunkLayer(RenderType renderType,PoseStack poseStack, double camX, double camY, double camZ, Matrix4f matrix4f) {
+        this.worldRenderer.renderSectionLayer(renderType, camX, camY, camZ, poseStack.last().pose(),matrix4f);
     }
 
     /**
      * @author
      * @reason
-     */
     @Overwrite
     public void onChunkLoaded(ChunkPos chunkPos) {
         this.worldRenderer.onChunkLoaded(chunkPos.x, chunkPos.z);
-    }
+    }*/
 
     /**
      * @author
@@ -108,7 +106,7 @@ public abstract class LevelRendererMixin {
      * @reason
      */
     @Overwrite
-    public String getSectionStatistics() {
+    public String getChunkStatistics() {
         return this.worldRenderer.getChunkStatistics();
     }
 
@@ -117,7 +115,7 @@ public abstract class LevelRendererMixin {
      * @reason
      */
     @Overwrite
-    public boolean hasRenderedAllSections() {
+    public boolean hasRenderedAllChunks() {
         return !this.worldRenderer.graphNeedsUpdate() && this.worldRenderer.getTaskDispatcher().isIdle();
     }
 
@@ -126,7 +124,7 @@ public abstract class LevelRendererMixin {
      * @reason
      */
     @Overwrite
-    public int countRenderedSections() {
+    public int countRenderedChunks() {
         return this.worldRenderer.getVisibleSectionsCount();
     }
 

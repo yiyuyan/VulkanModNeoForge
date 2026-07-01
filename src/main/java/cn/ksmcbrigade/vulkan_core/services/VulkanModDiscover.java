@@ -5,17 +5,9 @@ import cn.ksmcbrigade.vulkan_core.VKCUnsafeUtils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.logging.LogUtils;
-import net.neoforged.fml.earlydisplay.DisplayWindow;
-import net.neoforged.fml.loading.FMLConfig;
-import net.neoforged.fml.loading.FMLLoader;
-import net.neoforged.fml.loading.ImmediateWindowHandler;
-import net.neoforged.fml.loading.LogMarkers;
-import net.neoforged.neoforgespi.ILaunchContext;
-import net.neoforged.neoforgespi.earlywindow.ImmediateWindowProvider;
-import net.neoforged.neoforgespi.locating.IDiscoveryPipeline;
-import net.neoforged.neoforgespi.locating.IModFileCandidateLocator;
-import net.neoforged.neoforgespi.locating.IncompatibleFileReporting;
-import net.neoforged.neoforgespi.locating.ModFileDiscoveryAttributes;
+import net.minecraftforge.fml.earlydisplay.DisplayWindow;
+import net.minecraftforge.fml.loading.*;
+import net.minecraftforge.fml.loading.moddiscovery.AbstractJarFileModLocator;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -32,6 +24,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -41,7 +34,7 @@ import static org.lwjgl.glfw.GLFW.*;
  * &#064;Author: KSmc_brigade
  * &#064;Date: 2025/9/16 下午7:06
  */
-public class VulkanModDiscover implements IModFileCandidateLocator {
+public class VulkanModDiscover extends AbstractJarFileModLocator {
 
     static {
         LogUtils.getLogger().info(LogMarkers.CORE,"VulkanTransformationService is Loading...");
@@ -325,7 +318,9 @@ public class VulkanModDiscover implements IModFileCandidateLocator {
     }
 
     @Override
-    public void findCandidates(ILaunchContext context, IDiscoveryPipeline pipeline) {
+    public Stream<Path> scanCandidates() {
+
+        List<Path> mods = new ArrayList<>();
 
         String os = System.getProperty("os.name");
 
@@ -365,15 +360,17 @@ public class VulkanModDiscover implements IModFileCandidateLocator {
             for (File file : files) {
                 String name = file.getName();
                 if(name.toLowerCase().contains("natives") && !name.contains(os)) continue;
-                pipeline.addPath(file.toPath(),ModFileDiscoveryAttributes.DEFAULT, IncompatibleFileReporting.WARN_ALWAYS);
+                mods.add(file.toPath());
             }
         }
 
-        this.coexistenceCoreAndMod(context);
+        this.coexistenceCoreAndMod();
+
+        return mods.stream();
     }
 
-    public void coexistenceCoreAndMod(ILaunchContext context){
-        Set<Path> located = new HashSet<>();
+    public void coexistenceCoreAndMod(){
+        /*Set<Path> located = new HashSet<>();
         for (Path locatedPaths : (Set<Path>)Objects.requireNonNull(VKCUnsafeUtils.getFieldValue(context, "locatedPaths", Set.class))) {
             if(!VKCUnsafeUtils.getJarPath(VulkanModDiscover.class).equals(locatedPaths.toString())){
                 if(!FMLLoader.isProduction() && locatedPaths.toFile().isDirectory() && locatedPaths.toString().contains("VulkanModNeoForge")){
@@ -384,16 +381,11 @@ public class VulkanModDiscover implements IModFileCandidateLocator {
                 }
             }
         }
-        located.remove(Path.of(VKCUnsafeUtils.getJarPath(VulkanModDiscover.class)));
+        located.remove(Path.of(VKCUnsafeUtils.getJarPath(VulkanModDiscover.class)));*/
         VKCUnsafeUtils.coexistenceCoreAndMod();
-        VKCUnsafeUtils.setFieldValue(context,"locatedPaths",located);
+        //VKCUnsafeUtils.setFieldValue(context,"locatedPaths",located);
 
         //LogUtils.getLogger().info(LogMarkers.SCAN,Arrays.toString(VKCUnsafeUtils.getFieldValue(context, "locatedPaths", Set.class).toArray()));
-    }
-
-    @Override
-    public int getPriority() {
-        return Integer.MAX_VALUE;
     }
 
     private static boolean directExit(){
@@ -410,5 +402,15 @@ public class VulkanModDiscover implements IModFileCandidateLocator {
             e.printStackTrace();
             return true;
         }
+    }
+
+    @Override
+    public String name() {
+        return "vkc_discover";
+    }
+
+    @Override
+    public void initArguments(Map<String, ?> arguments) {
+
     }
 }

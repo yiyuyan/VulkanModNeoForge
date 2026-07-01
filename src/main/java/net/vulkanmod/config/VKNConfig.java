@@ -3,14 +3,14 @@ package net.vulkanmod.config;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModList;
-import net.neoforged.fml.loading.FMLPaths;
-import net.neoforged.fml.loading.moddiscovery.ModFile;
-import net.neoforged.fml.loading.moddiscovery.ModInfo;
-import net.neoforged.neoforgespi.language.IModFileInfo;
-import net.neoforged.neoforgespi.language.IModInfo;
-import net.neoforged.neoforgespi.locating.IModFile;
+import net.minecraftforge.fml.ModContainer;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.fml.loading.moddiscovery.ModFile;
+import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
+import net.minecraftforge.forgespi.language.IModFileInfo;
+import net.minecraftforge.forgespi.language.IModInfo;
+import net.minecraftforge.forgespi.locating.IModFile;
 import net.vulkanmod.Initializer;
 import org.apache.commons.io.FileUtils;
 
@@ -65,7 +65,7 @@ public class VKNConfig {
         }
     }
 
-    @SuppressWarnings({"unchecked", "UnstableApiUsage"})
+    @SuppressWarnings({"unchecked"})
     public static void hide(){
         try {
 
@@ -107,7 +107,7 @@ public class VKNConfig {
         }
     }
 
-    private static boolean NoNeedHide(String s,IModInfo... mods){
+    private static boolean NoNeedHide(String s, IModInfo... mods){
         boolean result = true;
         if(VKNConfig.hideVulkanLibs) result = !s.contains("vulkan-libs");
         if(VKNConfig.hideForgifiedFabricAPIs){

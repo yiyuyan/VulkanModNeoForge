@@ -1,5 +1,6 @@
 plugins {
-    id 'dev.architectury.loom' version '1.11-SNAPSHOT'
+    id 'dev.architectury.loom' version '1.9-SNAPSHOT'
+    id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -47,12 +48,16 @@ repositories {
     }
 }
 
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
 loom {
     silentMojangMappingsLicense()
     accessWidenerPath = file("src/main/resources/vulkanmod.accesswidener")
-    neoForge {
-        accessWidenerPath = file("src/main/resources/vulkanmod.accesswidener")
-        accessTransformers = files("src/main/resources/META-INF/accesstransformer.cfg")
+    forge {
+        convertAccessWideners = true
     }
 }
 
@@ -66,7 +71,7 @@ project.ext.macosArmNatives = "natives-macos-arm64"
 dependencies {
     minecraft "net.minecraft:minecraft:$project.minecraft_version"
     mappings loom.officialMojangMappings()
-    neoForge "net.neoforged:neoforge:$project.neoforge_version"
+    forge "net.neoforged:forge:$project.minecraft_version-$project.neoforge_version"
 
     implementation("org.lwjgl:lwjgl-vulkan:$lwjglVersion")
 
@@ -85,29 +90,32 @@ dependencies {
 	implementation("org.lwjgl:lwjgl-vulkan:$lwjglVersion:$macosNatives")
 	implementation("org.lwjgl:lwjgl-vulkan:$lwjglVersion:$macosArmNatives")
 
-    include(modImplementation("maven.modrinth:mixinruntime:1.0.2-mc1.21"))
+    //Mixin
+    include(modImplementation("maven.modrinth:OCQ3MOnJ:gm0ADonY"))
+
+    implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.2.0"))
+    implementation(include("io.github.llamalad7:mixinextras-forge:0.2.0"))
 
     //combat create
 
 //    modApi("com.tterrag.registrate:Registrate:$registrate_version")
-    modImplementation("dev.engine-room.flywheel:flywheel-neoforge-api-1.21.1:1.0.6")
+    /*modImplementation("dev.engine-room.flywheel:flywheel-neoforge-api-1.21.1:1.0.6")
     //modImplementation("net.createmod.ponder:ponder-neoforge:1.0.82+mc1.21.1")
-   // modImplementation("maven.modrinth:create:6.0.10+mc1.21.1")
+   // modImplementation("maven.modrinth:create:6.0.10+mc1.21.1")*/
 
-    //forgified fabric api is required
 
     //fabric loader
-    compileOnly("org.sinytra:forgified-fabric-loader:$versionForgifiedFabricLoader")
-    runtimeOnly("org.sinytra:forgified-fabric-loader:$versionForgifiedFabricLoader:full")
+    compileOnly("dev.su5ed.sinytra:fabric-loader:$forge_fabric_loader_version")
+    runtimeOnly("dev.su5ed.sinytra:fabric-loader:$forge_fabric_loader_version:full")
 
     //fabric api
-    modImplementation "org.sinytra.forgified-fabric-api:fabric-api-base:0.4.42+d1308ded19"
-    modImplementation "org.sinytra.forgified-fabric-api:fabric-resource-loader-v0:1.3.1+4ea8954419"
-    modImplementation "org.sinytra.forgified-fabric-api:fabric-rendering-fluids-v1:3.1.6+a51883b219"
-    modImplementation "org.sinytra.forgified-fabric-api:fabric-renderer-api-v1:3.4.1+9125b6dc19"
-    modImplementation "org.sinytra.forgified-fabric-api:fabric-rendering-v1:5.1.0+1a09bd5a19"
-    modImplementation "org.sinytra.forgified-fabric-api:fabric-rendering-data-attachment-v1:0.3.49+73761d2e19"
-    modImplementation "org.sinytra.forgified-fabric-api:fabric-block-view-api-v2:1.0.11+e9036fd419"
+    modImplementation "dev.su5ed.sinytra.fabric-api:fabric-api-base:0.4.32+ef105b4977"
+    modImplementation "dev.su5ed.sinytra.fabric-api:fabric-resource-loader-v0:0.11.12+4b4151c077"
+    modImplementation "dev.su5ed.sinytra.fabric-api:fabric-rendering-fluids-v1:3.0.29+4ac5e37a77"
+    modImplementation "dev.su5ed.sinytra.fabric-api:fabric-renderer-api-v1:3.2.2+cf68abbe77"
+    modImplementation "dev.su5ed.sinytra.fabric-api:fabric-rendering-v1:3.0.9+66e9a48f77"
+    modImplementation "dev.su5ed.sinytra.fabric-api:fabric-rendering-data-attachment-v1:0.3.39+a6081afc77"
+    modImplementation "dev.su5ed.sinytra.fabric-api:fabric-block-view-api-v2:1.0.3+53347ba977"
 }
 
 processResources {
@@ -124,12 +132,12 @@ java {
     // If you remove this line, sources will not be generated.
     withSourcesJar()
 
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 21
+    it.options.release = 17
 }
 
 // Configure Maven publishing.

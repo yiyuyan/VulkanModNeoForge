@@ -1,12 +1,12 @@
 package net.vulkanmod.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.MeshData;
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.vulkanmod.vulkan.Renderer;
 import net.vulkanmod.vulkan.VRenderSystem;
 import net.vulkanmod.vulkan.memory.MemoryType;
@@ -36,8 +36,8 @@ public class VBO {
         this.memoryType = usage == com.mojang.blaze3d.vertex.VertexBuffer.Usage.STATIC ? MemoryTypes.GPU_MEM : MemoryTypes.HOST_MEM;
     }
 
-    public void upload(MeshData meshData) {
-        MeshData.DrawState parameters = meshData.drawState();
+    public void upload(BufferBuilder.RenderedBuffer meshData) {
+        BufferBuilder.DrawState parameters = meshData.drawState();
 
         this.indexCount = parameters.indexCount();
         this.vertexCount = parameters.vertexCount();
@@ -49,7 +49,7 @@ public class VBO {
         meshData.close();
     }
 
-    private void uploadVertexBuffer(MeshData.DrawState parameters, ByteBuffer data) {
+    private void uploadVertexBuffer(BufferBuilder.DrawState parameters, ByteBuffer data) {
         if (data != null) {
             if (this.vertexBuffer != null)
                 this.vertexBuffer.scheduleFree();

@@ -1,15 +1,14 @@
 package cn.ksmcbrigade.vulkan;
 
 import net.minecraft.network.chat.Component;
-import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.minecraftforge.client.ConfigScreenHandler;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.vulkanmod.Initializer;
 import net.vulkanmod.config.VKNConfig;
 import net.vulkanmod.config.gui.VOptionScreen;
-
-import java.util.Objects;
 
 @Mod(NeoVulkanMod.MOD_ID)
 public final class NeoVulkanMod {
@@ -21,9 +20,9 @@ public final class NeoVulkanMod {
         // Proceed with mild caution.
         new Initializer().onInitializeClient();
 
-        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class,()-> (IConfigScreenFactory) (modContainer, arg) -> new VOptionScreen(Component.literal("Video Setting"),arg));
+       ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,()-> new ConfigScreenHandler.ConfigScreenFactory((client,parent)->new VOptionScreen(Component.literal("Video Setting"),parent)));
 
-        Objects.requireNonNull(ModLoadingContext.get().getActiveContainer().getEventBus()).addListener(this::onFMLCompleted);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onFMLCompleted);
     }
 
     public void onFMLCompleted(FMLLoadCompleteEvent event) {
