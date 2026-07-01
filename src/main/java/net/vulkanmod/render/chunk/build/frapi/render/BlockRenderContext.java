@@ -3,12 +3,8 @@ package net.vulkanmod.render.chunk.build.frapi.render;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
-import net.fabricmc.fabric.api.renderer.v1.material.ShadeMode;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.util.TriState;
-import net.minecraft.CrashReport;
-import net.minecraft.CrashReportCategory;
-import net.minecraft.ReportedException;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -16,6 +12,8 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.vulkanmod.Initializer;
+import net.vulkanmod.render.chunk.build.frapi.fabric.ShadeMode;
+import net.vulkanmod.render.chunk.build.frapi.fabric.interfaces.MaterialViewShade;
 import net.vulkanmod.render.chunk.build.frapi.mesh.MutableQuadViewImpl;
 import net.vulkanmod.render.chunk.build.light.LightMode;
 import net.vulkanmod.render.chunk.build.light.LightPipeline;
@@ -75,7 +73,7 @@ public class BlockRenderContext extends AbstractBlockRenderContext {
 		final TriState aoMode = mat.ambientOcclusion();
 		final boolean ao = this.useAO && (aoMode == TriState.TRUE || (aoMode == TriState.DEFAULT && this.defaultAO));
 		final boolean emissive = mat.emissive();
-		final boolean vanillaShade = mat.shadeMode() == ShadeMode.VANILLA;
+		final boolean vanillaShade = ((MaterialViewShade)mat).shadeMode() == ShadeMode.VANILLA;
 
 		LightPipeline lightPipeline = ao ? this.smoothLightPipeline : this.flatLightPipeline;
 

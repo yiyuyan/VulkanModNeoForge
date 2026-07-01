@@ -86,6 +86,8 @@
     "window.WindowMixin"
   ],
   "mixins": [
+    "render.frapi.fix.MaterialFinderMixin",
+    "render.frapi.fix.MaterialViewMixin"
   ],
   "injectors": {
     "defaultRequire": 1

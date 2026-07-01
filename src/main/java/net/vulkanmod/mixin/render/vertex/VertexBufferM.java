@@ -78,7 +78,7 @@ public class VertexBufferM {
     /**
      * @author
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public void close() {
         vbo.close();
     }

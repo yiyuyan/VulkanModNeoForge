@@ -81,12 +81,12 @@ public class PostPassM {
 
         this.effect.apply();
 
-        BufferBuilder bufferBuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
-        bufferBuilder.addVertex(0.0f, 0.0f, 500.0f);
-        bufferBuilder.addVertex(g, 0.0f, 500.0f);
-        bufferBuilder.addVertex(g, h, 500.0f);
-        bufferBuilder.addVertex(0.0f, h, 500.0f);
-        BufferUploader.draw(bufferBuilder.build());
+        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+        bufferBuilder.vertex(0.0f, 0.0f, 500.0f);
+        bufferBuilder.vertex(g, 0.0f, 500.0f);
+        bufferBuilder.vertex(g, h, 500.0f);
+        bufferBuilder.vertex(0.0f, h, 500.0f);
+        BufferUploader.draw(bufferBuilder.end());
         RenderSystem.depthFunc(515);
 
         this.effect.clear();

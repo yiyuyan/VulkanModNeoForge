@@ -18,22 +18,25 @@ import java.util.List;
 @Mixin(VertexFormat.class)
 public class VertexFormatMixin implements VertexFormatMixed {
 
-    private int[] offsets;
+    @Shadow
+    @Final
+    private IntList offsets;
+    private int[] ints;
 
     private ObjectArrayList<VertexFormatElement> fastList;
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void injectList(List<VertexFormatElement> list, List<String> list2, IntList intList, int i, CallbackInfo ci) {
+    private void injectList(ImmutableMap<String, VertexFormatElement> immutableMap, CallbackInfo ci) {
         ObjectArrayList<VertexFormatElement> fList = new ObjectArrayList<>();
-        fList.addAll(list);
+        fList.addAll(immutableMap.values());
 
         this.fastList = fList;
 
-        this.offsets = intList.toIntArray();
+        this.ints = this.offsets.toIntArray();
     }
 
     public int getOffset(int i) {
-        return this.offsets[i];
+        return this.ints[i];
     }
 
     public VertexFormatElement getElement(int i) {

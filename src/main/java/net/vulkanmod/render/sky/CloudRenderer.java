@@ -18,6 +18,7 @@ import net.vulkanmod.vulkan.shader.GraphicsPipeline;
 import net.vulkanmod.vulkan.util.ColorUtil;
 import org.apache.commons.lang3.Validate;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 
 import java.io.IOException;
 
@@ -124,7 +125,7 @@ public class CloudRenderer {
         float zTranslation = (float) (centerZ - (centerCellZ * CELL_WIDTH));
 
         poseStack.pushPose();
-        poseStack.mulPose(modelView);
+        poseStack.mulPose(modelView.getNormalizedRotation(new Quaternionf()));
         poseStack.translate(-xTranslation, yTranslation, -zTranslation);
 
         VRenderSystem.setModelOffset(-xTranslation, 0, -zTranslation);
@@ -175,7 +176,7 @@ public class CloudRenderer {
         final float downFaceBrightness = 0.7f;
         final float zDirBrightness = 0.8f;
 
-        BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder bufferBuilder = tesselator.getBuilder();
 
         int renderDistance = 32;
         boolean insideClouds = false;
@@ -265,11 +266,11 @@ public class CloudRenderer {
             }
         }
 
-        return bufferBuilder.build();
+        return bufferBuilder.end();
     }
 
     private static void putVertex(BufferBuilder bufferBuilder, float x, float y, float z, int color) {
-        bufferBuilder.addVertex(x, y, z).setColor(color);
+        bufferBuilder.vertex(x, y, z).color(color);
     }
 
     private static CloudGrid createCloudGrid(ResourceLocation textureLocation) {

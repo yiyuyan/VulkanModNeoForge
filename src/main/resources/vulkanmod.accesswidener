@@ -19,3 +19,4 @@ accessible field com/mojang/blaze3d/platform/GlStateManager$TextureState binding
 #1.20
 accessible field com/mojang/blaze3d/systems/RenderSystem vertexSorting Lcom/mojang/blaze3d/vertex/VertexSorting;
 accessible field net/minecraft/client/renderer/RenderStateShard name Ljava/lang/String;
+accessible method it/unimi/dsi/fastutil/longs/Long2ByteOpenHashMap ensureCapacity (I)V

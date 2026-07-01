@@ -58,6 +58,16 @@ public class TerrainBufferBuilder implements VertexConsumer {
         ++this.vertices;
     }
 
+    @Override
+    public void defaultColor(int i, int j, int k, int l) {
+
+    }
+
+    @Override
+    public void unsetDefaultColor() {
+
+    }
+
     public void vertex(float x, float y, float z, int color, float u, float v, int light, int packedNormal) {
         final long ptr = this.bufferPtr + this.nextElementByte;
         this.vertexBuilder.vertex(ptr, x, y, z, color, u, v, light, packedNormal);
@@ -89,17 +99,17 @@ public class TerrainBufferBuilder implements VertexConsumer {
     }
 
     @Override
-    public VertexConsumer addVertex(float x, float y, float z) {
+    public VertexConsumer vertex(double x, double y,double z) {
         this.elementPtr = this.bufferPtr + this.nextElementByte;
         this.endVertex();
 
-        this.vertexBuilder.position(this.elementPtr, x, y, z);
+        this.vertexBuilder.position(this.elementPtr, (float) x, (float) y, (float) z);
 
         return this;
     }
 
     @Override
-    public VertexConsumer setColor(int r, int g, int b, int a) {
+    public VertexConsumer color(int r, int g, int b, int a) {
         int color = (a & 0xFF) << 24 | (b & 0xFF) << 16 | (g & 0xFF) << 8 | (r & 0xFF);
 
         this.vertexBuilder.color(this.elementPtr, color);
@@ -108,9 +118,14 @@ public class TerrainBufferBuilder implements VertexConsumer {
     }
 
     @Override
-    public VertexConsumer setUv(float u, float v) {
+    public VertexConsumer uv(float u, float v) {
         this.vertexBuilder.uv(this.elementPtr, u, v);
 
+        return this;
+    }
+
+    @Override
+    public VertexConsumer overlayCoords(int i, int j) {
         return this;
     }
 
@@ -121,7 +136,7 @@ public class TerrainBufferBuilder implements VertexConsumer {
     }
 
     @Override
-    public VertexConsumer setNormal(float f, float g, float h) {
+    public VertexConsumer normal(float f, float g, float h) {
         int packedNormal = I32_SNorm.packNormal(f, g, h);
 
         this.vertexBuilder.normal(this.elementPtr, packedNormal);
@@ -129,13 +144,13 @@ public class TerrainBufferBuilder implements VertexConsumer {
         return this;
     }
 
-    @Override
-    public VertexConsumer setUv1(int i, int j) {
+/*    @Override
+    public VertexConsumer uv(int i, int j) {
         return this;
-    }
+    }*/
 
     @Override
-    public VertexConsumer setUv2(int i, int j) {
+    public VertexConsumer uv2(int i, int j) {
         return this;
     }
 

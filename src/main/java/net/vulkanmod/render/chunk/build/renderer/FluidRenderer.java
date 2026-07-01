@@ -3,7 +3,6 @@ package net.vulkanmod.render.chunk.build.renderer;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRendering;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -34,7 +33,7 @@ import net.vulkanmod.render.vertex.format.I32_SNorm;
 import net.vulkanmod.vulkan.util.ColorUtil;
 import org.joml.Vector3f;
 
-public class FluidRenderer implements FluidRendering.DefaultRenderer {
+public class FluidRenderer {
     private static final float MAX_FLUID_HEIGHT = 0.8888889F;
 
     private final BlockPos.MutableBlockPos mBlockPos = new BlockPos.MutableBlockPos();
@@ -66,7 +65,7 @@ public class FluidRenderer implements FluidRendering.DefaultRenderer {
             handler = FluidRenderHandlerRegistry.INSTANCE.get(isLava ? Fluids.LAVA : Fluids.WATER);
         }
 
-        FluidRendering.render(handler, this.resources.getRegion(), blockPos, bufferBuilder, blockState, fluidState, this);
+        this.render(handler, this.resources.getRegion(), blockPos, bufferBuilder, blockState, fluidState);
     }
 
 

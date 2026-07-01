@@ -51,12 +51,12 @@ public class DrawUtil {
 //        RenderSystem.setShader(() -> shaderInstance);
 
         Tesselator tesselator = RenderSystem.renderThreadTesselator();
-        BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferBuilder.addVertex(-1.0f, -1.0f, 0.0f).setUv(0.0F, 1.0F);
-        bufferBuilder.addVertex(1.0f, -1.0f, 0.0f).setUv(1.0F, 1.0F);
-        bufferBuilder.addVertex(1.0f, 1.0f, 0.0f).setUv(1.0F, 0.0F);
-        bufferBuilder.addVertex(-1.0f, 1.0f, 0.0f).setUv(0.0F, 0.0F);
-        var meshData = bufferBuilder.build();
+        BufferBuilder bufferBuilder = tesselator.getBuilder();
+        bufferBuilder.vertex(-1.0f, -1.0f, 0.0f).uv(0.0F, 1.0F);
+        bufferBuilder.vertex(1.0f, -1.0f, 0.0f).uv(1.0F, 1.0F);
+        bufferBuilder.vertex(1.0f, 1.0f, 0.0f).uv(1.0F, 0.0F);
+        bufferBuilder.vertex(-1.0f, 1.0f, 0.0f).uv(0.0F, 0.0F);
+        var meshData = bufferBuilder.end();
 
         BufferBuilder.DrawState parameters = meshData.drawState();
 

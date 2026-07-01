@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.core.Direction;
 import net.vulkanmod.interfaces.ExtendedVertexBuilder;
 import net.vulkanmod.render.vertex.format.I32_SNorm;
+import net.vulkanmod.vulkan.util.ColorUtil;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -109,7 +110,7 @@ public class VertexMultiConsumersM {
         }
 
         @Inject(method = "<init>", at = @At("RETURN"))
-        private void checkDelegates(VertexConsumer vertexConsumer, PoseStack.Pose pose, float f, CallbackInfo ci) {
+        private void checkDelegates(VertexConsumer arg, Matrix4f matrix4f, Matrix3f matrix3f, float f, CallbackInfo ci) {
             this.canUseFastVertex = (ExtendedVertexBuilder.of(this.delegate) != null);
         }
 
@@ -132,7 +133,7 @@ public class VertexMultiConsumersM {
             float g = -position.y() * this.textureScale;
 
             final int color = 0xFFFFFFFF;
-            this.delegate.addVertex(x, y, z, color, f, g, overlay, light, nx, ny, nz);
+            this.delegate.vertex(x, y, z, ColorUtil.ARGB.unpackA(color),ColorUtil.ARGB.unpackG(color), ColorUtil.ARGB.unpackG(color), ColorUtil.ARGB.unpackB(color), f, g, overlay, light, nx, ny, nz);
         }
     }
 }

@@ -18,11 +18,12 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.vulkanmod.interfaces.color.BlockColorsExtended;
 import net.vulkanmod.render.chunk.build.color.BlockColorRegistry;
+import net.vulkanmod.render.chunk.build.frapi.fabric.ShadeMode;
+import net.vulkanmod.render.chunk.build.frapi.fabric.interfaces.MaterialFinderShade;
 import net.vulkanmod.render.chunk.build.light.LightPipeline;
 import net.vulkanmod.render.chunk.build.light.data.QuadLightData;
 import org.jetbrains.annotations.Nullable;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
-import net.fabricmc.fabric.api.renderer.v1.material.ShadeMode;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.fabricmc.fabric.api.util.TriState;
 import net.vulkanmod.render.chunk.build.frapi.helper.ColorHelper;
@@ -40,8 +41,8 @@ import java.util.function.Supplier;
 
 public abstract class AbstractBlockRenderContext extends AbstractRenderContext {
 	private static final Renderer RENDERER = RendererAccess.INSTANCE.getRenderer();
-	protected static final RenderMaterial STANDARD_MATERIAL = RENDERER.materialFinder().shadeMode(ShadeMode.VANILLA).find();
-	protected static final RenderMaterial NO_AO_MATERIAL = RENDERER.materialFinder().shadeMode(ShadeMode.VANILLA).ambientOcclusion(TriState.FALSE).find();
+	protected static final RenderMaterial STANDARD_MATERIAL = ((MaterialFinderShade)RENDERER.materialFinder()).shadeMode(ShadeMode.VANILLA).find();
+	protected static final RenderMaterial NO_AO_MATERIAL = ((MaterialFinderShade)RENDERER.materialFinder()).shadeMode(ShadeMode.VANILLA).ambientOcclusion(TriState.FALSE).find();
 
 	protected final BlockColorRegistry blockColorRegistry;
 

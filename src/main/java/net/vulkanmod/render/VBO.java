@@ -46,7 +46,7 @@ public class VBO {
         this.uploadVertexBuffer(parameters, meshData.vertexBuffer());
         this.uploadIndexBuffer(meshData.indexBuffer());
 
-        meshData.close();
+        meshData.release();
     }
 
     private void uploadVertexBuffer(BufferBuilder.DrawState parameters, ByteBuffer data) {
@@ -119,7 +119,7 @@ public class VBO {
             VRenderSystem.applyMVP(modelView, projection);
             VRenderSystem.setPrimitiveTopologyGL(this.mode.asGLMode);
 
-            shaderInstance.setDefaultUniforms(VertexFormat.Mode.QUADS, modelView, projection, Minecraft.getInstance().getWindow());
+            //shaderInstance.setDefaultUniforms(VertexFormat.Mode.QUADS, modelView, projection, Minecraft.getInstance().getWindow());
             shaderInstance.apply();
 
             if (this.indexBuffer != null) {

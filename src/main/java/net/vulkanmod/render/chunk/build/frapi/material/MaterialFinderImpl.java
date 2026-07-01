@@ -22,10 +22,11 @@ import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
 import net.fabricmc.fabric.api.renderer.v1.material.MaterialFinder;
 import net.fabricmc.fabric.api.renderer.v1.material.MaterialView;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
-import net.fabricmc.fabric.api.renderer.v1.material.ShadeMode;
 import net.fabricmc.fabric.api.util.TriState;
+import net.vulkanmod.render.chunk.build.frapi.fabric.ShadeMode;
+import net.vulkanmod.render.chunk.build.frapi.fabric.interfaces.MaterialFinderShade;
 
-public class MaterialFinderImpl extends MaterialViewImpl implements MaterialFinder {
+public class MaterialFinderImpl extends MaterialViewImpl implements MaterialFinderShade {
 	private static int defaultBits = 0;
 
 	static {

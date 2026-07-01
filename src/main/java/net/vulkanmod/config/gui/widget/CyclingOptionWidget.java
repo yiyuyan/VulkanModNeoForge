@@ -125,7 +125,7 @@ public class CyclingOptionWidget extends OptionWidget<CyclingOption<?>> {
 
         void renderButton(PoseStack matrices, double mouseX, double mouseY) {
             Tesselator tesselator = Tesselator.getInstance();
-            BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION);
+            BufferBuilder bufferBuilder = tesselator.getBuilder();
 
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -148,16 +148,16 @@ public class CyclingOptionWidget extends OptionWidget<CyclingOption<?>> {
             float yC = y + height * 0.5f;
             float xC = x + width * 0.5f;
             if (this.direction == Direction.LEFT) {
-                bufferBuilder.addVertex(matrix4f, xC - w, yC, 0);
-                bufferBuilder.addVertex(matrix4f, xC + w, yC + h, 0);
-                bufferBuilder.addVertex(matrix4f, xC + w, yC - h, 0);
+                bufferBuilder.vertex(matrix4f, xC - w, yC, 0);
+                bufferBuilder.vertex(matrix4f, xC + w, yC + h, 0);
+                bufferBuilder.vertex(matrix4f, xC + w, yC - h, 0);
             } else {
-                bufferBuilder.addVertex(matrix4f, xC + w, yC, 0);
-                bufferBuilder.addVertex(matrix4f, xC - w, yC - h, 0);
-                bufferBuilder.addVertex(matrix4f, xC - w, yC + h, 0);
+                bufferBuilder.vertex(matrix4f, xC + w, yC, 0);
+                bufferBuilder.vertex(matrix4f, xC - w, yC - h, 0);
+                bufferBuilder.vertex(matrix4f, xC - w, yC + h, 0);
             }
 
-            BufferUploader.drawWithShader(bufferBuilder.build());
+            BufferUploader.drawWithShader(bufferBuilder.end());
 
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
             RenderSystem.setShader(GameRenderer::getPositionTexShader);

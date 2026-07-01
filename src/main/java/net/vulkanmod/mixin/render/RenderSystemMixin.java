@@ -80,7 +80,7 @@ public abstract class RenderSystemMixin {
     /**
      * @author
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public static void logicOp(GlStateManager.LogicOp op) {
         assertOnRenderThread();
         VRenderSystem.logicOp(op.value);

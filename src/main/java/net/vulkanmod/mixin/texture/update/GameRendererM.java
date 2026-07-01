@@ -19,7 +19,7 @@ public abstract class GameRendererM {
 
     @Inject(method = "render", at = @At("HEAD"))
     private void onRender(float partialTick, long nanoTime, boolean runTick, CallbackInfo ci) {
-        if (this.minecraft.noRender || !(runTick && this.minecraft.level != null && this.minecraft.isGameLoadFinished())) {
+        if (this.minecraft.noRender || !(runTick && this.minecraft.level != null && this.minecraft.is())) {
             ImageUploadHelper.INSTANCE.submitCommands();
         }
     }

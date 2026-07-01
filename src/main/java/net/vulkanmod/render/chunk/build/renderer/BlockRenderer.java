@@ -2,7 +2,6 @@ package net.vulkanmod.render.chunk.build.renderer;
 
 import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
-import net.fabricmc.fabric.api.renderer.v1.material.ShadeMode;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.client.Minecraft;
@@ -15,6 +14,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.SingleThreadedRandomSource;
 import net.minecraft.world.phys.Vec3;
 import net.vulkanmod.Initializer;
+import net.vulkanmod.render.chunk.build.frapi.fabric.ShadeMode;
+import net.vulkanmod.render.chunk.build.frapi.fabric.interfaces.MaterialViewShade;
 import net.vulkanmod.render.chunk.build.frapi.mesh.MutableQuadViewImpl;
 import net.vulkanmod.render.chunk.build.frapi.render.AbstractBlockRenderContext;
 import net.vulkanmod.render.chunk.build.light.LightPipeline;
@@ -73,7 +74,7 @@ public class BlockRenderer extends AbstractBlockRenderContext {
         final TriState aoMode = mat.ambientOcclusion();
         final boolean ao = this.useAO && (aoMode == TriState.TRUE || (aoMode == TriState.DEFAULT && this.defaultAO));
         final boolean emissive = mat.emissive();
-        final boolean vanillaShade = mat.shadeMode() == ShadeMode.VANILLA;
+        final boolean vanillaShade = ((MaterialViewShade)mat).shadeMode() == ShadeMode.VANILLA;
 
         TerrainBuilder terrainBuilder = getBufferBuilder(mat.blendMode());
         LightPipeline lightPipeline = ao ? this.smoothLightPipeline : this.flatLightPipeline;

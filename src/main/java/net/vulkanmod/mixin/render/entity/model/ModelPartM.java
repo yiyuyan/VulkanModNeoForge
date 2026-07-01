@@ -3,6 +3,7 @@ package net.vulkanmod.mixin.render.entity.model;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.FastColor;
 import net.vulkanmod.interfaces.ExtendedVertexBuilder;
 import net.vulkanmod.interfaces.ModelPartCubeMixed;
 import net.vulkanmod.render.model.CubeModel;
@@ -25,8 +26,8 @@ public abstract class ModelPartM {
     Vector3f normal = new Vector3f();
 
     @Inject(method = "compile", at = @At("HEAD"), cancellable = true)
-    private void injCompile(PoseStack.Pose pose, VertexConsumer vertexConsumer, int light, int overlay, int color, CallbackInfo ci) {
-        this.renderCubes(pose, vertexConsumer, light, overlay, color);
+    private void injCompile(PoseStack.Pose pose, VertexConsumer vertexConsumer, int light, int overlay, float f, float g, float h, float k, CallbackInfo ci) {
+        this.renderCubes(pose, vertexConsumer, light, overlay, ColorUtil.ARGB.pack(f,g,h,k));
         ci.cancel();
     }
 
@@ -80,8 +81,21 @@ public abstract class ModelPartM {
 
                     for (ModelPart.Vertex vertex : vertices) {
                         Vector3f pos = vertex.pos;
-                        vertexConsumer.addVertex(pos.x(), pos.y(), pos.z(), color, vertex.u, vertex.v, overlay, light,
-                                              normal.x(), normal.y(), normal.z());
+                        vertexConsumer.vertex(
+                                pos.x(),
+                                pos.y(),
+                                pos.z(),
+                                ColorUtil.ARGB.unpackA(color),
+                                ColorUtil.ARGB.unpackR(color),
+                                ColorUtil.ARGB.unpackG(color),
+                                ColorUtil.ARGB.unpackB(color),
+                                vertex.u,
+                                vertex.v,
+                                overlay,
+                                light,
+                                normal.x(),
+                                normal.y(),
+                                normal.z());
                     }
                 }
             }

@@ -34,7 +34,7 @@ public abstract class CodeParser {
             token = tokens.get(i);
 
             if (token.equals("%")) {
-                processed.removeLast();
+                processed.remove(processed.size()-1);
 
                 String prevToken = tokens.get(i - 1);
                 String nextToken = tokens.get(i + 1);

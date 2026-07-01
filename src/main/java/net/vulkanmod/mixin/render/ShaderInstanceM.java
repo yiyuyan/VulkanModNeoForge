@@ -120,7 +120,7 @@ public class ShaderInstanceM implements ShaderMixed {
     /**
      * @author
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public void close() {
         if (this.pipeline != null)
             this.pipeline.cleanUp();

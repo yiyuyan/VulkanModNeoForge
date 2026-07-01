@@ -49,12 +49,12 @@ public class MinecraftMixin {
         SpriteUpdateUtil.setDoUpload(doUpload);
     }
 
-    @Inject(method = "close", at = @At(value = "HEAD"))
+    @Inject(method = "close", at = @At(value = "HEAD"),remap = false)
     public void close(CallbackInfo ci) {
         Vulkan.waitIdle();
     }
 
-    @Inject(method = "close", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/VirtualScreen;close()V"))
+    @Inject(remap = false,method = "close", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/VirtualScreen;close()V"))
     public void close2(CallbackInfo ci) {
         Vulkan.cleanUp();
     }

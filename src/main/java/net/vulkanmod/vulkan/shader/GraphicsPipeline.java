@@ -272,9 +272,9 @@ public class GraphicsPipeline extends Pipeline {
             posDescription.location(i);
 
             VertexFormatElement formatElement = elements.get(i);
-            VertexFormatElement.Usage usage = formatElement.usage();
-            VertexFormatElement.Type type = formatElement.type();
-            int elementCount = formatElement.count();
+            VertexFormatElement.Usage usage = formatElement.getUsage();
+            VertexFormatElement.Type type = formatElement.getType();
+            int elementCount = formatElement.getCount();
 
             switch (usage) {
                 case POSITION -> {

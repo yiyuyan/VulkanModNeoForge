@@ -25,7 +25,7 @@ public class GlStateManagerM {
      * @author KSmc_brigade
      * @reason fit
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public static int _getInteger(int i) {
         return 0;
     }
@@ -34,7 +34,7 @@ public class GlStateManagerM {
      * @author KSmc_brigade
      * @reason fit
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public static void _getTexImage(int i, int j, int k, int l, long m) {
         RenderSystem.assertOnRenderThread();
         VkGlTexture.getTexImage(i, j, k, l, m);
@@ -49,7 +49,7 @@ public class GlStateManagerM {
      * @author KSmc_brigade
      * @reason fit
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public static void _glCopyTexSubImage2D(int i, int j, int k, int l, int m, int n, int o, int p) {
         //TODO
     }
@@ -58,7 +58,7 @@ public class GlStateManagerM {
      * @author KSmc_brigade
      * @reason fit
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public static void _glDeleteRenderbuffers(int i) {
         RenderSystem.assertOnRenderThreadOrInit();
         GL30.glDeleteRenderbuffers(i);
@@ -91,7 +91,7 @@ public class GlStateManagerM {
      * @author KSmc_brigade
      * @reason fit
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public static void _glDeleteFramebuffers(int i) {
         RenderSystem.assertOnRenderThreadOrInit();
         VkGlFramebuffer.deleteFramebuffer(i);
@@ -130,7 +130,7 @@ public class GlStateManagerM {
      * @author KSmc_brigade
      * @reason fit
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public static void glBlendFuncSeparate(int i, int j, int k, int l) {
         RenderSystem.assertOnRenderThread();
         VRenderSystem.blendFuncSeparate(i, j, k, l);

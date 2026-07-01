@@ -35,7 +35,8 @@ public abstract class BufferUploaderM {
 
             // Prevent drawing if formats don't match to avoid disturbing visual bugs
             if (shaderInstance.getVertexFormat() != parameters.format()) {
-                meshData.close();
+                meshData.release();
+                //meshData.close();
                 return;
             }
 
@@ -43,14 +44,14 @@ public abstract class BufferUploaderM {
 
             // Used to update legacy shader uniforms
             // TODO it would be faster to allocate a buffer from stack and set all values
-            shaderInstance.setDefaultUniforms(VertexFormat.Mode.QUADS, RenderSystem.getModelViewMatrix(),
-                                              RenderSystem.getProjectionMatrix(), Minecraft.getInstance().getWindow());
+            /*shaderInstance.setDefaultUniforms(VertexFormat.Mode.QUADS, RenderSystem.getModelViewMatrix(),
+                                              RenderSystem.getProjectionMatrix(), Minecraft.getInstance().getWindow());*/
             shaderInstance.apply();
 
             Renderer.getDrawer().draw(meshData.vertexBuffer(), meshData.indexBuffer(), parameters.mode(), parameters.format(), parameters.vertexCount());
         }
 
-        meshData.close();
+        meshData.release();
     }
 
     /**
@@ -68,7 +69,7 @@ public abstract class BufferUploaderM {
             Renderer.getDrawer().draw(meshData.vertexBuffer(), null, parameters.mode(), parameters.format(), parameters.vertexCount());
         }
 
-        meshData.close();
+        meshData.release();
     }
 
 }

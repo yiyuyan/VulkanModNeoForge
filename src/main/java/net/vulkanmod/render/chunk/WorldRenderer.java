@@ -452,7 +452,7 @@ public class WorldRenderer {
                         int j1 = sortedset.last().getProgress();
                         if (j1 >= 0) {
                             PoseStack.Pose pose = poseStack.last();
-                            VertexConsumer vertexconsumer = new SheetedDecalTextureGenerator(this.renderBuffers.crumblingBufferSource().getBuffer(ModelBakery.DESTROY_TYPES.get(j1)), pose, 1.0f);
+                            VertexConsumer vertexconsumer = new SheetedDecalTextureGenerator(this.renderBuffers.crumblingBufferSource().getBuffer(ModelBakery.DESTROY_TYPES.get(j1)), pose.pose(), pose.normal(),1.0f);
                             bufferSource1 = (renderType) -> {
                                 VertexConsumer vertexConsumer2 = bufferSource.getBuffer(renderType);
                                 return renderType.affectsCrumbling() ? VertexMultiConsumer.create(vertexconsumer, vertexConsumer2) : vertexConsumer2;

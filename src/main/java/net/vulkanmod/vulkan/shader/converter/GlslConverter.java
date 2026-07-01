@@ -59,7 +59,7 @@ public class GlslConverter {
             int semicolons = charOccurences(line, ';');
 
             if (semicolons > 1) {
-                var lines2 = line.splitWithDelimiters(";", 0);
+                var lines2 = line.split(";", 0);
 
                 int matchingFor = 0;
                 for (int i = 0; i < lines2.length;) {

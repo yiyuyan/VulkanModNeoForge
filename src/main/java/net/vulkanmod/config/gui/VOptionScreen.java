@@ -226,18 +226,8 @@ public class VOptionScreen extends Screen {
     }
 
     @Override
-    public void renderBackground(GuiGraphics guiGraphics, int i, int j, float f) {
-        if (this.minecraft.level == null) {
-            this.renderPanorama(guiGraphics, f);
-        }
-
-        this.renderMenuBackground(guiGraphics);
-
-    }
-
-    @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
-        this.renderBackground(guiGraphics, 0, 0, delta);
+        this.renderBackground(guiGraphics);
 
         GuiRenderer.guiGraphics = guiGraphics;
         GuiRenderer.setPoseStack(guiGraphics.pose());

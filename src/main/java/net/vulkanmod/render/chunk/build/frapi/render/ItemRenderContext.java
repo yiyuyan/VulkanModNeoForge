@@ -326,7 +326,7 @@ public class ItemRenderContext extends AbstractRenderContext {
 
 	private VertexConsumer createDynamicDisplayGlintVertexConsumer(RenderType layer) {
 		if (dynamicDisplayGlintEntry == null) {
-			dynamicDisplayGlintEntry = matrixStack.last().copy();
+			dynamicDisplayGlintEntry = matrixStack.last();
 
 			if (transformMode == ItemDisplayContext.GUI) {
 				MatrixUtil.mulComponentWise(dynamicDisplayGlintEntry.pose(), 0.5F);

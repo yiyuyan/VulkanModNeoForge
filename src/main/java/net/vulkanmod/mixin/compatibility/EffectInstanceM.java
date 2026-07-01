@@ -89,7 +89,7 @@ public class EffectInstanceM {
      * @author
      * @reason
      */
-    @Overwrite
+    @Overwrite(remap = false)
     public void close() {
 
         for (com.mojang.blaze3d.shaders.Uniform uniform : this.uniforms) {

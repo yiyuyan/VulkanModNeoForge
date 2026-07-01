@@ -64,10 +64,10 @@ public abstract class GuiRenderer {
 
         setupBufferBuilder();
 
-        bufferBuilder.addVertex(matrix4f, x0, y0, z).setColor(r, g, b, a);
-        bufferBuilder.addVertex(matrix4f, x0, y1, z).setColor(r, g, b, a);
-        bufferBuilder.addVertex(matrix4f, x1, y1, z).setColor(r, g, b, a);
-        bufferBuilder.addVertex(matrix4f, x1, y0, z).setColor(r, g, b, a);
+        bufferBuilder.vertex(matrix4f, x0, y0, z).color(r, g, b, a);
+        bufferBuilder.vertex(matrix4f, x0, y1, z).color(r, g, b, a);
+        bufferBuilder.vertex(matrix4f, x1, y1, z).color(r, g, b, a);
+        bufferBuilder.vertex(matrix4f, x1, y0, z).color(r, g, b, a);
 
         submitIfNeeded();
     }
@@ -90,10 +90,10 @@ public abstract class GuiRenderer {
 
         setupBufferBuilder();
 
-        bufferBuilder.addVertex(matrix4f, x0, y0, z).setColor(r1, g1, b1, a1);
-        bufferBuilder.addVertex(matrix4f, x0, y1, z).setColor(r2, g2, b2, a2);
-        bufferBuilder.addVertex(matrix4f, x1, y1, z).setColor(r2, g2, b2, a2);
-        bufferBuilder.addVertex(matrix4f, x1, y0, z).setColor(r1, g1, b1, a1);
+        bufferBuilder.vertex(matrix4f, x0, y0, z).color(r1, g1, b1, a1);
+        bufferBuilder.vertex(matrix4f, x0, y1, z).color(r2, g2, b2, a2);
+        bufferBuilder.vertex(matrix4f, x1, y1, z).color(r2, g2, b2, a2);
+        bufferBuilder.vertex(matrix4f, x1, y0, z).color(r1, g1, b1, a1);
 
         submitIfNeeded();
     }
@@ -148,11 +148,11 @@ public abstract class GuiRenderer {
 
     public static void endBatch() {
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        BufferBuilder.RenderedBuffer meshData = bufferBuilder.build();
+        BufferBuilder.RenderedBuffer meshData = bufferBuilder.end();
 
         if (meshData != null) {
             BufferUploader.drawWithShader(meshData);
-            meshData.close();
+            meshData.release();
         }
 
         batching = false;
@@ -169,7 +169,7 @@ public abstract class GuiRenderer {
 
     private static void setupBufferBuilder() {
         if (!batching || !drawing) {
-            bufferBuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+            bufferBuilder = Tesselator.getInstance().getBuilder();
             drawing = true;
         }
     }
@@ -177,7 +177,7 @@ public abstract class GuiRenderer {
     private static void submitIfNeeded() {
         if (!batching) {
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
-            BufferUploader.drawWithShader(bufferBuilder.build());
+            BufferUploader.drawWithShader(bufferBuilder.end());
             drawing = false;
         }
     }

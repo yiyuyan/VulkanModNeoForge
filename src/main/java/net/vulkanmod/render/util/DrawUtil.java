@@ -18,13 +18,13 @@ public class DrawUtil {
     public static void drawTexQuad(BufferBuilder builder, float x0, float y0, float x1, float y1, float z,
                                    float u0, float v0, float u1, float v1) {
         Tesselator tesselator = RenderSystem.renderThreadTesselator();
-        BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferBuilder.addVertex(x0, y0, z).setUv(0.0F, 1.0F);
-        bufferBuilder.addVertex(x1, y0, z).setUv(1.0F, 1.0F);
-        bufferBuilder.addVertex(x1, y1, z).setUv(1.0F, 0.0F);
-        bufferBuilder.addVertex(x0, y1, z).setUv(0.0F, 0.0F);
+        BufferBuilder bufferBuilder = tesselator.getBuilder();
+        bufferBuilder.vertex(x0, y0, z).uv(0.0F, 1.0F);
+        bufferBuilder.vertex(x1, y0, z).uv(1.0F, 1.0F);
+        bufferBuilder.vertex(x1, y1, z).uv(1.0F, 0.0F);
+        bufferBuilder.vertex(x0, y1, z).uv(0.0F, 0.0F);
 
-        BufferBuilder.RenderedBuffer meshData = bufferBuilder.build();
+        BufferBuilder.RenderedBuffer meshData = bufferBuilder.end();
 
         Renderer.getDrawer().draw(meshData.vertexBuffer(), VertexFormat.Mode.QUADS, meshData.drawState().format(), meshData.drawState().vertexCount());
 
@@ -32,13 +32,13 @@ public class DrawUtil {
 
     public static void blitQuad(float x0, float y0, float x1, float y1) {
         Tesselator tesselator = RenderSystem.renderThreadTesselator();
-        BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferBuilder.addVertex(x0, y0, 0.0f).setUv(0.0F, 1.0F);
-        bufferBuilder.addVertex(x1, y0, 0.0f).setUv(1.0F, 1.0F);
-        bufferBuilder.addVertex(x1, y1, 0.0f).setUv(1.0F, 0.0F);
-        bufferBuilder.addVertex(x0, y1, 0.0f).setUv(0.0F, 0.0F);
+        BufferBuilder bufferBuilder = tesselator.getBuilder();
+        bufferBuilder.vertex(x0, y0, 0.0f).uv(0.0F, 1.0F);
+        bufferBuilder.vertex(x1, y0, 0.0f).uv(1.0F, 1.0F);
+        bufferBuilder.vertex(x1, y1, 0.0f).uv(1.0F, 0.0F);
+        bufferBuilder.vertex(x0, y1, 0.0f).uv(0.0F, 0.0F);
 
-        BufferBuilder.RenderedBuffer meshData = bufferBuilder.build();
+        BufferBuilder.RenderedBuffer meshData = bufferBuilder.end();
 
         Renderer.getDrawer().draw(meshData.vertexBuffer(), VertexFormat.Mode.QUADS, meshData.drawState().format(), meshData.drawState().vertexCount());
 

@@ -250,8 +250,6 @@ public abstract class PostChainM {
 //        return postPass;
 //    }
 
-    @Shadow protected abstract void setFilterMode(int i);
-
     /**
      * @author
      * @reason
@@ -265,25 +263,21 @@ public abstract class PostChainM {
             this.time += f - this.lastStamp;
         }
 
-        this.lastStamp = f;
+        for(this.lastStamp = f; this.time > 20.0F; this.time -= 20.0F) {}
+
+        /*this.lastStamp = f;
 
         while(this.time > 20.0F) {
             this.time -= 20.0F;
-        }
+        }*/
 
-        int filterMode = 9728;
+        //int filterMode = 9728;
 
         for(PostPass postPass : this.passes) {
-            int passFilterMode = postPass.getFilterMode();
-            if (filterMode != passFilterMode) {
-                this.setFilterMode(passFilterMode);
-                filterMode = passFilterMode;
-            }
-
             postPass.process(this.time / 20.0F);
         }
 
-        this.setFilterMode(9728);
+        //this.setFilterMode(9728);
 
         Renderer.resetViewport();
     }

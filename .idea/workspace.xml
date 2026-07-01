@@ -5,39 +5,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Updating 1.20.1">
-      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/window/ImmediateWindowHandlerMixin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frapi/fix/MaterialFinderMixin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frapi/fix/MaterialViewMixin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/fabric/ShadeMode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/fabric/interfaces/MaterialFinderShade.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/fabric/interfaces/MaterialViewShade.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/gui/GuiElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/gui/GuiElement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/gui/GuiRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/gui/GuiRenderer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/gui/VOptionScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/gui/VOptionScreen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/gui/widget/CyclingOptionWidget.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/gui/widget/CyclingOptionWidget.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/chunk/ClientChunkCacheM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/chunk/ClientChunkCacheM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/chunk/ClientPacketListenerM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/chunk/ClientPacketListenerM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/chunk/SectionBufferBuilderPoolM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/chunk/SectionBufferBuilderPoolM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/chunk/SectionRenderDispatcherM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/chunk/SectionRenderDispatcherM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/chunk/ViewAreaM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/chunk/ViewAreaM.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/EffectInstanceM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/PostChainM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/PostChainM.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/PostPassM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/compatibility/PostPassM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/matrix/PoseAccessor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/profiling/GuiMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/profiling/GuiMixin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/BufferUploaderM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/BufferUploaderM.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlStateManagerM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/GlStateManagerM.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/MinecraftMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/MinecraftMixin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/RenderSystemMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/RenderSystemMixin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/ShaderInstanceM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/ShaderInstanceM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/clouds/LevelRendererM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/clouds/LevelRendererM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frame/MinecraftMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frame/MinecraftMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frapi/fix/RendererAccessImplMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frapi/fix/RendererAccessImplMixin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/particle/SingleQuadParticleM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/particle/SingleQuadParticleM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/BufferBuilderM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/BufferBuilderM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/FaceBakeryM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/FaceBakeryM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/entity/model/ModelPartM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/entity/model/ModelPartM.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/VertexBufferM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/VertexBufferM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/screen/OptionsScreenM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/screen/OptionsScreenM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/screen/ScreenM.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/VertexFormatMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/VertexFormatMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/image/MNativeImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/image/MNativeImage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/update/GameRendererM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/update/GameRendererM.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/window/WindowMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/window/WindowMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/vertex/VertexMultiConsumersM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/vertex/VertexMultiConsumersM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/VBO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/VBO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/WorldRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/material/MaterialFinderImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/material/MaterialFinderImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/material/MaterialViewImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/material/MaterialViewImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/AbstractBlockRenderContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/AbstractBlockRenderContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/AbstractRenderContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/AbstractRenderContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/BlockRenderContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/BlockRenderContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/ItemRenderContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/ItemRenderContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/renderer/BlockRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/renderer/BlockRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/renderer/FluidRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/renderer/FluidRenderer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/sky/CloudRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/sky/CloudRenderer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/util/DrawUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/util/DrawUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainBufferBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/vertex/TerrainBufferBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/GraphicsPipeline.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/GraphicsPipeline.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/converter/CodeParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/converter/CodeParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/converter/GlslConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/shader/converter/GlslConverter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/util/DrawUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/util/DrawUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/vulkanmod.accesswidener" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/vulkanmod.accesswidener" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -91,6 +100,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -334,14 +344,6 @@
       <option name="presentableId" value="Default" />
       <updated>1757938118717</updated>
       <workItem from="1782437909229" duration="29867000" />
-    </task>
-    <task id="LOCAL-00046" summary="Refactor: remove unused interface">
-      <option name="closed" value="true" />
-      <created>1782308381794</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1782308381794</updated>
     </task>
     <task id="LOCAL-00047" summary="Fix profiler result missing entries">
       <option name="closed" value="true" />
@@ -727,7 +729,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782884479724</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <task id="LOCAL-00095" summary="Updating 1.20.1">
+      <option name="closed" value="true" />
+      <created>1782890009514</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1782890009514</updated>
+    </task>
+    <option name="localTasksCounter" value="96" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

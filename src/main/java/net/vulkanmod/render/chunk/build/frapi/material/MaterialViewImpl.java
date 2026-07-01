@@ -20,9 +20,10 @@ import static net.vulkanmod.render.chunk.build.frapi.mesh.EncodingFormat.bitMask
 
 import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
 import net.fabricmc.fabric.api.renderer.v1.material.MaterialView;
-import net.fabricmc.fabric.api.renderer.v1.material.ShadeMode;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.util.Mth;
+import net.vulkanmod.render.chunk.build.frapi.fabric.ShadeMode;
+import net.vulkanmod.render.chunk.build.frapi.fabric.interfaces.MaterialViewShade;
 
 /**
  * Default implementation of the standard render materials.
@@ -30,7 +31,7 @@ import net.minecraft.util.Mth;
  * packing of the various material properties. This offers
  * easy/fast interning via int/object hashmap.
  */
-public class MaterialViewImpl implements MaterialView {
+public class MaterialViewImpl implements MaterialViewShade {
 	private static final BlendMode[] BLEND_MODES = BlendMode.values();
 	private static final int BLEND_MODE_COUNT = BLEND_MODES.length;
 	private static final TriState[] TRI_STATES = TriState.values();
