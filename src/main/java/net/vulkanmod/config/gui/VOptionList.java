@@ -275,7 +275,6 @@ public class VOptionList extends GuiElement {
             rowTop += entry.getTotalHeight();
         }
 
-        GuiRenderer.flush();
     }
 
     private Entry getEntry(int j) {

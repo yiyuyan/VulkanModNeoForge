@@ -77,10 +77,11 @@ public abstract class VTextureSelector {
 
             if (texture != null && texture.getVulkanImage() != null) {
                 VTextureSelector.bindTexture(state.imageIdx, texture.getVulkanImage());
-            }
-            else {
-                 texture = GlTexture.getTexture(MissingTextureAtlasSprite.getTexture().getId());
-                VTextureSelector.bindTexture(state.imageIdx, texture.getVulkanImage());
+            } else {
+                VulkanImage bound = boundTextures[state.imageIdx];
+                if (bound == null) {
+                    VTextureSelector.bindTexture(state.imageIdx, whiteTexture);
+                }
             }
         }
     }

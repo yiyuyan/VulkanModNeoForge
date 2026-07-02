@@ -33,12 +33,12 @@ import net.minecraft.util.Mth;
  * packing/unpacking quad data in an array of integers.
  * All of this is implementation-specific - that's why it isn't a "helper" class.
  */
-public abstract class EncodingFormat {
+public final class EncodingFormat {
 	private EncodingFormat() { }
 
 	static final int HEADER_BITS = 0;
 	static final int HEADER_FACE_NORMAL = 1;
-	static final int HEADER_COLOR_INDEX = 2;
+	static final int HEADER_TINT_INDEX = 2;
 	static final int HEADER_TAG = 3;
 	public static final int HEADER_STRIDE = 4;
 

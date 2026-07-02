@@ -625,6 +625,9 @@ public class Renderer {
         vkCmdSetDepthBias(commandBuffer, 0.0F, 0.0F, 0.0F);
 
         vkCmdSetLineWidth(commandBuffer, 1.0F);
+
+        resetViewport();
+        resetScissor();
     }
 
     public static void setDepthBias(float constant, float slope) {
@@ -644,6 +647,8 @@ public class Renderer {
     public static void clearAttachments(int v, int width, int height) {
         if (skipRendering)
             return;
+
+        resetScissor();
 
         try (MemoryStack stack = stackPush()) {
             //ClearValues have to be different for each attachment to clear,
@@ -705,10 +710,16 @@ public class Renderer {
     }
 
     public static void resetViewport() {
-        int width = INSTANCE.swapChain.getWidth();
-        int height = INSTANCE.swapChain.getHeight();
+        int w, h;
+        if (INSTANCE.boundFramebuffer != null) {
+            w = INSTANCE.boundFramebuffer.getWidth();
+            h = INSTANCE.boundFramebuffer.getHeight();
+        } else {
+            w = INSTANCE.swapChain.getWidth();
+            h = INSTANCE.swapChain.getHeight();
+        }
 
-        setViewportState(0, 0, width, height);
+        setViewportState(0, 0, w, h);
     }
 
     public static void setViewportState(int x, int y, int width, int height) {
@@ -737,11 +748,13 @@ public class Renderer {
     }
 
     public static void setScissor(int x, int y, int width, int height) {
-        if (INSTANCE.boundFramebuffer == null)
+        if (!INSTANCE.recordingCmds)
             return;
 
         try (MemoryStack stack = stackPush()) {
-            int framebufferHeight = INSTANCE.boundFramebuffer.getHeight();
+            int framebufferHeight = INSTANCE.boundFramebuffer != null
+                ? INSTANCE.boundFramebuffer.getHeight()
+                : INSTANCE.swapChain.getHeight();
 
             x = Math.max(0, x);
 
@@ -754,11 +767,21 @@ public class Renderer {
     }
 
     public static void resetScissor() {
-        if (INSTANCE.boundFramebuffer == null)
+        if (!INSTANCE.recordingCmds)
             return;
 
         try (MemoryStack stack = stackPush()) {
-            VkRect2D.Buffer scissor = INSTANCE.boundFramebuffer.scissor(stack);
+            int w, h;
+            if (INSTANCE.boundFramebuffer != null) {
+                w = INSTANCE.boundFramebuffer.getWidth();
+                h = INSTANCE.boundFramebuffer.getHeight();
+            } else {
+                w = INSTANCE.swapChain.getWidth();
+                h = INSTANCE.swapChain.getHeight();
+            }
+            VkRect2D.Buffer scissor = VkRect2D.malloc(1, stack);
+            scissor.offset().set(0, 0);
+            scissor.extent().set(w, h);
             vkCmdSetScissor(INSTANCE.currentCmdBuffer, 0, scissor);
         }
     }

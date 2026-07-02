@@ -1,6 +1,5 @@
 package net.vulkanmod.mixin.render;
 
-import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.systems.TimerQuery;
 import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.Minecraft;
@@ -38,47 +37,6 @@ public class MinecraftMixin {
             Initializer.LOGGER.error("Fabulous graphics mode not supported, forcing Fancy");
             graphicsModeOption.set(GraphicsStatus.FANCY);
         }
-    }
-
-    @Inject(method = "runTick", at = @At(value = "HEAD"))
-    private void preFrameOps(boolean bl, CallbackInfo ci) {
-        Renderer.getInstance().preInitFrame();
-    }
-
-    //Main target (framebuffer) ops
-    @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;clear(I)V"))
-    private void beginRender(int i, boolean bl) {
-        Renderer.getInstance().beginFrame();
-//        RenderSystem.clear(i);
-    }
-
-    @Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/Window;updateDisplay(Lcom/mojang/blaze3d/TracyFrameCapture;)V", shift = At.Shift.BEFORE))
-    private void submitRender(boolean tick, CallbackInfo ci) {
-        Renderer.getInstance().endFrame();
-    }
-
-    @Inject(method = "disconnect(Lnet/minecraft/client/gui/screens/Screen;Z)V", at = @At(value = "RETURN"))
-    private void beginRender2(CallbackInfo ci) {
-        Renderer.getInstance().beginFrame();
-    }
-
-    @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/pipeline/RenderTarget;bindWrite(Z)V"))
-    private void redirectMainTarget1(RenderTarget instance, boolean bl) {
-        Renderer.getInstance().getMainPass().mainTargetBindWrite();
-    }
-
-    @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/pipeline/RenderTarget;unbindWrite()V"))
-    private void redirectMainTarget2(RenderTarget instance) {
-        Renderer.getInstance().getMainPass().mainTargetUnbindWrite();
-    }
-
-    @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/pipeline/RenderTarget;blitToScreen(II)V"))
-    private void removeBlit(RenderTarget instance, int i, int j) {
-    }
-
-
-    @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Ljava/lang/Thread;yield()V"))
-    private void removeThreadYield() {
     }
 
     @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/TimerQuery;getInstance()Ljava/util/Optional;"))

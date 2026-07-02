@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,6 +30,8 @@ import net.vulkanmod.render.vertex.TerrainRenderType;
 import net.vulkanmod.render.vertex.format.I32_SNorm;
 import net.vulkanmod.vulkan.util.ColorUtil;
 import org.joml.Vector3f;
+
+import java.util.function.Predicate;
 
 public class BlockRenderer extends AbstractBlockRenderContext {
     private Vector3f pos;
@@ -64,12 +67,12 @@ public class BlockRenderer extends AbstractBlockRenderContext {
         pos.add((float) offset.x, (float) offset.y, (float) offset.z);
 
         this.prepareForBlock(blockState, blockPos, model.useAmbientOcclusion());
-        ((FabricBakedModel)model).emitBlockQuads(renderRegion, blockState, blockPos, this.randomSupplier, this);
+        Predicate<Direction> cullTest = face -> isFaceCulled(face);
+        ((FabricBakedModel)model).emitBlockQuads(getEmitter(), renderRegion, blockState, blockPos, this.randomSupplier, cullTest);
     }
 
     protected void endRenderQuad(MutableQuadViewImpl quad) {
         final RenderMaterial mat = quad.material();
-        final int colorIndex = mat.disableColorIndex() ? -1 : quad.colorIndex();
         final TriState aoMode = mat.ambientOcclusion();
         final boolean ao = this.useAO && (aoMode == TriState.TRUE || (aoMode == TriState.DEFAULT && this.defaultAO));
         final boolean emissive = mat.emissive();
@@ -78,7 +81,7 @@ public class BlockRenderer extends AbstractBlockRenderContext {
         TerrainBuilder terrainBuilder = getBufferBuilder(mat.blendMode());
         LightPipeline lightPipeline = ao ? this.smoothLightPipeline : this.flatLightPipeline;
 
-        colorizeQuad(quad, colorIndex);
+        tintQuad(quad);
         shadeQuad(quad, lightPipeline, emissive, vanillaShade);
         bufferQuad(terrainBuilder, this.pos, quad, this.quadLightData);
     }

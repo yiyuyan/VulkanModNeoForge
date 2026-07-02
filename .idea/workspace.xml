@@ -5,7 +5,50 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ecb70873-7918-4861-a185-c41d926df8f9" name="更改" comment="Include NeoFabricRenderApis-V">
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frapi/QuadEmitterM.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/mesh/ExtendedQuadEmitter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/mesh/MutableMeshImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Client.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Minecraft_Server.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/Initializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/Initializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/gui/GuiRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/gui/GuiRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/gui/VOptionList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/config/gui/VOptionList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/chunk/LevelRendererMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/chunk/LevelRendererMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/profiling/LevelRendererMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/profiling/LevelRendererMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/MinecraftMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/MinecraftMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/entity/LevelRendererM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/entity/LevelRendererM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frame/MinecraftMixin.java.disabled" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frame/MinecraftMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frapi/BakedModelM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frapi/BakedModelM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frapi/ItemRendererAccessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frapi/ItemRendererAccessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frapi/ItemRendererMixin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frapi/ItemRendererMixin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/frapi/fix/RendererAccessImplMixin.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/FaceBakeryM.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/render/vertex/FaceBakeryM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/image/MNativeImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/mixin/texture/image/MNativeImage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/RenderRegionBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/RenderRegionBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/VulkanModRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/VulkanModRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/helper/GeometryHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/helper/GeometryHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/material/MaterialFinderImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/material/MaterialFinderImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/material/MaterialViewImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/material/MaterialViewImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/mesh/EncodingFormat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/mesh/EncodingFormat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/mesh/MeshBuilderImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/mesh/MeshImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/mesh/MeshImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/mesh/MutableQuadViewImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/mesh/MutableQuadViewImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/mesh/QuadViewImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/mesh/QuadViewImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/AbstractBlockRenderContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/AbstractBlockRenderContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/AbstractRenderContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/AbstractRenderContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/BlockRenderContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/BlockRenderContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/ItemRenderContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/frapi/render/ItemRenderContext.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/renderer/BlockRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/render/chunk/build/renderer/BlockRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Renderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Renderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Vulkan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/Vulkan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/pass/DefaultMainPass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/pass/DefaultMainPass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/VTextureSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/net/vulkanmod/vulkan/texture/VTextureSelector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/neoforge.mods.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/neoforge.mods.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/vulkanmod.mixins.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +116,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/yiyuyan/VulkanModNeoForge&quot;,
-    &quot;accountId&quot;: &quot;7918b495-ded2-4c2e-9b47-237683156e73&quot;
+    &quot;accountId&quot;: &quot;e6d95576-ed96-483e-9506-3a04fb6e7a54&quot;
   }
 }</component>
   <component name="ProblemsViewState">
@@ -136,7 +179,7 @@
       <command value="gradle build" />
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.VulkanModNeoForge [build]">
+  <component name="RunManager" selected="Gradle.VulkanModNeoForge [runClient]">
     <configuration name="VulkanModNeoForge [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -254,7 +297,7 @@
             <option value="runClient" />
           </list>
         </option>
-        <option name="vmOptions" />
+        <option name="vmOptions" value="" />
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
@@ -266,18 +309,18 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Application.Minecraft Client" />
-      <item itemvalue="Application.Minecraft Server" />
       <item itemvalue="Gradle.VulkanModNeoForge [build]" />
       <item itemvalue="Gradle.VulkanModNeoForge [clean build runClient]" />
       <item itemvalue="Gradle.VulkanModNeoForge [clean runClient]" />
       <item itemvalue="Gradle.VulkanModNeoForge [clean]" />
       <item itemvalue="Gradle.VulkanModNeoForge [runClient]" />
+      <item itemvalue="应用程序.Minecraft Client" />
+      <item itemvalue="应用程序.Minecraft Server" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.VulkanModNeoForge [build]" />
         <item itemvalue="Gradle.VulkanModNeoForge [runClient]" />
+        <item itemvalue="Gradle.VulkanModNeoForge [build]" />
         <item itemvalue="Gradle.VulkanModNeoForge [clean build runClient]" />
         <item itemvalue="Gradle.VulkanModNeoForge [clean]" />
         <item itemvalue="Gradle.VulkanModNeoForge [clean runClient]" />

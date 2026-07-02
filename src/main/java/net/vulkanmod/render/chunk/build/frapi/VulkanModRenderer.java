@@ -7,22 +7,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.fabricmc.fabric.api.renderer.v1.Renderer;
 import net.fabricmc.fabric.api.renderer.v1.material.MaterialFinder;
 import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
-import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
+import net.fabricmc.fabric.api.renderer.v1.mesh.MutableMesh;
 import net.vulkanmod.render.chunk.build.frapi.material.MaterialFinderImpl;
 import net.vulkanmod.render.chunk.build.frapi.material.RenderMaterialImpl;
-import net.vulkanmod.render.chunk.build.frapi.mesh.MeshBuilderImpl;
+import net.vulkanmod.render.chunk.build.frapi.mesh.MutableMeshImpl;
 
-/**
- * The Fabric default renderer implementation. Supports all
- * features defined in the API except shaders and offers no special materials.
- */
 public class VulkanModRenderer implements Renderer {
 	public static final VulkanModRenderer INSTANCE = new VulkanModRenderer();
 
-	public static final RenderMaterial MATERIAL_STANDARD = INSTANCE.materialFinder().find();
+	public static final RenderMaterial STANDARD_MATERIAL = INSTANCE.materialFinder().find();
 
 	static {
-		INSTANCE.registerMaterial(RenderMaterial.MATERIAL_STANDARD, MATERIAL_STANDARD);
+		INSTANCE.registerMaterial(RenderMaterial.STANDARD_ID, STANDARD_MATERIAL);
 	}
 
 	private final HashMap<ResourceLocation, RenderMaterial> materialMap = new HashMap<>();
@@ -30,8 +26,8 @@ public class VulkanModRenderer implements Renderer {
 	private VulkanModRenderer() {}
 
 	@Override
-	public MeshBuilder meshBuilder() {
-		return new MeshBuilderImpl();
+	public MutableMesh mutableMesh() {
+		return new MutableMeshImpl();
 	}
 
 	@Override
@@ -48,8 +44,7 @@ public class VulkanModRenderer implements Renderer {
 	public boolean registerMaterial(ResourceLocation id, RenderMaterial material) {
 		if (materialMap.containsKey(id)) return false;
 
-		// cast to prevent acceptance of impostor implementations
-		materialMap.put(id, (RenderMaterialImpl) material);
+		materialMap.put(id, material);
 		return true;
 	}
 }

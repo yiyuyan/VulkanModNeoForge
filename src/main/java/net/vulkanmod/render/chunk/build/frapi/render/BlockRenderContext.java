@@ -24,9 +24,8 @@ import net.vulkanmod.render.chunk.build.light.flat.FlatLightPipeline;
 import net.vulkanmod.render.chunk.build.light.smooth.NewSmoothLightPipeline;
 import net.vulkanmod.render.chunk.build.light.smooth.SmoothLightPipeline;
 
-/**
- * Context for non-terrain block rendering.
- */
+import java.util.function.Predicate;
+
 public class BlockRenderContext extends AbstractBlockRenderContext {
 	private VertexConsumer vertexConsumer;
 
@@ -64,14 +63,14 @@ public class BlockRenderContext extends AbstractBlockRenderContext {
 		this.prepareForWorld(blockView, cull);
 		this.prepareForBlock(state, pos, model.useAmbientOcclusion());
 
-		((FabricBakedModel)model).emitBlockQuads(blockView, state, pos, this.randomSupplier, this);
+		Predicate<net.minecraft.core.Direction> cullTest = face -> isFaceCulled(face);
+		((FabricBakedModel)model).emitBlockQuads(getEmitter(), blockView, state, pos, this.randomSupplier, cullTest);
 
 		this.vertexConsumer = null;
 	}
 
 	protected void endRenderQuad(MutableQuadViewImpl quad) {
 		final RenderMaterial mat = quad.material();
-		final int colorIndex = mat.disableColorIndex() ? -1 : quad.colorIndex();
 		final TriState aoMode = mat.ambientOcclusion();
 		final boolean ao = this.useAO && (aoMode == TriState.TRUE || (aoMode == TriState.DEFAULT && this.defaultAO));
 		final boolean emissive = mat.emissive();
@@ -79,15 +78,11 @@ public class BlockRenderContext extends AbstractBlockRenderContext {
 
 		LightPipeline lightPipeline = ao ? this.smoothLightPipeline : this.flatLightPipeline;
 
-		colorizeQuad(quad, colorIndex);
+		tintQuad(quad);
 		shadeQuad(quad, lightPipeline, emissive, vanillaShade);
-		copyLightData(quad);
-        bufferQuad(quad, vertexConsumer);
-	}
-
-	private void copyLightData(MutableQuadViewImpl quad) {
 		for (int i = 0; i < 4; i++) {
 			quad.lightmap(i, this.quadLightData.lm[i]);
 		}
+		bufferQuad(quad, vertexConsumer);
 	}
 }

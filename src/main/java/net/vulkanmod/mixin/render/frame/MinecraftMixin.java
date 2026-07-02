@@ -1,10 +1,8 @@
 package net.vulkanmod.mixin.render.frame;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.vulkanmod.vulkan.Renderer;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -12,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Minecraft.class)
-@Debug(print = true)
 public class MinecraftMixin {
 
     @Inject(method = "runTick", at = @At(value = "HEAD"))
@@ -20,16 +17,14 @@ public class MinecraftMixin {
         Renderer.getInstance().preInitFrame();
     }
 
-    // Main target (framebuffer) ops
-    @Redirect(remap = false,method = "runTick", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;clear(I)V"))
+    @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;clear(I)V"))
     private void beginRender(int i) {
-        RenderSystem.clear(i);
         Renderer.getInstance().beginFrame();
     }
 
-    @Inject(method = "disconnect(Lnet/minecraft/client/gui/screens/Screen;Z)V", at = @At(value = "RETURN"))
-    private void beginRender2(CallbackInfo ci) {
-        Renderer.getInstance().beginFrame();
+    @Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/Window;updateDisplay(Lcom/mojang/blaze3d/TracyFrameCapture;)V", shift = At.Shift.BEFORE))
+    private void submitRender(boolean tick, CallbackInfo ci) {
+        Renderer.getInstance().endFrame();
     }
 
     @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/pipeline/RenderTarget;bindWrite(Z)V"))
@@ -46,9 +41,7 @@ public class MinecraftMixin {
     private void removeBlit(RenderTarget instance, int i, int j) {
     }
 
-
     @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Ljava/lang/Thread;yield()V"))
     private void removeThreadYield() {
     }
-
 }

@@ -24,7 +24,7 @@ public class FaceBakeryM {
      * @author
      */
     @Overwrite
-    private float[] setupShape(Vector3f vector3f, Vector3f vector3f2) {
+    private static float[] setupShape(Vector3f vector3f, Vector3f vector3f2) {
         float[] fs = new float[Direction.values().length];
         fs[FaceInfo.Constants.MIN_X] = vector3f.x() * DIV;
         fs[FaceInfo.Constants.MIN_Y] = vector3f.y() * DIV;

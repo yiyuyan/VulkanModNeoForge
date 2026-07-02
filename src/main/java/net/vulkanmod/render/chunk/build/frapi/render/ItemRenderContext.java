@@ -16,26 +16,24 @@
 
 package net.vulkanmod.render.chunk.build.frapi.render;
 
+import java.util.Arrays;
+import java.util.function.Supplier;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.MatrixUtil;
 
-import java.util.List;
-import java.util.function.Supplier;
-
+import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
+import net.fabricmc.fabric.api.renderer.v1.material.GlintMode;
+import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
 import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
-import net.fabricmc.fabric.api.renderer.v1.model.ModelHelper;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.vulkanmod.mixin.render.frapi.ItemRendererAccessor;
-import org.jetbrains.annotations.Nullable;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -44,42 +42,17 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.fabricmc.fabric.api.renderer.v1.material.BlendMode;
-import net.fabricmc.fabric.api.renderer.v1.material.RenderMaterial;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.fabricmc.fabric.api.util.TriState;
+import net.vulkanmod.mixin.render.frapi.ItemRendererAccessor;
 import net.vulkanmod.render.chunk.build.frapi.helper.ColorHelper;
-import net.vulkanmod.render.chunk.build.frapi.mesh.EncodingFormat;
 import net.vulkanmod.render.chunk.build.frapi.mesh.MutableQuadViewImpl;
-import net.fabricmc.fabric.impl.renderer.VanillaModelEncoder;
 
-import static net.vulkanmod.render.chunk.build.frapi.render.AbstractBlockRenderContext.STANDARD_MATERIAL;
-
-/**
- * The render context used for item rendering.
- */
-@SuppressWarnings("removal")
 public class ItemRenderContext extends AbstractRenderContext {
-	/** Value vanilla uses for item rendering.  The only sensible choice, of course.  */
 	private static final long ITEM_RANDOM_SEED = 42L;
 
-	private final ItemColors itemColors;
 	private final RandomSource random = RandomSource.create();
 	private final Supplier<RandomSource> randomSupplier = () -> {
 		random.setSeed(ITEM_RANDOM_SEED);
 		return random;
-	};
-
-	private final MutableQuadViewImpl editorQuad = new MutableQuadViewImpl() {
-		{
-			data = new int[EncodingFormat.TOTAL_STRIDE];
-			clear();
-		}
-
-		@Override
-		public void emitDirectly() {
-			renderQuad(this);
-		}
 	};
 
 	private ItemStack itemStack;
@@ -87,37 +60,16 @@ public class ItemRenderContext extends AbstractRenderContext {
 	private PoseStack matrixStack;
 	private MultiBufferSource vertexConsumerProvider;
 	private int lightmap;
+	private int[] tints;
 
 	private boolean isDefaultTranslucent;
 	private boolean isTranslucentDirect;
-	private boolean isDefaultGlint;
-	private boolean isGlintDynamicDisplay;
 
-	private PoseStack.Pose dynamicDisplayGlintEntry;
-	private VertexConsumer translucentVertexConsumer;
-	private VertexConsumer cutoutVertexConsumer;
-	private VertexConsumer translucentGlintVertexConsumer;
-	private VertexConsumer cutoutGlintVertexConsumer;
+	private RenderType defaultLayer;
+	private GlintMode defaultGlint;
 
-	public ItemRenderContext(ItemColors itemColors) {
-		this.itemColors = itemColors;
-	}
-
-	@Override
-	public QuadEmitter getEmitter() {
-		editorQuad.clear();
-		return editorQuad;
-	}
-
-	@Override
-	public boolean isFaceCulled(@Nullable Direction face) {
-		throw new IllegalStateException("isFaceCulled can only be called on a block render context.");
-	}
-
-	@Override
-	public ItemDisplayContext itemTransformationMode() {
-		return transformMode;
-	}
+	private PoseStack.Pose specialGlintEntry;
+	private final VertexConsumer[] vertexConsumerCache = new VertexConsumer[12];
 
 	public void renderModel(ItemStack itemStack, ItemDisplayContext transformMode, boolean invert, PoseStack matrixStack, MultiBufferSource vertexConsumerProvider, int lightmap, int overlay, BakedModel model) {
 		this.itemStack = itemStack;
@@ -126,55 +78,55 @@ public class ItemRenderContext extends AbstractRenderContext {
 		this.vertexConsumerProvider = vertexConsumerProvider;
 		this.lightmap = lightmap;
 		this.overlay = overlay;
+		this.tints = computeTints(itemStack);
+
 		computeOutputInfo();
 
 		matrix = matrixStack.last().pose();
 		normalMatrix = matrixStack.last().normal();
 
-		((FabricBakedModel)model).emitItemQuads(itemStack, randomSupplier, this);
+		((FabricBakedModel)model).emitItemQuads(getEmitter(), randomSupplier);
 
 		this.itemStack = null;
 		this.matrixStack = null;
 		this.vertexConsumerProvider = null;
+		this.tints = null;
 
-		dynamicDisplayGlintEntry = null;
-		translucentVertexConsumer = null;
-		cutoutVertexConsumer = null;
-		translucentGlintVertexConsumer = null;
-		cutoutGlintVertexConsumer = null;
+		specialGlintEntry = null;
+		Arrays.fill(vertexConsumerCache, null);
 	}
 
-	public void emitItemQuads(BakedModel model, @Nullable BlockState state, Supplier<RandomSource> randomSupplier) {
-		if (!this.hasTransform()) {
-			for (int i = 0; i <= ModelHelper.NULL_FACE_ID; i++) {
-				final Direction cullFace = ModelHelper.faceFromIndex(i);
-				final List<BakedQuad> quads = model.getQuads(state, cullFace, randomSupplier.get());
-				final int count = quads.size();
+	public void renderModel(ItemDisplayContext transformMode, PoseStack matrixStack, MultiBufferSource vertexConsumerProvider, int lightmap, int overlay, int[] tints, BakedModel model, RenderType renderType, ItemStackRenderState.FoilType foilType) {
+		this.itemStack = null;
+		this.transformMode = transformMode;
+		this.matrixStack = matrixStack;
+		this.vertexConsumerProvider = vertexConsumerProvider;
+		this.lightmap = lightmap;
+		this.overlay = overlay;
+		this.tints = tints;
 
-				//noinspection ForLoopReplaceableByForEach
-				for (int j = 0; j < count; j++) {
-					final BakedQuad q = quads.get(j);
-					editorQuad.fromVanilla(q, STANDARD_MATERIAL, cullFace);
+		isDefaultTranslucent = true;
+		isTranslucentDirect = true;
+		this.defaultLayer = renderType;
+		this.defaultGlint = foilType == ItemStackRenderState.FoilType.NONE ? GlintMode.NONE : GlintMode.DEFAULT;
 
-					endRenderQuad(editorQuad);
-				}
-			}
-		}
-		else {
-			for (int i = 0; i <= ModelHelper.NULL_FACE_ID; i++) {
-				final Direction cullFace = ModelHelper.faceFromIndex(i);
-				final List<BakedQuad> quads = model.getQuads(state, cullFace, randomSupplier.get());
-				final int count = quads.size();
+		matrix = matrixStack.last().pose();
+		normalMatrix = matrixStack.last().normal();
 
-				//noinspection ForLoopReplaceableByForEach
-				for (int j = 0; j < count; j++) {
-					final BakedQuad q = quads.get(j);
-					editorQuad.fromVanilla(q, STANDARD_MATERIAL, cullFace);
+		((FabricBakedModel)model).emitItemQuads(getEmitter(), randomSupplier);
 
-					this.renderQuad(editorQuad);
-				}
-			}
-		}
+		this.matrixStack = null;
+		this.vertexConsumerProvider = null;
+		this.tints = null;
+
+		specialGlintEntry = null;
+		Arrays.fill(vertexConsumerCache, null);
+	}
+
+	private int[] computeTints(ItemStack stack) {
+		int[] tints = new int[32];
+		Arrays.fill(tints, -1);
+		return tints;
 	}
 
 	private void computeOutputInfo() {
@@ -196,35 +148,29 @@ public class ItemRenderContext extends AbstractRenderContext {
 			}
 		}
 
-		isDefaultGlint = itemStack.hasFoil();
-		isGlintDynamicDisplay = ItemRendererAccessor.hasAnimatedTexture(itemStack);
+		defaultLayer = isDefaultTranslucent ? Sheets.translucentItemSheet() : Sheets.cutoutBlockSheet();
+		defaultGlint = GlintMode.DEFAULT;
 	}
 
-	private void renderQuad(MutableQuadViewImpl quad) {
-		if (!transform(quad)) {
-			return;
-		}
-
-		endRenderQuad(quad);
-	}
-
-	private void endRenderQuad(MutableQuadViewImpl quad) {
+	@Override
+	protected void bufferQuad(MutableQuadViewImpl quad) {
 		final RenderMaterial mat = quad.material();
-		final int colorIndex = mat.disableColorIndex() ? -1 : quad.colorIndex();
 		final boolean emissive = mat.emissive();
-		final VertexConsumer vertexConsumer = getVertexConsumer(mat.blendMode(), mat.glint());
+		final VertexConsumer vertexConsumer = getVertexConsumer(mat.blendMode(), mat.glintMode());
 
-		colorizeQuad(quad, colorIndex);
+		tintQuad(quad);
 		shadeQuad(quad, emissive);
 		bufferQuad(quad, vertexConsumer);
 	}
 
-	private void colorizeQuad(MutableQuadViewImpl quad, int colorIndex) {
-		if (colorIndex != -1) {
-			final int itemColor = itemColors.getColor(itemStack, colorIndex);
+	private void tintQuad(MutableQuadViewImpl quad) {
+		int tintIndex = quad.tintIndex();
+
+		if (tintIndex != -1 && tintIndex < tints.length) {
+			final int tint = tints[tintIndex];
 
 			for (int i = 0; i < 4; i++) {
-				quad.color(i, ColorHelper.multiplyColor(itemColor, quad.color(i)));
+				quad.color(i, ColorHelper.multiplyColor(tint, quad.color(i)));
 			}
 		}
 	}
@@ -243,74 +189,58 @@ public class ItemRenderContext extends AbstractRenderContext {
 		}
 	}
 
-	/**
-	 * Caches custom blend mode / vertex consumers and mimics the logic
-	 * in {@code RenderLayers.getItemLayer}. Layers other than
-	 * translucent are mapped to cutout.
-	 */
-	private VertexConsumer getVertexConsumer(BlendMode blendMode, TriState glintMode) {
-		boolean translucent;
-		boolean glint;
+	private VertexConsumer getVertexConsumer(BlendMode blendMode, GlintMode glintMode) {
+		RenderType layer;
+		GlintMode glint;
 
 		if (blendMode == BlendMode.DEFAULT) {
-			translucent = isDefaultTranslucent;
+			layer = defaultLayer;
 		} else {
-			translucent = blendMode == BlendMode.TRANSLUCENT;
+			layer = blendMode == BlendMode.TRANSLUCENT ? Sheets.translucentItemSheet() : Sheets.cutoutBlockSheet();
 		}
 
-		if (glintMode == TriState.DEFAULT) {
-			glint = isDefaultGlint;
+		if (glintMode == GlintMode.DEFAULT) {
+			glint = defaultGlint;
 		} else {
-			glint = glintMode == TriState.TRUE;
+			glint = glintMode;
 		}
 
-		if (translucent) {
-			if (glint) {
-				if (translucentGlintVertexConsumer == null) {
-					translucentGlintVertexConsumer = createVertexConsumer(Sheets.translucentItemSheet(), true);
-				}
+		int cacheIndex;
 
-				return translucentGlintVertexConsumer;
-			} else {
-				if (translucentVertexConsumer == null) {
-					translucentVertexConsumer = createVertexConsumer(Sheets.translucentItemSheet(), false);
-				}
-
-				return translucentVertexConsumer;
-			}
+		if (layer == Sheets.translucentItemSheet()) {
+			cacheIndex = 0;
+		} else if (layer == Sheets.cutoutBlockSheet()) {
+			cacheIndex = 4;
 		} else {
-			if (glint) {
-				if (cutoutGlintVertexConsumer == null) {
-					cutoutGlintVertexConsumer = createVertexConsumer(Sheets.cutoutBlockSheet(), true);
-				}
-
-				return cutoutGlintVertexConsumer;
-			} else {
-				if (cutoutVertexConsumer == null) {
-					cutoutVertexConsumer = createVertexConsumer(Sheets.cutoutBlockSheet(), false);
-				}
-
-				return cutoutVertexConsumer;
-			}
+			cacheIndex = 8;
 		}
+
+		cacheIndex += glint.ordinal();
+		VertexConsumer vertexConsumer = vertexConsumerCache[cacheIndex];
+
+		if (vertexConsumer == null) {
+			vertexConsumer = createVertexConsumer(layer, glint);
+			vertexConsumerCache[cacheIndex] = vertexConsumer;
+		}
+
+		return vertexConsumer;
 	}
 
-	private VertexConsumer createVertexConsumer(RenderType layer, boolean glint) {
-		if (isGlintDynamicDisplay && glint) {
-			if (dynamicDisplayGlintEntry == null) {
-				dynamicDisplayGlintEntry = matrixStack.last().copy();
+	private VertexConsumer createVertexConsumer(RenderType layer, GlintMode glint) {
+		if (glint == GlintMode.SPECIAL) {
+			if (specialGlintEntry == null) {
+				specialGlintEntry = matrixStack.last().copy();
 
 				if (transformMode == ItemDisplayContext.GUI) {
-					MatrixUtil.mulComponentWise(dynamicDisplayGlintEntry.pose(), 0.5F);
+					MatrixUtil.mulComponentWise(specialGlintEntry.pose(), 0.5F);
 				} else if (transformMode.firstPerson()) {
-					MatrixUtil.mulComponentWise(dynamicDisplayGlintEntry.pose(), 0.75F);
+					MatrixUtil.mulComponentWise(specialGlintEntry.pose(), 0.75F);
 				}
 			}
 
-			return ItemRenderer.getCompassFoilBuffer(vertexConsumerProvider, layer, dynamicDisplayGlintEntry);
+			return ItemRendererAccessor.getCompassFoilBuffer(vertexConsumerProvider, layer, specialGlintEntry);
 		}
 
-		return ItemRenderer.getFoilBuffer(vertexConsumerProvider, layer, true, glint);
+		return ItemRenderer.getFoilBuffer(vertexConsumerProvider, layer, true, glint.glint != null);
 	}
-
 }

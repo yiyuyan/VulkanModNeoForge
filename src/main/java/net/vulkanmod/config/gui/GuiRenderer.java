@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.CoreShaders;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import org.joml.Matrix4f;
@@ -55,8 +54,6 @@ public abstract class GuiRenderer {
     public static void fill(float x0, float y0, float x1, float y1, float z, int color) {
         Matrix4f matrix4f = pose.last().pose();
 
-        RenderSystem.setShader(CoreShaders.POSITION_COLOR);
-
         setupBufferBuilder();
 
         bufferBuilder.addVertex(matrix4f, x0, y0, z).setColor(color);
@@ -74,10 +71,6 @@ public abstract class GuiRenderer {
     public static void fillGradient(float x0, float y0, float x1, float y1, float z, int color1, int color2) {
         Matrix4f matrix4f = pose.last().pose();
 
-        RenderSystem.setShader(CoreShaders.POSITION_COLOR);
-
-        if (!batching)
-            bufferBuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         setupBufferBuilder();
 
         bufferBuilder.addVertex(matrix4f, x0, y0, z).setColor(color1);
@@ -137,7 +130,11 @@ public abstract class GuiRenderer {
     }
 
     public static void endBatch() {
-        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
+        RenderSystem.setShader(CoreShaders.POSITION_COLOR);
+        MeshData meshData = bufferBuilder.build();
+        if (meshData != null) {
+            BufferUploader.drawWithShader(meshData);
+        }
         batching = false;
     }
 
@@ -158,6 +155,7 @@ public abstract class GuiRenderer {
 
     private static void submitIfNeeded() {
         if (!batching) {
+            RenderSystem.setShader(CoreShaders.POSITION_COLOR);
             BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
             drawing = false;
         }

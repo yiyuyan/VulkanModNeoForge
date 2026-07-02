@@ -41,7 +41,6 @@ public class RenderRegionBuilder {
 
         DataLayer[][] lightData = new DataLayer[RenderRegion.SIZE][2 /* Light types */];
 
-        final int minHeightSec = level.getMinY() >> 4;
         long biomeZoomSeed = BiomeManagerExtended.of(level.getBiomeManager()).getBiomeZoomSeed();
         BiomeData biomeData = new BiomeData(biomeZoomSeed, minSecX, minSecY, minSecZ);
 
@@ -51,7 +50,7 @@ public class RenderRegionBuilder {
                 sections = levelChunk1.getSections();
 
                 for (int y = minSecY; y <= maxSecY; ++y) {
-                    int sectionIdx = y - minHeightSec;
+                    int sectionIdx = y - (level.getMinY() >> 4);
                     section = sectionIdx >= 0 && sectionIdx < sections.length ? sections[sectionIdx] : null;
 
                     final int relX = (x - minSecX), relY = (y - minSecY), relZ = (z - minSecZ);
